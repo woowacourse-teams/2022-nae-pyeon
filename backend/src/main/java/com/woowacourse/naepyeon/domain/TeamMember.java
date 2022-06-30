@@ -30,4 +30,9 @@ public class TeamMember {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public TeamMember(final Team team, final Member member) {
+        this.team = team;
+        this.member = member;
+    }
 }

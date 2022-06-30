@@ -26,4 +26,10 @@ public class Member {
 
     @Column(length = 255, nullable = false)
     private String password;
+
+    public Member(final String username, final String email, final String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 }
