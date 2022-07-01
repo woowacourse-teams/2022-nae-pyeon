@@ -1,8 +1,8 @@
 package com.woowacourse.naepyeon;
 
-import com.woowacourse.naepyeon.repository.MemberRepository;
-import com.woowacourse.naepyeon.repository.TeamMemberRepository;
-import com.woowacourse.naepyeon.repository.TeamRepository;
+import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
+import com.woowacourse.naepyeon.repository.jpa.TeamJpaDao;
+import com.woowacourse.naepyeon.repository.jpa.TeamMemberJpaDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,13 +12,13 @@ import org.springframework.context.annotation.Profile;
 @RequiredArgsConstructor
 public class DummyConfig {
 
-    private final MemberRepository memberRepository;
-    private final TeamRepository teamRepository;
-    private final TeamMemberRepository teamMemberRepository;
+    private final MemberJpaDao memberJpaDao;
+    private final TeamJpaDao teamJpaDao;
+    private final TeamMemberJpaDao teamMemberJpaDao;
 
     @Bean
     @Profile("local")
     public TestDataInit testDataInit() {
-        return new TestDataInit(memberRepository, teamRepository, teamMemberRepository);
+        return new TestDataInit(memberJpaDao, teamJpaDao, teamMemberJpaDao);
     }
 }
