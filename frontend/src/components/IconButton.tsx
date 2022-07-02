@@ -8,10 +8,7 @@ const StyledIconButton = styled.button`
   align-items: center;
   justify-content: center;
 
-  width: 24px;
-  height: 24px;
-
-  font-size: 20px;
+  font-size: 40px;
 `;
 
 const IconButton = ({ type, onClick, children }: ButtonAttributes) => {

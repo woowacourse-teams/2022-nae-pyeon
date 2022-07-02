@@ -11,6 +11,5 @@ const Template = (args) => <IconButton {...args}></IconButton>;
 
 export const Default = Template.bind({});
 Default.args = {
-  type: "IconButton",
   children: <BiPencil />,
 };
