@@ -1,3 +1,16 @@
+import React from "react";
+import { Global } from "@emotion/react";
+import reset from "../src/styles/reset";
+
+export const decorators = [
+  (Story) => (
+    <>
+      <Global styles={reset} />
+      <Story />
+    </>
+  ),
+];
+
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {
@@ -6,4 +19,4 @@ export const parameters = {
       date: /Date$/,
     },
   },
-}
+};
