@@ -1,7 +1,9 @@
 package com.woowacourse.naepyeon.service.dto;
 
 import com.woowacourse.naepyeon.domain.Member;
+import lombok.Getter;
 
+@Getter
 public class MemberResponse {
 
     private Long id;

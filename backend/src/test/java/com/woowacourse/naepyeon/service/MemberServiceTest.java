@@ -1,7 +1,7 @@
 package com.woowacourse.naepyeon.service;
 
-import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.service.dto.MemberResponse;
+import com.woowacourse.naepyeon.service.dto.SignUpRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +25,7 @@ class MemberServiceTest {
     @DisplayName("회원을 id값으로 찾는다.")
     public void findById() {
         // given
-        Member member = new Member("seungpang", "email@email.com", "password123!A");
+        SignUpRequest member = new SignUpRequest("seungpang", "email@email.com", "password123!A");
         Long memberId = memberService.save(member);
 
         // when
@@ -41,7 +41,7 @@ class MemberServiceTest {
     @DisplayName("회원의 유저네임을 수정한다.")
     public void update() {
         // given
-        Member member = new Member("seungpang", "email@email.com", "password123!A");
+        SignUpRequest member = new SignUpRequest("seungpang", "email@email.com", "password123!A");
         Long memberId = memberService.save(member);
 
         // when
@@ -57,7 +57,7 @@ class MemberServiceTest {
     @DisplayName("회원을 id값을 통해 제거한다.")
     public void delete() {
         // given
-        Member member = new Member("seungpang", "email@email.com", "password123!A");
+        SignUpRequest member = new SignUpRequest("seungpang", "email@email.com", "password123!A");
         Long memberId = memberService.save(member);
 
         // when
