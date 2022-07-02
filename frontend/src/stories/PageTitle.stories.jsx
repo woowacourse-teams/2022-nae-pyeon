@@ -10,6 +10,5 @@ const Template = (args) => <PageTitle {...args}></PageTitle>;
 
 export const Default = Template.bind({});
 Default.args = {
-  type: "PageTitle",
   children: "롤링페이퍼 만들기",
 };
