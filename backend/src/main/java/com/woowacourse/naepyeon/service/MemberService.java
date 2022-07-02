@@ -26,7 +26,7 @@ public class MemberService {
     public void updateUsername(Long memberId, final String username) {
         final Member member = memberRepository.findById(memberId)
                 .orElseThrow(IllegalArgumentException::new);
-        ;
+
         member.changeUsername(username);
     }
 
