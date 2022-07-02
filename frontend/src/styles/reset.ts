@@ -127,6 +127,12 @@ const reset = css`
       border-collapse: collapse;
       border-spacing: 0;
     }
+    button {
+      border: none;
+      padding: 0;
+      background-color: transparent;
+      cursor: pointer;
+    }
   }
 `;
 
