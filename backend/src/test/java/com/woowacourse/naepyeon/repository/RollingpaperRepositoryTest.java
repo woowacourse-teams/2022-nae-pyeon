@@ -19,9 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class RollingpaperRepositoryTest {
 
+    private static final String rollingPaperTitle = "AlexAndKei";
+
     private final Team team = new Team("nae-pyeon");
     private final Member member = new Member("member", "m@hello", "abc@@1234");
-    private final String rollingPaperTitle = "AlexAndKei";
 
     @Autowired
     private TeamJpaDao teamJpaDao;
