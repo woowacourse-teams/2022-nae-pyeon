@@ -1,19 +1,27 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
+interface ButtonAttributes
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  size?: "small" | "large";
+}
 
-const StyledIconButton = styled.button`
+const StyledIconButton = styled.button<ButtonAttributes>`
   display: flex;
   align-items: center;
   justify-content: center;
 
-  font-size: 40px;
+  font-size: ${(props) => (props.size === "small" ? "20px" : "40px")};
 `;
 
-const IconButton = ({ type, onClick, children }: ButtonAttributes) => {
+const IconButton = ({
+  type,
+  onClick,
+  size = "large",
+  children,
+}: ButtonAttributes) => {
   return (
-    <StyledIconButton type={type} onClick={onClick}>
+    <StyledIconButton type={type} onClick={onClick} size={size}>
       {children}
     </StyledIconButton>
   );
