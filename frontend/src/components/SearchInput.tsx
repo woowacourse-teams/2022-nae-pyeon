@@ -11,6 +11,7 @@ interface SearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 const StyledLabel = styled.label`
   display: flex;
   flex-direction: column;
+  width: 100%;
 
   font-size: 12px;
   color: #595959;
@@ -20,7 +21,6 @@ const StyledInputContainer = styled.div`
   display: flex;
   align-items: center;
 
-  width: 100%;
   height: 48px;
   padding: 0 10px;
   margin-top: 8px;
@@ -50,6 +50,7 @@ const StyledAutocompleteList = styled.ul`
   max-height: 100px;
   overflow-y: scroll;
   margin-top: 5px;
+  background-color: white;
   border: 1px solid #efefef;
   border-radius: 8px;
 

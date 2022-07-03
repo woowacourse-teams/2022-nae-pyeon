@@ -107,6 +107,7 @@ const reset = css`
     }
     body {
       line-height: 1;
+      background-color: #f7f7f7;
     }
     ol,
     ul {

@@ -2,15 +2,15 @@ import React from "react";
 import styled from "@emotion/styled";
 
 interface HeaderProps {
-  children: string;
+  children: React.ReactNode;
 }
 
-const StyledHeader = styled.div`
+const StyledHeader = styled.header`
   display: flex;
   align-items: center;
 
   width: 100%;
-  padding: 10px;
+  padding: 20px 10px;
   gap: 10px;
 `;
 

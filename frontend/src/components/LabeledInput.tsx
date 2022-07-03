@@ -9,6 +9,7 @@ interface LabeledInputProps
 const StyledLabel = styled.label`
   display: flex;
   flex-direction: column;
+  width: 100%;
 
   font-size: 12px;
   color: #595959;

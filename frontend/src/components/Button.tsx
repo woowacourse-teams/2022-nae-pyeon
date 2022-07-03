@@ -4,6 +4,8 @@ import styled from "@emotion/styled";
 type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const StyledButton = styled.button`
+  padding: 10px 6px;
+
   font-size: 16px;
   font-weight: 600;
 `;
