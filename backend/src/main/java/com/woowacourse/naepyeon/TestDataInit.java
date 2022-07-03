@@ -19,16 +19,20 @@ public class TestDataInit {
     private final TeamJpaDao teamJpaDao;
     private final TeamMemberJpaDao teamMemberJpaDao;
 
+    public static Member dummyMember1;
+    public static Member dummyMember2;
+    public static Team dummyTeam;
+
     @EventListener(ApplicationReadyEvent.class)
     public void initData() {
-        final Team dummyTeam = new Team("mypyeon");
-        final Member dummyMember1 =
+        final Team team = new Team("mypyeon");
+        final Member member1 =
                 new Member("kth990303", "kth990303@gmail.com", "abc@@1234");
-        final Member dummyMember2 =
+        final Member member2 =
                 new Member("yxxnghwan", "yxxnghwan@gmail.com", "abc@@1234");
-        memberJpaDao.save(dummyMember1);
-        memberJpaDao.save(dummyMember2);
-        teamJpaDao.save(dummyTeam);
+        dummyMember1 = memberJpaDao.save(member1);
+        dummyMember2 = memberJpaDao.save(member2);
+        dummyTeam = teamJpaDao.save(team);
 
         teamMemberJpaDao.save(new TeamMember(dummyTeam, dummyMember1));
         teamMemberJpaDao.save(new TeamMember(dummyTeam, dummyMember2));

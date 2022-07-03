@@ -10,6 +10,7 @@ import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
 import com.woowacourse.naepyeon.repository.jpa.RollingpaperJpaDao;
 import com.woowacourse.naepyeon.repository.jpa.TeamJpaDao;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,7 @@ class MessageRepositoryTest {
     void setUp() {
         teamJpaDao.save(team);
         memberJpaDao.save(member);
+        memberJpaDao.save(author);
         rollingpaperJpaDao.save(rollingpaper);
     }
 
@@ -62,6 +64,19 @@ class MessageRepositoryTest {
                 () -> assertThat(findMessageRollingpaper.getId()).isEqualTo(rollingpaper.getId()),
                 () -> assertThat(author.getId()).isEqualTo(author.getId())
         );
+    }
+
+    @Test
+    @DisplayName("롤링페이퍼 id로 메시지 전체를 찾는다.")
+    void findAllByRollingpaperId() {
+        final Message message1 = createMessage();
+        messageRepository.save(message1);
+        final Message message2 = createMessage();
+        messageRepository.save(message2);
+
+        final List<Message> findMessages = messageRepository.findAllByRollingpaperId(rollingpaper.getId());
+
+        assertThat(findMessages.size()).isEqualTo(2);
     }
 
 

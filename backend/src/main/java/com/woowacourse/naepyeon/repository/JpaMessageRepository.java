@@ -2,6 +2,7 @@ package com.woowacourse.naepyeon.repository;
 
 import com.woowacourse.naepyeon.domain.Message;
 import com.woowacourse.naepyeon.repository.jpa.MessageJpaDao;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -21,6 +22,11 @@ public class JpaMessageRepository implements MessageRepository {
     @Override
     public Optional<Message> findById(final Long id) {
         return messageJpaDao.findById(id);
+    }
+
+    @Override
+    public List<Message> findAllByRollingpaperId(final Long rollingpaperId) {
+        return messageJpaDao.findByRollingpaperId(rollingpaperId);
     }
 
     @Override
