@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,7 +29,7 @@ public class Message {
     @JoinColumn(name = "member_id")
     private Member author;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "rollingpaper_id")
     private Rollingpaper rollingpaper;
 
