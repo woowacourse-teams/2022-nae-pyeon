@@ -15,6 +15,11 @@ const StyledMessage = styled.div`
   padding: 20px 15px 10px;
 
   background-color: #c5ff98;
+
+  @media only screen and (min-width: 600px) {
+    width: 180px;
+    height: 180px;
+  }
 `;
 
 const StyledMessageContent = styled.div`
@@ -27,6 +32,15 @@ const StyledMessageContent = styled.div`
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 4;
+
+  @media only screen and (min-width: 600px) {
+    height: 126px;
+
+    font-size: 14px;
+    line-height: 18px;
+
+    -webkit-line-clamp: 7;
+  }
 `;
 
 const StyledMessageAuthor = styled.div`
