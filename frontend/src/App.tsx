@@ -1,8 +1,13 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { Global } from "@emotion/react";
-import reset from "./styles/reset";
+import { Routes, Route } from "react-router-dom";
+
 import RollingpaperPage from "@/pages/RollingpaperPage";
+import RollingpaperCreationPage from "@/pages/RollingpaperCreationPage";
+import MessageWritePage from "@/pages/MessageWritePage";
+
+import reset from "./styles/reset";
 
 const StyledPageContainer = styled.div`
   height: 100vh;
@@ -26,7 +31,20 @@ const App = () => {
     <div>
       <Global styles={reset} />
       <StyledPageContainer>
-        <RollingpaperPage />
+        <Routes>
+          <Route
+            path="rollingpaper/new"
+            element={<RollingpaperCreationPage />}
+          />
+          <Route
+            path="rollingpaper/:rollingpaperId"
+            element={<RollingpaperPage />}
+          />
+          <Route
+            path="rollingpaper/:rollingpaperId/message/new"
+            element={<MessageWritePage />}
+          />
+        </Routes>
       </StyledPageContainer>
     </div>
   );
