@@ -1,17 +1,16 @@
 package com.woowacourse.naepyeon.service;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
 import com.woowacourse.naepyeon.repository.jpa.RollingpaperJpaDao;
 import com.woowacourse.naepyeon.repository.jpa.TeamJpaDao;
-import com.woowacourse.naepyeon.service.dto.MessageRequest;
-import com.woowacourse.naepyeon.service.dto.MessageResponse;
-import org.assertj.core.api.Assertions;
+import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,9 +49,13 @@ class MessageServiceTest {
     @DisplayName("메시지를 저장하고 id로 찾는다.")
     void saveMessageAndFind() {
         final MessageRequest messageRequest = createMessageRequest();
-        final Long messageId = messageService.saveMessage(messageRequest, rollingpaper.getId());
+        final Long messageId = messageService.saveMessage(
+                messageRequest.getContent(),
+                messageRequest.getAuthorId(),
+                rollingpaper.getId()
+        );
 
-        final MessageResponse messageResponse = messageService.findMessage(messageId);
+        final MessageResponseDto messageResponse = messageService.findMessage(messageId);
 
         assertThat(messageResponse).extracting("content", "from", "authorId")
                 .containsExactly(messageRequest.getContent(), author.getUsername(), author.getId());
@@ -62,12 +65,16 @@ class MessageServiceTest {
     @DisplayName("메시지의 내용을 수정한다.")
     void updateContent() {
         final MessageRequest messageRequest = createMessageRequest();
-        final Long messageId = messageService.saveMessage(messageRequest, rollingpaper.getId());
+        final Long messageId = messageService.saveMessage(
+                messageRequest.getContent(),
+                messageRequest.getAuthorId(),
+                rollingpaper.getId()
+        );
         final String expected = "안녕하지 못합니다.";
 
         messageService.updateContent(messageId, expected);
 
-        final MessageResponse messageResponse = messageService.findMessage(messageId);
+        final MessageResponseDto messageResponse = messageService.findMessage(messageId);
         assertThat(messageResponse.getContent()).isEqualTo(expected);
     }
 
@@ -75,7 +82,11 @@ class MessageServiceTest {
     @DisplayName("메시지를 id로 제거한다.")
     void deleteMessage() {
         final MessageRequest messageRequest = createMessageRequest();
-        final Long messageId = messageService.saveMessage(messageRequest, rollingpaper.getId());
+        final Long messageId = messageService.saveMessage(
+                messageRequest.getContent(),
+                messageRequest.getAuthorId(),
+                rollingpaper.getId()
+        );
 
         messageService.deleteMessage(messageId);
 
