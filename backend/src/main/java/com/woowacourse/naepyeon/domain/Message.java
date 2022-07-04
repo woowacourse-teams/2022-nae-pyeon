@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,9 +23,23 @@ public class Message {
     private Long id;
 
     @Column(length = 500, nullable = false)
-    private String contents;
+    private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member author;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "rollingpaper_id")
     private Rollingpaper rollingpaper;
+
+    public Message(final String content, final Member author, final Rollingpaper rollingpaper) {
+        this.content = content;
+        this.author = author;
+        this.rollingpaper = rollingpaper;
+    }
+
+    public void changeContent(final String newContent) {
+        this.content = newContent;
+    }
 }
