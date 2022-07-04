@@ -33,4 +33,14 @@ public class Rollingpaper {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public Rollingpaper(final String title, final Team team, final Member member) {
+        this.title = title;
+        this.team = team;
+        this.member = member;
+    }
+
+    public void changeTitle(final String title) {
+        this.title = title;
+    }
 }
