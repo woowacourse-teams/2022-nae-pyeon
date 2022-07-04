@@ -6,7 +6,11 @@ import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.repository.RollingpaperRepository;
 import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
 import com.woowacourse.naepyeon.repository.jpa.TeamJpaDao;
-import com.woowacourse.naepyeon.service.dto.RollingpaperResponse;
+import com.woowacourse.naepyeon.service.dto.RollingpaperPreviewResponseDto;
+import com.woowacourse.naepyeon.service.dto.RollingpaperResponseDto;
+import com.woowacourse.naepyeon.service.dto.RollingpapersResponseDto;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +25,7 @@ public class RollingpaperService {
     private final TeamJpaDao teamJpaDao; //todo: #20 머지 후 teamRepository로 변경
     private final MemberJpaDao memberJpaDao; //todo: #19 머지 후 memberRepository로 변경
 
-    public Long openRollingpaper(final String title, final Long teamId, final Long memberId) {
+    public Long createRollingpaper(final String title, final Long teamId, final Long memberId) {
         final Team team = teamJpaDao.findById(teamId)
                 .orElseThrow(IllegalArgumentException::new);
         final Member member = memberJpaDao.findById(memberId)
@@ -31,11 +35,12 @@ public class RollingpaperService {
     }
 
     @Transactional(readOnly = true)
-    public RollingpaperResponse findById(final Long rollingpaperId) {
+    public RollingpaperResponseDto findById(final Long rollingpaperId) {
         final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
                 .orElseThrow(IllegalArgumentException::new);
 
-        return new RollingpaperResponse(
+        return new RollingpaperResponseDto(
+                rollingpaperId,
                 rollingpaper.getTitle(),
                 rollingpaper.getMember().getUsername(),
                 messageService.findMessages(rollingpaperId)

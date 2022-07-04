@@ -7,7 +7,9 @@ import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
 import com.woowacourse.naepyeon.repository.jpa.TeamJpaDao;
-import com.woowacourse.naepyeon.service.dto.RollingpaperResponse;
+import com.woowacourse.naepyeon.service.dto.RollingpaperPreviewResponseDto;
+import com.woowacourse.naepyeon.service.dto.RollingpaperResponseDto;
+import com.woowacourse.naepyeon.service.dto.RollingpapersResponseDto;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,9 +44,9 @@ class RollingpaperServiceTest {
     @DisplayName("롤링페이퍼를 저장하고 id값으로 찾는다.")
     void saveRollingpaperAndFind() {
         final Long rollingpaperId =
-                rollingpaperService.openRollingpaper(rollingPaperTitle, team.getId(), member.getId());
+                rollingpaperService.createRollingpaper(rollingPaperTitle, team.getId(), member.getId());
 
-        final RollingpaperResponse rollingpaperResponse = rollingpaperService.findById(rollingpaperId);
+        final RollingpaperResponseDto rollingpaperResponse = rollingpaperService.findById(rollingpaperId);
 
         assertThat(rollingpaperResponse).extracting("title", "to", "messages")
                 .containsExactly(rollingPaperTitle, member.getUsername(), List.of());
@@ -86,12 +88,12 @@ class RollingpaperServiceTest {
     @DisplayName("롤링페이퍼 타이틀을 수정한다.")
     void updateTitle() {
         final Long rollingpaperId =
-                rollingpaperService.openRollingpaper(rollingPaperTitle, team.getId(), member.getId());
+                rollingpaperService.createRollingpaper(rollingPaperTitle, team.getId(), member.getId());
         final String expected = "woowacourse";
 
         rollingpaperService.updateTitle(rollingpaperId, expected);
 
-        final RollingpaperResponse rollingpaperResponse = rollingpaperService.findById(rollingpaperId);
+        final RollingpaperResponseDto rollingpaperResponse = rollingpaperService.findById(rollingpaperId);
         assertThat(rollingpaperResponse.getTitle()).isEqualTo(expected);
     }
 
@@ -99,7 +101,7 @@ class RollingpaperServiceTest {
     @DisplayName("롤링페이를 id로 제거한다.")
     void deleteRollingpaper() {
         final Long rollingpaperId =
-                rollingpaperService.openRollingpaper(rollingPaperTitle, team.getId(), member.getId());
+                rollingpaperService.createRollingpaper(rollingPaperTitle, team.getId(), member.getId());
 
         rollingpaperService.deleteRollingpaper(rollingpaperId);
 
