@@ -32,4 +32,8 @@ public class Member {
         this.email = email;
         this.password = password;
     }
+
+    public void changeUsername(final String username) {
+        this.username = username;
+    }
 }
