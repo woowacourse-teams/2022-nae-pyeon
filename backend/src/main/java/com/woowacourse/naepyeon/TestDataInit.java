@@ -15,13 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class TestDataInit {
 
-    private final MemberJpaDao memberJpaDao;
-    private final TeamJpaDao teamJpaDao;
-    private final TeamMemberJpaDao teamMemberJpaDao;
-
     public static Member dummyMember1;
     public static Member dummyMember2;
     public static Team dummyTeam;
+    private final MemberJpaDao memberJpaDao;
+    private final TeamJpaDao teamJpaDao;
+    private final TeamMemberJpaDao teamMemberJpaDao;
 
     @EventListener(ApplicationReadyEvent.class)
     public void initData() {
