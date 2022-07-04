@@ -42,6 +42,15 @@ public class RollingpaperService {
         );
     }
 
+    @Transactional(readOnly = true)
+    public RollingpapersResponseDto findByTeamId(final Long teamId) {
+        final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByTeamId(teamId);
+        final List<RollingpaperPreviewResponseDto> rollingpaperPreviewResponseDtos = rollingpapers.stream()
+                .map(RollingpaperPreviewResponseDto::from)
+                .collect(Collectors.toUnmodifiableList());
+        return new RollingpapersResponseDto(rollingpaperPreviewResponseDtos);
+    }
+
     public void updateTitle(final Long rollingpaperId, final String newTitle) {
         rollingpaperRepository.update(rollingpaperId, newTitle);
     }

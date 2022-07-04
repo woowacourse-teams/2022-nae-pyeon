@@ -1,15 +1,18 @@
 package com.woowacourse.naepyeon.repository;
 
 import com.woowacourse.naepyeon.domain.Rollingpaper;
+import java.util.List;
 import java.util.Optional;
 
 public interface RollingpaperRepository {
 
     Long save(final Rollingpaper rollingpaper);
 
-    Optional<Rollingpaper> findById(final Long id);
+    Optional<Rollingpaper> findById(final Long rollingpaperId);
 
-    void update(final Long id, final String newTitle);
+    List<Rollingpaper> findByTeamId(final Long teamId);
 
-    void delete(final Long id);
+    void update(final Long rollingpaperId, final String newTitle);
+
+    void delete(final Long rollingpaperId);
 }

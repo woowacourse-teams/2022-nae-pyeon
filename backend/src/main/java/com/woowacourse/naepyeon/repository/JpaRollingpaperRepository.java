@@ -2,6 +2,7 @@ package com.woowacourse.naepyeon.repository;
 
 import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.repository.jpa.RollingpaperJpaDao;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -19,19 +20,24 @@ public class JpaRollingpaperRepository implements RollingpaperRepository {
     }
 
     @Override
-    public Optional<Rollingpaper> findById(final Long id) {
-        return rollingpaperJpaDao.findById(id);
+    public Optional<Rollingpaper> findById(final Long rollingpaperId) {
+        return rollingpaperJpaDao.findById(rollingpaperId);
     }
 
     @Override
-    public void update(final Long id, final String newTitle) {
-        final Rollingpaper rollingpaper = rollingpaperJpaDao.findById(id)
+    public List<Rollingpaper> findByTeamId(final Long teamId) {
+        return rollingpaperJpaDao.findByTeamId(teamId);
+    }
+
+    @Override
+    public void update(final Long rollingpaperId, final String newTitle) {
+        final Rollingpaper rollingpaper = rollingpaperJpaDao.findById(rollingpaperId)
                 .orElseThrow(IllegalArgumentException::new);
         rollingpaper.changeTitle(newTitle);
     }
 
     @Override
-    public void delete(final Long id) {
-        rollingpaperJpaDao.deleteById(id);
+    public void delete(final Long rollingpaperId) {
+        rollingpaperJpaDao.deleteById(rollingpaperId);
     }
 }

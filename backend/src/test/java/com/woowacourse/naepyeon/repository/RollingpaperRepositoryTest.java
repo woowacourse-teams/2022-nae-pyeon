@@ -8,6 +8,7 @@ import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
 import com.woowacourse.naepyeon.repository.jpa.TeamJpaDao;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -55,6 +56,19 @@ class RollingpaperRepositoryTest {
                 () -> assertThat(findRollingPaperTeam.getId()).isEqualTo(this.team.getId()),
                 () -> assertThat(findRollingPaperMember.getId()).isEqualTo(this.member.getId())
         );
+    }
+
+    @Test
+    @DisplayName("롤링페이퍼들을 teamId로 찾는다.")
+    void findByTeamId() {
+        final Rollingpaper rollingPaper1 = createRollingPaper();
+        final Rollingpaper rollingPaper2 = createRollingPaper();
+        rollingpaperRepository.save(rollingPaper1);
+        rollingpaperRepository.save(rollingPaper2);
+
+        final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByTeamId(team.getId());
+
+        assertThat(rollingpapers).hasSize(2);
     }
 
     @Test

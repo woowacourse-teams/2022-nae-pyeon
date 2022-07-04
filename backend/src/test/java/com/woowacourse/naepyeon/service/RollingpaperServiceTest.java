@@ -51,6 +51,38 @@ class RollingpaperServiceTest {
     }
 
     @Test
+    @DisplayName("롤링페이퍼들을 teamId로 찾는다.")
+    void findRollingpapersByTeamId() {
+        // given
+        final Long rollingpaperId1 =
+                rollingpaperService.createRollingpaper(rollingPaperTitle, team.getId(), member.getId());
+        final Long rollingpaperId2 =
+                rollingpaperService.createRollingpaper(rollingPaperTitle, team.getId(), member.getId());
+        final List<RollingpaperPreviewResponseDto> expected = convertPreviewDto(rollingpaperId1, rollingpaperId2);
+
+        // when
+        final RollingpapersResponseDto responseDto = rollingpaperService.findByTeamId(team.getId());
+        final List<RollingpaperPreviewResponseDto> rollingpaperPreviewResponseDtos = responseDto.getRollingpapers();
+
+        // then
+        assertThat(rollingpaperPreviewResponseDtos)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    private List<RollingpaperPreviewResponseDto> convertPreviewDto(final Long rollingpaperId1,
+                                                                   final Long rollingpaperId2) {
+        final RollingpaperResponseDto rollingpaperResponseDto1 = rollingpaperService.findById(rollingpaperId1);
+        final RollingpaperResponseDto rollingpaperResponseDto2 = rollingpaperService.findById(rollingpaperId2);
+        return List.of(
+                new RollingpaperPreviewResponseDto(rollingpaperResponseDto1.getId(),
+                        rollingpaperResponseDto1.getTitle(), rollingpaperResponseDto1.getTo()),
+                new RollingpaperPreviewResponseDto(rollingpaperResponseDto2.getId(),
+                        rollingpaperResponseDto2.getTitle(), rollingpaperResponseDto2.getTo())
+        );
+    }
+
+    @Test
     @DisplayName("롤링페이퍼 타이틀을 수정한다.")
     void updateTitle() {
         final Long rollingpaperId =
