@@ -6,9 +6,11 @@ import com.woowacourse.naepyeon.service.dto.MemberResponse;
 import com.woowacourse.naepyeon.service.dto.SignUpRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -17,6 +19,7 @@ public class MemberService {
         return memberRepository.save(signUpRequest.toEntity());
     }
 
+    @Transactional(readOnly = true)
     public MemberResponse findById(final Long memberId) {
         final Member member = memberRepository.findById(memberId)
                 .orElseThrow(IllegalArgumentException::new);
