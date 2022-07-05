@@ -25,11 +25,11 @@ export const handlers = [
       const { rollingpaperId } = req.params;
       const { content, authorId } = req.body;
 
-      const result = rollingpapersDummy.find(
-        (rollingpaper) => rollingpaper.id === rollingpaperId
-      );
+      const result = {
+        id: 1,
+      };
 
-      return res(ctx.status(201));
+      return res(ctx.status(201), ctx.json(result));
     }
   ),
 
@@ -38,6 +38,10 @@ export const handlers = [
     const { teamId } = req.params;
     const { title, memberId } = req.body;
 
-    return res(ctx.status(201));
+    const result = {
+      id: 2,
+    };
+
+    return res(ctx.status(201), ctx.json(result));
   }),
 ];
