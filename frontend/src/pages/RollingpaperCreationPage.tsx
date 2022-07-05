@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import axios from "axios";
 
@@ -39,6 +40,7 @@ const memberListDummy = [
 ];
 
 const RollingpaperCreationPage = () => {
+  const navigate = useNavigate();
   const [rollingpaperTitle, setRollingpaperTitle] = useState("");
   const [rollingpaperTo, setRollingpaperTo] = useState("");
 
@@ -54,6 +56,7 @@ const RollingpaperCreationPage = () => {
     );
 
     if (!member) {
+      alert("올바른 롤링페이퍼 대상을 선택해주세요.");
       return;
     }
 
@@ -63,8 +66,8 @@ const RollingpaperCreationPage = () => {
         memberId: member.id,
       })
       .then((response) => {
-        console.log(response);
-        // 생성된 롤링페이퍼 페이지 또는 모임 목록으로 이동
+        const { id: newRollingpaperId } = response.data;
+        navigate(`/rollingpaper/${newRollingpaperId}`, { replace: true });
       })
       .catch((error) => {
         console.log(error);
