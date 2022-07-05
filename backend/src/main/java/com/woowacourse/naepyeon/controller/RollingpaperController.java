@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.controller;
 
+import com.woowacourse.naepyeon.TestDataInit;
 import com.woowacourse.naepyeon.controller.dto.RollingpaperCreateRequest;
 import com.woowacourse.naepyeon.controller.dto.RollingpaperUpdateRequest;
 import com.woowacourse.naepyeon.service.RollingpaperService;
@@ -18,20 +19,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.woowacourse.naepyeon.TestDataInit.*;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/teams/{teamId}/rollingpapers")
 public class RollingpaperController {
 
     private final RollingpaperService rollingpaperService;
+    //
 
     @PostMapping
     public ResponseEntity<Void> createRollingpaper(
             @PathVariable final Long teamId,
             @RequestBody @Valid final RollingpaperCreateRequest rollingpaperCreateRequest) {
-        final Long rollingpaperId = rollingpaperService.createRollingpaper(rollingpaperCreateRequest.getTitle(), teamId,
-                rollingpaperCreateRequest.getMemberId());
-        return ResponseEntity.created(URI.create("/api/v1/teams/" + teamId + "/rollingpapers/" + rollingpaperId))
+//        final Long rollingpaperId = rollingpaperService.createRollingpaper(rollingpaperCreateRequest.getTitle(), teamId,
+//                rollingpaperCreateRequest.getMemberId());
+//        return ResponseEntity.created(URI.create("/api/v1/teams/" + teamId + "/rollingpapers/" + rollingpaperId))
+//                .build();
+        final Long rollingpaperId = rollingpaperService.createRollingpaper(rollingpaperCreateRequest.getTitle(), dummyTeam.getId(),
+                dummyMember2.getId());
+        return ResponseEntity.created(URI.create("/api/v1/teams/" + dummyTeam.getId() + "/rollingpapers/" + rollingpaperId))
                 .build();
     }
 
@@ -44,7 +52,8 @@ public class RollingpaperController {
 
     @GetMapping
     public ResponseEntity<RollingpapersResponseDto> findRollingpapers(@PathVariable final Long teamId) {
-        final RollingpapersResponseDto rollingpapersResponseDto = rollingpaperService.findByTeamId(teamId);
+//        final RollingpapersResponseDto rollingpapersResponseDto = rollingpaperService.findByTeamId(teamId);
+        final RollingpapersResponseDto rollingpapersResponseDto = rollingpaperService.findByTeamId(dummyTeam.getId());
         return ResponseEntity.ok(rollingpapersResponseDto);
     }
 
