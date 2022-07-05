@@ -36,7 +36,7 @@ export const handlers = [
   // 개인 롤링페이퍼 생성
   rest.post("/api/v1/teams/:teamId/rollingpapers", (req, res, ctx) => {
     const { teamId } = req.params;
-    const { title, memberId } = JSON.parse(req.body);
+    const { title, memberId } = req.body;
 
     return res(ctx.status(201));
   }),
