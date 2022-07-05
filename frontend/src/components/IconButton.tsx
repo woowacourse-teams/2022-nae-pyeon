@@ -6,14 +6,6 @@ interface ButtonAttributes
   size?: "small" | "large";
 }
 
-const StyledIconButton = styled.button<ButtonAttributes>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: ${(props) => (props.size === "small" ? "20px" : "40px")};
-`;
-
 const IconButton = ({
   type,
   onClick,
@@ -26,5 +18,13 @@ const IconButton = ({
     </StyledIconButton>
   );
 };
+
+const StyledIconButton = styled.button<ButtonAttributes>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: ${(props) => (props.size === "small" ? "20px" : "40px")};
+`;
 
 export default IconButton;

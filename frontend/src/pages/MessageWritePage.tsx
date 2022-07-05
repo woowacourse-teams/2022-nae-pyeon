@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "@emotion/styled";
+import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
 
 import Header from "@/components/Header";
 import Button from "@/components/Button";
@@ -8,13 +10,57 @@ import TextArea from "@/components/TextArea";
 
 import { BiChevronLeft } from "react-icons/bi";
 
-const StyledPageContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: white;
-`;
+const MessageWritePage = () => {
+  const { rollingpaperId } = useParams();
+  const navigate = useNavigate();
 
-const StyledMain = styled.main`
+  const contentRef = useRef<HTMLTextAreaElement>(null);
+  const authorId = 123;
+
+  const handleMessageFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    console.log(contentRef.current?.value);
+
+    if (!contentRef.current) {
+      console.error("ERROR :: No contentRef.current");
+      return;
+    }
+
+    if (!contentRef.current.value) {
+      alert("메시지를 작성해주세요");
+      return;
+    }
+
+    axios
+      .post(`/api/v1/rollingpapers/${rollingpaperId}/messages`, {
+        content: contentRef.current.value,
+        authorId: authorId,
+      })
+      .then((response) => {
+        navigate(`/rollingpaper/${rollingpaperId}`, { replace: true });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  return (
+    <>
+      <Header>
+        <IconButton>
+          <BiChevronLeft />
+        </IconButton>
+      </Header>
+      <StyledMain onSubmit={handleMessageFormSubmit}>
+        <TextArea ref={contentRef} />
+        <Button type="submit">완료</Button>
+      </StyledMain>
+    </>
+  );
+};
+
+const StyledMain = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,27 +72,5 @@ const StyledMain = styled.main`
     align-self: flex-end;
   }
 `;
-
-const StyledDoneButtonWrapper = styled.div`
-  margin: 0 0 0 auto;
-`;
-
-const MessageWritePage = () => {
-  return (
-    <StyledPageContainer>
-      <Header>
-        <IconButton>
-          <BiChevronLeft />
-        </IconButton>
-        <StyledDoneButtonWrapper>
-          <Button>완료</Button>
-        </StyledDoneButtonWrapper>
-      </Header>
-      <StyledMain>
-        <TextArea />
-      </StyledMain>
-    </StyledPageContainer>
-  );
-};
 
 export default MessageWritePage;
