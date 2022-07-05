@@ -22,8 +22,9 @@ const StyledTextArea = styled.textarea`
     height: 400px;
   }
 `;
-const TextArea = () => {
-  return <StyledTextArea />;
-};
+
+const TextArea = React.forwardRef<HTMLTextAreaElement>((props, ref) => {
+  return <StyledTextArea ref={ref} {...props} />;
+});
 
 export default TextArea;
