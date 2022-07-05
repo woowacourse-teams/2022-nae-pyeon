@@ -23,7 +23,7 @@ export const handlers = [
     "/api/v1/rollingpapers/:rollingpaperId/messages",
     (req, res, ctx) => {
       const { rollingpaperId } = req.params;
-      const { content, authorId } = JSON.parse(req.body);
+      const { content, authorId } = req.body;
 
       const result = rollingpapersDummy.find(
         (rollingpaper) => rollingpaper.id === rollingpaperId
