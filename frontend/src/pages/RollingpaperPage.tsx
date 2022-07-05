@@ -10,34 +10,24 @@ import LetterPaper from "@/components/LetterPaper";
 
 import { BiChevronLeft } from "react-icons/bi";
 
-const StyledPageContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: white;
-`;
-
-const StyledMain = styled.main`
-  padding: 10px 25px;
-`;
-
-type messages = {
+type Message = {
   id: number;
   content: string;
   from: string;
   authorId: number;
 };
 
-interface rollingpaperType {
+interface RollingpaperType {
   id: number;
   title: string;
   to: string;
-  messages: messages[];
+  messages: Message[];
 }
 
 const RollingpaperPage = () => {
   const { rollingpaperId } = useParams();
   const teamId = 123;
-  const [rollingpaper, setRollingpaper] = useState<rollingpaperType | null>(
+  const [rollingpaper, setRollingpaper] = useState<RollingpaperType | null>(
     null
   );
 
@@ -78,5 +68,15 @@ const RollingpaperPage = () => {
     </StyledPageContainer>
   );
 };
+
+const StyledPageContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: white;
+`;
+
+const StyledMain = styled.main`
+  padding: 10px 25px;
+`;
 
 export default RollingpaperPage;

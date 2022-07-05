@@ -11,25 +11,6 @@ import Button from "@/components/Button";
 
 import { BiChevronLeft } from "react-icons/bi";
 
-const StyledPageContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: white;
-`;
-
-const StyledMain = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 40px;
-
-  padding: 48px 25px;
-
-  button {
-    align-self: flex-end;
-  }
-`;
-
 const memberListDummy = [
   {
     id: 1,
@@ -115,5 +96,24 @@ const RollingpaperCreationPage = () => {
     </StyledPageContainer>
   );
 };
+
+const StyledPageContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: white;
+`;
+
+const StyledMain = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+
+  padding: 48px 25px;
+
+  button {
+    align-self: flex-end;
+  }
+`;
 
 export default RollingpaperCreationPage;
