@@ -11,7 +11,7 @@ export const handlers = [
       const { teamId, rollingpaperId } = req.params;
 
       const result = rollingpapersDummy.find(
-        (rollingpaper) => rollingpaper.id === rollingpaperId
+        (rollingpaper) => rollingpaper.id === +rollingpaperId
       );
 
       return res(ctx.json(result));
