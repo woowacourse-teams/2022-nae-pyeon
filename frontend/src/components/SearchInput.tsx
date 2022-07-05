@@ -6,6 +6,7 @@ import { BiSearch } from "react-icons/bi";
 interface SearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   labelText: string;
   searchKeywordList: string[];
+  setValue: (value: string) => void;
 }
 
 const StyledLabel = styled.label`
@@ -69,21 +70,23 @@ const StyledAutocompleteListItem = styled.li`
   :last-child {
     border: none;
   }
+
+  cursor: pointer;
 `;
 
 const SearchInput = ({
   labelText,
   value,
+  setValue,
   searchKeywordList,
 }: SearchInputProps) => {
   const [autocompleteList, setAutocompleteList] = useState(searchKeywordList);
 
-  const handleInputChange = ({
-    target,
-  }: React.ChangeEvent<HTMLInputElement>) => {
-    // TODO: 부모에서 값(value)을 관리하고 변경(onChange)이 필요
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+
     const newAutocompleteList = searchKeywordList.filter((keyword) =>
-      keyword.includes(target.value)
+      keyword.includes(e.target.value)
     );
     setAutocompleteList(newAutocompleteList);
   };
@@ -98,7 +101,12 @@ const SearchInput = ({
       {autocompleteList.length > 0 && (
         <StyledAutocompleteList>
           {autocompleteList.map((autocompleteListItem) => (
-            <StyledAutocompleteListItem key={autocompleteListItem}>
+            <StyledAutocompleteListItem
+              key={autocompleteListItem}
+              onClick={() => {
+                setValue(autocompleteListItem);
+              }}
+            >
               {autocompleteListItem}
             </StyledAutocompleteListItem>
           ))}
