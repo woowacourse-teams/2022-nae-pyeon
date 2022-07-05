@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { useNavigate } from "react-router-dom";
 
 import IconButton from "@components/IconButton";
 import RollingpaperMessage from "@components/RollingpaperMessage";
@@ -60,11 +61,20 @@ const StyledMessageList = styled.div`
 `;
 
 const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
+  const navigate = useNavigate();
+
+  const handleMessageWriteButtonClick: React.MouseEventHandler<
+    HTMLButtonElement
+  > = (e) => {
+    e.preventDefault();
+    navigate(`message/new`);
+  };
+
   return (
     <StyledLetterPaper>
       <StyledLetterPaperTop>
         <StyledTo>To. {to}</StyledTo>
-        <IconButton size="small">
+        <IconButton size="small" onClick={handleMessageWriteButtonClick}>
           <BiPencil />
         </IconButton>
       </StyledLetterPaperTop>
