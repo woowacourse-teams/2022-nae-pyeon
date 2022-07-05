@@ -44,18 +44,18 @@ const RollingpaperPage = () => {
 
   if (rollingpaper === null) {
     return (
-      <StyledPageContainer>
+      <>
         <Header>
           <IconButton>
             <BiChevronLeft />
           </IconButton>
         </Header>
-      </StyledPageContainer>
+      </>
     );
   }
 
   return (
-    <StyledPageContainer>
+    <>
       <Header>
         <IconButton>
           <BiChevronLeft />
@@ -65,15 +65,9 @@ const RollingpaperPage = () => {
       <StyledMain>
         <LetterPaper to={rollingpaper.to} messageList={rollingpaper.messages} />
       </StyledMain>
-    </StyledPageContainer>
+    </>
   );
 };
-
-const StyledPageContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: white;
-`;
 
 const StyledMain = styled.main`
   padding: 10px 25px;

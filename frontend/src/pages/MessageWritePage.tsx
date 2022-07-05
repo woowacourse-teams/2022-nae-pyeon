@@ -46,7 +46,7 @@ const MessageWritePage = () => {
   };
 
   return (
-    <StyledPageContainer>
+    <>
       <Header>
         <IconButton>
           <BiChevronLeft />
@@ -56,15 +56,9 @@ const MessageWritePage = () => {
         <TextArea ref={contentRef} />
         <Button type="submit">완료</Button>
       </StyledMain>
-    </StyledPageContainer>
+    </>
   );
 };
-
-const StyledPageContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: white;
-`;
 
 const StyledMain = styled.form`
   display: flex;

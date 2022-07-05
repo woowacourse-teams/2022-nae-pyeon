@@ -10,8 +10,10 @@ import MessageWritePage from "@/pages/MessageWritePage";
 import reset from "./styles/reset";
 
 const StyledPageContainer = styled.div`
-  height: 100vh;
+  min-height: 100vh;
   margin: 0 auto;
+
+  background-color: white;
 
   @media only screen and (min-width: 600px) {
     width: 500px;

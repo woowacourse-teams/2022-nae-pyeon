@@ -81,7 +81,6 @@ const StyledMessageList = styled.div`
   justify-items: center;
 
   height: calc(100% - 40px);
-  overflow-y: scroll;
 
   @media only screen and (min-width: 960px) {
     grid-template-columns: repeat(3, 1fr);
