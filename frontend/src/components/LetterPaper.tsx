@@ -8,6 +8,7 @@ import RollingpaperMessage from "@components/RollingpaperMessage";
 import { BiPencil } from "react-icons/bi";
 
 interface Message {
+  id: number;
   content: string;
   from: string;
   authorId: number;
@@ -81,6 +82,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
       <StyledMessageList>
         {messageList.map((message) => (
           <RollingpaperMessage
+            key={message.id}
             content={message.content}
             author={message.from}
           />
