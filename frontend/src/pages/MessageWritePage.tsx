@@ -37,10 +37,10 @@ const MessageWritePage = () => {
         content: contentRef.current.value,
         authorId: authorId,
       })
-      .then(function (response) {
+      .then((response) => {
         navigate(`/rollingpaper/${rollingpaperId}`, { replace: true });
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
   };

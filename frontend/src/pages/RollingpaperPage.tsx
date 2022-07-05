@@ -34,10 +34,10 @@ const RollingpaperPage = () => {
   useEffect(() => {
     axios
       .get(`/api/v1/teams/${teamId}/rollingpapers/${rollingpaperId}`)
-      .then(function (response) {
+      .then((response) => {
         setRollingpaper(response.data);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
   }, []);

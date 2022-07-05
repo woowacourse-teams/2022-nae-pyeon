@@ -62,11 +62,11 @@ const RollingpaperCreationPage = () => {
         title: rollingpaperTitle,
         memberId: member.id,
       })
-      .then(function (response) {
+      .then((response) => {
         console.log(response);
         // 생성된 롤링페이퍼 페이지 또는 모임 목록으로 이동
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
   };
