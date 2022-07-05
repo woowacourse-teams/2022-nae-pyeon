@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "@emotion/styled";
 
+const TextArea = React.forwardRef<HTMLTextAreaElement>((props, ref) => {
+  return <StyledTextArea ref={ref} {...props} />;
+});
+
 const StyledTextArea = styled.textarea`
   width: 300px;
   height: 300px;
@@ -22,9 +26,5 @@ const StyledTextArea = styled.textarea`
     height: 400px;
   }
 `;
-
-const TextArea = React.forwardRef<HTMLTextAreaElement>((props, ref) => {
-  return <StyledTextArea ref={ref} {...props} />;
-});
 
 export default TextArea;

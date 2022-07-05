@@ -19,6 +19,37 @@ interface LetterPaperProp {
   messageList: Message[];
 }
 
+const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
+  const navigate = useNavigate();
+
+  const handleMessageWriteButtonClick: React.MouseEventHandler<
+    HTMLButtonElement
+  > = (e) => {
+    e.preventDefault();
+    navigate(`message/new`);
+  };
+
+  return (
+    <StyledLetterPaper>
+      <StyledLetterPaperTop>
+        <StyledTo>To. {to}</StyledTo>
+        <IconButton size="small" onClick={handleMessageWriteButtonClick}>
+          <BiPencil />
+        </IconButton>
+      </StyledLetterPaperTop>
+      <StyledMessageList>
+        {messageList.map((message) => (
+          <RollingpaperMessage
+            key={message.id}
+            content={message.content}
+            author={message.from}
+          />
+        ))}
+      </StyledMessageList>
+    </StyledLetterPaper>
+  );
+};
+
 const StyledLetterPaper = styled.div`
   width: 100%;
   height: 100%;
@@ -60,36 +91,5 @@ const StyledMessageList = styled.div`
     grid-template-columns: repeat(4, 1fr);
   }
 `;
-
-const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
-  const navigate = useNavigate();
-
-  const handleMessageWriteButtonClick: React.MouseEventHandler<
-    HTMLButtonElement
-  > = (e) => {
-    e.preventDefault();
-    navigate(`message/new`);
-  };
-
-  return (
-    <StyledLetterPaper>
-      <StyledLetterPaperTop>
-        <StyledTo>To. {to}</StyledTo>
-        <IconButton size="small" onClick={handleMessageWriteButtonClick}>
-          <BiPencil />
-        </IconButton>
-      </StyledLetterPaperTop>
-      <StyledMessageList>
-        {messageList.map((message) => (
-          <RollingpaperMessage
-            key={message.id}
-            content={message.content}
-            author={message.from}
-          />
-        ))}
-      </StyledMessageList>
-    </StyledLetterPaper>
-  );
-};
 
 export default LetterPaper;

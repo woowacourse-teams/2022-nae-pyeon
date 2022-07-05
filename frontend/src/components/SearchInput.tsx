@@ -9,6 +9,48 @@ interface SearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   setValue: (value: string) => void;
 }
 
+const SearchInput = ({
+  labelText,
+  value,
+  setValue,
+  searchKeywordList,
+}: SearchInputProps) => {
+  const [autocompleteList, setAutocompleteList] = useState(searchKeywordList);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+
+    const newAutocompleteList = searchKeywordList.filter((keyword) =>
+      keyword.includes(e.target.value)
+    );
+    setAutocompleteList(newAutocompleteList);
+  };
+
+  return (
+    <StyledLabel>
+      {labelText}
+      <StyledInputContainer>
+        <BiSearch />
+        <input value={value} onChange={handleInputChange} />
+      </StyledInputContainer>
+      {autocompleteList.length > 0 && (
+        <StyledAutocompleteList>
+          {autocompleteList.map((autocompleteListItem) => (
+            <StyledAutocompleteListItem
+              key={autocompleteListItem}
+              onClick={() => {
+                setValue(autocompleteListItem);
+              }}
+            >
+              {autocompleteListItem}
+            </StyledAutocompleteListItem>
+          ))}
+        </StyledAutocompleteList>
+      )}
+    </StyledLabel>
+  );
+};
+
 const StyledLabel = styled.label`
   display: flex;
   flex-direction: column;
@@ -73,47 +115,5 @@ const StyledAutocompleteListItem = styled.li`
 
   cursor: pointer;
 `;
-
-const SearchInput = ({
-  labelText,
-  value,
-  setValue,
-  searchKeywordList,
-}: SearchInputProps) => {
-  const [autocompleteList, setAutocompleteList] = useState(searchKeywordList);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-
-    const newAutocompleteList = searchKeywordList.filter((keyword) =>
-      keyword.includes(e.target.value)
-    );
-    setAutocompleteList(newAutocompleteList);
-  };
-
-  return (
-    <StyledLabel>
-      {labelText}
-      <StyledInputContainer>
-        <BiSearch />
-        <input value={value} onChange={handleInputChange} />
-      </StyledInputContainer>
-      {autocompleteList.length > 0 && (
-        <StyledAutocompleteList>
-          {autocompleteList.map((autocompleteListItem) => (
-            <StyledAutocompleteListItem
-              key={autocompleteListItem}
-              onClick={() => {
-                setValue(autocompleteListItem);
-              }}
-            >
-              {autocompleteListItem}
-            </StyledAutocompleteListItem>
-          ))}
-        </StyledAutocompleteList>
-      )}
-    </StyledLabel>
-  );
-};
 
 export default SearchInput;

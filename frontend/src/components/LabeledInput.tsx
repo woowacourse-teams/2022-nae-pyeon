@@ -7,6 +7,20 @@ interface LabeledInputProps
   setValue: (value: string) => void;
 }
 
+const LabeledInput = ({ labelText, value, setValue }: LabeledInputProps) => {
+  return (
+    <StyledLabel>
+      {labelText}
+      <input
+        value={value}
+        onChange={(e) => {
+          setValue(e.target.value);
+        }}
+      />
+    </StyledLabel>
+  );
+};
+
 const StyledLabel = styled.label`
   display: flex;
   flex-direction: column;
@@ -30,19 +44,5 @@ const StyledLabel = styled.label`
     }
   }
 `;
-
-const LabeledInput = ({ labelText, value, setValue }: LabeledInputProps) => {
-  return (
-    <StyledLabel>
-      {labelText}
-      <input
-        value={value}
-        onChange={(e) => {
-          setValue(e.target.value);
-        }}
-      />
-    </StyledLabel>
-  );
-};
 
 export default LabeledInput;
