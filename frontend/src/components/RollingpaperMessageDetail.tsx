@@ -8,11 +8,15 @@ import IconButton from "./IconButton";
 interface RollingpaperMessageDetailProps {
   content: string;
   author: string;
+  handleDeleteButtonClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  handleEditButtonClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const RollingpaperMessageDetail = ({
   content,
   author,
+  handleDeleteButtonClick,
+  handleEditButtonClick,
 }: RollingpaperMessageDetailProps) => {
   return (
     <StyledMessage>
@@ -20,10 +24,10 @@ const RollingpaperMessageDetail = ({
 
       <StyledBottom>
         <StyledMenu>
-          <IconButton size="small">
+          <IconButton size="small" onClick={handleEditButtonClick}>
             <BiPencil />
           </IconButton>
-          <IconButton size="small">
+          <IconButton size="small" onClick={handleDeleteButtonClick}>
             <BiTrash />
           </IconButton>
         </StyledMenu>
