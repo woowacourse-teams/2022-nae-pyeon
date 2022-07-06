@@ -1,6 +1,9 @@
 package com.woowacourse.naepyeon.service.dto;
 
-import com.woowacourse.naepyeon.domain.Member;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 public class SignUpRequest {
 

@@ -1,7 +1,6 @@
 package com.woowacourse.naepyeon.repository;
 
 import com.woowacourse.naepyeon.domain.Team;
-
 import java.util.Optional;
 
 public interface TeamRepository {

@@ -1,6 +1,9 @@
 package com.woowacourse.naepyeon.controller;
 
-import com.woowacourse.naepyeon.TestDataInit;
+import static com.woowacourse.naepyeon.TestDataInit.dummyMember2;
+import static com.woowacourse.naepyeon.TestDataInit.dummyTeam;
+
+import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.RollingpaperCreateRequest;
 import com.woowacourse.naepyeon.controller.dto.RollingpaperUpdateRequest;
 import com.woowacourse.naepyeon.service.RollingpaperService;
@@ -18,8 +21,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import static com.woowacourse.naepyeon.TestDataInit.*;
 
 @RequiredArgsConstructor
 @RestController
