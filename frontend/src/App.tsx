@@ -6,6 +6,7 @@ import { Routes, Route } from "react-router-dom";
 import RollingpaperPage from "@/pages/RollingpaperPage";
 import RollingpaperCreationPage from "@/pages/RollingpaperCreationPage";
 import MessageWritePage from "@/pages/MessageWritePage";
+import MessageEditPage from "@/pages/MessageEditPage";
 
 import reset from "./styles/reset";
 
@@ -45,6 +46,10 @@ const App = () => {
           <Route
             path="rollingpaper/:rollingpaperId/message/new"
             element={<MessageWritePage />}
+          />
+          <Route
+            path="rollingpaper/:rollingpaperId/message/:messageId/edit"
+            element={<MessageEditPage />}
           />
         </Routes>
       </StyledPageContainer>
