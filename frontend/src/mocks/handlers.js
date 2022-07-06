@@ -11,7 +11,7 @@ export const handlers = [
       const { teamId, rollingpaperId } = req.params;
 
       const result = rollingpapersDummy.find(
-        (rollingpaper) => rollingpaper.id === rollingpaperId
+        (rollingpaper) => rollingpaper.id === +rollingpaperId
       );
 
       return res(ctx.json(result));
@@ -23,21 +23,25 @@ export const handlers = [
     "/api/v1/rollingpapers/:rollingpaperId/messages",
     (req, res, ctx) => {
       const { rollingpaperId } = req.params;
-      const { content, authorId } = JSON.parse(req.body);
+      const { content, authorId } = req.body;
 
-      const result = rollingpapersDummy.find(
-        (rollingpaper) => rollingpaper.id === rollingpaperId
-      );
+      const result = {
+        id: 1,
+      };
 
-      return res(ctx.status(201));
+      return res(ctx.status(201), ctx.json(result));
     }
   ),
 
   // 개인 롤링페이퍼 생성
   rest.post("/api/v1/teams/:teamId/rollingpapers", (req, res, ctx) => {
     const { teamId } = req.params;
-    const { title, memberId } = JSON.parse(req.body);
+    const { title, memberId } = req.body;
 
-    return res(ctx.status(201));
+    const result = {
+      id: 2,
+    };
+
+    return res(ctx.status(201), ctx.json(result));
   }),
 ];

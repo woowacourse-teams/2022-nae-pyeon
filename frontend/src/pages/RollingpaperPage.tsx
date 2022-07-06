@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "@emotion/styled";
+import axios from "axios";
 
 import Header from "@/components/Header";
 import IconButton from "@/components/IconButton";
@@ -8,90 +10,67 @@ import LetterPaper from "@/components/LetterPaper";
 
 import { BiChevronLeft } from "react-icons/bi";
 
-const StyledPageContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: white;
-`;
+type Message = {
+  id: number;
+  content: string;
+  from: string;
+  authorId: number;
+};
 
-const StyledMain = styled.main`
-  padding: 10px 25px;
-`;
-
-const dummyMessageList = [
-  {
-    content:
-      "소피아 생일 축하해 아아아아아아아아소피아 생일 축하해 아아아아아아아아소피아 생일 축하해 아아아아아아아아소피아 생일 축하해 아아아아아아아아소피아 생일 축하해 아아아아아아아아소피아 생일 축하해 아아아아아아아아소피아 생일 축하해 아아아아아아아아소피아 생일 축하해 아아아아아아아아소피아 생일 축하해 아아아아아아아아",
-    from: "도리",
-    authorId: 123,
-  },
-  {
-    content:
-      "소피아 생일 축하해 아아아아아아아아소피아 생일 축하해 아아아아아아아아소피아 생일 축하해 아아아아아아아아소피아 생일 축하해 아아아아아아아아소피아 생일 축하해 아아아아아아아아소피아 생일 축하해 아아아아아아아아소피아 생일 축하해 아아아아아아아아소피아 생일 축하해 아아아아아아아아소피아 생일 축하해 아아아아아아아아",
-    from: "도리",
-    authorId: 123,
-  },
-  {
-    content: "소피아 생일 축하해 아아아아아아아아",
-    from: "도리",
-    authorId: 123,
-  },
-  {
-    content: "소피아 생일 축하해 아아아아아아아아",
-    from: "도리",
-    authorId: 123,
-  },
-  {
-    content: "소피아 생일 축하해 아아아아아아아아",
-    from: "도리",
-    authorId: 123,
-  },
-  {
-    content: "소피아 생일 축하해 아아아아아아아아",
-    from: "도리",
-    authorId: 123,
-  },
-  {
-    content: "소피아 생일 축하해 아아아아아아아아",
-    from: "도리",
-    authorId: 123,
-  },
-  {
-    content: "소피아 생일 축하해 아아아아아아아아",
-    from: "도리",
-    authorId: 123,
-  },
-  {
-    content: "소피아 생일 축하해 아아아아아아아아",
-    from: "도리",
-    authorId: 123,
-  },
-  {
-    content: "소피아 생일 축하해 아아아아아아아아",
-    from: "도리",
-    authorId: 123,
-  },
-  {
-    content: "소피아 생일 축하해 아아아아아아아아",
-    from: "도리",
-    authorId: 123,
-  },
-];
+interface RollingpaperType {
+  id: number;
+  title: string;
+  to: string;
+  messages: Message[];
+}
 
 const RollingpaperPage = () => {
+  const { rollingpaperId } = useParams();
+  const teamId = 123;
+  const [rollingpaper, setRollingpaper] = useState<RollingpaperType | null>(
+    null
+  );
+
+  useEffect(() => {
+    axios
+      .get(`/api/v1/teams/${teamId}/rollingpapers/${rollingpaperId}`)
+      .then((response) => {
+        setRollingpaper(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  if (rollingpaper === null) {
+    return (
+      <>
+        <Header>
+          <IconButton>
+            <BiChevronLeft />
+          </IconButton>
+        </Header>
+      </>
+    );
+  }
+
   return (
-    <StyledPageContainer>
+    <>
       <Header>
         <IconButton>
           <BiChevronLeft />
         </IconButton>
-        <PageTitle>소피아 생일 축하해~</PageTitle>
+        <PageTitle>{rollingpaper.title}</PageTitle>
       </Header>
       <StyledMain>
-        <LetterPaper to="소피아" messageList={dummyMessageList} />
+        <LetterPaper to={rollingpaper.to} messageList={rollingpaper.messages} />
       </StyledMain>
-    </StyledPageContainer>
+    </>
   );
 };
+
+const StyledMain = styled.main`
+  padding: 10px 25px;
+`;
 
 export default RollingpaperPage;

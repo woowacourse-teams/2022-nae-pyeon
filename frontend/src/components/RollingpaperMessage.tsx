@@ -5,6 +5,16 @@ interface RollingpaperMessageProp {
   content: string;
   author: string;
 }
+
+const RollingpaperMessage = ({ content, author }: RollingpaperMessageProp) => {
+  return (
+    <StyledMessage>
+      <StyledMessageContent>{content}</StyledMessageContent>
+      <StyledMessageAuthor>{author}</StyledMessageAuthor>
+    </StyledMessage>
+  );
+};
+
 const StyledMessage = styled.div`
   display: flex;
   flex-direction: column;
@@ -49,14 +59,5 @@ const StyledMessageAuthor = styled.div`
   font-size: 12px;
   color: #8d8d8d;
 `;
-
-const RollingpaperMessage = ({ content, author }: RollingpaperMessageProp) => {
-  return (
-    <StyledMessage>
-      <StyledMessageContent>{content}</StyledMessageContent>
-      <StyledMessageAuthor>{author}</StyledMessageAuthor>
-    </StyledMessage>
-  );
-};
 
 export default RollingpaperMessage;

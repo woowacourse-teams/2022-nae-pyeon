@@ -4,7 +4,22 @@ import styled from "@emotion/styled";
 interface LabeledInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   labelText: string;
+  setValue: (value: string) => void;
 }
+
+const LabeledInput = ({ labelText, value, setValue }: LabeledInputProps) => {
+  return (
+    <StyledLabel>
+      {labelText}
+      <input
+        value={value}
+        onChange={(e) => {
+          setValue(e.target.value);
+        }}
+      />
+    </StyledLabel>
+  );
+};
 
 const StyledLabel = styled.label`
   display: flex;
@@ -29,14 +44,5 @@ const StyledLabel = styled.label`
     }
   }
 `;
-
-const LabeledInput = ({ labelText, value, onChange }: LabeledInputProps) => {
-  return (
-    <StyledLabel>
-      {labelText}
-      <input value={value} onChange={onChange} />
-    </StyledLabel>
-  );
-};
 
 export default LabeledInput;
