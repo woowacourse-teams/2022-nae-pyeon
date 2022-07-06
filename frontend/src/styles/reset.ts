@@ -134,6 +134,10 @@ const reset = css`
       background-color: transparent;
       cursor: pointer;
     }
+    a {
+      text-decoration: none;
+      color: black;
+    }
   }
 `;
 

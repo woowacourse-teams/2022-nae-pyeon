@@ -1,18 +1,12 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import IconButton from "@components/IconButton";
 import RollingpaperMessage from "@components/RollingpaperMessage";
+import { Message } from "@/types";
 
 import { BiPencil } from "react-icons/bi";
-
-interface Message {
-  id: number;
-  content: string;
-  from: string;
-  authorId: number;
-}
 
 interface LetterPaperProp {
   to: string;
@@ -39,11 +33,13 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
       </StyledLetterPaperTop>
       <StyledMessageList>
         {messageList.map((message) => (
-          <RollingpaperMessage
-            key={message.id}
-            content={message.content}
-            author={message.from}
-          />
+          <Link to={`message/${message.id}`}>
+            <RollingpaperMessage
+              key={message.id}
+              content={message.content}
+              author={message.from}
+            />
+          </Link>
         ))}
       </StyledMessageList>
     </StyledLetterPaper>
