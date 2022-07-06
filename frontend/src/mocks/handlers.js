@@ -61,4 +61,15 @@ export const handlers = [
       return res(ctx.status(200), ctx.json(result));
     }
   ),
+
+  // 메시지 수정
+  rest.put(
+    "/api/v1/rollingpapers/:rollingpaperId/messages/:messageId",
+    (req, res, ctx) => {
+      const { rollingpaperId, messageId } = req.params;
+      const { content } = req.body;
+
+      return res(ctx.status(204));
+    }
+  ),
 ];
