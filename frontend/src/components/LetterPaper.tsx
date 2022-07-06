@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import IconButton from "@components/IconButton";
 import RollingpaperMessage from "@components/RollingpaperMessage";
@@ -33,11 +33,13 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
       </StyledLetterPaperTop>
       <StyledMessageList>
         {messageList.map((message) => (
-          <RollingpaperMessage
-            key={message.id}
-            content={message.content}
-            author={message.from}
-          />
+          <Link to={`message/${message.id}`}>
+            <RollingpaperMessage
+              key={message.id}
+              content={message.content}
+              author={message.from}
+            />
+          </Link>
         ))}
       </StyledMessageList>
     </StyledLetterPaper>
