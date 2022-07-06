@@ -72,4 +72,15 @@ export const handlers = [
       return res(ctx.status(204));
     }
   ),
+
+  // 메시지 삭제
+  rest.delete(
+    "/api/v1/rollingpapers/:rollingpaperId/messages/:messageId",
+    (req, res, ctx) => {
+      const { rollingpaperId, messageId } = req.params;
+      const { content } = req.body;
+
+      return res(ctx.status(204));
+    }
+  ),
 ];
