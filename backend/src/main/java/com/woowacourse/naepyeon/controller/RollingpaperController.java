@@ -29,14 +29,15 @@ public class RollingpaperController {
     private final RollingpaperService rollingpaperService;
 
     @PostMapping
-    public ResponseEntity<Void> createRollingpaper(
+    public ResponseEntity<CreateResponse> createRollingpaper(
             @PathVariable final Long teamId,
             @RequestBody @Valid final RollingpaperCreateRequest rollingpaperCreateRequest) {
 //        final Long rollingpaperId = rollingpaperService.createRollingpaper(rollingpaperCreateRequest.getTitle(), teamId,
 //                rollingpaperCreateRequest.getMemberId());
 //        return ResponseEntity.created(URI.create("/api/v1/teams/" + teamId + "/rollingpapers/" + rollingpaperId))
 //                .build();
-        final Long rollingpaperId = rollingpaperService.createRollingpaper(rollingpaperCreateRequest.getTitle(), dummyTeam.getId(),
+        final Long rollingpaperId = rollingpaperService.createRollingpaper(rollingpaperCreateRequest.getTitle(),
+                dummyTeam.getId(),
                 dummyMember2.getId());
         return ResponseEntity.created(URI.create("/api/v1/teams/" + dummyTeam.getId() + "/rollingpapers/" + rollingpaperId))
                 .build();

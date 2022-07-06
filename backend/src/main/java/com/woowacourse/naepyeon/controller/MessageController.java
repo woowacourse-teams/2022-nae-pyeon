@@ -1,6 +1,8 @@
 package com.woowacourse.naepyeon.controller;
 
-import com.woowacourse.naepyeon.TestDataInit;
+import static com.woowacourse.naepyeon.TestDataInit.dummyMember1;
+
+import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageUpdateContentRequest;
 import com.woowacourse.naepyeon.service.MessageService;
@@ -18,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.woowacourse.naepyeon.TestDataInit.*;
-
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/rollingpapers/{rollingpaperId}/messages")
@@ -28,15 +28,15 @@ public class MessageController {
     private final MessageService messageService;
 
     @PostMapping
-    public ResponseEntity<Void> createMessage(@RequestBody @Valid final MessageRequest messageRequest,
-                                              @PathVariable final Long rollingpaperId) {
+    public ResponseEntity<CreateResponse> createMessage(@RequestBody @Valid final MessageRequest messageRequest,
+                                                        @PathVariable final Long rollingpaperId) {
 //        final Long messageId = messageService.saveMessage(messageRequest.getContent(), messageRequest.getAuthorId(),
 //                rollingpaperId);
         final Long messageId = messageService.saveMessage(messageRequest.getContent(), dummyMember1.getId(),
                 rollingpaperId);
         return ResponseEntity.created(
                 URI.create("/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId)
-        ).build();
+        ).body(new CreateResponse(messageId));
     }
 
     @GetMapping("/{messageId}")
