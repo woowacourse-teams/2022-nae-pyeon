@@ -1,16 +1,17 @@
-package com.woowacourse.naepyeon.controller.dto;
+package com.woowacourse.naepyeon.service.dto;
 
-import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Getter
-public class MemberUpdateRequest {
+public class MemberResponseDto {
 
-    @NotBlank(message = "이름을 입력해주세요.")
+    private Long id;
     private String username;
+    private String email;
+    private String password;
 }

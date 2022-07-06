@@ -40,8 +40,9 @@ public class RollingpaperController {
         final Long rollingpaperId = rollingpaperService.createRollingpaper(rollingpaperCreateRequest.getTitle(),
                 dummyTeam.getId(),
                 dummyMember2.getId());
-        return ResponseEntity.created(URI.create("/api/v1/teams/" + dummyTeam.getId() + "/rollingpapers/" + rollingpaperId))
-                .build();
+        return ResponseEntity.created(
+                        URI.create("/api/v1/teams/" + dummyTeam.getId() + "/rollingpapers/" + rollingpaperId))
+                .body(new CreateResponse(rollingpaperId));
     }
 
     @GetMapping("/{rollingpaperId}")

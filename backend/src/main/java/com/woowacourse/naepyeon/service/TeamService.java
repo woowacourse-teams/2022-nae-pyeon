@@ -6,7 +6,7 @@ import com.woowacourse.naepyeon.domain.TeamMember;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.TeamMemberRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
-import com.woowacourse.naepyeon.service.dto.TeamResponse;
+import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,21 +36,24 @@ public class TeamService {
         return teamMemberRepository.save(teamMember);
     }
 
-    public TeamResponse findById(final Long teamId) {
+    public TeamResponseDto findById(final Long teamId) {
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(IllegalArgumentException::new);
-        return new TeamResponse(team);
+        return new TeamResponseDto(
+                teamId,
+                team.getName()
+        );
     }
 
     @Transactional
-    public void updateName(Long teamId, String name) {
+    public void updateName(final Long teamId, final String name) {
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(IllegalArgumentException::new);
         team.changeName(name);
     }
 
     @Transactional
-    public void delete(Long teamId) {
+    public void delete(final Long teamId) {
         teamRepository.delete(teamId);
     }
 }
