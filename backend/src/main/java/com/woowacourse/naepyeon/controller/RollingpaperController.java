@@ -27,7 +27,6 @@ import static com.woowacourse.naepyeon.TestDataInit.*;
 public class RollingpaperController {
 
     private final RollingpaperService rollingpaperService;
-    //
 
     @PostMapping
     public ResponseEntity<Void> createRollingpaper(
