@@ -4,15 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 import IconButton from "@components/IconButton";
 import RollingpaperMessage from "@components/RollingpaperMessage";
+import { Message } from "@/types";
 
 import { BiPencil } from "react-icons/bi";
-
-interface Message {
-  id: number;
-  content: string;
-  from: string;
-  authorId: number;
-}
 
 interface LetterPaperProp {
   to: string;
