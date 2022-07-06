@@ -1,20 +1,16 @@
 package com.woowacourse.naepyeon.service;
 
-import com.woowacourse.naepyeon.service.dto.MemberResponse;
-import com.woowacourse.naepyeon.service.dto.SignUpRequest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
+import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
 class MemberServiceTest {
 
@@ -23,13 +19,12 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("회원을 id값으로 찾는다.")
-    public void findById() {
+    void findById() {
         // given
-        SignUpRequest member = new SignUpRequest("seungpang", "email@email.com", "password123!A");
-        Long memberId = memberService.save(member);
+        final Long memberId = memberService.save("seungpang", "email@email.com", "password123!A");
 
         // when
-        MemberResponse findMember = memberService.findById(memberId);
+        final MemberResponseDto findMember = memberService.findById(memberId);
 
         // then
         assertThat(findMember)
@@ -39,10 +34,9 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("회원의 유저네임을 수정한다.")
-    public void update() {
+    void update() {
         // given
-        SignUpRequest member = new SignUpRequest("seungpang", "email@email.com", "password123!A");
-        Long memberId = memberService.save(member);
+        final Long memberId = memberService.save("seungpang", "email@email.com", "password123!A");
 
         // when
         memberService.updateUsername(memberId, "zero");
@@ -55,10 +49,9 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("회원을 id값을 통해 제거한다.")
-    public void delete() {
+    void delete() {
         // given
-        SignUpRequest member = new SignUpRequest("seungpang", "email@email.com", "password123!A");
-        Long memberId = memberService.save(member);
+        final Long memberId = memberService.save("seungpang", "email@email.com", "password123!A");
 
         // when
         memberService.delete(memberId);
