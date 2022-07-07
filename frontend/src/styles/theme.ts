@@ -1,0 +1,43 @@
+export const colors = {
+  WHITE: "#FFFFFF",
+  BLACK: "#000000",
+
+  GRAY_100: "#F7F7F7",
+  GRAY_200: "#EFEFEF",
+  GRAY_300: "#DFDFDF",
+  GRAY_400: "#C1C1C1",
+  GRAY_500: "#A5A5A5",
+  GRAY_600: "#6F6F6F",
+  GRAY_700: "#3D3D3D",
+  GRAY_800: "#242424",
+
+  LIGHT_GREEN_100: "#DBFFBE",
+  LIGHT_GREEN_200: "#C5FF98",
+  LIGHT_GREEN_300: "#A4F068",
+
+  RED_100: "#FF8181",
+  RED_200: "#FF8181",
+  RED_300: "#EF6464",
+
+  YELLOW_100: "#FFF8BD",
+  YELLOW_200: "#FFF598",
+  YELLOW_300: "#FFF174",
+
+  SKY_BLUE_100: "#BFE8FF",
+  SKY_BLUE_200: "#98DAFF",
+  SKY_BLUE_300: "#6CCAFF",
+
+  PURPLE_100: "#B2BAFF",
+  PURPLE_200: "#98A2FF",
+  PURPLE_300: "#7C88F8",
+
+  PINK_100: "#FFB9DF",
+  PINK_200: "#FF98D0",
+  PINK_300: "#F884C2",
+};
+
+const theme = {
+  colors,
+};
+
+export default theme;
