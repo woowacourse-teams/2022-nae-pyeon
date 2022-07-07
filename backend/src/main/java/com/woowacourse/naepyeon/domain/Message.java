@@ -30,7 +30,7 @@ public class Message {
     @JoinColumn(name = "member_id")
     private Member author;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rollingpaper_id")
     private Rollingpaper rollingpaper;
 
