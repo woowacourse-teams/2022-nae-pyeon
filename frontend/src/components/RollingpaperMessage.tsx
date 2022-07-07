@@ -25,7 +25,7 @@ const StyledMessage = styled.div`
   height: 130px;
   padding: 20px 15px 10px;
 
-  background-color: #c5ff98;
+  background-color: ${({ theme }) => theme.colors.LIGHT_GREEN_200};
 
   @media only screen and (min-width: 600px) {
     width: 180px;
@@ -58,7 +58,7 @@ const StyledMessageAuthor = styled.div`
   align-self: flex-end;
 
   font-size: 12px;
-  color: #8d8d8d;
+  color: ${({ theme }) => theme.colors.GRAY_700};
 `;
 
 export default RollingpaperMessage;

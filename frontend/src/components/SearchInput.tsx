@@ -57,7 +57,7 @@ const StyledLabel = styled.label`
   width: 100%;
 
   font-size: 12px;
-  color: #595959;
+  color: ${({ theme }) => theme.colors.GRAY_600};
 `;
 
 const StyledInputContainer = styled.div`
@@ -69,7 +69,7 @@ const StyledInputContainer = styled.div`
   margin-top: 8px;
   gap: 10px;
 
-  background-color: #f7f7f7;
+  background-color: ${({ theme }) => theme.colors.GRAY_100};
   border-radius: 8px;
 
   svg {
@@ -93,8 +93,9 @@ const StyledAutocompleteList = styled.ul`
   max-height: 100px;
   overflow-y: scroll;
   margin-top: 5px;
-  background-color: white;
-  border: 1px solid #efefef;
+  background-color: ${({ theme }) => theme.colors.WHITE};
+  color: ${({ theme }) => theme.colors.GRAY_800};
+  border: 1px solid ${({ theme }) => theme.colors.GRAY_200};
   border-radius: 8px;
 
   ::-webkit-scrollbar {
@@ -105,7 +106,7 @@ const StyledAutocompleteList = styled.ul`
 const StyledAutocompleteListItem = styled.li`
   height: 40px;
   padding: 10px 20px;
-  border-bottom: 1px solid #efefef;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.GRAY_200};
 
   font-size: 16px;
 

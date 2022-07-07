@@ -50,7 +50,7 @@ const StyledLetterPaper = styled.div`
   height: 100%;
   padding: 20px;
 
-  background: #f7f7f7;
+  background: ${({ theme }) => theme.colors.GRAY_100};
   border-radius: 8px;
 `;
 
