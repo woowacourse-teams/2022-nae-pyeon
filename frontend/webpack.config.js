@@ -27,6 +27,10 @@ module.exports = {
         test: /\.tsx?$/,
         use: ["babel-loader", "ts-loader"],
       },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: "asset/resource",
+      },
     ],
   },
 

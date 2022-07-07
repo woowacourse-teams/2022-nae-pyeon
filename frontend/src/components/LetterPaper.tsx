@@ -33,9 +33,8 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
       </StyledLetterPaperTop>
       <StyledMessageList>
         {messageList.map((message) => (
-          <Link to={`message/${message.id}`}>
+          <Link key={message.id} to={`message/${message.id}`}>
             <RollingpaperMessage
-              key={message.id}
               content={message.content}
               author={message.from}
             />
@@ -51,7 +50,7 @@ const StyledLetterPaper = styled.div`
   height: 100%;
   padding: 20px;
 
-  background: #f7f7f7;
+  background: ${({ theme }) => theme.colors.GRAY_100};
   border-radius: 8px;
 `;
 

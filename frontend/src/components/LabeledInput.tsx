@@ -27,7 +27,7 @@ const StyledLabel = styled.label`
   width: 100%;
 
   font-size: 12px;
-  color: #595959;
+  color: ${({ theme }) => theme.colors.GRAY_600};
 
   input {
     height: 48px;
@@ -36,7 +36,7 @@ const StyledLabel = styled.label`
 
     border: none;
     border-radius: 8px;
-    background-color: #f7f7f7;
+    background-color: ${({ theme }) => theme.colors.GRAY_100};
     font-size: 16px;
 
     &:focus {

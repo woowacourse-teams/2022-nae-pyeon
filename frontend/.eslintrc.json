@@ -23,6 +23,13 @@
     "strict": ["error", "global"],
     "curly": "warn",
 
-    "import/no-unresolved": "off"
+    "import/no-unresolved": "off",
+
+    "@typescript-eslint/no-empty-interface": [
+      "error",
+      {
+        "allowSingleExtends": true
+      }
+    ]
   }
 }

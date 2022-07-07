@@ -17,7 +17,7 @@ const StyledTextArea = styled.textarea`
 
   border: none;
   border-radius: 8px;
-  background-color: #f7f7f7;
+  background-color: ${({ theme }) => theme.colors.GRAY_100};
 
   resize: none;
 

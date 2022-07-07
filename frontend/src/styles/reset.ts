@@ -3,6 +3,7 @@ import { css } from "@emotion/react";
 const reset = css`
   * {
     box-sizing: border-box;
+    font-family: inherit;
     html,
     body,
     div,
@@ -88,7 +89,6 @@ const reset = css`
       padding: 0;
       border: 0;
       font-size: 100%;
-      font: inherit;
       vertical-align: baseline;
     }
     /* HTML5 display-role reset for older browsers */

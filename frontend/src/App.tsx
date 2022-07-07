@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { Global } from "@emotion/react";
+import { Global, ThemeProvider } from "@emotion/react";
 import { Routes, Route } from "react-router-dom";
 
 import RollingpaperPage from "@/pages/RollingpaperPage";
@@ -10,12 +10,14 @@ import MessageEditPage from "@/pages/MessageEditPage";
 import MessageDetailPage from "@/pages/MessageDetailPage";
 
 import reset from "./styles/reset";
+import font from "./styles/font";
+import theme from "./styles/theme";
 
 const StyledPageContainer = styled.div`
   min-height: 100vh;
   margin: 0 auto;
 
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.WHITE};
 
   @media only screen and (min-width: 600px) {
     width: 500px;
@@ -32,8 +34,9 @@ const StyledPageContainer = styled.div`
 
 const App = () => {
   return (
-    <div>
+    <ThemeProvider theme={theme}>
       <Global styles={reset} />
+      <Global styles={font} />
       <StyledPageContainer>
         <Routes>
           <Route
@@ -58,7 +61,7 @@ const App = () => {
           />
         </Routes>
       </StyledPageContainer>
-    </div>
+    </ThemeProvider>
   );
 };
 
