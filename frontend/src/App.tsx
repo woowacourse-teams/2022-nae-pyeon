@@ -10,6 +10,7 @@ import MessageEditPage from "@/pages/MessageEditPage";
 import MessageDetailPage from "@/pages/MessageDetailPage";
 
 import reset from "./styles/reset";
+import font from "./styles/font";
 
 const StyledPageContainer = styled.div`
   min-height: 100vh;
@@ -34,6 +35,7 @@ const App = () => {
   return (
     <div>
       <Global styles={reset} />
+      <Global styles={font} />
       <StyledPageContainer>
         <Routes>
           <Route
