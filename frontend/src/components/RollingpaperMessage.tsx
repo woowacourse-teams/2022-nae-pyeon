@@ -19,6 +19,7 @@ const StyledMessage = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  white-space: pre-line;
 
   width: 130px;
   height: 130px;

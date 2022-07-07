@@ -38,28 +38,13 @@ const RollingpaperMessageDetail = ({
   );
 };
 
-const StyledContent = styled.div`
-  height: 90%;
-`;
-
-const StyledMenu = styled.div`
-  display: flex;
-  gap: 10px;
-`;
-
-const StyledAuthor = styled.div``;
-
-const StyledBottom = styled.div`
-  height: 10%;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
 const StyledMessage = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   width: 300px;
-  height: 300px;
+  min-height: 300px;
 
   padding: 20px;
 
@@ -69,8 +54,30 @@ const StyledMessage = styled.div`
 
   @media only screen and (min-width: 960px) {
     width: 600px;
-    height: 400px;
+    min-height: 400px;
   }
 `;
+
+const StyledContent = styled.div`
+  height: 90%;
+
+  white-space: pre-wrap;
+`;
+
+const StyledBottom = styled.div`
+  height: 10%;
+  margin-top: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const StyledMenu = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const StyledAuthor = styled.div``;
 
 export default RollingpaperMessageDetail;
