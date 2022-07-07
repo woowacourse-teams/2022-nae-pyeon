@@ -25,7 +25,7 @@ const StyledMessage = styled.div`
   height: 130px;
   padding: 20px 15px 10px;
 
-  background-color: ${({ theme }) => theme.colors.LIGHT_GREEN_200};
+  background-color: ${({ theme }) => theme.colors.YELLOW_200};
 
   @media only screen and (min-width: 600px) {
     width: 180px;
