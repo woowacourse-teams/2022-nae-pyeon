@@ -51,14 +51,14 @@ export const handlers = [
     (req, res, ctx) => {
       const { rollingpaperId, messageId } = req.params;
 
-      const result = {
-        id: 1,
-        content: "생일축하해",
-        from: "도리",
-        authorId: 1,
-      };
+      const rollingpaper = rollingpapersDummy.find(
+        (rollingpaper) => rollingpaper.id === +rollingpaperId
+      );
+      const message = rollingpaper.messages.find(
+        (message) => message.id === +messageId
+      );
 
-      return res(ctx.status(200), ctx.json(result));
+      return res(ctx.status(200), ctx.json(message));
     }
   ),
 
