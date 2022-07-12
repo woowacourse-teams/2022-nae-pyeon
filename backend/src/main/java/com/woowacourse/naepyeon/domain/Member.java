@@ -1,0 +1,40 @@
+package com.woowacourse.naepyeon.domain;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Member {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id")
+    private Long id;
+
+    @Column(length = 20, nullable = false)
+    private String username;
+
+    @Column(length = 255, nullable = false, unique = true)
+    private String email;
+
+    @Column(length = 255, nullable = false)
+    private String password;
+
+    public Member(final String username, final String email, final String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
+    public void changeUsername(final String username) {
+        this.username = username;
+    }
+}
