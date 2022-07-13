@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import axios from "axios";
+import { useMutation } from "react-query";
 
 import Header from "@/components/Header";
 import IconButton from "@/components/IconButton";
@@ -9,6 +10,8 @@ import PageTitle from "@/components/PageTitle";
 import LabeledInput from "@/components/LabeledInput";
 import SearchInput from "@/components/SearchInput";
 import Button from "@/components/Button";
+
+import { Rollingpaper } from "@/types";
 
 import { BiChevronLeft } from "react-icons/bi";
 
@@ -43,8 +46,30 @@ const RollingpaperCreationPage = () => {
   const navigate = useNavigate();
   const [rollingpaperTitle, setRollingpaperTitle] = useState("");
   const [rollingpaperTo, setRollingpaperTo] = useState("");
-
   const teamId = 123;
+
+  const { mutate: postRollingpaper } = useMutation(
+    ({
+      title,
+      addresseeId,
+    }: Pick<Rollingpaper, "title"> & { addresseeId: number }) => {
+      return axios
+        .post(`/api/v1/teams/${teamId}/rollingpapers`, {
+          title,
+          addresseeId,
+        })
+        .then((response) => response.data);
+    },
+    {
+      onSuccess: (data) => {
+        const { id: newRollingpaperId } = data;
+        navigate(`/rollingpaper/${newRollingpaperId}`, { replace: true });
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    }
+  );
 
   const handleRollingpaperFormSubmit = (
     e: React.FormEvent<HTMLFormElement>
@@ -60,18 +85,7 @@ const RollingpaperCreationPage = () => {
       return;
     }
 
-    axios
-      .post(`/api/v1/teams/${teamId}/rollingpapers`, {
-        title: rollingpaperTitle,
-        memberId: member.id,
-      })
-      .then((response) => {
-        const { id: newRollingpaperId } = response.data;
-        navigate(`/rollingpaper/${newRollingpaperId}`, { replace: true });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    postRollingpaper({ title: rollingpaperTitle, addresseeId: member.id });
   };
 
   return (

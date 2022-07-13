@@ -2,6 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { Global, ThemeProvider } from "@emotion/react";
 import { Routes, Route } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import RollingpaperPage from "@/pages/RollingpaperPage";
 import RollingpaperCreationPage from "@/pages/RollingpaperCreationPage";
@@ -32,36 +33,40 @@ const StyledPageContainer = styled.div`
   }
 `;
 
+const queryClient = new QueryClient();
+
 const App = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <Global styles={reset} />
-      <Global styles={font} />
-      <StyledPageContainer>
-        <Routes>
-          <Route
-            path="rollingpaper/new"
-            element={<RollingpaperCreationPage />}
-          />
-          <Route
-            path="rollingpaper/:rollingpaperId"
-            element={<RollingpaperPage />}
-          />
-          <Route
-            path="rollingpaper/:rollingpaperId/message/new"
-            element={<MessageWritePage />}
-          />
-          <Route
-            path="rollingpaper/:rollingpaperId/message/:messageId"
-            element={<MessageDetailPage />}
-          />
-          <Route
-            path="rollingpaper/:rollingpaperId/message/:messageId/edit"
-            element={<MessageEditPage />}
-          />
-        </Routes>
-      </StyledPageContainer>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <Global styles={reset} />
+        <Global styles={font} />
+        <StyledPageContainer>
+          <Routes>
+            <Route
+              path="rollingpaper/new"
+              element={<RollingpaperCreationPage />}
+            />
+            <Route
+              path="rollingpaper/:rollingpaperId"
+              element={<RollingpaperPage />}
+            />
+            <Route
+              path="rollingpaper/:rollingpaperId/message/new"
+              element={<MessageWritePage />}
+            />
+            <Route
+              path="rollingpaper/:rollingpaperId/message/:messageId"
+              element={<MessageDetailPage />}
+            />
+            <Route
+              path="rollingpaper/:rollingpaperId/message/:messageId/edit"
+              element={<MessageEditPage />}
+            />
+          </Routes>
+        </StyledPageContainer>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 };
 

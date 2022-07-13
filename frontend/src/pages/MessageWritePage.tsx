@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import styled from "@emotion/styled";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
 
 import Header from "@/components/Header";
 import Button from "@/components/Button";
@@ -9,18 +10,39 @@ import IconButton from "@/components/IconButton";
 import TextArea from "@/components/TextArea";
 
 import { BiChevronLeft } from "react-icons/bi";
+import { Message } from "@/types";
 
 const MessageWritePage = () => {
   const { rollingpaperId } = useParams();
   const navigate = useNavigate();
-
   const contentRef = useRef<HTMLTextAreaElement>(null);
-  const authorId = 123;
+
+  const accessToken = "accessToken";
+
+  const { mutate: createMessage } = useMutation(
+    ({ content }: Pick<Message, "content">) => {
+      return axios
+        .post(
+          `/api/v1/rollingpapers/${rollingpaperId}/messages`,
+          {
+            content,
+          },
+          { headers: { Authorization: `Bearer ${accessToken}` } }
+        )
+        .then((response) => response.data);
+    },
+    {
+      onSuccess: () => {
+        navigate(`/rollingpaper/${rollingpaperId}`, { replace: true });
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    }
+  );
 
   const handleMessageFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    console.log(contentRef.current?.value);
 
     if (!contentRef.current) {
       console.error("ERROR :: No contentRef.current");
@@ -32,17 +54,7 @@ const MessageWritePage = () => {
       return;
     }
 
-    axios
-      .post(`/api/v1/rollingpapers/${rollingpaperId}/messages`, {
-        content: contentRef.current.value,
-        authorId: authorId,
-      })
-      .then((response) => {
-        navigate(`/rollingpaper/${rollingpaperId}`, { replace: true });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    createMessage({ content: contentRef.current.value });
   };
 
   const handleBackButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {

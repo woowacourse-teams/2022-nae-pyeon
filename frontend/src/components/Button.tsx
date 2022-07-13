@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 
 type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const Button = ({ type, onClick, children }: ButtonAttributes) => {
+const Button = ({ type = "button", onClick, children }: ButtonAttributes) => {
   return (
     <StyledButton type={type} onClick={onClick}>
       {children}
