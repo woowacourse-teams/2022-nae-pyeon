@@ -50,10 +50,11 @@ const LabeledRadio = ({ labelText, radios }: LabeledRadioProps) => {
 
 const StyledLabel = styled.div`
   font-size: 14px;
-  color: ${({ theme }) => theme.colors.GRAY_800};
+  color: ${({ theme }) => theme.colors.GRAY_600};
 `;
 
 const StyledRadioContainer = styled.div`
+  margin-top: 8px;
   display: flex;
   gap: 8px;
 `;
@@ -68,7 +69,7 @@ const StyledRadio = styled.div<StyledRadioProps>`
   background-color: ${(props) =>
     props.backgroundColor
       ? props.backgroundColor
-      : props.theme.colors.GRAY_300};
+      : props.theme.colors.GRAY_200};
 
   border-radius: 4px;
   border: ${(props) =>
