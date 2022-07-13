@@ -25,8 +25,8 @@ class MessageRepositoryTest {
     private static final String content = "안녕하세요";
 
     private final Team team = new Team("nae-pyeon");
-    private final Member member = new Member("member", "m@hello", "abc@@1234");
-    private final Member author = new Member("author", "au@hello", "abc@@1234");
+    private final Member member = new Member("member", "email1@email.com", "password123");
+    private final Member author = new Member("author", "email2@email.com", "password123");
     private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", team, member);
 
     @Autowired
@@ -85,7 +85,7 @@ class MessageRepositoryTest {
     void update() {
         final Message message = createMessage();
         final Long messageId = messageRepository.save(message);
-        final String newContent = "알고리즘이좋아요";
+        final String newContent = "알고리즘이 좋아요";
 
         messageRepository.update(messageId, newContent);
         final Message updateMessage = messageRepository.findById(messageId)

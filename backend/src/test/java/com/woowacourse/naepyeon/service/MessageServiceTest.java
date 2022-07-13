@@ -24,8 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 class MessageServiceTest {
 
     private final Team team = new Team("nae-pyeon");
-    private final Member member = new Member("member", "m@hello", "abc@@1234");
-    private final Member author = new Member("author", "au@hello", "abc@@1234");
+    private final Member member = new Member("member", "m@hello.com", "abc@@1234");
+    private final Member author = new Member("author", "au@hello.com", "abc@@1234");
     private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", team, member);
 
     @Autowired

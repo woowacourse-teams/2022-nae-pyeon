@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.domain;
 
+import com.woowacourse.naepyeon.exception.ExceedTeamNameLengthException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Team {
 
+    public static final int MAX_TEAMNAME_LENGTH = 20;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "team_id")
@@ -23,10 +26,18 @@ public class Team {
     private String name;
 
     public Team(final String name) {
+        validateTeam(name);
         this.name = name;
     }
 
-    public void changeName(String name) {
+    public void changeName(final String name) {
+        validateTeam(name);
         this.name = name;
+    }
+
+    private void validateTeam(final String name) {
+        if (name.length() > MAX_TEAMNAME_LENGTH) {
+            throw new ExceedTeamNameLengthException(name);
+        }
     }
 }
