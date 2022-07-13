@@ -16,15 +16,19 @@ const MessageWritePage = () => {
   const { rollingpaperId } = useParams();
   const navigate = useNavigate();
   const contentRef = useRef<HTMLTextAreaElement>(null);
-  const authorId = 123;
+
+  const accessToken = "accessToken";
 
   const { mutate: createMessage } = useMutation(
-    ({ content, authorId }: Pick<Message, "content" | "authorId">) => {
+    ({ content }: Pick<Message, "content">) => {
       return axios
-        .post(`/api/v1/rollingpapers/${rollingpaperId}/messages`, {
-          content,
-          authorId,
-        })
+        .post(
+          `/api/v1/rollingpapers/${rollingpaperId}/messages`,
+          {
+            content,
+          },
+          { headers: { Authorization: `Bearer ${accessToken}` } }
+        )
         .then((response) => response.data);
     },
     {
@@ -50,7 +54,7 @@ const MessageWritePage = () => {
       return;
     }
 
-    createMessage({ content: contentRef.current.value, authorId });
+    createMessage({ content: contentRef.current.value });
   };
 
   const handleBackButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {

@@ -23,6 +23,7 @@ export const handlers = [
     "/api/v1/rollingpapers/:rollingpaperId/messages",
     (req, res, ctx) => {
       const { rollingpaperId } = req.params;
+      const { accessToken } = req.headers.headers.authorization;
       const { content, authorId } = req.body;
 
       const result = {
@@ -36,7 +37,7 @@ export const handlers = [
   // 개인 롤링페이퍼 생성
   rest.post("/api/v1/teams/:teamId/rollingpapers", (req, res, ctx) => {
     const { teamId } = req.params;
-    const { title, memberId } = req.body;
+    const { title, addresseeId } = req.body;
 
     const result = {
       id: 2,
