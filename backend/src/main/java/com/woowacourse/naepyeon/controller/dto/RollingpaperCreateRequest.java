@@ -12,9 +12,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class RollingpaperCreateRequest {
 
-    @NotBlank(message = "내용을 입력해주세요.")
+    @NotBlank(message = "[1002] 롤링페이퍼 제목은 공백일 수 없습니다.")
     private String title;
 
-    @Positive
     private Long memberId;
 }

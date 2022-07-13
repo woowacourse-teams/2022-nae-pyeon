@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class MessageRequest {
 
-    @NotBlank(message = "내용을 입력해주세요.")
+    @NotBlank(message = "[2001] 메시지는 공백일 수 없습니다.")
     private String content;
 
     private Long authorId;
