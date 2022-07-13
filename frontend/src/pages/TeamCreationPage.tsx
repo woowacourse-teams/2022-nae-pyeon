@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "@emotion/styled";
 
 import IconButton from "@/components/IconButton";
@@ -31,6 +31,14 @@ const colors = [
 
 const TeamCreationPage = () => {
   const [teamName, setTeamName] = useState("");
+  const [emoji, setEmoji] = useState("");
+  const [color, setColor] = useState("");
+  const teamDescriptionRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleTeamCreationSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    console.log(teamDescriptionRef.current?.value, emoji, color);
+  };
 
   return (
     <>
@@ -46,16 +54,24 @@ const TeamCreationPage = () => {
           value={teamName}
           setValue={setTeamName}
         />
-        <LabeledTextArea labelText="모임 설명" />
+        <LabeledTextArea
+          labelText="모임 설명"
+          ref={teamDescriptionRef}
+          placeholder="최대 100자까지 입력 가능합니다"
+        />
         <LabeledRadio
           labelText="모임을 표현하는 이모지를 선택해주세요"
           radios={emojis}
+          onClickRadio={setEmoji}
         />
         <LabeledRadio
           labelText="모임을 표현하는 색상을 선택해주세요"
           radios={colors}
+          onClickRadio={setColor}
         />
-        <Button>확인</Button>
+        <Button type="submit" onClick={handleTeamCreationSubmit}>
+          확인
+        </Button>
       </StyledMain>
     </>
   );

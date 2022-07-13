@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, SetStateAction } from "react";
 import styled from "@emotion/styled";
 
 interface radios {
@@ -10,6 +10,7 @@ interface LabeledRadioProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   labelText: string;
   radios: radios[];
+  onClickRadio: React.Dispatch<SetStateAction<string>>;
 }
 
 interface StyledRadioProps {
@@ -17,11 +18,18 @@ interface StyledRadioProps {
   selected: boolean;
 }
 
-const LabeledRadio = ({ labelText, radios }: LabeledRadioProps) => {
-  const [selectedRadio, setSelectedRadio] = useState(-1);
+const LabeledRadio = ({
+  labelText,
+  radios,
+  onClickRadio,
+}: LabeledRadioProps) => {
+  const [selectedRadio, setSelectedRadio] = useState<number | null>(null);
 
-  const handleRadioClick = (index: number) => {
+  const handleRadioClick = (index: number, value: string | undefined) => {
     setSelectedRadio(index);
+    if (value) {
+      onClickRadio(value);
+    }
   };
 
   return (
@@ -34,7 +42,12 @@ const LabeledRadio = ({ labelText, radios }: LabeledRadioProps) => {
               <StyledRadio
                 backgroundColor={radio?.backgroundColor}
                 onClick={() => {
-                  handleRadioClick(index);
+                  if (radio.value) {
+                    handleRadioClick(index, radio.value);
+                  }
+                  if (radio.backgroundColor) {
+                    handleRadioClick(index, radio.backgroundColor);
+                  }
                 }}
                 selected={selectedRadio === index}
               >
