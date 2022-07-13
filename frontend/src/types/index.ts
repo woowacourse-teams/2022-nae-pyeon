@@ -4,3 +4,10 @@ export interface Message {
   from: string;
   authorId: number;
 }
+
+export interface Rollingpaper {
+  id: number;
+  title: string;
+  to: string;
+  messages: Message[];
+}
