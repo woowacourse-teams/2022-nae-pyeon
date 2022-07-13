@@ -50,7 +50,7 @@ const StyledMessage = styled.div`
 
   border: none;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.LIGHT_GREEN_200};
+  background-color: ${({ theme }) => theme.colors.YELLOW_200};
 
   @media only screen and (min-width: 960px) {
     width: 600px;
