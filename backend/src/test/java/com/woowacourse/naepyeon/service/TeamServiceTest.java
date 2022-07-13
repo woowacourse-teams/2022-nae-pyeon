@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamMember;
+import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.TeamMemberRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
@@ -81,7 +82,7 @@ class TeamServiceTest {
 
         // then
         assertThatThrownBy(() -> teamService.findById(teamId))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(NotFoundTeamException.class);
     }
 
     @Test

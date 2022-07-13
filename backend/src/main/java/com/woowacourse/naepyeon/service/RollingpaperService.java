@@ -3,6 +3,9 @@ package com.woowacourse.naepyeon.service;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.exception.NotFoundMemberException;
+import com.woowacourse.naepyeon.exception.NotFoundRollingpaperException;
+import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.repository.RollingpaperRepository;
 import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
 import com.woowacourse.naepyeon.repository.jpa.TeamJpaDao;
@@ -27,9 +30,9 @@ public class RollingpaperService {
 
     public Long createRollingpaper(final String title, final Long teamId, final Long memberId) {
         final Team team = teamJpaDao.findById(teamId)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new NotFoundTeamException(teamId));
         final Member member = memberJpaDao.findById(memberId)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new NotFoundMemberException(memberId));
         final Rollingpaper rollingpaper = new Rollingpaper(title, team, member);
         return rollingpaperRepository.save(rollingpaper);
     }
@@ -37,8 +40,7 @@ public class RollingpaperService {
     @Transactional(readOnly = true)
     public RollingpaperResponseDto findById(final Long rollingpaperId) {
         final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
-                .orElseThrow(IllegalArgumentException::new);
-
+                .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
         return new RollingpaperResponseDto(
                 rollingpaperId,
                 rollingpaper.getTitle(),
