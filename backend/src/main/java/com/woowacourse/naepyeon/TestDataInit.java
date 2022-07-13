@@ -26,9 +26,9 @@ public class TestDataInit {
     public void initData() {
         final Team team = new Team("mypyeon");
         final Member member1 =
-                new Member("케이(김태현)", "kth990303@gmail.com", "abc@@1234");
+                new Member("kkk", "kth990303@gmail.com", "abc@@1234");
         final Member member2 =
-                new Member("알렉스(이영환)", "yxxnghwan@gmail.com", "abc@@1234");
+                new Member("alex", "yxxnghwan@gmail.com", "abc@@1234");
         dummyMember1 = memberJpaDao.save(member1);
         dummyMember2 = memberJpaDao.save(member2);
         dummyTeam = teamJpaDao.save(team);

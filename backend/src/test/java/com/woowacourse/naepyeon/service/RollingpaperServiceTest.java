@@ -26,7 +26,7 @@ class RollingpaperServiceTest {
     private static final String rollingPaperTitle = "AlexAndKei";
 
     private final Team team = new Team("nae-pyeon");
-    private final Member member = new Member("member", "m@hello", "abc@@1234");
+    private final Member member = new Member("member", "m@hello.com", "abc@@1234");
 
     @Autowired
     private TeamJpaDao teamJpaDao;

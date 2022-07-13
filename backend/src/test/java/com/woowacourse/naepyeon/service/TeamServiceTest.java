@@ -26,7 +26,7 @@ class TeamServiceTest {
     @Autowired
     private TeamService teamService;
 
-    private final Member member = new Member("내편이", "naePyeon@test.com", "testtest");
+    private final Member member = new Member("내편이", "naePyeon@test.com", "testtest123");
     private final Team team = new Team("wooteco");
     @Autowired
     private TeamRepository teamRepository;
