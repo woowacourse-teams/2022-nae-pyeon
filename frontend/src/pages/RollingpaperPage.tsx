@@ -1,57 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import styled from "@emotion/styled";
 import axios from "axios";
+import { useQuery } from "react-query";
 
 import Header from "@/components/Header";
 import IconButton from "@/components/IconButton";
 import PageTitle from "@/components/PageTitle";
 import LetterPaper from "@/components/LetterPaper";
 
+import { Rollingpaper } from "@/types";
+
 import { BiChevronLeft } from "react-icons/bi";
-
-type Message = {
-  id: number;
-  content: string;
-  from: string;
-  authorId: number;
-};
-
-interface RollingpaperType {
-  id: number;
-  title: string;
-  to: string;
-  messages: Message[];
-}
 
 const RollingpaperPage = () => {
   const { rollingpaperId } = useParams();
   const teamId = 123;
-  const [rollingpaper, setRollingpaper] = useState<RollingpaperType | null>(
-    null
-  );
 
-  useEffect(() => {
+  const {
+    isLoading,
+    isError,
+    data: rollingpaper,
+  } = useQuery<Rollingpaper>(["rollingpaper"], () =>
     axios
       .get(`/api/v1/teams/${teamId}/rollingpapers/${rollingpaperId}`)
-      .then((response) => {
-        setRollingpaper(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+      .then((response) => response.data)
+  );
 
-  if (rollingpaper === null) {
-    return (
-      <>
-        <Header>
-          <IconButton>
-            <BiChevronLeft />
-          </IconButton>
-        </Header>
-      </>
-    );
+  if (isLoading) {
+    return <div>로딩 중</div>;
+  }
+  if (isError || !rollingpaper) {
+    return <div>에러</div>;
   }
 
   return (

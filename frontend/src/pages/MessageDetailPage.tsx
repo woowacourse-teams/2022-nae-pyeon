@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import axios from "axios";
+import { useQuery, useMutation } from "react-query";
 import { BiChevronLeft } from "react-icons/bi";
 
 import Header from "@/components/Header";
@@ -14,59 +15,51 @@ const MessageDetailPage = () => {
   const { rollingpaperId, messageId } = useParams();
   const navigate = useNavigate();
 
-  const [message, setMessage] = useState<Message | null>(null);
+  const {
+    isLoading: isLoadingGetMessage,
+    isError: isErrorGetMessage,
+    data: message,
+  } = useQuery<Message>(["message"], () =>
+    axios
+      .get(`/api/v1/rollingpapers/${rollingpaperId}/messages/${messageId}`)
+      .then((response) => response.data)
+  );
+
+  const { mutate: deleteMessage } = useMutation(
+    () => {
+      return axios
+        .delete(`/api/v1/rollingpapers/${rollingpaperId}/messages/${messageId}`)
+        .then((response) => response.data);
+    },
+    {
+      onSuccess: () => {
+        alert("메시지 삭제 완료");
+        navigate(`/rollingpaper/${rollingpaperId}`, { replace: true });
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    }
+  );
 
   const handleEditButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     navigate(`/rollingpaper/${rollingpaperId}/message/${messageId}/edit`);
   };
 
   const handleDeleteButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
-    axios
-      .delete(`/api/v1/rollingpapers/${rollingpaperId}/messages/${messageId}`)
-      .then((response) => {
-        alert("메시지 삭제 완료");
-        navigate(`/rollingpaper/${rollingpaperId}`, { replace: true });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    deleteMessage();
   };
 
   const handleBackButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     navigate(-1);
   };
 
-  useEffect(() => {
-    axios
-      .get(`/api/v1/rollingpapers/${rollingpaperId}/messages/${messageId}`)
-      .then((response) => {
-        setMessage(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  if (isLoadingGetMessage) {
+    return <div>로딩중</div>;
+  }
 
-  if (!message) {
-    return (
-      <>
-        <Header>
-          <IconButton>
-            <BiChevronLeft />
-          </IconButton>
-        </Header>
-        <StyledMain>
-          <RollingpaperMessageDetail
-            content={""}
-            author={""}
-            handleDeleteButtonClick={handleDeleteButtonClick}
-            handleEditButtonClick={handleEditButtonClick}
-          />
-        </StyledMain>
-      </>
-    );
+  if (isErrorGetMessage || !message) {
+    return <div>에러</div>;
   }
 
   return (
