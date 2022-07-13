@@ -12,10 +12,19 @@ const Button = ({ type = "button", onClick, children }: ButtonAttributes) => {
 };
 
 const StyledButton = styled.button`
-  padding: 10px 6px;
+  width: 100%;
+
+  background-color: ${({ theme }) => theme.colors.SKY_BLUE_200};
+  color: ${({ theme }) => theme.colors.WHITE};
+  border-radius: 8px;
+  padding: 10px 0;
 
   font-size: 16px;
   font-weight: 600;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.SKY_BLUE_300};
+  }
 `;
 
 export default Button;
