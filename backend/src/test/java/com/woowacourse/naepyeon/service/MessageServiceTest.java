@@ -7,6 +7,7 @@ import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.exception.NotFoundMessageException;
 import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
 import com.woowacourse.naepyeon.repository.jpa.RollingpaperJpaDao;
 import com.woowacourse.naepyeon.repository.jpa.TeamJpaDao;
@@ -91,7 +92,7 @@ class MessageServiceTest {
         messageService.deleteMessage(messageId);
 
         assertThatThrownBy(() -> messageService.findMessage(messageId))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(NotFoundMessageException.class);
     }
 
     private MessageRequest createMessageRequest() {

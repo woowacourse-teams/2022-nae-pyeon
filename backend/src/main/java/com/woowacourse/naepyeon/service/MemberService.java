@@ -1,6 +1,7 @@
 package com.woowacourse.naepyeon.service;
 
 import com.woowacourse.naepyeon.domain.Member;
+import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class MemberService {
     @Transactional(readOnly = true)
     public MemberResponseDto findById(final Long memberId) {
         final Member member = memberRepository.findById(memberId)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new NotFoundMemberException(memberId));
         return new MemberResponseDto(
                 memberId,
                 member.getUsername(),
@@ -33,7 +34,7 @@ public class MemberService {
 
     public void updateUsername(final Long memberId, final String username) {
         final Member member = memberRepository.findById(memberId)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new NotFoundMemberException(memberId));
         member.changeUsername(username);
     }
 

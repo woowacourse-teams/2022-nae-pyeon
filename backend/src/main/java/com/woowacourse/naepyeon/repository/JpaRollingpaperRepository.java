@@ -1,6 +1,7 @@
 package com.woowacourse.naepyeon.repository;
 
 import com.woowacourse.naepyeon.domain.Rollingpaper;
+import com.woowacourse.naepyeon.exception.NotFoundRollingpaperException;
 import com.woowacourse.naepyeon.repository.jpa.RollingpaperJpaDao;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class JpaRollingpaperRepository implements RollingpaperRepository {
     @Override
     public void update(final Long rollingpaperId, final String newTitle) {
         final Rollingpaper rollingpaper = rollingpaperJpaDao.findById(rollingpaperId)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
         rollingpaper.changeTitle(newTitle);
     }
 

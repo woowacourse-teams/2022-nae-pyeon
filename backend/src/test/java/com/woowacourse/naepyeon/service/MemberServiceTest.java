@@ -3,6 +3,7 @@ package com.woowacourse.naepyeon.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,6 +59,6 @@ class MemberServiceTest {
 
         // then
         assertThatThrownBy(() -> memberService.findById(memberId))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(NotFoundMemberException.class);
     }
 }

@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.exception.NotFoundRollingpaperException;
 import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
 import com.woowacourse.naepyeon.repository.jpa.TeamJpaDao;
 import com.woowacourse.naepyeon.service.dto.RollingpaperPreviewResponseDto;
@@ -106,6 +107,6 @@ class RollingpaperServiceTest {
         rollingpaperService.deleteRollingpaper(rollingpaperId);
 
         assertThatThrownBy(() -> rollingpaperService.findById(rollingpaperId))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(NotFoundRollingpaperException.class);
     }
 }
