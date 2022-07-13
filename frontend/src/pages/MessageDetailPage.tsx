@@ -34,6 +34,10 @@ const MessageDetailPage = () => {
       });
   };
 
+  const handleBackButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    navigate(-1);
+  };
+
   useEffect(() => {
     axios
       .get(`/api/v1/rollingpapers/${rollingpaperId}/messages/${messageId}`)
@@ -68,7 +72,7 @@ const MessageDetailPage = () => {
   return (
     <>
       <Header>
-        <IconButton>
+        <IconButton onClick={handleBackButtonClick}>
           <BiChevronLeft />
         </IconButton>
       </Header>

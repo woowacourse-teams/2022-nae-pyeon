@@ -45,10 +45,14 @@ const MessageWritePage = () => {
       });
   };
 
+  const handleBackButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    navigate(-1);
+  };
+
   return (
     <>
       <Header>
-        <IconButton>
+        <IconButton onClick={handleBackButtonClick}>
           <BiChevronLeft />
         </IconButton>
       </Header>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 
 import { BiSearch } from "react-icons/bi";
@@ -16,6 +16,9 @@ const SearchInput = ({
   searchKeywordList,
 }: SearchInputProps) => {
   const [autocompleteList, setAutocompleteList] = useState(searchKeywordList);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const searchInputRef = useRef(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -26,20 +29,46 @@ const SearchInput = ({
     setAutocompleteList(newAutocompleteList);
   };
 
+  const handleDocumentClick = (e: MouseEvent) => {
+    if (searchInputRef.current === e.target) {
+      return;
+    }
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleDocumentClick);
+
+    return () => {
+      document.removeEventListener("click", handleDocumentClick);
+    };
+  }, []);
+
   return (
     <StyledLabel>
       {labelText}
       <StyledInputContainer>
         <BiSearch />
-        <input value={value} onChange={handleInputChange} />
+        <input
+          ref={searchInputRef}
+          value={value}
+          onChange={handleInputChange}
+          onFocus={() => {
+            setIsOpen(true);
+          }}
+        />
       </StyledInputContainer>
-      {autocompleteList.length > 0 && (
+      {isOpen && autocompleteList.length > 0 && (
         <StyledAutocompleteList>
           {autocompleteList.map((autocompleteListItem) => (
             <StyledAutocompleteListItem
               key={autocompleteListItem}
               onClick={() => {
+                const newAutocompleteList = searchKeywordList.filter(
+                  (keyword) => keyword.includes(autocompleteListItem)
+                );
                 setValue(autocompleteListItem);
+                setAutocompleteList(newAutocompleteList);
               }}
             >
               {autocompleteListItem}
@@ -52,6 +81,8 @@ const SearchInput = ({
 };
 
 const StyledLabel = styled.label`
+  position: relative;
+
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -90,11 +121,18 @@ const StyledInputContainer = styled.div`
 `;
 
 const StyledAutocompleteList = styled.ul`
-  max-height: 100px;
+  position: absolute;
+  top: 73px;
+  z-index: 2;
+
+  width: 100%;
+  max-height: 150px;
   overflow-y: scroll;
+
   margin-top: 5px;
   background-color: ${({ theme }) => theme.colors.WHITE};
   color: ${({ theme }) => theme.colors.GRAY_800};
+
   border: 1px solid ${({ theme }) => theme.colors.GRAY_200};
   border-radius: 8px;
 
@@ -110,11 +148,15 @@ const StyledAutocompleteListItem = styled.li`
 
   font-size: 16px;
 
+  cursor: pointer;
+
+  :hover {
+    background-color: ${({ theme }) => theme.colors.GRAY_100};
+  }
+
   :last-child {
     border: none;
   }
-
-  cursor: pointer;
 `;
 
 export default SearchInput;
