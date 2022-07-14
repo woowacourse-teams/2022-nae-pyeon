@@ -64,8 +64,14 @@ class TeamServiceTest {
 
         // then
         assertThat(findTeam)
-                .extracting("id", "name")
-                .containsExactly(teamId, "woowacourse");
+                .extracting("id", "name", "description", "emoji", "color")
+                .containsExactly(
+                        teamId,
+                        teamRequest.getName(),
+                        teamRequest.getDescription(),
+                        teamRequest.getEmoji(),
+                        teamRequest.getColor()
+                );
     }
 
     @Test
@@ -81,12 +87,19 @@ class TeamServiceTest {
         final Long teamId = teamService.save(teamRequest);
 
         // when
-        teamService.updateName(teamId, "woowacourse-5th");
+        final String expected = "woowacourse-5th";
+        teamService.updateName(teamId, expected);
 
         // then
         assertThat(teamService.findById(teamId))
-                .extracting("id", "name")
-                .containsExactly(teamId, "woowacourse-5th");
+                .extracting("id", "name", "description", "emoji", "color")
+                .containsExactly(
+                        teamId,
+                        expected,
+                        teamRequest.getDescription(),
+                        teamRequest.getEmoji(),
+                        teamRequest.getColor()
+                );
     }
 
     @Test

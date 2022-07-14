@@ -49,7 +49,10 @@ public class TeamService {
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
         return new TeamResponseDto(
                 teamId,
-                team.getName()
+                team.getName(),
+                team.getDescription(),
+                team.getEmoji(),
+                team.getColor()
         );
     }
 
