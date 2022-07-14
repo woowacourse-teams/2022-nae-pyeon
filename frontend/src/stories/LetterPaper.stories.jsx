@@ -1,12 +1,19 @@
 import React from "react";
 import LetterPaper from "@/components/LetterPaper";
+import { BrowserRouter } from "react-router-dom";
 
 export default {
   component: LetterPaper,
   title: "LetterPaper",
 };
 
-const Template = (args) => <LetterPaper {...args}></LetterPaper>;
+const Template = (args) => {
+  return (
+    <BrowserRouter>
+      <LetterPaper {...args}></LetterPaper>
+    </BrowserRouter>
+  );
+};
 
 export const Default = Template.bind({});
 Default.args = {

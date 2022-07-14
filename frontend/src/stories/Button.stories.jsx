@@ -10,6 +10,6 @@ const Template = (args) => <Button {...args}></Button>;
 
 export const Default = Template.bind({});
 Default.args = {
-  type: "button",
+  type: "Button",
   children: "완료",
 };

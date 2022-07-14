@@ -1,7 +1,5 @@
 package com.woowacourse.naepyeon.controller;
 
-import static com.woowacourse.naepyeon.TestDataInit.dummyMember1;
-
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageUpdateContentRequest;
@@ -30,9 +28,7 @@ public class MessageController {
     @PostMapping
     public ResponseEntity<CreateResponse> createMessage(@RequestBody @Valid final MessageRequest messageRequest,
                                                         @PathVariable final Long rollingpaperId) {
-//        final Long messageId = messageService.saveMessage(messageRequest.getContent(), messageRequest.getAuthorId(),
-//                rollingpaperId);
-        final Long messageId = messageService.saveMessage(messageRequest.getContent(), dummyMember1.getId(),
+        final Long messageId = messageService.saveMessage(messageRequest.getContent(), messageRequest.getAuthorId(),
                 rollingpaperId);
         return ResponseEntity.created(
                 URI.create("/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId)

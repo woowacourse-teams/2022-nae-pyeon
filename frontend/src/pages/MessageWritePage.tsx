@@ -82,7 +82,7 @@ const StyledMain = styled.form`
   align-items: center;
   gap: 40px;
 
-  padding: 48px 25px;
+  padding: 48px 40px;
 
   button {
     align-self: flex-end;
