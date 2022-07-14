@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.naepyeon.exception.ExceedRollingpaperNameLengthException;
-import com.woowacourse.naepyeon.exception.ExceedTeamNameLengthException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

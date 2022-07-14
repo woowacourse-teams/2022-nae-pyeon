@@ -1,13 +1,12 @@
 package com.woowacourse.naepyeon.repository;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamMember;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,20 +18,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class TeamMemberRepositoryTest {
 
-    @Autowired
-    private TeamMemberRepository teamMemberRepository;
-
-    @Autowired
-    private TeamRepository teamRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
     private final Member member1 = new Member("내편이1", "naePyeon1@test.com", "testtest123");
     private final Member member2 = new Member("내편이2", "naePyeon2@test.com", "testtest123");
     private final Team team1 = new Team("wooteco1");
     private final Team team2 = new Team("wooteco2");
-
+    @Autowired
+    private TeamMemberRepository teamMemberRepository;
+    @Autowired
+    private TeamRepository teamRepository;
+    @Autowired
+    private MemberRepository memberRepository;
 
     @BeforeEach
     void setUp() {

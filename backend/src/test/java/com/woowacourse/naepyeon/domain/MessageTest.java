@@ -1,7 +1,7 @@
 package com.woowacourse.naepyeon.domain;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.naepyeon.exception.ExceedMessageContentLengthException;
 import org.junit.jupiter.api.DisplayName;

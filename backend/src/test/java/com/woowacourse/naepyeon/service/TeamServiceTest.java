@@ -23,11 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class TeamServiceTest {
 
-    @Autowired
-    private TeamService teamService;
-
     private final Member member = new Member("내편이", "naePyeon@test.com", "testtest123");
     private final Team team = new Team("wooteco");
+    @Autowired
+    private TeamService teamService;
     @Autowired
     private TeamRepository teamRepository;
     @Autowired
