@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react";
 import styled from "@emotion/styled";
+import { useMutation } from "react-query";
+import axios from "axios";
 
 import IconButton from "@/components/IconButton";
 import LabeledInput from "@/components/LabeledInput";
@@ -12,21 +14,21 @@ import PageTitle from "@/components/PageTitle";
 import Button from "@/components/Button";
 
 const emojis = [
-  { value: "🐶" },
-  { value: "❤️" },
-  { value: "👍" },
-  { value: "✏️" },
-  { value: "🏃‍♀️" },
-  { value: "☕️" },
+  { id: 1, value: "🐶" },
+  { id: 2, value: "❤️" },
+  { id: 3, value: "👍" },
+  { id: 4, value: "✏️" },
+  { id: 5, value: "🏃‍♀️" },
+  { id: 6, value: "☕️" },
 ];
 
 const colors = [
-  { backgroundColor: "#C5FF98" },
-  { backgroundColor: "#FF8181" },
-  { backgroundColor: "#FFF598" },
-  { backgroundColor: "#98DAFF" },
-  { backgroundColor: "#98A2FF" },
-  { backgroundColor: "#FF98D0" },
+  { id: 1, backgroundColor: "#C5FF98" },
+  { id: 2, backgroundColor: "#FF8181" },
+  { id: 3, backgroundColor: "#FFF598" },
+  { id: 4, backgroundColor: "#98DAFF" },
+  { id: 5, backgroundColor: "#98A2FF" },
+  { id: 6, backgroundColor: "#FF98D0" },
 ];
 
 const TeamCreationPage = () => {
@@ -35,9 +37,35 @@ const TeamCreationPage = () => {
   const [color, setColor] = useState("");
   const teamDescriptionRef = useRef<HTMLTextAreaElement>(null);
 
+  const { mutate: createTeam, data } = useMutation(
+    () => {
+      return axios
+        .post(
+          "/api/v1/teams",
+          {
+            name: teamName,
+            description: teamDescriptionRef.current?.value,
+            emoji,
+            color,
+          },
+          {
+            headers: {
+              Authorization: `Baerer ${"token"}`,
+            },
+          }
+        )
+        .then((response) => response.data);
+    },
+    {
+      onSuccess: () => {
+        console.log(data);
+      },
+    }
+  );
+
   const handleTeamCreationSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log(teamDescriptionRef.current?.value, emoji, color);
+    createTeam();
   };
 
   return (
@@ -77,7 +105,7 @@ const TeamCreationPage = () => {
   );
 };
 
-const StyledMain = styled.div`
+const StyledMain = styled.form`
   display: flex;
   flex-direction: column;
   padding: 10px 50px;
