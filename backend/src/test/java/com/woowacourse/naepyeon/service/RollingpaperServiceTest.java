@@ -25,7 +25,11 @@ class RollingpaperServiceTest {
 
     private static final String rollingPaperTitle = "AlexAndKei";
 
-    private final Team team = new Team("nae-pyeon");
+    private final Team team = new Team(
+            "nae-pyeon",
+            "테스트 모임입니다.",
+            "testEmoji",
+            "#123456");
     private final Member member = new Member("member", "m@hello.com", "abc@@1234");
 
     @Autowired

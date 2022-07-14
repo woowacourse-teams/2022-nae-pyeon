@@ -14,7 +14,13 @@ class TeamTest {
     void constructor_validName() {
         final String teamName = "abcdefghi123456789123";
 
-        assertThatThrownBy(() -> new Team(teamName))
+        assertThatThrownBy(() -> new Team(
+                        teamName,
+                        "테스트 모임입니다.",
+                        "testEmoji",
+                        "#123456"
+                )
+        )
                 .isInstanceOf(ExceedTeamNameLengthException.class);
     }
 
@@ -22,7 +28,12 @@ class TeamTest {
     @DisplayName("모임 이름을 변경한다.")
     void changeName() {
         final String currentTeamName = "abcdefghijklmnopqrst";
-        final Team team = new Team(currentTeamName);
+        final Team team = new Team(
+                currentTeamName,
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
         final String updateTeamName = "abcdefghi12345678912";
 
         team.changeName(updateTeamName);
@@ -34,7 +45,12 @@ class TeamTest {
     @DisplayName("모임 이름을 20자를 초과하여 변경할 경우 예외를 발생시킨다.")
     void changeName_exceedTeamName() {
         final String currentTeamName = "abcdefghijklmnopqrst";
-        final Team team = new Team(currentTeamName);
+        final Team team = new Team(
+                currentTeamName,
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
         final String updateTeamName = "abcdefghi123456789123";
 
         assertThatThrownBy(() -> team.changeName(updateTeamName))
