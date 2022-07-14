@@ -105,7 +105,7 @@ const TeamCreationPage = () => {
   );
 };
 
-const StyledMain = styled.div`
+const StyledMain = styled.form`
   display: flex;
   flex-direction: column;
   padding: 10px 50px;

@@ -16,7 +16,6 @@ interface LabeledRadioProps
 
 interface StyledRadioProps {
   backgroundColor?: string;
-  selected: boolean;
 }
 
 const LabeledRadio = ({
@@ -26,69 +25,85 @@ const LabeledRadio = ({
 }: LabeledRadioProps) => {
   const [selectedRadio, setSelectedRadio] = useState<number | null>(null);
 
-  const handleRadioClick = (index: number, value: string) => {
-    setSelectedRadio(index);
+  const handleRadioChange = (key: number, value: string) => {
+    console.log(key);
+    setSelectedRadio(key);
     onClickRadio(value);
   };
 
   return (
-    <StyledLabel>
-      {labelText}
+    <fieldset>
+      <StyledLegend>{labelText}</StyledLegend>
       <StyledRadioContainer>
         {radios.map((radio) => {
           return (
-            <div key={radio.id}>
-              <StyledRadio
-                backgroundColor={radio?.backgroundColor}
-                onClick={() => {
+            <label key={radio.id}>
+              <StyledInput
+                type="radio"
+                value={radio.value}
+                checked={selectedRadio === radio.id}
+                onChange={() => {
                   if (radio.value) {
-                    handleRadioClick(radio.id, radio.value);
+                    handleRadioChange(radio.id, radio.value);
                   }
                   if (radio.backgroundColor) {
-                    handleRadioClick(radio.id, radio.backgroundColor);
+                    handleRadioChange(radio.id, radio.backgroundColor);
                   }
                 }}
-                selected={selectedRadio === radio.id}
-              >
-                {radio?.value}
+              />
+              <StyledRadio backgroundColor={radio?.backgroundColor}>
+                {radio.value}
               </StyledRadio>
-            </div>
+            </label>
           );
         })}
       </StyledRadioContainer>
-    </StyledLabel>
+    </fieldset>
   );
 };
 
-const StyledLabel = styled.div`
+const StyledLegend = styled.legend`
   font-size: 14px;
   color: ${({ theme }) => theme.colors.GRAY_600};
 `;
 
 const StyledRadioContainer = styled.div`
-  margin-top: 8px;
   display: flex;
-  gap: 8px;
+  gap: 10px;
+
+  margin-top: 8px;
 `;
 
 const StyledRadio = styled.div<StyledRadioProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   width: 40px;
   height: 40px;
-  display: flex;
 
-  justify-content: center;
-  align-items: center;
+  border-radius: 4px;
+
+  font-size: 25px;
   background-color: ${(props) =>
     props.backgroundColor
       ? props.backgroundColor
       : props.theme.colors.GRAY_200};
+`;
 
-  border-radius: 4px;
-  border: ${(props) =>
-    props.selected && `solid 3px ${props.theme.colors.PURPLE_300}`};
+const StyledInput = styled.input`
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  border: 0;
+  clip: rect(0, 0, 0, 0);
 
-  font-size: 28px;
-  cursor: pointer;
+  &:checked + div {
+    border: 3px solid ${({ theme }) => theme.colors.PURPLE_300};
+  }
 `;
 
 export default LabeledRadio;
