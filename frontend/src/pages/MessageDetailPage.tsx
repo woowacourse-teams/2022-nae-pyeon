@@ -87,8 +87,6 @@ const StyledMain = styled.main`
   align-items: center;
   gap: 40px;
 
-  padding: 48px 25px;
-
   button {
     align-self: flex-end;
   }

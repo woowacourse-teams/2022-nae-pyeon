@@ -42,15 +42,11 @@ const RollingpaperPage = () => {
         </IconButton>
         <PageTitle>{rollingpaper.title}</PageTitle>
       </Header>
-      <StyledMain>
+      <main>
         <LetterPaper to={rollingpaper.to} messageList={rollingpaper.messages} />
-      </StyledMain>
+      </main>
     </>
   );
 };
-
-const StyledMain = styled.main`
-  padding: 10px 25px;
-`;
 
 export default RollingpaperPage;

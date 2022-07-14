@@ -13,6 +13,8 @@ const StyledPageTitle = styled.h1`
   display: inline-block;
   font-size: 32px;
   font-weight: 600;
+
+  padding: 6px 0 0;
 `;
 
 export default PageTitle;

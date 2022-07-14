@@ -83,23 +83,21 @@ const MessageEditPage = () => {
           <BiChevronLeft />
         </IconButton>
       </Header>
-      <StyledMain onSubmit={handleMessageFormSubmit}>
+      <StyledForm onSubmit={handleMessageFormSubmit}>
         {initialMessage && (
           <TextArea ref={contentRef} defaultValue={initialMessage.content} />
         )}
         <Button type="submit">완료</Button>
-      </StyledMain>
+      </StyledForm>
     </>
   );
 };
 
-const StyledMain = styled.form`
+const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 40px;
-
-  padding: 48px 40px;
 
   button {
     align-self: flex-end;
