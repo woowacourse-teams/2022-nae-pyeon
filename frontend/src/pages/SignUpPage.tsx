@@ -72,7 +72,7 @@ export const SignUpPage = () => {
       <Header align="center">
         <PageTitle>회원가입</PageTitle>
       </Header>
-      <StyledMain>
+      <StyledForm>
         <LabeledInput
           labelText="이메일"
           value={email}
@@ -105,15 +105,13 @@ export const SignUpPage = () => {
         <Button type="submit" onClick={handleSignupClick}>
           확인
         </Button>
-      </StyledMain>
+      </StyledForm>
     </>
   );
 };
 
-const StyledMain = styled.form`
+const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 40px;
-
-  padding: 10px 25px;
 `;

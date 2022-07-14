@@ -76,7 +76,7 @@ const TeamCreationPage = () => {
         </IconButton>
         <PageTitle>모임 추가하기</PageTitle>
       </Header>
-      <StyledMain>
+      <StyledForm>
         <LabeledInput
           labelText="모임명"
           value={teamName}
@@ -100,15 +100,14 @@ const TeamCreationPage = () => {
         <Button type="submit" onClick={handleTeamCreationSubmit}>
           확인
         </Button>
-      </StyledMain>
+      </StyledForm>
     </>
   );
 };
 
-const StyledMain = styled.form`
+const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
-  padding: 10px 50px;
 
   gap: 40px;
 `;

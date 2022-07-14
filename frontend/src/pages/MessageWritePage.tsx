@@ -68,21 +68,19 @@ const MessageWritePage = () => {
           <BiChevronLeft />
         </IconButton>
       </Header>
-      <StyledMain onSubmit={handleMessageFormSubmit}>
+      <StyledForm onSubmit={handleMessageFormSubmit}>
         <TextArea ref={contentRef} />
         <Button type="submit">완료</Button>
-      </StyledMain>
+      </StyledForm>
     </>
   );
 };
 
-const StyledMain = styled.form`
+const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 40px;
-
-  padding: 48px 40px;
 
   button {
     align-self: flex-end;

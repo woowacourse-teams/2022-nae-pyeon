@@ -96,7 +96,7 @@ const RollingpaperCreationPage = () => {
         </IconButton>
         <PageTitle>롤링페이퍼 만들기</PageTitle>
       </Header>
-      <StyledMain onSubmit={handleRollingpaperFormSubmit}>
+      <StyledForm onSubmit={handleRollingpaperFormSubmit}>
         <LabeledInput
           labelText="롤링페이퍼 이름"
           value={rollingpaperTitle}
@@ -109,18 +109,16 @@ const RollingpaperCreationPage = () => {
           searchKeywordList={memberListDummy.map((member) => member.name)}
         />
         <LineButton type="submit">완료</LineButton>
-      </StyledMain>
+      </StyledForm>
     </>
   );
 };
 
-const StyledMain = styled.form`
+const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 40px;
-
-  padding: 48px 25px;
 
   button {
     align-self: flex-end;
