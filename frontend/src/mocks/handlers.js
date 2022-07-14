@@ -84,4 +84,14 @@ export const handlers = [
       return res(ctx.status(204));
     }
   ),
+
+  // 모임 생성
+  rest.post("/api/v1/teams", (req, res, ctx) => {
+    const { name, description, emoji, color } = req.body;
+    const { accessToken } = req.headers.headers.authorization;
+
+    const result = { id: 1 };
+
+    return res(ctx.status(201), ctx.json(result));
+  }),
 ];
