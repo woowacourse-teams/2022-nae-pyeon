@@ -25,9 +25,21 @@ public class Team {
     @Column(name = "team_name", length = 20, nullable = false, unique = true)
     private String name;
 
-    public Team(final String name) {
+    @Column(length = 100, nullable = false)
+    private String description;
+
+    @Column(nullable = false)
+    private String emoji;
+
+    @Column(length = 15, nullable = false)
+    private String color;
+
+    public Team(final String name, final String description, final String emoji, final String color) {
         validateTeam(name);
         this.name = name;
+        this.description = description;
+        this.emoji = emoji;
+        this.color = color;
     }
 
     public void changeName(final String name) {

@@ -19,7 +19,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @DisplayName("모임 추가")
     void addTeam() {
         //모임 생성
-        final TeamRequest teamRequest = new TeamRequest("woowacourse");
+        final TeamRequest teamRequest = new TeamRequest(
+                "woowacourse",
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
         final ExtractableResponse<Response> response = 모임_추가(teamRequest);
 
         //모임이 추가됨
@@ -30,12 +35,22 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @DisplayName("모임 이름 수정")
     void updateTeam() {
         // 모임 생성
-        final TeamRequest teamRequest = new TeamRequest("woowacourse-4th");
+        final TeamRequest teamRequest = new TeamRequest(
+                "woowacourse-4th",
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
         final Long teamId = 모임_추가(teamRequest).as(CreateResponse.class)
                 .getId();
 
         // 모임 이름 수정
-        final TeamRequest changeTeamRequest = new TeamRequest("woowacourse-5th");
+        final TeamRequest changeTeamRequest = new TeamRequest(
+                "woowacourse-5th",
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
         final ExtractableResponse<Response> response = 모임_이름_수정(teamId, changeTeamRequest);
 
         // 모임이름이 수정됨
@@ -46,7 +61,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @DisplayName("모임 삭제")
     void deleteTeam() {
         //모임 생성
-        final TeamRequest teamRequest = new TeamRequest("woowacourse");
+        final TeamRequest teamRequest = new TeamRequest(
+                "woowacourse",
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
         final Long teamId = 모임_추가(teamRequest).as(CreateResponse.class)
                 .getId();
 

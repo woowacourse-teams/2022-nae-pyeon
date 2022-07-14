@@ -24,7 +24,12 @@ class MessageRepositoryTest {
 
     private static final String content = "안녕하세요";
 
-    private final Team team = new Team("nae-pyeon");
+    private final Team team = new Team(
+            "nae-pyeon",
+            "테스트 모임입니다.",
+            "testEmoji",
+            "#123456"
+    );
     private final Member member = new Member("member", "email1@email.com", "password123");
     private final Member author = new Member("author", "email2@email.com", "password123");
     private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", team, member);

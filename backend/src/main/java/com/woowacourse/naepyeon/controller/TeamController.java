@@ -24,7 +24,7 @@ public class TeamController {
 
     @PostMapping
     public ResponseEntity<CreateResponse> createMember(@RequestBody @Valid final TeamRequest teamRequest) {
-        final Long teamId = teamService.save(teamRequest.getName());
+        final Long teamId = teamService.save(teamRequest);
         return ResponseEntity.created(URI.create("/api/v1/teams/" + teamId)).body(new CreateResponse(teamId));
     }
 
