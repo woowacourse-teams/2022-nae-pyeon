@@ -94,4 +94,11 @@ export const handlers = [
 
     return res(ctx.status(201), ctx.json(result));
   }),
+
+  // 회원 가입 요쳥
+  rest.post("/api/v1/members", (req, res, ctx) => {
+    const { username, email, password } = req.body;
+
+    return res(ctx.status(201));
+  }),
 ];
