@@ -18,15 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class TeamMemberRepositoryTest {
 
-    @Autowired
-    private TeamMemberRepository teamMemberRepository;
-
-    @Autowired
-    private TeamRepository teamRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
     private final Member member1 = new Member("내편이1", "naePyeon1@test.com", "testtest123");
     private final Member member2 = new Member("내편이2", "naePyeon2@test.com", "testtest123");
     private final Team team1 = new Team(
@@ -41,7 +32,6 @@ class TeamMemberRepositoryTest {
             "testEmoji",
             "#123456"
     );
-
 
     @BeforeEach
     void setUp() {

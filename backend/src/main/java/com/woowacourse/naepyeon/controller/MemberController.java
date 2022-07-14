@@ -1,6 +1,5 @@
 package com.woowacourse.naepyeon.controller;
 
-import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
 import com.woowacourse.naepyeon.service.MemberService;
@@ -24,11 +23,11 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping
-    public ResponseEntity<CreateResponse> createMember(
+    public ResponseEntity<Void> createMember(
             @RequestBody @Valid final MemberRegisterRequest memberRegisterRequest) {
-        final Long memberId = memberService.save(memberRegisterRequest.getUsername(), memberRegisterRequest.getEmail(),
+        memberService.save(memberRegisterRequest.getUsername(), memberRegisterRequest.getEmail(),
                 memberRegisterRequest.getPassword());
-        return ResponseEntity.created(URI.create("/api/v1/members/" + memberId)).body(new CreateResponse(memberId));
+        return ResponseEntity.created(URI.create("/api/v1/members/me")).build();
     }
 
     @PutMapping("/{memberId}")

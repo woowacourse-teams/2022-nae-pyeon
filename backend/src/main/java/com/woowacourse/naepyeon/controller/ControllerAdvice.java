@@ -1,6 +1,7 @@
 package com.woowacourse.naepyeon.controller;
 
 import com.woowacourse.naepyeon.controller.dto.ErrorResponse;
+import com.woowacourse.naepyeon.exception.NaePyeonException;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,5 +18,10 @@ public class ControllerAdvice {
         final List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         final FieldError mainError = fieldErrors.get(0);
         return ResponseEntity.badRequest().body(new ErrorResponse(mainError.getDefaultMessage()));
+    }
+
+    @ExceptionHandler({NaePyeonException.class})
+    public ResponseEntity<ErrorResponse> handleNaePyeonException(final NaePyeonException e) {
+        return ResponseEntity.status(e.getHttpStatus()).body(new ErrorResponse(e.getShowMessage()));
     }
 }
