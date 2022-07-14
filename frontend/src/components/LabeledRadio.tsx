@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 interface Radio {
   backgroundColor?: string;
   value?: string;
+  id: number;
 }
 
 interface LabeledRadioProps
@@ -34,20 +35,20 @@ const LabeledRadio = ({
     <StyledLabel>
       {labelText}
       <StyledRadioContainer>
-        {radios.map((radio, index) => {
+        {radios.map((radio) => {
           return (
-            <div key={index}>
+            <div key={radio.id}>
               <StyledRadio
                 backgroundColor={radio?.backgroundColor}
                 onClick={() => {
                   if (radio.value) {
-                    handleRadioClick(index, radio.value);
+                    handleRadioClick(radio.id, radio.value);
                   }
                   if (radio.backgroundColor) {
-                    handleRadioClick(index, radio.backgroundColor);
+                    handleRadioClick(radio.id, radio.backgroundColor);
                   }
                 }}
-                selected={selectedRadio === index}
+                selected={selectedRadio === radio.id}
               >
                 {radio?.value}
               </StyledRadio>
