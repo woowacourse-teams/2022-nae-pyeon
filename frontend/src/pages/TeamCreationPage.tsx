@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react";
 import styled from "@emotion/styled";
+import { useMutation } from "react-query";
+import axios from "axios";
 
 import IconButton from "@/components/IconButton";
 import LabeledInput from "@/components/LabeledInput";
@@ -35,9 +37,35 @@ const TeamCreationPage = () => {
   const [color, setColor] = useState("");
   const teamDescriptionRef = useRef<HTMLTextAreaElement>(null);
 
+  const { mutate: createTeam, data } = useMutation(
+    () => {
+      return axios
+        .post(
+          "/api/v1/teams",
+          {
+            name: teamName,
+            description: teamDescriptionRef.current?.value,
+            emoji,
+            color,
+          },
+          {
+            headers: {
+              Authorization: `Baerer ${"token"}`,
+            },
+          }
+        )
+        .then((response) => response.data);
+    },
+    {
+      onSuccess: () => {
+        console.log(data);
+      },
+    }
+  );
+
   const handleTeamCreationSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log(teamDescriptionRef.current?.value, emoji, color);
+    createTeam();
   };
 
   return (
