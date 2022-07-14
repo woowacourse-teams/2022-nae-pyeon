@@ -5,9 +5,8 @@ import com.woowacourse.naepyeon.exception.ExceedMemberUsernameLengthException;
 import com.woowacourse.naepyeon.exception.InvalidMemberEmailException;
 import com.woowacourse.naepyeon.exception.InvalidMemberPasswordException;
 import com.woowacourse.naepyeon.exception.InvalidMemberUsernameException;
-import java.util.Arrays;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,9 +26,9 @@ public class Member {
     public static final int MIN_PASSWORD_LENGTH = 8;
     public static final int MAX_PASSWORD_LENGTH = 20;
 
-    private static final String USER_REGEX = "^[가-힣a-zA-Z0-9]+$";
-    private static final String EMAIL_REGEX = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";
-    private static final String PASSWORD_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d~!@#$%^&*()+|=]{0,}$";
+    private static final Pattern USER_PATTERN = Pattern.compile("^[가-힣a-zA-Z0-9]+$");
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d~!@#$%^&*()+|=]{0,}$");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -80,13 +79,15 @@ public class Member {
     }
 
     private void validateUsernameRegex(final String username) {
-        if (!Pattern.matches(USER_REGEX, username)) {
+        final Matcher matcher = USER_PATTERN.matcher(username);
+        if (!matcher.matches()) {
             throw new InvalidMemberUsernameException(username);
         }
     }
 
     private void validateEmail(final String email) {
-        if (!Pattern.matches(EMAIL_REGEX, email)) {
+        final Matcher matcher = EMAIL_PATTERN.matcher(email);
+        if (!matcher.matches()) {
             throw new InvalidMemberEmailException(email);
         }
     }
@@ -103,26 +104,9 @@ public class Member {
     }
 
     private void validatePasswordRegex(final String password) {
-        if (!Pattern.matches(PASSWORD_REGEX, password)) {
+        final Matcher matcher = PASSWORD_PATTERN.matcher(password);
+        if (!matcher.matches()) {
             throw new InvalidMemberPasswordException(password);
         }
-    }
-
-    private boolean hasAlphabet(final String password) {
-        for (int i = 0; i < password.length(); i++) {
-            if (Character.isAlphabetic(password.charAt(i))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean hasDigit(final String password) {
-        for (int i = 0; i < password.length(); i++) {
-            if (Character.isDigit(password.charAt(i))) {
-                return true;
-            }
-        }
-        return false;
     }
 }

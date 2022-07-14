@@ -1,8 +1,5 @@
 package com.woowacourse.naepyeon.controller;
 
-import static com.woowacourse.naepyeon.TestDataInit.dummyMember2;
-import static com.woowacourse.naepyeon.TestDataInit.dummyTeam;
-
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.RollingpaperCreateRequest;
 import com.woowacourse.naepyeon.controller.dto.RollingpaperUpdateRequest;
@@ -33,15 +30,10 @@ public class RollingpaperController {
     public ResponseEntity<CreateResponse> createRollingpaper(
             @PathVariable final Long teamId,
             @RequestBody @Valid final RollingpaperCreateRequest rollingpaperCreateRequest) {
-//        final Long rollingpaperId = rollingpaperService.createRollingpaper(rollingpaperCreateRequest.getTitle(), teamId,
-//                rollingpaperCreateRequest.getMemberId());
-//        return ResponseEntity.created(URI.create("/api/v1/teams/" + teamId + "/rollingpapers/" + rollingpaperId))
-//                .build();
-        final Long rollingpaperId = rollingpaperService.createRollingpaper(rollingpaperCreateRequest.getTitle(),
-                dummyTeam.getId(),
-                dummyMember2.getId());
+        final Long rollingpaperId = rollingpaperService.createRollingpaper(rollingpaperCreateRequest.getTitle(), teamId,
+                rollingpaperCreateRequest.getMemberId());
         return ResponseEntity.created(
-                        URI.create("/api/v1/teams/" + dummyTeam.getId() + "/rollingpapers/" + rollingpaperId))
+                        URI.create("/api/v1/teams/" + teamId + "/rollingpapers/" + rollingpaperId))
                 .body(new CreateResponse(rollingpaperId));
     }
 
@@ -54,8 +46,7 @@ public class RollingpaperController {
 
     @GetMapping
     public ResponseEntity<RollingpapersResponseDto> findRollingpapers(@PathVariable final Long teamId) {
-//        final RollingpapersResponseDto rollingpapersResponseDto = rollingpaperService.findByTeamId(teamId);
-        final RollingpapersResponseDto rollingpapersResponseDto = rollingpaperService.findByTeamId(dummyTeam.getId());
+        final RollingpapersResponseDto rollingpapersResponseDto = rollingpaperService.findByTeamId(teamId);
         return ResponseEntity.ok(rollingpapersResponseDto);
     }
 
