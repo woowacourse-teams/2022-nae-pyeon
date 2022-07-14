@@ -14,11 +14,12 @@ public final class ExceedMemberUsernameLengthException extends NaePyeonException
                         username
                 ),
                 String.format(
-                        "[3005] 유저네임은 %d자 이상 %d자 이하여야 합니다.",
+                        "유저네임은 %d자 이상 %d자 이하여야 합니다.",
                         Member.MIN_USERNAME_LENGTH,
                         Member.MAX_USERNAME_LENGTH
                 ),
-                HttpStatus.BAD_REQUEST
+                HttpStatus.BAD_REQUEST,
+                "3005"
         );
     }
 }

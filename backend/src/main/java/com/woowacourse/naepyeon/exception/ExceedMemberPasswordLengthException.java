@@ -14,11 +14,12 @@ public final class ExceedMemberPasswordLengthException extends NaePyeonException
                         password
                 ),
                 String.format(
-                        "[3008] 비밀번호는 %d자 이상 %d자 이하여야 합니다.",
+                        "비밀번호는 %d자 이상 %d자 이하여야 합니다.",
                         Member.MIN_PASSWORD_LENGTH,
                         Member.MAX_USERNAME_LENGTH
                 ),
-                HttpStatus.BAD_REQUEST
+                HttpStatus.BAD_REQUEST,
+                "3008"
         );
     }
 }
