@@ -1,6 +1,7 @@
 package com.woowacourse.naepyeon.controller;
 
 import com.woowacourse.naepyeon.controller.dto.ErrorResponse;
+import com.woowacourse.naepyeon.exception.DuplicateMemberEmailException;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,5 +18,10 @@ public class ControllerAdvice {
         final List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         final FieldError mainError = fieldErrors.get(0);
         return ResponseEntity.badRequest().body(new ErrorResponse(mainError.getDefaultMessage()));
+    }
+
+    @ExceptionHandler({DuplicateMemberEmailException.class})
+    public ResponseEntity<ErrorResponse> duplicateMemberRequest(final Exception e) {
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 }

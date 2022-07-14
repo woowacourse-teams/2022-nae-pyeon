@@ -9,5 +9,7 @@ public interface MemberRepository {
 
     Optional<Member> findById(final Long memberId);
 
+    Optional<Member> findByEmail(final String email);
+
     void delete(final Long memberId);
 }

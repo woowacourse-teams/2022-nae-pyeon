@@ -1,6 +1,7 @@
 package com.woowacourse.naepyeon.service;
 
 import com.woowacourse.naepyeon.domain.Member;
+import com.woowacourse.naepyeon.exception.DuplicateMemberEmailException;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
@@ -16,6 +17,10 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public Long save(final String username, final String email, final String password) {
+        memberRepository.findByEmail(email)
+                .ifPresent(param -> {
+                    throw new DuplicateMemberEmailException();
+                });
         final Member member = new Member(username, email, password);
         return memberRepository.save(member);
     }
