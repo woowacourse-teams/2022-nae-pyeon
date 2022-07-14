@@ -7,12 +7,22 @@ interface LabeledInputProps
   setValue: (value: string) => void;
 }
 
-const LabeledInput = ({ labelText, value, setValue }: LabeledInputProps) => {
+const LabeledInput = ({
+  type = "text",
+  labelText,
+  placeholder,
+  pattern,
+  value,
+  setValue,
+}: LabeledInputProps) => {
   return (
     <StyledLabel>
       {labelText}
       <input
+        type={type}
         value={value}
+        placeholder={placeholder}
+        pattern={pattern}
         onChange={(e) => {
           setValue(e.target.value);
         }}
