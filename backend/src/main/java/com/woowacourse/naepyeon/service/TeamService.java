@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.service;
 
+import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamMember;
@@ -23,8 +24,13 @@ public class TeamService {
     private final TeamMemberRepository teamMemberRepository;
 
     @Transactional
-    public Long save(final String name) {
-        final Team team = new Team(name);
+    public Long save(final TeamRequest teamRequest) {
+        final Team team = new Team(
+                teamRequest.getName(),
+                teamRequest.getDescription(),
+                teamRequest.getEmoji(),
+                teamRequest.getColor()
+        );
         return teamRepository.save(team);
     }
 
@@ -43,7 +49,10 @@ public class TeamService {
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
         return new TeamResponseDto(
                 teamId,
-                team.getName()
+                team.getName(),
+                team.getDescription(),
+                team.getEmoji(),
+                team.getColor()
         );
     }
 

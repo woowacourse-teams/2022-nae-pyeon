@@ -20,7 +20,12 @@ class TeamRepositoryTest {
     @DisplayName("모임을 id로 찾는다.")
     public void findById() {
         // given
-        final Team team = new Team("woowacourse");
+        final Team team = new Team(
+                "woowacourse",
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
         final Long teamId = teamRepository.save(team);
 
         // when
@@ -36,7 +41,12 @@ class TeamRepositoryTest {
     @DisplayName("모임을 id로 제거한다.")
     public void delete() {
         // given
-        final Team team = new Team("woowacourse");
+        final Team team = new Team(
+                "woowacourse",
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
         final Long teamId = teamRepository.save(team);
 
         // when

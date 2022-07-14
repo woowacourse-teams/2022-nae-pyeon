@@ -12,4 +12,7 @@ public class TeamResponseDto {
 
     private Long id;
     private String name;
+    private String description;
+    private String emoji;
+    private String color;
 }

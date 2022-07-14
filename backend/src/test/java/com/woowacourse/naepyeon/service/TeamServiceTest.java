@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamMember;
@@ -24,7 +25,12 @@ import org.springframework.transaction.annotation.Transactional;
 class TeamServiceTest {
 
     private final Member member = new Member("내편이", "naePyeon@test.com", "testtest123");
-    private final Team team = new Team("wooteco");
+    private final Team team = new Team(
+            "wooteco",
+            "테스트 모임입니다.",
+            "testEmoji",
+            "#123456"
+    );
     @Autowired
     private TeamService teamService;
     @Autowired
@@ -44,37 +50,68 @@ class TeamServiceTest {
     @DisplayName("모임을 id값으로 찾는다.")
     void findById() {
         // given
-        final Long teamId = teamService.save("woowacourse");
+        final TeamRequest teamRequest = new TeamRequest(
+                "woowacourse",
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
+        final Long teamId = teamService.save(teamRequest);
 
         // when
         final TeamResponseDto findTeam = teamService.findById(teamId);
 
         // then
         assertThat(findTeam)
-                .extracting("id", "name")
-                .containsExactly(teamId, "woowacourse");
+                .extracting("id", "name", "description", "emoji", "color")
+                .containsExactly(
+                        teamId,
+                        teamRequest.getName(),
+                        teamRequest.getDescription(),
+                        teamRequest.getEmoji(),
+                        teamRequest.getColor()
+                );
     }
 
     @Test
     @DisplayName("모임의 이름을 수정한다.")
     void update() {
         // given
-        final Long teamId = teamService.save("woowacourse-4th");
+        final TeamRequest teamRequest = new TeamRequest(
+                "woowacourse-4th",
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
+        final Long teamId = teamService.save(teamRequest);
 
         // when
-        teamService.updateName(teamId, "woowacourse-5th");
+        final String expected = "woowacourse-5th";
+        teamService.updateName(teamId, expected);
 
         // then
         assertThat(teamService.findById(teamId))
-                .extracting("id", "name")
-                .containsExactly(teamId, "woowacourse-5th");
+                .extracting("id", "name", "description", "emoji", "color")
+                .containsExactly(
+                        teamId,
+                        expected,
+                        teamRequest.getDescription(),
+                        teamRequest.getEmoji(),
+                        teamRequest.getColor()
+                );
     }
 
     @Test
     @DisplayName("모임을 id으로 제거한다.")
     void delete() {
         // given
-        final Long teamId = teamService.save("woowacourse-4th");
+        final TeamRequest teamRequest = new TeamRequest(
+                "woowacourse-4th",
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
+        final Long teamId = teamService.save(teamRequest);
 
         // when
         teamService.delete(teamId);
