@@ -21,7 +21,7 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler({DuplicateMemberEmailException.class})
-    public ResponseEntity<ErrorResponse> duplicateMemberRequest(final Exception e) {
-        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+    public ResponseEntity<ErrorResponse> duplicateMemberRequest(final DuplicateMemberEmailException e) {
+        return ResponseEntity.status(e.getHttpStatus()).body(new ErrorResponse(e.getMessage()));
     }
 }
