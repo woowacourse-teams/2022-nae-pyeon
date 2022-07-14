@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class MemberUpdateRequest {
 
-    @NotBlank(message = "[3004] 유저네임은 공백일 수 없습니다.")
+    @NotBlank(message = "3004:유저네임은 공백일 수 없습니다.")
     private String username;
 }
