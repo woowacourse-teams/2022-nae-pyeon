@@ -13,6 +13,7 @@ import MessageDetailPage from "@/pages/MessageDetailPage";
 import reset from "./styles/reset";
 import font from "./styles/font";
 import theme from "./styles/theme";
+import { SignUpPage } from "./pages/SignUpPage";
 
 const StyledPageContainer = styled.div`
   min-height: 100vh;
@@ -43,6 +44,7 @@ const App = () => {
         <Global styles={font} />
         <StyledPageContainer>
           <Routes>
+            <Route path="signup" element={<SignUpPage />} />
             <Route
               path="rollingpaper/new"
               element={<RollingpaperCreationPage />}
