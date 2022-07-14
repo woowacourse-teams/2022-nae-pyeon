@@ -25,7 +25,8 @@ const StyledHeader = styled.header<StyledHeaderProps>`
   align-items: center;
 
   width: 100%;
-  padding: 20px 10px;
+  padding: 20px 0;
+  margin-bottom: 10px;
   gap: 10px;
 
   justify-content: ${({ align }) => alignByJustifyContent[align]};
