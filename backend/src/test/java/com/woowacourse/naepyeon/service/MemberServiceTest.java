@@ -29,8 +29,8 @@ class MemberServiceTest {
 
         // then
         assertThat(findMember)
-                .extracting("id", "username", "email", "password")
-                .containsExactly(memberId, "seungpang", "email@email.com", "password123!A");
+                .extracting("username", "email")
+                .containsExactly("seungpang", "email@email.com");
     }
 
     @Test
@@ -44,8 +44,8 @@ class MemberServiceTest {
 
         // then
         assertThat(memberService.findById(memberId))
-                .extracting("id", "username", "email", "password")
-                .containsExactly(memberId, "zero", "email@email.com", "password123!A");
+                .extracting("username", "email")
+                .containsExactly("zero", "email@email.com");
     }
 
     @Test

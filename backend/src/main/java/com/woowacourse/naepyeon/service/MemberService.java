@@ -30,10 +30,8 @@ public class MemberService {
         final Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException(memberId));
         return new MemberResponseDto(
-                memberId,
                 member.getUsername(),
-                member.getEmail(),
-                member.getPassword()
+                member.getEmail()
         );
     }
 

@@ -6,7 +6,6 @@ import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_유�
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_추가;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
 import io.restassured.response.ExtractableResponse;
@@ -48,12 +47,11 @@ class MemberAcceptanceTest extends AcceptanceTest {
         //회원 생성
         final MemberRegisterRequest member =
                 new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final Long memberId = 회원_추가(member).as(CreateResponse.class)
-                .getId();
+        회원_추가(member);
 
         //회원정보 수정
         final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest("zero");
-        final ExtractableResponse<Response> response = 회원_유저네임_수정(memberId, memberUpdateRequest);
+        final ExtractableResponse<Response> response = 회원_유저네임_수정(1L, memberUpdateRequest);
 
         //회원정보가 수정됨
         회원정보가_수정됨(response);
@@ -65,11 +63,10 @@ class MemberAcceptanceTest extends AcceptanceTest {
         //회원 생성
         final MemberRegisterRequest member =
                 new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final Long memberId = 회원_추가(member).as(CreateResponse.class)
-                .getId();
+        회원_추가(member);
 
         //회원 삭제
-        final ExtractableResponse<Response> response = 회원_삭제(memberId);
+        final ExtractableResponse<Response> response = 회원_삭제(1L);
 
         //회원이 삭제됨
         회원_삭제됨(response);
