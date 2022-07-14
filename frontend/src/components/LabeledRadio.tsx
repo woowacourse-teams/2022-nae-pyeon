@@ -1,7 +1,7 @@
 import React, { useState, SetStateAction } from "react";
 import styled from "@emotion/styled";
 
-interface radios {
+interface Radio {
   backgroundColor?: string;
   value?: string;
 }
@@ -9,7 +9,7 @@ interface radios {
 interface LabeledRadioProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   labelText: string;
-  radios: radios[];
+  radios: Radio[];
   onClickRadio: React.Dispatch<SetStateAction<string>>;
 }
 
@@ -25,11 +25,9 @@ const LabeledRadio = ({
 }: LabeledRadioProps) => {
   const [selectedRadio, setSelectedRadio] = useState<number | null>(null);
 
-  const handleRadioClick = (index: number, value: string | undefined) => {
+  const handleRadioClick = (index: number, value: string) => {
     setSelectedRadio(index);
-    if (value) {
-      onClickRadio(value);
-    }
+    onClickRadio(value);
   };
 
   return (
