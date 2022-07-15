@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
-import com.woowacourse.naepyeon.domain.TeamMember;
+import com.woowacourse.naepyeon.domain.TeamParticipation;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
-class TeamMemberRepositoryTest {
+class TeamParticipationRepositoryTest {
 
     @Autowired
     private TeamMemberRepository teamMemberRepository;
@@ -54,35 +54,35 @@ class TeamMemberRepositoryTest {
     @DisplayName("회원을 모임에 가입시키고 가입한 회원을 조회한다.")
     void saveAndFind() {
         final String nickname = "닉네임";
-        final TeamMember teamMember = new TeamMember(team1, member1, nickname);
-        final Long savedId = teamMemberRepository.save(teamMember);
+        final TeamParticipation teamParticipation = new TeamParticipation(team1, member1, nickname);
+        final Long savedId = teamMemberRepository.save(teamParticipation);
 
-        final TeamMember findTeamMember = teamMemberRepository.findById(savedId)
+        final TeamParticipation findTeamParticipation = teamMemberRepository.findById(savedId)
                 .orElseThrow();
 
         assertAll(
-                () -> assertThat(findTeamMember.getMember().getId()).isEqualTo(member1.getId()),
-                () -> assertThat(findTeamMember.getTeam().getId()).isEqualTo(team1.getId()),
-                () -> assertThat(findTeamMember.getNickname()).isEqualTo(nickname)
+                () -> assertThat(findTeamParticipation.getMember().getId()).isEqualTo(member1.getId()),
+                () -> assertThat(findTeamParticipation.getTeam().getId()).isEqualTo(team1.getId()),
+                () -> assertThat(findTeamParticipation.getNickname()).isEqualTo(nickname)
         );
     }
 
     @Test
     @DisplayName("모임에 가입한 회원들을 team id로 조회한다.")
     void findByTeamId() {
-        final TeamMember teamMember1 = new TeamMember(team1, member1, "닉네임1");
-        final TeamMember teamMember2 = new TeamMember(team2, member1, "닉네임2");
-        final TeamMember teamMember3 = new TeamMember(team2, member2, "닉네임3");
-        teamMemberRepository.save(teamMember1);
-        teamMemberRepository.save(teamMember2);
-        teamMemberRepository.save(teamMember3);
+        final TeamParticipation teamParticipation1 = new TeamParticipation(team1, member1, "닉네임1");
+        final TeamParticipation teamParticipation2 = new TeamParticipation(team2, member1, "닉네임2");
+        final TeamParticipation teamParticipation3 = new TeamParticipation(team2, member2, "닉네임3");
+        teamMemberRepository.save(teamParticipation1);
+        teamMemberRepository.save(teamParticipation2);
+        teamMemberRepository.save(teamParticipation3);
 
-        final List<TeamMember> findTeam1Members = teamMemberRepository.findByTeamId(team1.getId());
-        final List<TeamMember> findTeam2Members = teamMemberRepository.findByTeamId(team2.getId());
+        final List<TeamParticipation> findTeam1Members = teamMemberRepository.findByTeamId(team1.getId());
+        final List<TeamParticipation> findTeam2Members = teamMemberRepository.findByTeamId(team2.getId());
 
         assertAll(
-                () -> assertThat(findTeam1Members).contains(teamMember1),
-                () -> assertThat(findTeam2Members).contains(teamMember2, teamMember3)
+                () -> assertThat(findTeam1Members).contains(teamParticipation1),
+                () -> assertThat(findTeam2Members).contains(teamParticipation2, teamParticipation3)
         );
     }
 }

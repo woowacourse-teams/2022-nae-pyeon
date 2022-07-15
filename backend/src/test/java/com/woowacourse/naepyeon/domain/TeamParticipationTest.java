@@ -7,7 +7,7 @@ import com.woowacourse.naepyeon.exception.ExceedNicknameLengthException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class TeamMemberTest {
+class TeamParticipationTest {
 
     @Test
     @DisplayName("모임에 가입된 멤버의 모임 닉네임을 변경한다.")
@@ -19,12 +19,12 @@ class TeamMemberTest {
                 "#123456"
         );
         final Member member = new Member("제로", "email@email.com", "zero1234");
-        final TeamMember teamMember = new TeamMember(team, member, "닉네임ㅋㅋ");
+        final TeamParticipation teamParticipation = new TeamParticipation(team, member, "닉네임ㅋㅋ");
 
         final String expected = "바뀌는닉네임ㅋㅋ";
-        teamMember.changeNickname(expected);
+        teamParticipation.changeNickname(expected);
 
-        assertThat(teamMember.getNickname()).isEqualTo(expected);
+        assertThat(teamParticipation.getNickname()).isEqualTo(expected);
     }
 
     @Test
@@ -37,9 +37,9 @@ class TeamMemberTest {
                 "#123456"
         );
         final Member member = new Member("제로", "email@email.com", "zero1234");
-        final TeamMember teamMember = new TeamMember(team, member, "닉네임ㅋㅋ");
+        final TeamParticipation teamParticipation = new TeamParticipation(team, member, "닉네임ㅋㅋ");
 
-        assertThatThrownBy(() -> teamMember.changeNickname("asdsaddasdasddasdasdasdasdasdsadasdaasdasd"))
+        assertThatThrownBy(() -> teamParticipation.changeNickname("asdsaddasdasddasdasdasdasdasdsadasdaasdasd"))
                 .isInstanceOf(ExceedNicknameLengthException.class);
     }
 }

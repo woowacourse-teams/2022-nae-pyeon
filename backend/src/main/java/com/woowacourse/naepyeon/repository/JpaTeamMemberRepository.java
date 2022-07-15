@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.repository;
 
-import com.woowacourse.naepyeon.domain.TeamMember;
+import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.repository.jpa.TeamMemberJpaDao;
 import java.util.List;
 import java.util.Optional;
@@ -14,18 +14,18 @@ public class JpaTeamMemberRepository implements TeamMemberRepository {
     private final TeamMemberJpaDao teamMemberJpaDao;
 
     @Override
-    public Long save(final TeamMember teamMember) {
-        return teamMemberJpaDao.save(teamMember)
+    public Long save(final TeamParticipation teamParticipation) {
+        return teamMemberJpaDao.save(teamParticipation)
                 .getId();
     }
 
     @Override
-    public Optional<TeamMember> findById(final Long id) {
+    public Optional<TeamParticipation> findById(final Long id) {
         return teamMemberJpaDao.findById(id);
     }
 
     @Override
-    public List<TeamMember> findByTeamId(final Long teamId) {
+    public List<TeamParticipation> findByTeamId(final Long teamId) {
         return teamMemberJpaDao.findByTeamId(teamId);
     }
 }

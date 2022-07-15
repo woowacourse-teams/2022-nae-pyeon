@@ -3,7 +3,7 @@ package com.woowacourse.naepyeon.service;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
-import com.woowacourse.naepyeon.domain.TeamMember;
+import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
@@ -40,8 +40,8 @@ public class TeamService {
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
         final Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException(memberId));
-        final TeamMember teamMember = new TeamMember(team, member, nickname);
-        return teamMemberRepository.save(teamMember);
+        final TeamParticipation teamParticipation = new TeamParticipation(team, member, nickname);
+        return teamMemberRepository.save(teamParticipation);
     }
 
     public TeamResponseDto findById(final Long teamId) {

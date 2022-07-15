@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "team_member")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TeamMember {
+public class TeamParticipation {
 
     public static final int MAX_NICKNAME_LENGTH = 20;
 
@@ -38,7 +38,7 @@ public class TeamMember {
     @Column(length = 20, nullable = false)
     private String nickname;
 
-    public TeamMember(final Team team, final Member member, final String nickname) {
+    public TeamParticipation(final Team team, final Member member, final String nickname) {
         this.team = team;
         this.member = member;
         this.nickname = nickname;
