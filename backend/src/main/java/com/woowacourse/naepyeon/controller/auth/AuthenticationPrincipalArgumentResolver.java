@@ -1,7 +1,6 @@
-package com.woowacourse.naepyeon.controller;
+package com.woowacourse.naepyeon.controller.auth;
 
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
-import com.woowacourse.naepyeon.support.AuthenticationPrincipal;
 import com.woowacourse.naepyeon.support.AuthorizationExtractor;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package com.woowacourse.naepyeon.support;
+package com.woowacourse.naepyeon.controller.auth;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

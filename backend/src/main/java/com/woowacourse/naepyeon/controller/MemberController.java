@@ -1,11 +1,11 @@
 package com.woowacourse.naepyeon.controller;
 
+import com.woowacourse.naepyeon.controller.auth.AuthenticationPrincipal;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
 import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
-import com.woowacourse.naepyeon.support.AuthenticationPrincipal;
 import java.net.URI;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;

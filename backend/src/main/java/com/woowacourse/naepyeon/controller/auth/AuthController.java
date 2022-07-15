@@ -1,4 +1,4 @@
-package com.woowacourse.naepyeon.controller;
+package com.woowacourse.naepyeon.controller.auth;
 
 import com.woowacourse.naepyeon.controller.dto.TokenRequest;
 import com.woowacourse.naepyeon.service.AuthService;

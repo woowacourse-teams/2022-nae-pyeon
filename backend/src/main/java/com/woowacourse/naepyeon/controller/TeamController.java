@@ -4,7 +4,7 @@ import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.service.TeamService;
-import com.woowacourse.naepyeon.support.AuthenticationPrincipal;
+import com.woowacourse.naepyeon.controller.auth.AuthenticationPrincipal;
 import java.net.URI;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
