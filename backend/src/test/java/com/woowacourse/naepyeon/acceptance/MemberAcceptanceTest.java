@@ -4,15 +4,19 @@ package com.woowacourse.naepyeon.acceptance;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_삭제;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_유저네임_수정;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_추가;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원가입_후_로그인;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
+import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
+import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 class MemberAcceptanceTest extends AcceptanceTest {
 
@@ -40,6 +44,18 @@ class MemberAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
+    @Test
+    @DisplayName("올바르지 않은 토큰으로 마이페이지를 조회할 경우 예외를 발생시킨다.")
+    void loginInvalidToken() {
+        final ExtractableResponse<Response> response = RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .auth().oauth2("invalidToken")
+                .when().get("/api/v1/members/me")
+                .then().log().all()
+                .extract();
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+    }
 
     @Test
     @DisplayName("회원 유저이름 수정")
@@ -47,11 +63,11 @@ class MemberAcceptanceTest extends AcceptanceTest {
         //회원 생성
         final MemberRegisterRequest member =
                 new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        회원_추가(member);
+        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
 
         //회원정보 수정
         final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest("zero");
-        final ExtractableResponse<Response> response = 회원_유저네임_수정(1L, memberUpdateRequest);
+        final ExtractableResponse<Response> response = 회원_유저네임_수정(tokenResponseDto, memberUpdateRequest);
 
         //회원정보가 수정됨
         회원정보가_수정됨(response);
@@ -63,10 +79,10 @@ class MemberAcceptanceTest extends AcceptanceTest {
         //회원 생성
         final MemberRegisterRequest member =
                 new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        회원_추가(member);
+        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
 
         //회원 삭제
-        final ExtractableResponse<Response> response = 회원_삭제(1L);
+        final ExtractableResponse<Response> response = 회원_삭제(tokenResponseDto, 1L);
 
         //회원이 삭제됨
         회원_삭제됨(response);
