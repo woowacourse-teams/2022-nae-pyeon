@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useMutation } from "react-query";
 
-import axios from "axios";
+import appClient from "@/api";
+
 import styled from "@emotion/styled";
 import Header from "@/components/Header";
 import PageTitle from "@/components/PageTitle";
@@ -23,8 +24,8 @@ export const SignUpPage = () => {
 
   const { mutate: createMember } = useMutation(
     ({ username, email, password }: SignUpMemberInfo) => {
-      return axios
-        .post(`/api/v1/members`, {
+      return appClient
+        .post(`/members`, {
           username,
           email,
           password,
@@ -42,8 +43,6 @@ export const SignUpPage = () => {
   );
 
   const handleSignupClick = () => {
-    console.dir(REGEX.EMAIL);
-
     if (!REGEX.EMAIL.test(email)) {
       alert("유효하지 않은 이메일입니다.");
       return;

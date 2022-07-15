@@ -1,7 +1,8 @@
 import React, { useState, useRef } from "react";
 import styled from "@emotion/styled";
 import { useMutation } from "react-query";
-import axios from "axios";
+
+import appClient from "@/api";
 
 import IconButton from "@/components/IconButton";
 import LabeledInput from "@/components/LabeledInput";
@@ -39,9 +40,9 @@ const TeamCreationPage = () => {
 
   const { mutate: createTeam, data } = useMutation(
     () => {
-      return axios
+      return appClient
         .post(
-          "/api/v1/teams",
+          "/teams",
           {
             name: teamName,
             description: teamDescriptionRef.current?.value,

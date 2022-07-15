@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
-import axios from "axios";
 import { useQuery, useMutation } from "react-query";
 
+import appClient from "@/api";
 import Header from "@/components/Header";
 import Button from "@/components/Button";
 import IconButton from "@/components/IconButton";
@@ -24,15 +24,15 @@ const MessageEditPage = () => {
     isError: isErrorGetMessage,
     data: initialMessage,
   } = useQuery<Message>(["message"], () =>
-    axios
-      .get(`/api/v1/rollingpapers/${rollingpaperId}/messages/${messageId}`)
+    appClient
+      .get(`/rollingpapers/${rollingpaperId}/messages/${messageId}`)
       .then((response) => response.data)
   );
 
   const { mutate: updateMessage } = useMutation(
     ({ content }: Pick<Message, "content">) => {
-      return axios
-        .put(`/api/v1/rollingpapers/${rollingpaperId}/messages/${messageId}`, {
+      return appClient
+        .put(`/rollingpapers/${rollingpaperId}/messages/${messageId}`, {
           content,
         })
         .then((response) => response.data);
