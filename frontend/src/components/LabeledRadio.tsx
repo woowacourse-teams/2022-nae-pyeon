@@ -88,6 +88,8 @@ const StyledRadio = styled.div<StyledRadioProps>`
     props.backgroundColor
       ? props.backgroundColor
       : props.theme.colors.GRAY_200};
+
+  cursor: pointer;
 `;
 
 const StyledInput = styled.input`
@@ -101,7 +103,7 @@ const StyledInput = styled.input`
   clip: rect(0, 0, 0, 0);
 
   &:checked + div {
-    border: 3px solid ${({ theme }) => theme.colors.PURPLE_300};
+    border: 3px solid ${({ theme }) => theme.colors.PURPLE_400};
   }
 `;
 
