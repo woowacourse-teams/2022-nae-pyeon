@@ -87,7 +87,7 @@ const StyledLabel = styled.label`
   flex-direction: column;
   width: 100%;
 
-  font-size: 12px;
+  font-size: 14px;
   color: ${({ theme }) => theme.colors.GRAY_600};
 `;
 

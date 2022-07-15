@@ -16,8 +16,8 @@ const LineButton = ({
 };
 
 const StyledLineButton = styled.button`
-  border: 1px solid ${({ theme }) => theme.colors.SKY_BLUE_200};
-  color: ${({ theme }) => theme.colors.SKY_BLUE_200};
+  border: 1px solid ${({ theme }) => theme.colors.SKY_BLUE_300};
+  color: ${({ theme }) => theme.colors.SKY_BLUE_300};
   border-radius: 8px;
   padding: 10px 20px;
 
@@ -25,7 +25,7 @@ const StyledLineButton = styled.button`
   font-weight: 600;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.SKY_BLUE_300};
+    color: ${({ theme }) => theme.colors.SKY_BLUE_400};
   }
 `;
 

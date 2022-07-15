@@ -10,7 +10,7 @@ import IconButton from "@/components/IconButton";
 import PageTitle from "@/components/PageTitle";
 import LabeledInput from "@/components/LabeledInput";
 import SearchInput from "@/components/SearchInput";
-import LineButton from "@/components/LineButton";
+import Button from "@/components/Button";
 
 import { Rollingpaper } from "@/types";
 
@@ -109,7 +109,7 @@ const RollingpaperCreationPage = () => {
           setValue={setRollingpaperTo}
           searchKeywordList={memberListDummy.map((member) => member.name)}
         />
-        <LineButton type="submit">완료</LineButton>
+        <Button type="submit">완료</Button>
       </StyledForm>
     </>
   );
