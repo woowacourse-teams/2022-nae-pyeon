@@ -59,7 +59,7 @@ class JwtTokenProviderTest {
     @Test
     void getPayloadByInvalidToken() {
         assertThatExceptionOfType(TokenInvalidFormException.class)
-                .isThrownBy(() -> jwtTokenProvider.getPayload("abc"));
+                .isThrownBy(() -> jwtTokenProvider.getPayload(null));
     }
 
     @DisplayName("만료된 토큰으로 payload를 조회할 경우 예외를 발생시킨다.")

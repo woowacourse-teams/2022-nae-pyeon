@@ -50,18 +50,11 @@ public class JwtTokenProvider {
 
     public void validateAbleToken(final String token) {
         try {
-            validateNotToken(token);
             final Jws<Claims> claims = tokenToJws(token);
 
             validateExpiredToken(claims);
         } catch (final JwtException | InvalidLoginException e) {
             throw new TokenInvalidSecretKeyException(token);
-        }
-    }
-
-    private void validateNotToken(final String token) {
-        if (Objects.isNull(token)) {
-            throw new TokenInvalidFormException();
         }
     }
 
@@ -71,9 +64,9 @@ public class JwtTokenProvider {
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
-        } catch (final MalformedJwtException e) {
+        } catch (final IllegalArgumentException | MalformedJwtException e) {
             throw new TokenInvalidFormException();
-        } catch (final IllegalArgumentException | SignatureException e) {
+        } catch (final SignatureException e) {
             throw new TokenInvalidSecretKeyException(token);
         } catch (final ExpiredJwtException e) {
             throw new TokenInvalidExpiredException();
