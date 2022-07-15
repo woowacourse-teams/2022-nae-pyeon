@@ -30,7 +30,7 @@ class JwtTokenProviderTest {
 
     private final JwtTokenProvider invalidSecretKeyJwtTokenProvider
             = new JwtTokenProvider(
-                    "invalidSecretKeyInvalidSecretKeyInvalidSecretKeyInvalidSecretKey",
+            "invalidSecretKeyInvalidSecretKeyInvalidSecretKeyInvalidSecretKey",
             8640000L
     );
 

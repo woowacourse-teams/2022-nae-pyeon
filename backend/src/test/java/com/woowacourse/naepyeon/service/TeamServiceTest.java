@@ -31,6 +31,7 @@ class TeamServiceTest {
             "testEmoji",
             "#123456"
     );
+
     @Autowired
     private TeamService teamService;
     @Autowired
@@ -124,13 +125,15 @@ class TeamServiceTest {
     @Test
     @DisplayName("회원을 모임에 가입시킨다.")
     void joinMember() {
-        final Long joinedId = teamService.joinMember(team.getId(), member.getId());
+        final String nickname = "닉네임";
+        final Long joinedId = teamService.joinMember(team.getId(), member.getId(), nickname);
         final TeamMember findTeamMember = teamMemberRepository.findById(joinedId)
                 .orElseThrow();
 
         assertAll(
                 () -> assertThat(findTeamMember.getMember().getId()).isEqualTo(member.getId()),
-                () -> assertThat(findTeamMember.getTeam().getId()).isEqualTo(team.getId())
+                () -> assertThat(findTeamMember.getTeam().getId()).isEqualTo(team.getId()),
+                () -> assertThat(findTeamMember.getNickname()).isEqualTo(nickname)
         );
     }
 }

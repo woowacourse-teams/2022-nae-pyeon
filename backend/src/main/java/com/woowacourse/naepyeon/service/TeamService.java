@@ -35,12 +35,12 @@ public class TeamService {
     }
 
     @Transactional
-    public Long joinMember(final Long teamId, final Long memberId) {
+    public Long joinMember(final Long teamId, final Long memberId, final String nickname) {
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
         final Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException(memberId));
-        final TeamMember teamMember = new TeamMember(team, member);
+        final TeamMember teamMember = new TeamMember(team, member, nickname);
         return teamMemberRepository.save(teamMember);
     }
 

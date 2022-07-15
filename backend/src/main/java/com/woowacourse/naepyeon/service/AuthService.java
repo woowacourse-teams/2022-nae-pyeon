@@ -1,6 +1,5 @@
 package com.woowacourse.naepyeon.service;
 
-import com.woowacourse.naepyeon.controller.dto.TokenRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.exception.InvalidLoginException;
 import com.woowacourse.naepyeon.repository.MemberRepository;

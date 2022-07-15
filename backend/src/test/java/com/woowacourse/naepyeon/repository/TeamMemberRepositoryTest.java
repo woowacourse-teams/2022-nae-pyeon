@@ -53,7 +53,8 @@ class TeamMemberRepositoryTest {
     @Test
     @DisplayName("회원을 모임에 가입시키고 가입한 회원을 조회한다.")
     void saveAndFind() {
-        final TeamMember teamMember = new TeamMember(team1, member1);
+        final String nickname = "닉네임";
+        final TeamMember teamMember = new TeamMember(team1, member1, nickname);
         final Long savedId = teamMemberRepository.save(teamMember);
 
         final TeamMember findTeamMember = teamMemberRepository.findById(savedId)
@@ -61,16 +62,17 @@ class TeamMemberRepositoryTest {
 
         assertAll(
                 () -> assertThat(findTeamMember.getMember().getId()).isEqualTo(member1.getId()),
-                () -> assertThat(findTeamMember.getTeam().getId()).isEqualTo(team1.getId())
+                () -> assertThat(findTeamMember.getTeam().getId()).isEqualTo(team1.getId()),
+                () -> assertThat(findTeamMember.getNickname()).isEqualTo(nickname)
         );
     }
 
     @Test
     @DisplayName("모임에 가입한 회원들을 team id로 조회한다.")
     void findByTeamId() {
-        final TeamMember teamMember1 = new TeamMember(team1, member1);
-        final TeamMember teamMember2 = new TeamMember(team2, member1);
-        final TeamMember teamMember3 = new TeamMember(team2, member2);
+        final TeamMember teamMember1 = new TeamMember(team1, member1, "닉네임1");
+        final TeamMember teamMember2 = new TeamMember(team2, member1, "닉네임2");
+        final TeamMember teamMember3 = new TeamMember(team2, member2, "닉네임3");
         teamMemberRepository.save(teamMember1);
         teamMemberRepository.save(teamMember2);
         teamMemberRepository.save(teamMember3);

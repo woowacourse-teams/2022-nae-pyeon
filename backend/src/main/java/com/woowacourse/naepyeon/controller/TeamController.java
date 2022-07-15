@@ -1,10 +1,11 @@
 package com.woowacourse.naepyeon.controller;
 
+import com.woowacourse.naepyeon.controller.auth.AuthenticationPrincipal;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
+import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.service.TeamService;
-import com.woowacourse.naepyeon.controller.auth.AuthenticationPrincipal;
 import java.net.URI;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,19 +34,25 @@ public class TeamController {
     }
 
     @PutMapping("/{teamId}")
-    public ResponseEntity<Void> updateTeam(
-            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
-            @PathVariable final Long teamId,
-            @RequestBody @Valid final TeamRequest teamRequest) {
+    public ResponseEntity<Void> updateTeam(@AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+                                           @PathVariable final Long teamId,
+                                           @RequestBody @Valid final TeamRequest teamRequest) {
         teamService.updateName(teamId, teamRequest.getName());
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{teamId}")
-    public ResponseEntity<Void> deleteTeam(
-            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
-            @PathVariable final Long teamId) {
+    public ResponseEntity<Void> deleteTeam(@AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+                                           @PathVariable final Long teamId) {
         teamService.delete(teamId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{teamId}")
+    public ResponseEntity<Void> joinMember(@AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+                                           @PathVariable final Long teamId,
+                                           @RequestBody final JoinTeamMemberRequest joinTeamMemberRequest) {
+        teamService.joinMember(teamId, loginMemberRequest.getId(), joinTeamMemberRequest.getNickname());
         return ResponseEntity.noContent().build();
     }
 }
