@@ -1,8 +1,9 @@
 import React, { useRef } from "react";
 import styled from "@emotion/styled";
-import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
+
+import appClient from "@/api";
 
 import Header from "@/components/Header";
 import Button from "@/components/Button";
@@ -21,9 +22,9 @@ const MessageWritePage = () => {
 
   const { mutate: createMessage } = useMutation(
     ({ content }: Pick<Message, "content">) => {
-      return axios
+      return appClient
         .post(
-          `/api/v1/rollingpapers/${rollingpaperId}/messages`,
+          `/rollingpapers/${rollingpaperId}/messages`,
           {
             content,
           },

@@ -1,8 +1,8 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import styled from "@emotion/styled";
-import axios from "axios";
 import { useQuery } from "react-query";
+
+import appClient from "@/api";
 
 import Header from "@/components/Header";
 import IconButton from "@/components/IconButton";
@@ -22,8 +22,8 @@ const RollingpaperPage = () => {
     isError,
     data: rollingpaper,
   } = useQuery<Rollingpaper>(["rollingpaper"], () =>
-    axios
-      .get(`/api/v1/teams/${teamId}/rollingpapers/${rollingpaperId}`)
+    appClient
+      .get(`/teams/${teamId}/rollingpapers/${rollingpaperId}`)
       .then((response) => response.data)
   );
 

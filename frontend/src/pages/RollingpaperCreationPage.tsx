@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
-import axios from "axios";
 import { useMutation } from "react-query";
+
+import appClient from "@/api";
 
 import Header from "@/components/Header";
 import IconButton from "@/components/IconButton";
@@ -53,8 +54,8 @@ const RollingpaperCreationPage = () => {
       title,
       addresseeId,
     }: Pick<Rollingpaper, "title"> & { addresseeId: number }) => {
-      return axios
-        .post(`/api/v1/teams/${teamId}/rollingpapers`, {
+      return appClient
+        .post(`/teams/${teamId}/rollingpapers`, {
           title,
           addresseeId,
         })

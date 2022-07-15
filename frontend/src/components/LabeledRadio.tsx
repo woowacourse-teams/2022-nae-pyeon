@@ -26,7 +26,6 @@ const LabeledRadio = ({
   const [selectedRadio, setSelectedRadio] = useState<number | null>(null);
 
   const handleRadioChange = (key: number, value: string) => {
-    console.log(key);
     setSelectedRadio(key);
     onClickRadio(value);
   };

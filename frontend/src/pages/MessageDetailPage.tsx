@@ -1,10 +1,10 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
-import axios from "axios";
 import { useQuery, useMutation } from "react-query";
 import { BiChevronLeft } from "react-icons/bi";
 
+import appClient from "@/api";
 import Header from "@/components/Header";
 import IconButton from "@/components/IconButton";
 import RollingpaperMessageDetail from "@/components/RollingpaperMessageDetail";
@@ -20,15 +20,15 @@ const MessageDetailPage = () => {
     isError: isErrorGetMessage,
     data: message,
   } = useQuery<Message>(["message"], () =>
-    axios
-      .get(`/api/v1/rollingpapers/${rollingpaperId}/messages/${messageId}`)
+    appClient
+      .get(`/rollingpapers/${rollingpaperId}/messages/${messageId}`)
       .then((response) => response.data)
   );
 
   const { mutate: deleteMessage } = useMutation(
     () => {
-      return axios
-        .delete(`/api/v1/rollingpapers/${rollingpaperId}/messages/${messageId}`)
+      return appClient
+        .delete(`/rollingpapers/${rollingpaperId}/messages/${messageId}`)
         .then((response) => response.data);
     },
     {
