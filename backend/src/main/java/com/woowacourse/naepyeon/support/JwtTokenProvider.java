@@ -1,8 +1,8 @@
 package com.woowacourse.naepyeon.support;
 
 import com.woowacourse.naepyeon.exception.InvalidLoginException;
-import com.woowacourse.naepyeon.exception.TokenInvalidFormException;
 import com.woowacourse.naepyeon.exception.TokenInvalidExpiredException;
+import com.woowacourse.naepyeon.exception.TokenInvalidFormException;
 import com.woowacourse.naepyeon.exception.TokenInvalidSecretKeyException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -16,12 +16,10 @@ import io.jsonwebtoken.security.SignatureException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import javax.crypto.SecretKey;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-@Slf4j
 public class JwtTokenProvider {
 
     private final SecretKey key;
@@ -46,7 +44,6 @@ public class JwtTokenProvider {
     }
 
     public String getPayload(final String token) {
-        log.info("토큰 = "+token);
         return tokenToJws(token).getBody().getSubject();
     }
 
@@ -54,7 +51,9 @@ public class JwtTokenProvider {
         try {
             final Jws<Claims> claims = tokenToJws(token);
 
-            return claims.getBody().getExpiration().before(new Date());
+            return claims.getBody()
+                    .getExpiration()
+                    .before(new Date());
         } catch (final JwtException | InvalidLoginException e) {
             throw new TokenInvalidSecretKeyException(token);
         }
