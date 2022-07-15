@@ -8,7 +8,7 @@ public final class TokenInvalidFormException extends NaePyeonException {
         super(
                 "올바르지 않은 토큰입니다.",
                 "올바르지 않은 토큰입니다.",
-                HttpStatus.BAD_REQUEST,
+                HttpStatus.UNAUTHORIZED,
                 "3011"
         );
     }
