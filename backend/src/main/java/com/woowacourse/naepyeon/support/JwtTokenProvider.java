@@ -15,6 +15,7 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.Objects;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -47,15 +48,20 @@ public class JwtTokenProvider {
         return tokenToJws(token).getBody().getSubject();
     }
 
-    public boolean checkExpiredToken(final String token) {
+    public void validateAbleToken(final String token) {
         try {
+            validateNotToken(token);
             final Jws<Claims> claims = tokenToJws(token);
 
-            return claims.getBody()
-                    .getExpiration()
-                    .before(new Date());
+            validateExpiredToken(claims);
         } catch (final JwtException | InvalidLoginException e) {
             throw new TokenInvalidSecretKeyException(token);
+        }
+    }
+
+    private void validateNotToken(final String token) {
+        if (Objects.isNull(token)) {
+            throw new TokenInvalidFormException();
         }
     }
 
@@ -70,6 +76,12 @@ public class JwtTokenProvider {
         } catch (final IllegalArgumentException | SignatureException e) {
             throw new TokenInvalidSecretKeyException(token);
         } catch (final ExpiredJwtException e) {
+            throw new TokenInvalidExpiredException();
+        }
+    }
+
+    private void validateExpiredToken(final Jws<Claims> claims) {
+        if (claims.getBody().getExpiration().before(new Date())) {
             throw new TokenInvalidExpiredException();
         }
     }
