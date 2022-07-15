@@ -1,7 +1,7 @@
 package com.woowacourse.naepyeon.controller;
 
-import com.woowacourse.naepyeon.exception.TokenInvalidFormException;
 import com.woowacourse.naepyeon.exception.TokenInvalidExpiredException;
+import com.woowacourse.naepyeon.exception.TokenInvalidFormException;
 import com.woowacourse.naepyeon.support.AuthorizationExtractor;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
 import java.util.Objects;
@@ -18,7 +18,8 @@ public class LoginInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) {
+    public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response,
+                             final Object handler) {
         if (request.getMethod().equals("OPTIONS")) {
             return true;
         }
