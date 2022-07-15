@@ -4,4 +4,9 @@ const REGEX = {
   PASSWORD: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d~!@#$%^&*()+|=]{8,20}$/,
 };
 
-export { REGEX };
+const API_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://baseurl.com/api/v1"
+    : "/api/v1";
+
+export { REGEX, API_URL };
