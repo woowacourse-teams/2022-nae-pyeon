@@ -62,6 +62,10 @@ public class Member {
         this.password = newPassword;
     }
 
+    public boolean checkPassword(final String password) {
+        return this.password.equals(password);
+    }
+
     private void validateMember(final String username, final String email, final String password) {
         validateUsername(username);
         validateEmail(email);
