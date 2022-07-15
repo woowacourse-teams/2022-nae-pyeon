@@ -1,7 +1,7 @@
 package com.woowacourse.naepyeon.config;
 
-import com.woowacourse.naepyeon.controller.auth.LoginInterceptor;
 import com.woowacourse.naepyeon.controller.auth.AuthenticationPrincipalArgumentResolver;
+import com.woowacourse.naepyeon.controller.auth.LoginInterceptor;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

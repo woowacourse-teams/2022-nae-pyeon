@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.domain;
 
+import com.woowacourse.naepyeon.exception.ExceedNicknameLengthException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,7 +18,9 @@ import lombok.NoArgsConstructor;
 @Table(name = "team_member")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TeamMember {
+public class TeamParticipation {
+
+    public static final int MAX_NICKNAME_LENGTH = 20;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +35,23 @@ public class TeamMember {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public TeamMember(final Team team, final Member member) {
+    @Column(length = 20, nullable = false)
+    private String nickname;
+
+    public TeamParticipation(final Team team, final Member member, final String nickname) {
         this.team = team;
         this.member = member;
+        this.nickname = nickname;
+    }
+
+    public void changeNickname(final String nickname) {
+        validateNicknameLength(nickname);
+        this.nickname = nickname;
+    }
+
+    private void validateNicknameLength(final String nickname) {
+        if (nickname.length() > MAX_NICKNAME_LENGTH) {
+            throw new ExceedNicknameLengthException(nickname);
+        }
     }
 }
