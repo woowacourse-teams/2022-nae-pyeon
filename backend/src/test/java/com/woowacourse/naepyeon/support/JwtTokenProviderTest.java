@@ -50,7 +50,6 @@ class JwtTokenProviderTest {
         final String payload = String.valueOf(1L);
 
         final String token = jwtTokenProvider.createToken(payload);
-        System.out.println(token);
 
         assertThat(jwtTokenProvider.getPayload(token)).isEqualTo(payload);
     }
