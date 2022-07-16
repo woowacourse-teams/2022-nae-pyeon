@@ -121,8 +121,8 @@ const teamList = [
 
 const MainPage = () => {
   return (
-    <StyledDiv>
-      <StyledMain>
+    <StyleMain>
+      <StyledCardList>
         {teamList.map(({ id, name, description, emoji, color }) => (
           <MainCard
             key={id}
@@ -132,13 +132,13 @@ const MainPage = () => {
             color={color}
           />
         ))}
-      </StyledMain>
+      </StyledCardList>
       <PlusButton />
-    </StyledDiv>
+    </StyleMain>
   );
 };
 
-const StyledDiv = styled.div`
+const StyleMain = styled.div`
   button {
     position: sticky;
     bottom: 30px;
@@ -146,12 +146,20 @@ const StyledDiv = styled.div`
   }
 `;
 
-const StyledMain = styled.div`
+const StyledCardList = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-row-gap: 24px;
   grid-column-gap: 10px;
   justify-items: center;
+
+  @media only screen and (min-width: 960px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media only screen and (min-width: 1280px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
 `;
 
 export default MainPage;
