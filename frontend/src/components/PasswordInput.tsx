@@ -44,7 +44,7 @@ const StyledPasswordInput = styled.div`
   height: 48px;
   margin-top: 8px;
   padding: 4px 12px;
-  background-color: ${({ theme }) => theme.colors.GRAY_200};
+  background-color: ${({ theme }) => theme.colors.GRAY_100};
 
   border-radius: 8px;
 
@@ -56,7 +56,7 @@ const StyledPasswordInput = styled.div`
   input {
     width: 100%;
     border-radius: 8px;
-    background-color: ${({ theme }) => theme.colors.GRAY_200};
+    background-color: ${({ theme }) => theme.colors.GRAY_100};
     border: none;
     font-size: 16px;
 
