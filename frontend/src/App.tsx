@@ -16,6 +16,7 @@ import font from "./styles/font";
 import theme from "./styles/theme";
 import { SignUpPage } from "./pages/SignUpPage";
 import TeamCreationPage from "./pages/TeamCreationPage";
+import MainPage from "./pages/MainPage";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => {
         <Global styles={font} />
         <PageContainer>
           <Routes>
+            <Route path="/" element={<MainPage />} />
             <Route path="signup" element={<SignUpPage />} />
             <Route
               path="rollingpaper/new"
