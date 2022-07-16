@@ -121,20 +121,30 @@ const teamList = [
 
 const MainPage = () => {
   return (
-    <StyledMain>
-      {teamList.map(({ id, name, description, emoji, color }) => (
-        <MainCard
-          key={id}
-          name={name}
-          description={description}
-          emoji={emoji}
-          color={color}
-        />
-      ))}
+    <StyledDiv>
+      <StyledMain>
+        {teamList.map(({ id, name, description, emoji, color }) => (
+          <MainCard
+            key={id}
+            name={name}
+            description={description}
+            emoji={emoji}
+            color={color}
+          />
+        ))}
+      </StyledMain>
       <PlusButton />
-    </StyledMain>
+    </StyledDiv>
   );
 };
+
+const StyledDiv = styled.div`
+  button {
+    position: sticky;
+    bottom: 30px;
+    left: 90%;
+  }
+`;
 
 const StyledMain = styled.div`
   display: grid;
@@ -142,14 +152,6 @@ const StyledMain = styled.div`
   grid-row-gap: 24px;
   grid-column-gap: 10px;
   justify-items: center;
-
-  margin-top: 20px;
-
-  button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-  }
 `;
 
 export default MainPage;
