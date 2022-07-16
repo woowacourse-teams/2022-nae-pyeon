@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
-import com.woowacourse.naepyeon.domain.TeamMember;
+import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.TeamMemberRepository;
@@ -31,6 +31,7 @@ class TeamServiceTest {
             "testEmoji",
             "#123456"
     );
+
     @Autowired
     private TeamService teamService;
     @Autowired
@@ -124,13 +125,15 @@ class TeamServiceTest {
     @Test
     @DisplayName("회원을 모임에 가입시킨다.")
     void joinMember() {
-        final Long joinedId = teamService.joinMember(team.getId(), member.getId());
-        final TeamMember findTeamMember = teamMemberRepository.findById(joinedId)
+        final String nickname = "닉네임";
+        final Long joinedId = teamService.joinMember(team.getId(), member.getId(), nickname);
+        final TeamParticipation findTeamParticipation = teamMemberRepository.findById(joinedId)
                 .orElseThrow();
 
         assertAll(
-                () -> assertThat(findTeamMember.getMember().getId()).isEqualTo(member.getId()),
-                () -> assertThat(findTeamMember.getTeam().getId()).isEqualTo(team.getId())
+                () -> assertThat(findTeamParticipation.getMember().getId()).isEqualTo(member.getId()),
+                () -> assertThat(findTeamParticipation.getTeam().getId()).isEqualTo(team.getId()),
+                () -> assertThat(findTeamParticipation.getNickname()).isEqualTo(nickname)
         );
     }
 }

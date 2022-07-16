@@ -1,14 +1,14 @@
 package com.woowacourse.naepyeon.repository;
 
-import com.woowacourse.naepyeon.domain.TeamMember;
+import com.woowacourse.naepyeon.domain.TeamParticipation;
 import java.util.List;
 import java.util.Optional;
 
 public interface TeamMemberRepository {
 
-    Long save(final TeamMember teamMember);
+    Long save(final TeamParticipation teamParticipation);
 
-    Optional<TeamMember> findById(final Long id);
+    Optional<TeamParticipation> findById(final Long id);
 
-    List<TeamMember> findByTeamId(final Long teamId);
+    List<TeamParticipation> findByTeamId(final Long teamId);
 }
