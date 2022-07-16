@@ -17,6 +17,7 @@ import theme from "./styles/theme";
 import { SignUpPage } from "./pages/SignUpPage";
 import TeamCreationPage from "./pages/TeamCreationPage";
 import MainPage from "./pages/MainPage";
+import LoginPage from "./pages/LoginPage";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +52,7 @@ const App = () => {
               element={<MessageEditPage />}
             />
             <Route path="team/new" element={<TeamCreationPage />} />
+            <Route path="login" element={<LoginPage />} />
           </Routes>
         </PageContainer>
       </ThemeProvider>
