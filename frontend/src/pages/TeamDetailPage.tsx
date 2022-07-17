@@ -8,6 +8,15 @@ import appClient from "@/api";
 import RollingpaperList from "@/components/RollingpaperList";
 import TeamJoinSection from "@/components/TeamJoinSection";
 
+interface Team {
+  id: number;
+  name: string;
+  description: string;
+  emoji: string;
+  color: string;
+  joined: boolean;
+}
+
 interface Rollingpaper {
   id: number;
   title: string;
@@ -19,6 +28,14 @@ const TeamDetailPage = () => {
   const navigate = useNavigate();
 
   const {
+    isLoading: isLoadingTeamDetail,
+    isError: isErrorTeamDetail,
+    data: TeamDetail,
+  } = useQuery<Team>(["team"], () =>
+    appClient.get(`/teams/${teamId}`).then((response) => response.data)
+  );
+
+  const {
     isLoading: isLoadingGetTeamRollingpaperList,
     isError: isErrorGetTeamRollingpaperList,
     data: rollingpaperList,
@@ -28,11 +45,16 @@ const TeamDetailPage = () => {
       .then((response) => response.data)
   );
 
-  if (isLoadingGetTeamRollingpaperList) {
+  if (isLoadingTeamDetail || isLoadingGetTeamRollingpaperList) {
     return <div>로딩중</div>;
   }
 
-  if (isErrorGetTeamRollingpaperList || !rollingpaperList) {
+  if (
+    isErrorTeamDetail ||
+    !TeamDetail ||
+    isErrorGetTeamRollingpaperList ||
+    !rollingpaperList
+  ) {
     return <div>에러</div>;
   }
 
@@ -43,8 +65,11 @@ const TeamDetailPage = () => {
         title="테스트"
         description="테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ"
       />
-      <RollingpaperList rollingpapers={rollingpaperList} />
-      <TeamJoinSection />
+      {!TeamDetail.joined ? (
+        <TeamJoinSection />
+      ) : (
+        <RollingpaperList rollingpapers={rollingpaperList} />
+      )}
     </StyledMain>
   );
 };
