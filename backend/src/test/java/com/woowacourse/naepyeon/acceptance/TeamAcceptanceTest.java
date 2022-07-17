@@ -97,6 +97,21 @@ class TeamAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    @DisplayName("모임에 회원을 가입시킨다.")
+    void joinMember() {
+        //모임 생성
+        final MemberRegisterRequest member =
+                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
+        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        final Long teamId = 모임_생성();
+
+        final ExtractableResponse<Response> response =
+                모임_가입(tokenResponseDto, teamId, new JoinTeamMemberRequest("모임닉네임"));
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
     @DisplayName("모임에 이미 가입된 회원을 가입시키려 하는 경우 예외를 발생시킨다.")
     void joinMemberDuplicate() {
         //모임 생성
@@ -109,6 +124,43 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final ExtractableResponse<Response> response =
                 모임_가입(tokenResponseDto, teamId, new JoinTeamMemberRequest("모임닉네임"));
 
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+    
+    @Test
+    @DisplayName("모임 이름을 수정할 때, 20자를 초과하는 이름으로 수정하는 경우 예외를 발생시킨다.")
+    void changeTeamNameWithExceedLength() {
+        //모임 생성
+        final MemberRegisterRequest member =
+                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
+        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        final Long teamId = 모임_생성();
+
+        // 모임 이름 수정
+        final TeamRequest changeTeamRequest = new TeamRequest(
+                "a".repeat(21),
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
+        final ExtractableResponse<Response> response = 모임_이름_수정(tokenResponseDto, teamId, changeTeamRequest);
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+    
+    @Test
+    @DisplayName("존재하지 않는 모임을 삭제하려는 경우 예외를 발생시킨다.")
+    void deleteNotExistTeam() {
+        //모임 생성
+        final MemberRegisterRequest member =
+                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
+        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        final Long teamId = 모임_생성();
+
+        //모임 삭제
+        final ExtractableResponse<Response> response = 모임_삭제(tokenResponseDto, teamId);
+
+        //모임이 삭제됨
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
