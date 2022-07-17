@@ -104,7 +104,7 @@ export const handlers = [
 
   // 롤링페이퍼 목록 조회
   rest.get("/api/v1/teams/:teamId/rollingpapers", (req, res, ctx) => {
-    const { teamId, rollingpaperId } = req.params;
+    const { teamId } = req.params;
 
     const dummyRollingpapers = [
       {
@@ -130,5 +130,21 @@ export const handlers = [
     ];
 
     return res(ctx.status(200), ctx.json(dummyRollingpapers));
+  }),
+
+  // 팀 상세정보 조회
+  rest.get("/api/v1/teams/:teamId", (req, res, ctx) => {
+    const { teamId } = req.params;
+
+    const teamDetail = {
+      id: teamId,
+      name: "우아한테크코스 4기",
+      description: "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      emoji: "😀",
+      color: "#BAE6FF",
+      joined: true,
+    };
+
+    return res(ctx.status(200), ctx.json(teamDetail));
   }),
 ];
