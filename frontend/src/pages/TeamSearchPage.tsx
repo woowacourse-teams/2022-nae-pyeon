@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 
-import Search from "@/components/Search";
+import SearchInput from "@/components/SearchInput";
 import TeamCard from "@/components/TeamCard";
 
 const teamList = [
@@ -41,7 +41,10 @@ const TeamSearch = () => {
   return (
     <>
       <StyledSearch>
-        <Search onClick={handleSearchClick} onChange={handleSearchChange} />
+        <SearchInput
+          onClick={handleSearchClick}
+          onChange={handleSearchChange}
+        />
       </StyledSearch>
       <StyledTeamList>
         {teamList.map((team) => (
