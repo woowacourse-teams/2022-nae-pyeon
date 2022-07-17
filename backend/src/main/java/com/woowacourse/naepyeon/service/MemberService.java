@@ -42,6 +42,8 @@ public class MemberService {
     }
 
     public void delete(final Long memberId) {
+        memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundMemberException(memberId));
         memberRepository.delete(memberId);
     }
 }
