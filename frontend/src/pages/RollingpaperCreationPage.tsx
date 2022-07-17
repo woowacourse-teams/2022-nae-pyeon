@@ -9,7 +9,7 @@ import Header from "@/components/Header";
 import IconButton from "@/components/IconButton";
 import PageTitle from "@/components/PageTitle";
 import LabeledInput from "@/components/LabeledInput";
-import SearchInput from "@/components/SearchInput";
+import AutoCompleteInput from "@/components/AutoCompleteInput";
 import Button from "@/components/Button";
 
 import { Rollingpaper } from "@/types";
@@ -103,7 +103,7 @@ const RollingpaperCreationPage = () => {
           value={rollingpaperTitle}
           setValue={setRollingpaperTitle}
         />
-        <SearchInput
+        <AutoCompleteInput
           labelText="롤링페이퍼 대상"
           value={rollingpaperTo}
           setValue={setRollingpaperTo}

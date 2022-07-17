@@ -18,6 +18,7 @@ const PasswordInput = ({ labelText, value, setValue }: PasswordInput) => {
   return (
     <StyledLabel>
       {labelText}
+      비밀번호
       <StyledPasswordInput>
         <input
           type={showPassword ? "text" : "password"}
