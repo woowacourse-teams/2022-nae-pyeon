@@ -30,7 +30,7 @@ const TeamDetailPage = () => {
   const {
     isLoading: isLoadingTeamDetail,
     isError: isErrorTeamDetail,
-    data: TeamDetail,
+    data: teamDetail,
   } = useQuery<Team>(["team"], () =>
     appClient.get(`/teams/${teamId}`).then((response) => response.data)
   );
@@ -51,7 +51,7 @@ const TeamDetailPage = () => {
 
   if (
     isErrorTeamDetail ||
-    !TeamDetail ||
+    !teamDetail ||
     isErrorGetTeamRollingpaperList ||
     !rollingpaperList
   ) {
@@ -65,10 +65,10 @@ const TeamDetailPage = () => {
         title="테스트"
         description="테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ"
       />
-      {!TeamDetail.joined ? (
-        <TeamJoinSection />
-      ) : (
+      {teamDetail.joined ? (
         <RollingpaperList rollingpapers={rollingpaperList} />
+      ) : (
+        <TeamJoinSection />
       )}
     </StyledMain>
   );
