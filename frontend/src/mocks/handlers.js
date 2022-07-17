@@ -1,9 +1,11 @@
 import { rest } from "msw";
 import rollingPaperDummy from "./dummy/rollingpapers.json";
 import myTeamsDummy from "./dummy/myTeams.json";
+import totalTeamsDummy from "./dummy/totalTeams.json";
 
 const rollingpapers = rollingPaperDummy.rollingpapers;
 const myTeams = myTeamsDummy.teams;
+const totalTeams = totalTeamsDummy.totalTeams;
 
 export const handlers = [
   // 롤링페이퍼 단건 조회
@@ -118,6 +120,16 @@ export const handlers = [
     const { accessToken } = req.headers.headers.authorization;
 
     const result = myTeams;
+
+    return res(ctx.json(result));
+  }),
+
+  // 전체 모임 조회
+  rest.get("/api/v1/teams", (req, res, ctx) => {
+    const { accessToken } = req.headers.headers.authorization;
+    console.log(accessToken);
+
+    const result = totalTeams;
 
     return res(ctx.json(result));
   }),
