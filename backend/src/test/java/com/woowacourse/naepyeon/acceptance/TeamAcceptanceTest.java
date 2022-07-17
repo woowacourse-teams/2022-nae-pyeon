@@ -75,6 +75,17 @@ class TeamAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    @DisplayName("존재하지 않는 id로 모임 조회를 하려 하는 경우 예외를 발생시킨다.")
+    void findByIdWithNotExistId() {
+        final MemberRegisterRequest member =
+                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
+        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        final ExtractableResponse<Response> response = 모임_단건_조회(tokenResponseDto, 10000L);
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+    }
+
+    @Test
     @DisplayName("모임을 중복해서 생성하는 경우 예외를 발생시킨다.")
     void addTeamDuplicate() {
         //모임 생성
