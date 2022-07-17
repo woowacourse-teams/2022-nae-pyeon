@@ -4,10 +4,11 @@ import styled from "@emotion/styled";
 import { BiShow, BiHide } from "react-icons/bi";
 
 interface PasswordInput extends React.InputHTMLAttributes<HTMLInputElement> {
+  labelText: string;
   setValue: (value: string) => void;
 }
 
-const PasswordInput = ({ value, setValue }: PasswordInput) => {
+const PasswordInput = ({ labelText, value, setValue }: PasswordInput) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowClick = () => {
@@ -16,7 +17,7 @@ const PasswordInput = ({ value, setValue }: PasswordInput) => {
 
   return (
     <StyledLabel>
-      비밀번호
+      {labelText}
       <StyledPasswordInput>
         <input
           type={showPassword ? "text" : "password"}

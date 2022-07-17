@@ -24,7 +24,11 @@ const LoginPage = () => {
       <StyledMain>
         <form>
           <LabeledInput labelText="이메일" value={email} setValue={setEmail} />
-          <PasswordInput value={password} setValue={setPassword} />
+          <PasswordInput
+            labelText="비밀번호"
+            value={password}
+            setValue={setPassword}
+          />
           <Button type="submit">로그인</Button>
         </form>
         <hr />
