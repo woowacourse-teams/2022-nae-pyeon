@@ -101,4 +101,34 @@ export const handlers = [
 
     return res(ctx.status(201));
   }),
+
+  // 롤링페이퍼 목록 조회
+  rest.get("/api/v1/teams/:teamId/rollingpapers", (req, res, ctx) => {
+    const { teamId, rollingpaperId } = req.params;
+
+    const dummyRollingpapers = [
+      {
+        id: 1,
+        title: "우테코 고마워",
+        to: "우아한테크코스",
+      },
+      {
+        id: 2,
+        title: "소피아 생일 축하해 🎉",
+        to: "소피아",
+      },
+      {
+        id: 3,
+        title: "오늘의 내 편 데일리 미팅",
+        to: "내 편",
+      },
+      {
+        id: 4,
+        title: "이번 주 우리의 한 마디",
+        to: "우아한테크코스",
+      },
+    ];
+
+    return res(ctx.status(200), ctx.json(dummyRollingpapers));
+  }),
 ];
