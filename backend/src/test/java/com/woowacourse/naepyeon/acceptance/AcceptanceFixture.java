@@ -1,10 +1,6 @@
 package com.woowacourse.naepyeon.acceptance;
 
-import com.woowacourse.naepyeon.controller.dto.CreateResponse;
-import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
-import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
-import com.woowacourse.naepyeon.controller.dto.TeamRequest;
-import com.woowacourse.naepyeon.controller.dto.TokenRequest;
+import com.woowacourse.naepyeon.controller.dto.*;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -96,8 +92,8 @@ public class AcceptanceFixture {
         return put(tokenResponseDto, memberUpdateRequest, "/api/v1/members/me");
     }
 
-    public static ExtractableResponse<Response> 회원_삭제(final TokenResponseDto tokenResponseDto, final Long id) {
-        return delete(tokenResponseDto, "/api/v1/members/" + id);
+    public static ExtractableResponse<Response> 회원_삭제(final TokenResponseDto tokenResponseDto) {
+        return delete(tokenResponseDto, "/api/v1/members/me");
     }
 
     public static ExtractableResponse<Response> 모임_추가(final TokenResponseDto tokenResponseDto,
