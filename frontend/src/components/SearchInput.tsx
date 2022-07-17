@@ -1,161 +1,63 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
 import { BiSearch } from "react-icons/bi";
 
-interface SearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  labelText: string;
-  searchKeywordList: string[];
-  setValue: (value: string) => void;
-}
+type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
+type InputAttributes = React.InputHTMLAttributes<HTMLInputElement>;
 
 const SearchInput = ({
-  labelText,
-  value,
-  setValue,
-  searchKeywordList,
-}: SearchInputProps) => {
-  const [autocompleteList, setAutocompleteList] = useState(searchKeywordList);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const searchInputRef = useRef(null);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-
-    const newAutocompleteList = searchKeywordList.filter((keyword) =>
-      keyword.includes(e.target.value)
-    );
-    setAutocompleteList(newAutocompleteList);
-  };
-
-  const handleDocumentClick = (e: MouseEvent) => {
-    if (searchInputRef.current === e.target) {
-      return;
-    }
-    setIsOpen(false);
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleDocumentClick);
-
-    return () => {
-      document.removeEventListener("click", handleDocumentClick);
-    };
-  }, []);
-
+  onClick,
+  onChange,
+}: ButtonAttributes & InputAttributes) => {
   return (
-    <StyledLabel>
-      {labelText}
-      <StyledInputContainer>
+    <StyledSearch>
+      <StyledInput onChange={onChange} />
+      <button type="submit" onClick={onClick}>
         <BiSearch />
-        <input
-          ref={searchInputRef}
-          value={value}
-          onChange={handleInputChange}
-          onFocus={() => {
-            setIsOpen(true);
-          }}
-        />
-      </StyledInputContainer>
-      {isOpen && autocompleteList.length > 0 && (
-        <StyledAutocompleteList>
-          {autocompleteList.map((autocompleteListItem) => (
-            <StyledAutocompleteListItem
-              key={autocompleteListItem}
-              onClick={() => {
-                const newAutocompleteList = searchKeywordList.filter(
-                  (keyword) => keyword.includes(autocompleteListItem)
-                );
-                setValue(autocompleteListItem);
-                setAutocompleteList(newAutocompleteList);
-              }}
-            >
-              {autocompleteListItem}
-            </StyledAutocompleteListItem>
-          ))}
-        </StyledAutocompleteList>
-      )}
-    </StyledLabel>
+      </button>
+    </StyledSearch>
   );
 };
 
-const StyledLabel = styled.label`
-  position: relative;
-
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-
-  font-size: 14px;
-  color: ${({ theme }) => theme.colors.GRAY_600};
-`;
-
-const StyledInputContainer = styled.div`
+const StyledSearch = styled.form`
   display: flex;
   align-items: center;
 
-  height: 48px;
-  padding: 0 10px;
-  margin-top: 8px;
-  gap: 10px;
+  height: 50px;
 
-  background-color: ${({ theme }) => theme.colors.GRAY_100};
-  border-radius: 8px;
+  border: 3px solid ${({ theme }) => theme.colors.SKY_BLUE_300};
+  border-radius: 4px;
+
+  button {
+    display: flex;
+    align-items: center;
+
+    height: 100%;
+
+    background-color: ${({ theme }) => theme.colors.SKY_BLUE_300};
+  }
 
   svg {
-    font-size: 30px;
-  }
+    padding: 4px;
 
-  input {
-    width: 100%;
+    color: ${({ theme }) => theme.colors.WHITE};
 
-    font-size: 16px;
-    border: none;
-    background-color: transparent;
-
-    &:focus {
-      outline: none;
-    }
+    font-size: 40px;
   }
 `;
 
-const StyledAutocompleteList = styled.ul`
-  position: absolute;
-  top: 73px;
-  z-index: 2;
-
+const StyledInput = styled.input`
+  height: 100%;
   width: 100%;
-  max-height: 150px;
-  overflow-y: scroll;
 
-  margin-top: 5px;
-  background-color: ${({ theme }) => theme.colors.WHITE};
-  color: ${({ theme }) => theme.colors.GRAY_800};
+  padding: 0 10px;
 
-  border: 1px solid ${({ theme }) => theme.colors.GRAY_200};
-  border-radius: 8px;
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const StyledAutocompleteListItem = styled.li`
-  height: 40px;
-  padding: 10px 20px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.GRAY_200};
-
+  border: none;
   font-size: 16px;
 
-  cursor: pointer;
-
-  :hover {
-    background-color: ${({ theme }) => theme.colors.GRAY_100};
-  }
-
-  :last-child {
-    border: none;
+  &:focus {
+    outline: none;
   }
 `;
 
