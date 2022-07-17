@@ -7,6 +7,7 @@ import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.service.TeamService;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
+import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.net.URI;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,11 @@ public class TeamController {
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long teamId) {
         return ResponseEntity.ok(teamService.findById(teamId));
+    }
+
+    @GetMapping
+    public ResponseEntity<TeamsResponseDto> getAllTeams() {
+        return ResponseEntity.ok(teamService.findAllTeams());
     }
 
     @PostMapping

@@ -1,6 +1,7 @@
 package com.woowacourse.naepyeon.acceptance;
 
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.post;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모든_모임_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_단건_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_삭제;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_생성;
@@ -16,6 +17,7 @@ import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
+import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -91,6 +93,35 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final ExtractableResponse<Response> response = 모임_추가(tokenResponseDto, teamRequest);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    @DisplayName("모든 팀을 조회한다.")
+    void getAllTeams() {
+        //모임 생성
+        final MemberRegisterRequest member =
+                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
+        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        final TeamRequest teamRequest1 = new TeamRequest(
+                "woowacourse1",
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
+        모임_추가(tokenResponseDto, teamRequest1);
+        //모임 생성
+        final TeamRequest teamRequest2 = new TeamRequest(
+                "woowacourse2",
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
+        모임_추가(tokenResponseDto, teamRequest2);
+
+        final TeamsResponseDto response = 모든_모임_조회(tokenResponseDto).body()
+                .as(TeamsResponseDto.class);
+
+        assertThat(response.getTeams().size()).isEqualTo(2);
     }
 
     @Test

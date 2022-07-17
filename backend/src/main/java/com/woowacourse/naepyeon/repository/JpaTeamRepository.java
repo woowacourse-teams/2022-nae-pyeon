@@ -4,6 +4,7 @@ import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.exception.DuplicateTeamNameException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.repository.jpa.TeamJpaDao;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -36,5 +37,10 @@ public class JpaTeamRepository implements TeamRepository {
         if (affectedRow != 1) {
             throw new NotFoundTeamException(teamId);
         }
+    }
+
+    @Override
+    public List<Team> findAll() {
+        return teamJpaDao.findAll();
     }
 }

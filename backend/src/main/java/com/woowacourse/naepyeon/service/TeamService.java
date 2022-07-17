@@ -10,6 +10,9 @@ import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.TeamMemberRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
+import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,5 +69,14 @@ public class TeamService {
     @Transactional
     public void delete(final Long teamId) {
         teamRepository.delete(teamId);
+    }
+
+    public TeamsResponseDto findAllTeams() {
+        final List<Team> teams = teamRepository.findAll();
+        final List<TeamResponseDto> teamResponseDtos = teams.stream()
+                .map(TeamResponseDto::from)
+                .collect(Collectors.toList());
+
+        return new TeamsResponseDto(teamResponseDtos);
     }
 }

@@ -129,4 +129,8 @@ public class AcceptanceFixture {
                                                          final Long teamId) {
         return get(tokenResponseDto, "/api/v1/teams/" + teamId);
     }
+
+    public static ExtractableResponse<Response> 모든_모임_조회(final TokenResponseDto tokenResponseDto) {
+        return get(tokenResponseDto, "/api/v1/teams");
+    }
 }
