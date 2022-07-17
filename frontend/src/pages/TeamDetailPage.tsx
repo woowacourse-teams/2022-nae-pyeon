@@ -61,9 +61,10 @@ const TeamDetailPage = () => {
   return (
     <StyledMain>
       <TeamDescriptionBox
-        emoji="💕"
-        title="테스트"
-        description="테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ"
+        emoji={teamDetail.emoji}
+        name={teamDetail.name}
+        description={teamDetail.description}
+        color={teamDetail.color}
       />
       {teamDetail.joined ? (
         <RollingpaperList rollingpapers={rollingpaperList} />
@@ -74,20 +75,27 @@ const TeamDetailPage = () => {
   );
 };
 
-interface TeamDescriptionBoxProp {
-  emoji: string;
-  title: string;
+interface TeamDescriptionBoxProps {
+  name: string;
   description: string;
+  emoji: string;
+  color: string;
 }
 
+type StyledTeamDescriptionContainerProps = Pick<
+  TeamDescriptionBoxProps,
+  "color"
+>;
+
 const TeamDescriptionBox = ({
-  emoji,
-  title,
+  name,
   description,
-}: TeamDescriptionBoxProp) => {
+  emoji,
+  color,
+}: TeamDescriptionBoxProps) => {
   return (
-    <StyledTeamDescriptionContainer>
-      <h3>{`${emoji} ${title}`}</h3>
+    <StyledTeamDescriptionContainer color={color}>
+      <h3>{`${emoji} ${name}`}</h3>
       <p>{description}</p>
     </StyledTeamDescriptionContainer>
   );
@@ -103,12 +111,12 @@ const StyledMain = styled.main`
   padding: 28px 0;
 `;
 
-const StyledTeamDescriptionContainer = styled.div`
+const StyledTeamDescriptionContainer = styled.div<StyledTeamDescriptionContainerProps>`
   width: 80%;
 
   padding: 28px 16px;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.YELLOW_200};
+  background-color: ${({ color }) => `${color}AB`};
 
   h3 {
     font-size: 32px;
