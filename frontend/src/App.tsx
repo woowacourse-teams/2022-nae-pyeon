@@ -8,6 +8,7 @@ import RollingpaperCreationPage from "@/pages/RollingpaperCreationPage";
 import MessageWritePage from "@/pages/MessageWritePage";
 import MessageEditPage from "@/pages/MessageEditPage";
 import MessageDetailPage from "@/pages/MessageDetailPage";
+import TeamDetailPage from "@/pages/TeamDetailPage";
 
 import PageContainer from "@/components/PageContainer";
 
@@ -51,6 +52,7 @@ const App = () => {
               element={<MessageEditPage />}
             />
             <Route path="team/new" element={<TeamCreationPage />} />
+            <Route path="team/:teamId" element={<TeamDetailPage />} />
           </Routes>
         </PageContainer>
       </ThemeProvider>
