@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
 
 import Logo from "@/components/Logo";
 import LabeledInput from "@/components/LabeledInput";
@@ -8,9 +9,38 @@ import PasswordInput from "@/components/PasswordInput";
 import Button from "@/components/Button";
 import SocialLoginButton from "@/components/SocialLoginButton";
 
+import appClient from "@/api";
+
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const { mutate: login } = useMutation(
+    () => {
+      return appClient
+        .post(`/login`, {
+          email,
+          password,
+        })
+        .then((response) => response.data);
+    },
+    {
+      onSuccess: (data) => {
+        console.log(data);
+        navigate(`/`, { replace: true });
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    }
+  );
+
+  const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    login();
+  };
 
   return (
     <>
@@ -19,7 +49,7 @@ const LoginPage = () => {
         <div>내 마음을 편지로</div>
       </StyledTitle>
       <StyledMain>
-        <form>
+        <form onSubmit={handleLoginSubmit}>
           <LabeledInput labelText="이메일" value={email} setValue={setEmail} />
           <PasswordInput
             labelText="비밀번호"
