@@ -1,12 +1,15 @@
 package com.woowacourse.naepyeon.acceptance;
 
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.post;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_삭제;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_생성;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_이름_수정;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_추가;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원가입_후_로그인;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
@@ -91,6 +94,22 @@ class TeamAcceptanceTest extends AcceptanceTest {
 
         //모임이 삭제됨
         모임_삭제됨(response);
+    }
+
+    @Test
+    @DisplayName("모임에 이미 가입된 회원을 가입시키려 하는 경우 예외를 발생시킨다.")
+    void joinMemberDuplicate() {
+        //모임 생성
+        final MemberRegisterRequest member =
+                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
+        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        final Long teamId = 모임_생성();
+        모임_가입(tokenResponseDto, teamId, new JoinTeamMemberRequest("모임닉네임"));
+
+        final ExtractableResponse<Response> response =
+                모임_가입(tokenResponseDto, teamId, new JoinTeamMemberRequest("모임닉네임"));
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
     private void 모임_삭제됨(ExtractableResponse<Response> response) {

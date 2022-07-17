@@ -1,6 +1,7 @@
 package com.woowacourse.naepyeon.acceptance;
 
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
+import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
@@ -116,5 +117,11 @@ public class AcceptanceFixture {
 
     public static ExtractableResponse<Response> 로그인_응답(final TokenRequest tokenRequest) {
         return member_post(tokenRequest, "/api/v1/login");
+    }
+
+    public static ExtractableResponse<Response> 모임_가입(final TokenResponseDto tokenResponseDto,
+                                                      final Long teamId,
+                                                      final JoinTeamMemberRequest joinTeamMemberRequest) {
+        return post(tokenResponseDto, joinTeamMemberRequest, "/api/v1/teams/" + teamId);
     }
 }

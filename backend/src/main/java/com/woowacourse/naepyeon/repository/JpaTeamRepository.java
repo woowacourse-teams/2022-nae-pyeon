@@ -6,7 +6,6 @@ import com.woowacourse.naepyeon.repository.jpa.TeamJpaDao;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 
 @Repository
