@@ -1,9 +1,12 @@
 package com.woowacourse.naepyeon.repository;
 
 import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.exception.DuplicateTeamNameException;
 import com.woowacourse.naepyeon.repository.jpa.TeamJpaDao;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -14,7 +17,11 @@ public class JpaTeamRepository implements TeamRepository {
 
     @Override
     public Long save(Team team) {
-        return teamJpaDao.save(team).getId();
+        try {
+            return teamJpaDao.save(team).getId();
+        } catch (final DataIntegrityViolationException e) {
+            throw new DuplicateTeamNameException(team.getName());
+        }
     }
 
     @Override

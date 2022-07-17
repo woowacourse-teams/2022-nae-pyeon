@@ -38,6 +38,26 @@ class TeamAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    @DisplayName("모임을 중복해서 생성하는 경우 예외를 발생시킨다.")
+    void addTeamDuplicate() {
+        //모임 생성
+        final MemberRegisterRequest member =
+                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
+        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        final TeamRequest teamRequest = new TeamRequest(
+                "woowacourse",
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
+        모임_추가(tokenResponseDto, teamRequest);
+
+        final ExtractableResponse<Response> response = 모임_추가(tokenResponseDto, teamRequest);
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
     @DisplayName("모임 이름 수정")
     void updateTeam() {
         // 모임 생성
