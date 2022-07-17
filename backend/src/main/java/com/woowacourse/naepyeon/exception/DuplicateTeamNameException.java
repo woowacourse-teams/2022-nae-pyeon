@@ -2,7 +2,7 @@ package com.woowacourse.naepyeon.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class DuplicateTeamNameException extends NaePyeonException {
+public final class DuplicateTeamNameException extends NaePyeonException {
 
     public DuplicateTeamNameException(final String teamName) {
         super(

@@ -158,10 +158,10 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final Long teamId = 모임_생성();
 
         //모임 삭제
-        final ExtractableResponse<Response> response = 모임_삭제(tokenResponseDto, teamId);
+        final ExtractableResponse<Response> response = 모임_삭제(tokenResponseDto, 10000L);
 
         //모임이 삭제됨
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
     }
 
     private void 모임_삭제됨(ExtractableResponse<Response> response) {

@@ -2,6 +2,7 @@ package com.woowacourse.naepyeon.repository;
 
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.exception.DuplicateTeamNameException;
+import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.repository.jpa.TeamJpaDao;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,10 @@ public class JpaTeamRepository implements TeamRepository {
 
     @Override
     public void delete(Long teamId) {
-        teamJpaDao.deleteById(teamId);
+        final int affectedRow = teamJpaDao.deleteByIdAndGetAffectedRow(teamId);
+
+        if (affectedRow != 1) {
+            throw new NotFoundTeamException(teamId);
+        }
     }
 }
