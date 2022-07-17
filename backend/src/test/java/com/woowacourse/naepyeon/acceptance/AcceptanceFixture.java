@@ -1,6 +1,10 @@
 package com.woowacourse.naepyeon.acceptance;
 
-import com.woowacourse.naepyeon.controller.dto.*;
+import com.woowacourse.naepyeon.controller.dto.CreateResponse;
+import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
+import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
+import com.woowacourse.naepyeon.controller.dto.TeamRequest;
+import com.woowacourse.naepyeon.controller.dto.TokenRequest;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
