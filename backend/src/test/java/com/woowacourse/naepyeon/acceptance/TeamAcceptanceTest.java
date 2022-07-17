@@ -2,12 +2,12 @@ package com.woowacourse.naepyeon.acceptance;
 
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.가입한_모임_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모든_모임_조회;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_단건_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_삭제;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_생성;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_이름_수정;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_추가;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원가입_후_로그인;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -250,7 +250,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
 
         assertThat(joinedTeamIds).contains(team1Id, team3Id);
     }
-    
+
     @Test
     @DisplayName("모임 이름을 수정할 때, 20자를 초과하는 이름으로 수정하는 경우 예외를 발생시킨다.")
     void changeTeamNameWithExceedLength() {
@@ -271,7 +271,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
-    
+
     @Test
     @DisplayName("존재하지 않는 모임을 삭제하려는 경우 예외를 발생시킨다.")
     void deleteNotExistTeam() {

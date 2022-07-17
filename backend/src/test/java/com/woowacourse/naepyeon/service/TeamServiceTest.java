@@ -155,7 +155,7 @@ class TeamServiceTest {
                 () -> assertThat(findTeamParticipation.getNickname()).isEqualTo(nickname)
         );
     }
-    
+
     @Test
     @DisplayName("모든 모임을 조회한다.")
     void findAll() {
