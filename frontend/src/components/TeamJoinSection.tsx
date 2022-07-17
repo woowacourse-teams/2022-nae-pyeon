@@ -1,36 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
+
 import RollingpaperListItem from "@/components/RollingpaperListItem";
+import IconButton from "@/components/IconButton";
+import LineButton from "@/components/LineButton";
+import TeamJoinModalForm from "@/components/TeamJoinModalForm";
 
 import { BiPlus } from "react-icons/bi";
-import IconButton from "./IconButton";
-import LineButton from "./LineButton";
+
+const dummyRollingpapers = [
+  {
+    id: 1,
+    title: "우테코 고마워",
+    to: "우아한테크코스",
+  },
+  {
+    id: 2,
+    title: "오늘의 내 편 데일리 미팅",
+    to: "내 편",
+  },
+  {
+    id: 3,
+    title: "이번 주 우리의 한 마디",
+    to: "우아한테크코스",
+  },
+];
 
 const TeamJoinSection = () => {
-  const dummyRollingpapers = [
-    {
-      id: 1,
-      title: "우테코 고마워",
-      to: "우아한테크코스",
-    },
-    {
-      id: 2,
-      title: "오늘의 내 편 데일리 미팅",
-      to: "내 편",
-    },
-    {
-      id: 3,
-      title: "이번 주 우리의 한 마디",
-      to: "우아한테크코스",
-    },
-  ];
+  const [isOpenJoinForm, setIsOpenJoinForm] = useState(false);
+
+  const handleJoinFormCloseButtonClick = () => {
+    setIsOpenJoinForm(false);
+  };
 
   return (
     <StyledRollingpaperListContainer>
       <StyledDimmer />
       <StyledTeamJoinModal>
         <p>롤링페이퍼를 확인하려면 모임에 참여해주세요</p>
-        <LineButton>참여 요청하기</LineButton>
+        <LineButton
+          onClick={() => {
+            setIsOpenJoinForm(true);
+          }}
+        >
+          참여 요청하기
+        </LineButton>
       </StyledTeamJoinModal>
       <StyledRollingpaperListHead>
         <h4>롤링페이퍼 목록</h4>
@@ -43,6 +57,11 @@ const TeamJoinSection = () => {
           <RollingpaperListItem {...rollingpaper} />
         ))}
       </StyledRollingpaperList>
+      {isOpenJoinForm && (
+        <TeamJoinModalForm
+          onClickCloseButton={handleJoinFormCloseButtonClick}
+        />
+      )}
     </StyledRollingpaperListContainer>
   );
 };
