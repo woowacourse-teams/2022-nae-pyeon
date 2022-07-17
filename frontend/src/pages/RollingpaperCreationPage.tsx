@@ -5,16 +5,12 @@ import { useMutation } from "react-query";
 
 import appClient from "@/api";
 
-import Header from "@/components/Header";
-import IconButton from "@/components/IconButton";
-import PageTitle from "@/components/PageTitle";
+import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LabeledInput from "@/components/LabeledInput";
 import AutoCompleteInput from "@/components/AutoCompleteInput";
 import Button from "@/components/Button";
 
 import { Rollingpaper } from "@/types";
-
-import { BiChevronLeft } from "react-icons/bi";
 
 const memberListDummy = [
   {
@@ -91,12 +87,7 @@ const RollingpaperCreationPage = () => {
 
   return (
     <>
-      <Header>
-        <IconButton>
-          <BiChevronLeft />
-        </IconButton>
-        <PageTitle>롤링페이퍼 만들기</PageTitle>
-      </Header>
+      <PageTitleWithBackButton>롤링페이퍼 만들기</PageTitleWithBackButton>
       <StyledForm onSubmit={handleRollingpaperFormSubmit}>
         <LabeledInput
           labelText="롤링페이퍼 이름"

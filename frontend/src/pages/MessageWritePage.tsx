@@ -5,13 +5,11 @@ import { useMutation } from "react-query";
 
 import appClient from "@/api";
 
-import Header from "@/components/Header";
 import Button from "@/components/Button";
-import IconButton from "@/components/IconButton";
 import TextArea from "@/components/TextArea";
 
-import { BiChevronLeft } from "react-icons/bi";
 import { Message } from "@/types";
+import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 
 const MessageWritePage = () => {
   const { rollingpaperId } = useParams();
@@ -58,17 +56,9 @@ const MessageWritePage = () => {
     createMessage({ content: contentRef.current.value });
   };
 
-  const handleBackButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    navigate(-1);
-  };
-
   return (
     <>
-      <Header>
-        <IconButton onClick={handleBackButtonClick}>
-          <BiChevronLeft />
-        </IconButton>
-      </Header>
+      <PageTitleWithBackButton />
       <StyledForm onSubmit={handleMessageFormSubmit}>
         <TextArea ref={contentRef} />
         <Button type="submit">완료</Button>

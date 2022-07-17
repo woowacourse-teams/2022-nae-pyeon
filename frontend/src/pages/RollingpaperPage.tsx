@@ -4,14 +4,10 @@ import { useQuery } from "react-query";
 
 import appClient from "@/api";
 
-import Header from "@/components/Header";
-import IconButton from "@/components/IconButton";
-import PageTitle from "@/components/PageTitle";
+import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LetterPaper from "@/components/LetterPaper";
 
 import { Rollingpaper } from "@/types";
-
-import { BiChevronLeft } from "react-icons/bi";
 
 const RollingpaperPage = () => {
   const { rollingpaperId } = useParams();
@@ -36,12 +32,7 @@ const RollingpaperPage = () => {
 
   return (
     <>
-      <Header>
-        <IconButton>
-          <BiChevronLeft />
-        </IconButton>
-        <PageTitle>{rollingpaper.title}</PageTitle>
-      </Header>
+      <PageTitleWithBackButton>{rollingpaper.title}</PageTitleWithBackButton>
       <main>
         <LetterPaper to={rollingpaper.to} messageList={rollingpaper.messages} />
       </main>

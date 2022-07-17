@@ -4,14 +4,12 @@ import styled from "@emotion/styled";
 import { useQuery, useMutation } from "react-query";
 
 import appClient from "@/api";
-import Header from "@/components/Header";
 import Button from "@/components/Button";
-import IconButton from "@/components/IconButton";
 import TextArea from "@/components/TextArea";
 
 import { Message } from "@/types";
 
-import { BiChevronLeft } from "react-icons/bi";
+import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 
 const MessageEditPage = () => {
   const { rollingpaperId, messageId } = useParams();
@@ -64,10 +62,6 @@ const MessageEditPage = () => {
     updateMessage({ content: contentRef.current.value });
   };
 
-  const handleBackButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    navigate(-1);
-  };
-
   if (isLoadingGetMessage) {
     return <div>로딩중</div>;
   }
@@ -78,11 +72,7 @@ const MessageEditPage = () => {
 
   return (
     <>
-      <Header>
-        <IconButton onClick={handleBackButtonClick}>
-          <BiChevronLeft />
-        </IconButton>
-      </Header>
+      <PageTitleWithBackButton />
       <StyledForm onSubmit={handleMessageFormSubmit}>
         {initialMessage && (
           <TextArea ref={contentRef} defaultValue={initialMessage.content} />
