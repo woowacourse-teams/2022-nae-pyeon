@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useMutation } from "react-query";
+import styled from "@emotion/styled";
 
 import appClient from "@/api";
 
-import styled from "@emotion/styled";
-import Header from "@/components/Header";
 import PageTitle from "@/components/PageTitle";
 import LabeledInput from "@/components/LabeledInput";
 import Button from "@/components/Button";
@@ -16,7 +15,7 @@ type SignUpMemberInfo = {
   password: string;
 };
 
-export const SignUpPage = () => {
+const SignUpPage = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -68,9 +67,7 @@ export const SignUpPage = () => {
 
   return (
     <>
-      <Header align="center">
-        <PageTitle>회원가입</PageTitle>
-      </Header>
+      <PageTitle>회원가입</PageTitle>
       <StyledForm>
         <LabeledInput
           labelText="이메일"
@@ -118,3 +115,5 @@ const StyledForm = styled.form`
   flex-direction: column;
   gap: 40px;
 `;
+
+export default SignUpPage;

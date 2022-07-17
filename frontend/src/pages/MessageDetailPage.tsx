@@ -2,14 +2,12 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import { useQuery, useMutation } from "react-query";
-import { BiChevronLeft } from "react-icons/bi";
 
 import appClient from "@/api";
-import Header from "@/components/Header";
-import IconButton from "@/components/IconButton";
 import RollingpaperMessageDetail from "@/components/RollingpaperMessageDetail";
 
 import { Message } from "@/types";
+import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 
 const MessageDetailPage = () => {
   const { rollingpaperId, messageId } = useParams();
@@ -50,10 +48,6 @@ const MessageDetailPage = () => {
     deleteMessage();
   };
 
-  const handleBackButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    navigate(-1);
-  };
-
   if (isLoadingGetMessage) {
     return <div>로딩중</div>;
   }
@@ -64,11 +58,7 @@ const MessageDetailPage = () => {
 
   return (
     <>
-      <Header>
-        <IconButton onClick={handleBackButtonClick}>
-          <BiChevronLeft />
-        </IconButton>
-      </Header>
+      <PageTitleWithBackButton />
       <StyledMain>
         <RollingpaperMessageDetail
           content={message.content}

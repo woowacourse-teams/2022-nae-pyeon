@@ -1,35 +1,56 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 
-interface HeaderProps {
-  children: React.ReactNode;
-  align?: "center" | "left" | "right";
-}
+import Logo from "@/assets/images/logo.png";
+import { BiSearch, BiUser } from "react-icons/bi";
 
-interface StyledHeaderProps {
-  align: "center" | "left" | "right";
-}
-
-const alignByJustifyContent = {
-  center: "center",
-  left: "flex-start",
-  right: "flex-end",
+const Header = () => {
+  return (
+    <StyledHeader>
+      <Link to={"/"}>
+        <img src={Logo} />
+      </Link>
+      <StyledNav>
+        <Link to={"/search"}>
+          <BiSearch />
+        </Link>
+        <Link to={"/"}>
+          <BiUser />
+        </Link>
+      </StyledNav>
+    </StyledHeader>
+  );
 };
 
-const Header = ({ children, align = "left" }: HeaderProps) => {
-  return <StyledHeader align={align}>{children}</StyledHeader>;
-};
-
-const StyledHeader = styled.header<StyledHeaderProps>`
+const StyledHeader = styled.header`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding: 20px 8px;
+  margin-bottom: 12px;
 
   width: 100%;
-  padding: 20px 0;
-  margin-bottom: 10px;
-  gap: 10px;
+  height: 70px;
+  background-color: white;
 
-  justify-content: ${({ align }) => alignByJustifyContent[align]};
+  img {
+    width: 30px;
+    height: 35px;
+  }
+`;
+
+const StyledNav = styled.nav`
+  display: flex;
+  gap: 12px;
+
+  font-size: 32px;
+
+  height: 100%;
+
+  // svg {
+  //   margin-top: 10px;
+  // }
 `;
 
 export default Header;

@@ -4,15 +4,11 @@ import { useMutation } from "react-query";
 
 import appClient from "@/api";
 
-import IconButton from "@/components/IconButton";
 import LabeledInput from "@/components/LabeledInput";
 import LabeledRadio from "@/components/LabeledRadio";
 import LabeledTextArea from "@/components/LabeledTextArea";
-import Header from "@/components/Header";
-
-import { BiChevronLeft } from "react-icons/bi";
-import PageTitle from "@/components/PageTitle";
 import Button from "@/components/Button";
+import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 
 const emojis = [
   { id: 1, value: "🐶" },
@@ -71,12 +67,7 @@ const TeamCreationPage = () => {
 
   return (
     <>
-      <Header>
-        <IconButton>
-          <BiChevronLeft />
-        </IconButton>
-        <PageTitle>모임 추가하기</PageTitle>
-      </Header>
+      <PageTitleWithBackButton>모임 추가하기</PageTitleWithBackButton>
       <StyledForm>
         <LabeledInput
           labelText="모임명"

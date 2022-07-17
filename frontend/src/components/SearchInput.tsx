@@ -30,16 +30,21 @@ const StyledSearch = styled.form`
   border-radius: 4px;
 
   button {
+    position: relative;
+    right: -1px;
+
     display: flex;
     align-items: center;
 
-    height: 100%;
+    width: 48px;
+    height: 48px;
 
     background-color: ${({ theme }) => theme.colors.SKY_BLUE_300};
   }
 
   svg {
     padding: 4px;
+    margin: auto;
 
     color: ${({ theme }) => theme.colors.WHITE};
 
