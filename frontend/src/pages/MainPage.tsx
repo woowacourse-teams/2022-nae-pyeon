@@ -15,13 +15,17 @@ interface TeamType {
   color: string;
 }
 
+const accessToken = "accessToken";
+
 const MainPage = () => {
   const {
     isLoading,
     isError,
     data: teamList,
   } = useQuery<TeamType[]>(["my-teams"], () =>
-    appClient.get(`/teams/me`).then((response) => response.data)
+    appClient
+      .get(`/teams/me`, { headers: { Authorization: `Bearer ${accessToken}` } })
+      .then((response) => response.data)
   );
 
   if (isLoading) {
