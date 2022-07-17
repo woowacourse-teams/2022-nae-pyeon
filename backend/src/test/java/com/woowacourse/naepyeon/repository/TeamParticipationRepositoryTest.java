@@ -42,10 +42,18 @@ class TeamParticipationRepositoryTest {
             "#123456"
     );
 
+    private final Team team3 = new Team(
+            "wooteco3",
+            "테스트 모임입니다.",
+            "testEmoji",
+            "#123456"
+    );
+
     @BeforeEach
     void setUp() {
         teamRepository.save(team1);
         teamRepository.save(team2);
+        teamRepository.save(team3);
         memberRepository.save(member1);
         memberRepository.save(member2);
     }
@@ -84,5 +92,19 @@ class TeamParticipationRepositoryTest {
                 () -> assertThat(findTeam1Members).contains(teamParticipation1),
                 () -> assertThat(findTeam2Members).contains(teamParticipation2, teamParticipation3)
         );
+    }
+
+    @Test
+    @DisplayName("회원이 가입한 모임 목록을 조회한다.")
+    void findTeamsByJoinedMemberId() {
+        final TeamParticipation teamParticipation1 = new TeamParticipation(team1, member1, "닉네임1");
+        final TeamParticipation teamParticipation2 = new TeamParticipation(team3, member1, "닉네임2");
+
+        teamMemberRepository.save(teamParticipation1);
+        teamMemberRepository.save(teamParticipation2);
+
+        final List<Team> joinedTeams = teamMemberRepository.findTeamsByJoinedMemberId(member1.getId());
+
+        assertThat(joinedTeams).contains(team1, team3);
     }
 }

@@ -71,8 +71,17 @@ public class TeamService {
         teamRepository.delete(teamId);
     }
 
-    public TeamsResponseDto findAllTeams() {
+    public TeamsResponseDto findAll() {
         final List<Team> teams = teamRepository.findAll();
+        final List<TeamResponseDto> teamResponseDtos = teams.stream()
+                .map(TeamResponseDto::from)
+                .collect(Collectors.toList());
+
+        return new TeamsResponseDto(teamResponseDtos);
+    }
+
+    public TeamsResponseDto findByJoinedMemberId(final Long memberId) {
+        final List<Team> teams = teamMemberRepository.findTeamsByJoinedMemberId(memberId);
         final List<TeamResponseDto> teamResponseDtos = teams.stream()
                 .map(TeamResponseDto::from)
                 .collect(Collectors.toList());

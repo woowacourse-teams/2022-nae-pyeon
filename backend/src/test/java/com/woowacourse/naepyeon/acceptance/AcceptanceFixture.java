@@ -133,4 +133,8 @@ public class AcceptanceFixture {
     public static ExtractableResponse<Response> 모든_모임_조회(final TokenResponseDto tokenResponseDto) {
         return get(tokenResponseDto, "/api/v1/teams");
     }
+
+    public static ExtractableResponse<Response> 가입한_모임_조회(final TokenResponseDto tokenResponseDto) {
+        return get(tokenResponseDto, "/api/v1/teams/me");
+    }
 }

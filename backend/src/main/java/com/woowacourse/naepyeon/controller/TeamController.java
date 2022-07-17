@@ -35,9 +35,15 @@ public class TeamController {
         return ResponseEntity.ok(teamService.findById(teamId));
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<TeamsResponseDto> getJoinedTeams(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest) {
+        return ResponseEntity.ok(teamService.findByJoinedMemberId(loginMemberRequest.getId()));
+    }
+
     @GetMapping
     public ResponseEntity<TeamsResponseDto> getAllTeams() {
-        return ResponseEntity.ok(teamService.findAllTeams());
+        return ResponseEntity.ok(teamService.findAll());
     }
 
     @PostMapping

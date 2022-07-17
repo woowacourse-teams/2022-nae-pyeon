@@ -9,6 +9,6 @@ import org.springframework.data.repository.query.Param;
 public interface TeamJpaDao extends JpaRepository<Team, Long> {
 
     @Query("delete from Team t where t.id = :id")
-    @Modifying
+    @Modifying(clearAutomatically = true)
     int deleteByIdAndGetAffectedRow(@Param("id") final Long id);
 }
