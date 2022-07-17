@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 
+import Logo from "@/components/Logo";
 import LabeledInput from "@/components/LabeledInput";
 import PasswordInput from "@/components/PasswordInput";
 import Button from "@/components/Button";
 import SocialLoginButton from "@/components/SocialLoginButton";
-import logo from "@/assets/images/logo.png";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -15,10 +15,7 @@ const LoginPage = () => {
   return (
     <>
       <StyledTitle>
-        <StyledLogo>
-          <img src={logo} />
-          <h1>내 편</h1>
-        </StyledLogo>
+        <Logo />
         <div>내 마음을 편지로</div>
       </StyledTitle>
       <StyledMain>
@@ -50,23 +47,6 @@ const StyledTitle = styled.div`
   align-items: center;
 
   color: ${({ theme }) => theme.colors.SKY_BLUE_300};
-`;
-
-const StyledLogo = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 10px;
-
-  img {
-    width: 56px;
-    height: 60px;
-    margin-right: 10px;
-  }
-
-  h1 {
-    font-size: 56px;
-  }
 `;
 
 const StyledMain = styled.div`
