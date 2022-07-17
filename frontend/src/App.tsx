@@ -12,11 +12,13 @@ import RollingpaperCreationPage from "@/pages/RollingpaperCreationPage";
 import MessageWritePage from "@/pages/MessageWritePage";
 import MessageEditPage from "@/pages/MessageEditPage";
 import MessageDetailPage from "@/pages/MessageDetailPage";
-import { SignUpPage } from "@/pages/SignUpPage";
+import TeamDetailPage from "@/pages/TeamDetailPage";
+import SignUpPage from "@/pages/SignUpPage";
 import TeamCreationPage from "@/pages/TeamCreationPage";
 import MainPage from "@/pages/MainPage";
 import LoginPage from "@/pages/LoginPage";
 import TeamSearch from "@/pages/TeamSearchPage";
+
 
 import PageContainer from "@/components/PageContainer";
 
@@ -53,6 +55,7 @@ const App = () => {
               element={<MessageEditPage />}
             />
             <Route path="team/new" element={<TeamCreationPage />} />
+            <Route path="team/:teamId" element={<TeamDetailPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="search" element={<TeamSearch />} />
           </Routes>
