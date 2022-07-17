@@ -1,7 +1,9 @@
 import { rest } from "msw";
-import dummy from "./dummy/rollingpapers.json";
+import rollingPaperDummy from "./dummy/rollingpapers.json";
+import myTeamsDummy from "./dummy/myTeams.json";
 
-const rollingpapersDummy = dummy.rollingpapers;
+const rollingpapers = rollingPaperDummy.rollingpapers;
+const myTeams = myTeamsDummy.teams;
 
 export const handlers = [
   // 롤링페이퍼 단건 조회
@@ -10,7 +12,7 @@ export const handlers = [
     (req, res, ctx) => {
       const { teamId, rollingpaperId } = req.params;
 
-      const result = rollingpapersDummy.find(
+      const result = rollingpapers.find(
         (rollingpaper) => rollingpaper.id === +rollingpaperId
       );
 
@@ -52,7 +54,7 @@ export const handlers = [
     (req, res, ctx) => {
       const { rollingpaperId, messageId } = req.params;
 
-      const rollingpaper = rollingpapersDummy.find(
+      const rollingpaper = rollingpapers.find(
         (rollingpaper) => rollingpaper.id === +rollingpaperId
       );
       const message = rollingpaper.messages.find(
@@ -109,5 +111,14 @@ export const handlers = [
     const result = { accessToken: "accessToken" };
 
     return res(ctx.status(200), ctx.json(result));
+  }),
+
+  // 가입한 모임 조회
+  rest.get("/api/v1/teams/me", (req, res, ctx) => {
+    const { accessToken } = req.headers.headers.authorization;
+
+    const result = myTeams;
+
+    return res(ctx.json(result));
   }),
 ];
