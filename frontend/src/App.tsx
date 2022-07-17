@@ -19,7 +19,6 @@ import MainPage from "@/pages/MainPage";
 import LoginPage from "@/pages/LoginPage";
 import TeamSearch from "@/pages/TeamSearchPage";
 
-
 import PageContainer from "@/components/PageContainer";
 
 const queryClient = new QueryClient();

@@ -16,7 +16,7 @@ type SignUpMemberInfo = {
   password: string;
 };
 
-export const SignUpPage = () => {
+const SignUpPage = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -118,3 +118,5 @@ const StyledForm = styled.form`
   flex-direction: column;
   gap: 40px;
 `;
+
+export default SignUpPage;
