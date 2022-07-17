@@ -101,4 +101,13 @@ export const handlers = [
 
     return res(ctx.status(201));
   }),
+
+  // 로그인
+  rest.post("/api/v1/login", (req, res, ctx) => {
+    const { email, password } = req.body;
+
+    const result = { accessToken: "accessToken" };
+
+    return res(ctx.status(200), ctx.json(result));
+  }),
 ];
