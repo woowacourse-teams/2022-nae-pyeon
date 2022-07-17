@@ -124,4 +124,9 @@ public class AcceptanceFixture {
                                                       final JoinTeamMemberRequest joinTeamMemberRequest) {
         return post(tokenResponseDto, joinTeamMemberRequest, "/api/v1/teams/" + teamId);
     }
+
+    public static ExtractableResponse<Response> 모임_단건_조회(final TokenResponseDto tokenResponseDto,
+                                                         final Long teamId) {
+        return get(tokenResponseDto, "/api/v1/teams/" + teamId);
+    }
 }

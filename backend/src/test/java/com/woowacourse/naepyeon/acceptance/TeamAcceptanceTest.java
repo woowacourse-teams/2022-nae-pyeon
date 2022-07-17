@@ -1,6 +1,7 @@
 package com.woowacourse.naepyeon.acceptance;
 
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.post;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_단건_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_삭제;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_생성;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_이름_수정;
@@ -8,10 +9,13 @@ import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_추�
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원가입_후_로그인;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
+import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -38,6 +42,35 @@ class TeamAcceptanceTest extends AcceptanceTest {
 
         //모임이 추가됨
         모임이_추가됨(response);
+    }
+
+    @Test
+    @DisplayName("모임을 생성하고 조회한다.")
+    void addTeamAndGet() {
+        //모임 생성
+        final MemberRegisterRequest member =
+                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
+        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        final String teamName = "woowacourse";
+        final String teamDescription = "테스트 모임입니다.";
+        final String teamEmoji = "testEmoji";
+        final String teamColor = "#123456";
+        final TeamRequest teamRequest = new TeamRequest(
+                teamName,
+                teamDescription,
+                teamEmoji,
+                teamColor
+        );
+        final Long teamId = 모임_추가(tokenResponseDto, teamRequest).body()
+                .as(CreateResponse.class)
+                .getId();
+
+        final ExtractableResponse<Response> response = 모임_단건_조회(tokenResponseDto, teamId);
+        final TeamResponseDto teamResponse = response.body()
+                .as(TeamResponseDto.class);
+
+        assertThat(teamResponse).extracting("id", "name", "description", "emoji", "color")
+                .containsExactly(teamId, teamName, teamDescription, teamEmoji, teamColor);
     }
 
     @Test
