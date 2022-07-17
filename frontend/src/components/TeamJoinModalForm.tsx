@@ -7,11 +7,11 @@ import UnderlineInput from "@/components/UnderlineInput";
 
 import { REGEX } from "@/constants";
 
-const TeamJoinModalForm = ({
-  onClickCloseButton,
-}: {
+interface TeamJoinModalFormProp {
   onClickCloseButton: React.MouseEventHandler<HTMLButtonElement>;
-}) => {
+}
+
+const TeamJoinModalForm = ({ onClickCloseButton }: TeamJoinModalFormProp) => {
   const [username, setUsername] = useState("");
 
   return (
