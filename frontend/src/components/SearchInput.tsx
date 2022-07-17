@@ -9,7 +9,7 @@ type InputAttributes = React.InputHTMLAttributes<HTMLInputElement>;
 const SearchInput = ({
   onClick,
   onChange,
-}: ButtonAttributes & InputAttributes) => {
+}: Pick<ButtonAttributes, "onClick"> & Pick<InputAttributes, "onChange">) => {
   return (
     <StyledSearch>
       <StyledInput onChange={onChange} />

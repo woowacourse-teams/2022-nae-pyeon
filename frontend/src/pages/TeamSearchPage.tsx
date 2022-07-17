@@ -32,13 +32,15 @@ const TeamSearch = () => {
       .then((response) => response.data)
   );
 
-  const handleSearchClick = (e: any) => {
+  const handleSearchClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     // 키워드로 api call 하기
     e.preventDefault();
     console.log(searchKeyword);
   };
 
-  const handleSearchChange = (e: any) => {
+  const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = (
+    e
+  ) => {
     setSearchKeyword(e.target.value);
   };
 
