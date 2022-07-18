@@ -8,6 +8,8 @@ import appClient from "@/api";
 import RollingpaperList from "@/components/RollingpaperList";
 import TeamJoinSection from "@/components/TeamJoinSection";
 
+import { Rollingpaper } from "@/types";
+
 interface Team {
   id: number;
   name: string;
@@ -15,12 +17,6 @@ interface Team {
   emoji: string;
   color: string;
   joined: boolean;
-}
-
-interface Rollingpaper {
-  id: number;
-  title: string;
-  to: string;
 }
 
 const TeamDetailPage = () => {
@@ -38,7 +34,7 @@ const TeamDetailPage = () => {
     isLoading: isLoadingGetTeamRollingpaperList,
     isError: isErrorGetTeamRollingpaperList,
     data: rollingpaperList,
-  } = useQuery<Rollingpaper[]>(["rollingpaperList"], () =>
+  } = useQuery<Omit<Rollingpaper, "messages">[]>(["rollingpaperList"], () =>
     appClient
       .get(`/teams/${teamId}/rollingpapers`)
       .then((response) => response.data)
