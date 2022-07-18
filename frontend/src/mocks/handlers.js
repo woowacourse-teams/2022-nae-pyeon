@@ -132,6 +132,7 @@ export const handlers = [
     const result = totalTeams;
 
     return res(ctx.json(result));
+  }),
 
   // 롤링페이퍼 목록 조회
   rest.get("/api/v1/teams/:teamId/rollingpapers", (req, res, ctx) => {
@@ -195,6 +196,5 @@ export const handlers = [
     const { nickname } = req.body;
 
     return res(ctx.status(204));
-
   }),
 ];
