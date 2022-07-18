@@ -54,7 +54,7 @@ const TeamJoinSection = () => {
       </StyledRollingpaperListHead>
       <StyledRollingpaperList>
         {dummyRollingpapers.map((rollingpaper) => (
-          <RollingpaperListItem {...rollingpaper} />
+          <RollingpaperListItem key={rollingpaper.id} {...rollingpaper} />
         ))}
       </StyledRollingpaperList>
       {isOpenJoinForm && (
