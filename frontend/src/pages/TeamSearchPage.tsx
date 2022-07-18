@@ -1,42 +1,55 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
 
 import SearchInput from "@/components/SearchInput";
 import TeamCard from "@/components/TeamCard";
 
-const teamList = [
-  { id: 1, title: "우테코 4기" },
-  { id: 2, title: "우테코 4기" },
-  { id: 3, title: "우테코 4기" },
-  { id: 4, title: "우테코 4기" },
-  { id: 5, title: "우테코 4기" },
-  { id: 6, title: "우테코 4기" },
-  { id: 7, title: "우테코 4기" },
-  { id: 8, title: "우테코 4기" },
-  { id: 9, title: "우테코 4기" },
-  { id: 10, title: "우테코 4기" },
-  { id: 11, title: "우테코 4기" },
-  { id: 12, title: "우테코 4기" },
-];
+import appClient from "@/api";
+
+interface TeamType {
+  id: number;
+  name: string;
+  description: string;
+  emoji: string;
+  color: string;
+}
 
 const TeamSearch = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
 
-  const handleSearchClick = (e: any) => {
+  const {
+    isLoading,
+    isError,
+    data: teamList,
+  } = useQuery<TeamType[]>(["total-teams"], () =>
+    appClient.get(`/teams`).then((response) => response.data)
+  );
+
+  const handleSearchClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     // 키워드로 api call 하기
     e.preventDefault();
     console.log(searchKeyword);
   };
 
-  const handleSearchChange = (e: any) => {
+  const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = (
+    e
+  ) => {
     setSearchKeyword(e.target.value);
   };
 
   const handleTeamCardClick = (id: number) => {
     navigate(`/team/${id}`);
   };
+
+  if (isLoading) {
+    return <div>로딩 중</div>;
+  }
+  if (isError || !teamList) {
+    return <div>에러</div>;
+  }
 
   return (
     <>
@@ -54,7 +67,7 @@ const TeamSearch = () => {
               handleTeamCardClick(team.id);
             }}
           >
-            {team.title}
+            {team.name}
           </TeamCard>
         ))}
       </StyledTeamList>

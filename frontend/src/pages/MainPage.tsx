@@ -1,125 +1,36 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { useQuery } from "react-query";
 
 import MainCard from "@/components/MainCard";
 import PlusButton from "@/components/PlusButton";
 
-const teamList = [
-  {
-    id: 1,
-    name: "우테코 4기",
-    description: "우테코 4기 설명입니다",
-    emoji: "😎",
-    color: "#FF8181",
-  },
-  {
-    id: 2,
-    name: "우테코 4기",
-    description: "우테코 4기 설명입니다",
-    emoji: "😎",
-    color: "#C5FF98",
-  },
-  {
-    id: 3,
-    name: "우테코 4기",
-    description: "우테코 4기 설명입니다",
-    emoji: "😎",
-    color: "#FFF598",
-  },
-  {
-    id: 4,
-    name: "우테코 4기",
-    description: "우테코 4기 설명입니다",
-    emoji: "😎",
-    color: "#98DAFF",
-  },
-  {
-    id: 5,
-    name: "우테코 4기",
-    description: "우테코 4기 설명입니다",
-    emoji: "😎",
-    color: "#FF8181",
-  },
-  {
-    id: 6,
-    name: "우테코 4기",
-    description: "우테코 4기 설명입니다",
-    emoji: "😎",
-    color: "#C5FF98",
-  },
-  {
-    id: 7,
-    name: "우테코 4기",
-    description: "우테코 4기 설명입니다",
-    emoji: "😎",
-    color: "#FFF598",
-  },
-  {
-    id: 8,
-    name: "우테코 4기",
-    description: "우테코 4기 설명입니다",
-    emoji: "😎",
-    color: "#98DAFF",
-  },
-  {
-    id: 9,
-    name: "우테코 4기",
-    description: "우테코 4기 설명입니다",
-    emoji: "😎",
-    color: "#FF8181",
-  },
-  {
-    id: 10,
-    name: "우테코 4기",
-    description: "우테코 4기 설명입니다",
-    emoji: "😎",
-    color: "#C5FF98",
-  },
-  {
-    id: 11,
-    name: "우테코 4기",
-    description: "우테코 4기 설명입니다",
-    emoji: "😎",
-    color: "#FFF598",
-  },
-  {
-    id: 12,
-    name: "우테코 4기",
-    description: "우테코 4기 설명입니다",
-    emoji: "😎",
-    color: "#98DAFF",
-  },
-  {
-    id: 13,
-    name: "우테코 4기",
-    description: "우테코 4기 설명입니다",
-    emoji: "😎",
-    color: "#FF8181",
-  },
-  {
-    id: 14,
-    name: "우테코 4기",
-    description: "우테코 4기 설명입니다",
-    emoji: "😎",
-    color: "#C5FF98",
-  },
-  {
-    id: 15,
-    name: "우테코 4기",
-    description: "우테코 4기 설명입니다",
-    emoji: "😎",
-    color: "#FFF598",
-  },
-  {
-    id: 16,
-    name: "우테코 4기",
-    description: "우테코 4기 설명입니다",
-    emoji: "😎",
-    color: "#98DAFF",
-  },
-];
+import appClient from "@/api";
+
+interface TeamType {
+  id: number;
+  name: string;
+  description: string;
+  emoji: string;
+  color: string;
+}
 
 const MainPage = () => {
+  const {
+    isLoading,
+    isError,
+    data: teamList,
+  } = useQuery<TeamType[]>(["my-teams"], () =>
+    appClient.get(`/teams/me`).then((response) => response.data)
+  );
+
+  if (isLoading) {
+    return <div>로딩 중</div>;
+  }
+  if (isError || !teamList) {
+    return <div>에러</div>;
+  }
+
   return (
     <StyleMain>
       <StyledCardList>
