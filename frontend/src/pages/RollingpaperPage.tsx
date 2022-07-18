@@ -6,6 +6,7 @@ import appClient from "@/api";
 
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LetterPaper from "@/components/LetterPaper";
+import RequireLogin from "@/components/RequireLogin";
 
 import { Rollingpaper } from "@/types";
 
@@ -31,12 +32,17 @@ const RollingpaperPage = () => {
   }
 
   return (
-    <>
-      <PageTitleWithBackButton>{rollingpaper.title}</PageTitleWithBackButton>
-      <main>
-        <LetterPaper to={rollingpaper.to} messageList={rollingpaper.messages} />
-      </main>
-    </>
+    <RequireLogin>
+      <>
+        <PageTitleWithBackButton>{rollingpaper.title}</PageTitleWithBackButton>
+        <main>
+          <LetterPaper
+            to={rollingpaper.to}
+            messageList={rollingpaper.messages}
+          />
+        </main>
+      </>
+    </RequireLogin>
   );
 };
 

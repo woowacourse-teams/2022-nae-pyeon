@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 
 import SearchInput from "@/components/SearchInput";
 import TeamCard from "@/components/TeamCard";
+import RequireLogin from "@/components/RequireLogin";
 
 import appClient from "@/api";
 
@@ -52,26 +53,28 @@ const TeamSearch = () => {
   }
 
   return (
-    <>
-      <StyledSearch>
-        <SearchInput
-          onClick={handleSearchClick}
-          onChange={handleSearchChange}
-        />
-      </StyledSearch>
-      <StyledTeamList>
-        {teamList.map((team) => (
-          <TeamCard
-            key={team.id}
-            onClick={() => {
-              handleTeamCardClick(team.id);
-            }}
-          >
-            {team.name}
-          </TeamCard>
-        ))}
-      </StyledTeamList>
-    </>
+    <RequireLogin>
+      <>
+        <StyledSearch>
+          <SearchInput
+            onClick={handleSearchClick}
+            onChange={handleSearchChange}
+          />
+        </StyledSearch>
+        <StyledTeamList>
+          {teamList.map((team) => (
+            <TeamCard
+              key={team.id}
+              onClick={() => {
+                handleTeamCardClick(team.id);
+              }}
+            >
+              {team.name}
+            </TeamCard>
+          ))}
+        </StyledTeamList>
+      </>
+    </RequireLogin>
   );
 };
 

@@ -27,7 +27,8 @@ export const handlers = [
     "/api/v1/rollingpapers/:rollingpaperId/messages",
     (req, res, ctx) => {
       const { rollingpaperId } = req.params;
-      const { accessToken } = req.headers.headers.authorization;
+      const accessToken = req.headers.headers.authorization;
+
       const { content, authorId } = req.body;
 
       const result = {
@@ -92,7 +93,7 @@ export const handlers = [
   // 모임 생성
   rest.post("/api/v1/teams", (req, res, ctx) => {
     const { name, description, emoji, color } = req.body;
-    const { accessToken } = req.headers.headers.authorization;
+    const accessToken = req.headers.headers.authorization;
 
     const result = { id: 1 };
 
@@ -110,15 +111,16 @@ export const handlers = [
   rest.post("/api/v1/login", (req, res, ctx) => {
     const { email, password } = req.body;
 
-    const result = { accessToken: "accessToken" };
+    const result = { accessToken: "accessToken2" };
 
     return res(ctx.status(200), ctx.json(result));
   }),
 
   // 가입한 모임 조회
   rest.get("/api/v1/teams/me", (req, res, ctx) => {
-    const { accessToken } = req.headers.headers.authorization;
+    const accessToken = req.headers.headers.authorization;
 
+    console.log(accessToken);
     const result = myTeams;
 
     return res(ctx.json(result));
@@ -126,12 +128,14 @@ export const handlers = [
 
   // 전체 모임 조회
   rest.get("/api/v1/teams", (req, res, ctx) => {
-    const { accessToken } = req.headers.headers.authorization;
+    const accessToken = req.headers.headers.authorization;
+
     console.log(accessToken);
 
     const result = totalTeams;
 
     return res(ctx.json(result));
+  }),
 
   // 롤링페이퍼 목록 조회
   rest.get("/api/v1/teams/:teamId/rollingpapers", (req, res, ctx) => {
@@ -195,6 +199,5 @@ export const handlers = [
     const { nickname } = req.body;
 
     return res(ctx.status(204));
-
   }),
 ];
