@@ -119,6 +119,7 @@ const StyledTeamDescriptionContainer = styled.div<StyledTeamDescriptionContainer
 
   h3 {
     font-size: 32px;
+    margin-bottom: 10px;
   }
 `;
 
