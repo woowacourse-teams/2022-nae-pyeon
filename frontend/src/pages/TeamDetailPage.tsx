@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "react-query";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import appClient from "@/api";
@@ -25,7 +25,6 @@ interface Rollingpaper {
 
 const TeamDetailPage = () => {
   const { teamId } = useParams();
-  const navigate = useNavigate();
 
   const {
     isLoading: isLoadingTeamDetail,
