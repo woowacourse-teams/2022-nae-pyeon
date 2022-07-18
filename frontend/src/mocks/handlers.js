@@ -132,19 +132,37 @@ export const handlers = [
     return res(ctx.status(200), ctx.json(dummyRollingpapers));
   }),
 
-  // 팀 상세정보 조회
+  // 모임 상세정보 조회
   rest.get("/api/v1/teams/:teamId", (req, res, ctx) => {
     const { teamId } = req.params;
 
-    const teamDetail = {
-      id: teamId,
-      name: "우아한테크코스 4기",
-      description: "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
-      emoji: "😀",
-      color: "#BAE6FF",
-      joined: true,
-    };
+    const teamDetails = [
+      {
+        id: 1,
+        name: "우아한테크코스 4기",
+        description: "우아한테크코스 4기 FE, BE 모임입니다.",
+        emoji: "😀",
+        color: "#FFF598",
+        joined: true,
+      },
+      {
+        id: 2,
+        name: "내 편💕",
+        description: "우아한테크코스 4기 프로젝트 내 편",
+        emoji: "😀",
+        color: "#98DAFF",
+        joined: false,
+      },
+    ];
 
-    return res(ctx.status(200), ctx.json(teamDetail));
+    return res(ctx.status(200), ctx.json(teamDetails[teamId]));
+  }),
+
+  // 모임 가입
+  rest.post("/api/v1/teams/:teamId", (req, res, ctx) => {
+    const { teamId } = req.params;
+    const { nickname } = req.body;
+
+    return res(ctx.status(204));
   }),
 ];
