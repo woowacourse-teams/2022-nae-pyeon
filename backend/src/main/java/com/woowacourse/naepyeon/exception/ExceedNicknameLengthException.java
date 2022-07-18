@@ -3,7 +3,7 @@ package com.woowacourse.naepyeon.exception;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import org.springframework.http.HttpStatus;
 
-public class ExceedNicknameLengthException extends NaePyeonException {
+public final class ExceedNicknameLengthException extends NaePyeonException {
 
     public ExceedNicknameLengthException(final String nickname) {
         super(

@@ -6,11 +6,14 @@ import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.service.TeamService;
+import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
+import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.net.URI;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,11 +28,29 @@ public class TeamController {
 
     private final TeamService teamService;
 
+    @GetMapping("/{teamId}")
+    public ResponseEntity<TeamResponseDto> getTeam(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @PathVariable final Long teamId) {
+        return ResponseEntity.ok(teamService.findById(teamId));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<TeamsResponseDto> getJoinedTeams(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest) {
+        return ResponseEntity.ok(teamService.findByJoinedMemberId(loginMemberRequest.getId()));
+    }
+
+    @GetMapping
+    public ResponseEntity<TeamsResponseDto> getAllTeams() {
+        return ResponseEntity.ok(teamService.findAll());
+    }
+
     @PostMapping
     public ResponseEntity<CreateResponse> createTeam(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @RequestBody @Valid final TeamRequest teamRequest) {
-        final Long teamId = teamService.save(teamRequest);
+        final Long teamId = teamService.save(teamRequest, loginMemberRequest.getId());
         return ResponseEntity.created(URI.create("/api/v1/teams/" + teamId)).body(new CreateResponse(teamId));
     }
 

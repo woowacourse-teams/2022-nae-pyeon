@@ -1,6 +1,7 @@
 package com.woowacourse.naepyeon.acceptance;
 
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
+import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
@@ -69,10 +70,7 @@ public class AcceptanceFixture {
                 .as(TokenResponseDto.class);
     }
 
-    public static Long 모임_생성() {
-        final MemberRegisterRequest member =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+    public static Long 모임_생성(final TokenResponseDto tokenResponseDto) {
         final TeamRequest teamRequest = new TeamRequest(
                 "woowacourse-4th",
                 "테스트 모임입니다.",
@@ -116,5 +114,24 @@ public class AcceptanceFixture {
 
     public static ExtractableResponse<Response> 로그인_응답(final TokenRequest tokenRequest) {
         return member_post(tokenRequest, "/api/v1/login");
+    }
+
+    public static ExtractableResponse<Response> 모임_가입(final TokenResponseDto tokenResponseDto,
+                                                      final Long teamId,
+                                                      final JoinTeamMemberRequest joinTeamMemberRequest) {
+        return post(tokenResponseDto, joinTeamMemberRequest, "/api/v1/teams/" + teamId);
+    }
+
+    public static ExtractableResponse<Response> 모임_단건_조회(final TokenResponseDto tokenResponseDto,
+                                                         final Long teamId) {
+        return get(tokenResponseDto, "/api/v1/teams/" + teamId);
+    }
+
+    public static ExtractableResponse<Response> 모든_모임_조회(final TokenResponseDto tokenResponseDto) {
+        return get(tokenResponseDto, "/api/v1/teams");
+    }
+
+    public static ExtractableResponse<Response> 가입한_모임_조회(final TokenResponseDto tokenResponseDto) {
+        return get(tokenResponseDto, "/api/v1/teams/me");
     }
 }
