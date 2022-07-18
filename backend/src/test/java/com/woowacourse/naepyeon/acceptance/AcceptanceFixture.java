@@ -96,8 +96,8 @@ public class AcceptanceFixture {
         return put(tokenResponseDto, memberUpdateRequest, "/api/v1/members/me");
     }
 
-    public static ExtractableResponse<Response> 회원_삭제(final TokenResponseDto tokenResponseDto, final Long id) {
-        return delete(tokenResponseDto, "/api/v1/members/" + id);
+    public static ExtractableResponse<Response> 회원_삭제(final TokenResponseDto tokenResponseDto) {
+        return delete(tokenResponseDto, "/api/v1/members/me");
     }
 
     public static ExtractableResponse<Response> 모임_추가(final TokenResponseDto tokenResponseDto,
