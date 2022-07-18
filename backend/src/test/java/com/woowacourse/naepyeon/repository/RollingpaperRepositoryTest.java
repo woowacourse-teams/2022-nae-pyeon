@@ -77,6 +77,17 @@ class RollingpaperRepositoryTest {
     }
 
     @Test
+    @DisplayName("롤링페이퍼들을 memberId로 찾는다.")
+    void findByMemberId() {
+        final Rollingpaper rollingPaper1 = createRollingPaper();
+        rollingpaperRepository.save(rollingPaper1);
+
+        final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByMemberId(member.getId());
+
+        assertThat(rollingpapers).hasSize(1);
+    }
+
+    @Test
     @DisplayName("롤링페이퍼 타이틀을 변경한다.")
     void update() {
         final Rollingpaper rollingPaper = createRollingPaper();
