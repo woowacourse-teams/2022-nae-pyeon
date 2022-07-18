@@ -37,20 +37,12 @@ const TeamCreationPage = () => {
   const { mutate: createTeam, data } = useMutation(
     () => {
       return appClient
-        .post(
-          "/teams",
-          {
-            name: teamName,
-            description: teamDescriptionRef.current?.value,
-            emoji,
-            color,
-          },
-          {
-            headers: {
-              Authorization: `Baerer ${"token"}`,
-            },
-          }
-        )
+        .post("/teams", {
+          name: teamName,
+          description: teamDescriptionRef.current?.value,
+          emoji,
+          color,
+        })
         .then((response) => response.data);
     },
     {

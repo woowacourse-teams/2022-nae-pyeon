@@ -21,13 +21,9 @@ const MessageWritePage = () => {
   const { mutate: createMessage } = useMutation(
     ({ content }: Pick<Message, "content">) => {
       return appClient
-        .post(
-          `/rollingpapers/${rollingpaperId}/messages`,
-          {
-            content,
-          },
-          { headers: { Authorization: `Bearer ${accessToken}` } }
-        )
+        .post(`/rollingpapers/${rollingpaperId}/messages`, {
+          content,
+        })
         .then((response) => response.data);
     },
     {

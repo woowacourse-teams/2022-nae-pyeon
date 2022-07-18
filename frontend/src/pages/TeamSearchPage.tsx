@@ -27,9 +27,7 @@ const TeamSearch = () => {
     isError,
     data: teamList,
   } = useQuery<TeamType[]>(["total-teams"], () =>
-    appClient
-      .get(`/teams`, { headers: { Authorization: `Bearer ${accessToken}` } })
-      .then((response) => response.data)
+    appClient.get(`/teams`).then((response) => response.data)
   );
 
   const handleSearchClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
