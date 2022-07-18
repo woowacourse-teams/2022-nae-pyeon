@@ -1,62 +1,96 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
 import styled from "@emotion/styled";
+
+import appClient from "@/api";
+
 import RollingpaperList from "@/components/RollingpaperList";
 import TeamJoinSection from "@/components/TeamJoinSection";
 
-const dummyRollingpapers = [
-  {
-    id: 1,
-    title: "우테코 고마워",
-    to: "우아한테크코스",
-  },
-  {
-    id: 2,
-    title: "소피아 생일 축하해 🎉",
-    to: "소피아",
-  },
-  {
-    id: 3,
-    title: "오늘의 내 편 데일리 미팅",
-    to: "내 편",
-  },
-  {
-    id: 4,
-    title: "이번 주 우리의 한 마디",
-    to: "우아한테크코스",
-  },
-];
+import { Rollingpaper } from "@/types";
+
+interface Team {
+  id: number;
+  name: string;
+  description: string;
+  emoji: string;
+  color: string;
+  joined: boolean;
+}
 
 const TeamDetailPage = () => {
   const { teamId } = useParams();
-  const navigate = useNavigate();
+
+  const {
+    isLoading: isLoadingTeamDetail,
+    isError: isErrorTeamDetail,
+    data: teamDetail,
+  } = useQuery<Team>(["team"], () =>
+    appClient.get(`/teams/${teamId}`).then((response) => response.data)
+  );
+
+  const {
+    isLoading: isLoadingGetTeamRollingpaperList,
+    isError: isErrorGetTeamRollingpaperList,
+    data: rollingpaperList,
+  } = useQuery<Omit<Rollingpaper, "messages">[]>(["rollingpaperList"], () =>
+    appClient
+      .get(`/teams/${teamId}/rollingpapers`)
+      .then((response) => response.data)
+  );
+
+  if (isLoadingTeamDetail || isLoadingGetTeamRollingpaperList) {
+    return <div>로딩중</div>;
+  }
+
+  if (
+    isErrorTeamDetail ||
+    !teamDetail ||
+    isErrorGetTeamRollingpaperList ||
+    !rollingpaperList
+  ) {
+    return <div>에러</div>;
+  }
 
   return (
     <StyledMain>
       <TeamDescriptionBox
-        emoji="💕"
-        title="테스트"
-        description="테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ테스트용 모임 설명이다다ㅏㅏㅏㅏㅏㅏ"
+        emoji={teamDetail.emoji}
+        name={teamDetail.name}
+        description={teamDetail.description}
+        color={teamDetail.color}
       />
-      <TeamJoinSection />
+      {teamDetail.joined ? (
+        <RollingpaperList rollingpapers={rollingpaperList} />
+      ) : (
+        <TeamJoinSection />
+      )}
     </StyledMain>
   );
 };
 
-interface TeamDescriptionBoxProp {
-  emoji: string;
-  title: string;
+interface TeamDescriptionBoxProps {
+  name: string;
   description: string;
+  emoji: string;
+  color: string;
 }
 
+type StyledTeamDescriptionContainerProps = Pick<
+  TeamDescriptionBoxProps,
+  "color"
+>;
+
 const TeamDescriptionBox = ({
-  emoji,
-  title,
+  name,
   description,
-}: TeamDescriptionBoxProp) => {
+  emoji,
+  color,
+}: TeamDescriptionBoxProps) => {
   return (
-    <StyledTeamDescriptionContainer>
-      <h3>{`${emoji} ${title}`}</h3>
+    <StyledTeamDescriptionContainer color={color}>
+      <h3>{`${emoji} ${name}`}</h3>
       <p>{description}</p>
     </StyledTeamDescriptionContainer>
   );
@@ -72,15 +106,16 @@ const StyledMain = styled.main`
   padding: 28px 0;
 `;
 
-const StyledTeamDescriptionContainer = styled.div`
+const StyledTeamDescriptionContainer = styled.div<StyledTeamDescriptionContainerProps>`
   width: 80%;
 
   padding: 28px 16px;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.YELLOW_200};
+  background-color: ${({ color }) => `${color}AB`};
 
   h3 {
     font-size: 32px;
+    margin-bottom: 10px;
   }
 `;
 
