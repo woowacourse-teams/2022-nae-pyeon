@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import styled from "@emotion/styled";
 
@@ -16,6 +17,8 @@ type SignUpMemberInfo = {
 };
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -34,6 +37,7 @@ const SignUpPage = () => {
     {
       onSuccess: () => {
         alert("회원가입 성공!");
+        navigate("/login");
       },
       onError: (error) => {
         console.log(error);
@@ -41,7 +45,9 @@ const SignUpPage = () => {
     }
   );
 
-  const handleSignupClick = () => {
+  const handleSignupClick: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+
     if (!REGEX.EMAIL.test(email)) {
       alert("유효하지 않은 이메일입니다.");
       return;
@@ -68,7 +74,7 @@ const SignUpPage = () => {
   return (
     <>
       <PageTitle>회원가입</PageTitle>
-      <StyledForm>
+      <StyledForm onSubmit={handleSignupClick}>
         <LabeledInput
           labelText="이메일"
           value={email}
@@ -102,9 +108,7 @@ const SignUpPage = () => {
           pattern={password}
           errorMessage="비밀번호가 일치하지 않습니다."
         />
-        <Button type="submit" onClick={handleSignupClick}>
-          확인
-        </Button>
+        <Button type="submit">확인</Button>
       </StyledForm>
     </>
   );
