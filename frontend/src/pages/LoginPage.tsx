@@ -27,8 +27,7 @@ const LoginPage = () => {
         .then((response) => response.data);
     },
     {
-      onSuccess: (data) => {
-        console.log(data);
+      onSuccess: () => {
         navigate(`/`, { replace: true });
       },
       onError: (error) => {

@@ -16,8 +16,6 @@ interface TeamType {
   color: string;
 }
 
-const accessToken = "accessToken";
-
 const TeamSearch = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
