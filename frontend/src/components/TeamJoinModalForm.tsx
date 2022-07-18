@@ -40,7 +40,9 @@ const TeamJoinModalForm = ({ onClickCloseButton }: TeamJoinModalFormProp) => {
     }
   );
 
-  const handleTeamJoinSubmit: React.FormEventHandler<HTMLFormElement> = () => {
+  const handleTeamJoinSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+
     if (!REGEX.USERNAME.test(nickname)) {
       alert("닉네임은 한글, 영어, 숫자만 가능합니다.");
       return;
