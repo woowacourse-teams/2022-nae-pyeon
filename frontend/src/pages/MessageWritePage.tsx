@@ -7,16 +7,15 @@ import appClient from "@/api";
 
 import Button from "@/components/Button";
 import TextArea from "@/components/TextArea";
+import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
+import RequireLogin from "@/components/RequireLogin";
 
 import { Message } from "@/types";
-import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 
 const MessageWritePage = () => {
   const { rollingpaperId } = useParams();
   const navigate = useNavigate();
   const contentRef = useRef<HTMLTextAreaElement>(null);
-
-  const accessToken = "accessToken";
 
   const { mutate: createMessage } = useMutation(
     ({ content }: Pick<Message, "content">) => {
@@ -53,13 +52,15 @@ const MessageWritePage = () => {
   };
 
   return (
-    <>
-      <PageTitleWithBackButton />
-      <StyledForm onSubmit={handleMessageFormSubmit}>
-        <TextArea ref={contentRef} />
-        <Button type="submit">완료</Button>
-      </StyledForm>
-    </>
+    <RequireLogin>
+      <>
+        <PageTitleWithBackButton />
+        <StyledForm onSubmit={handleMessageFormSubmit}>
+          <TextArea ref={contentRef} />
+          <Button type="submit">완료</Button>
+        </StyledForm>
+      </>
+    </RequireLogin>
   );
 };
 

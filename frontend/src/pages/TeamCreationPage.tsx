@@ -9,6 +9,7 @@ import LabeledRadio from "@/components/LabeledRadio";
 import LabeledTextArea from "@/components/LabeledTextArea";
 import Button from "@/components/Button";
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
+import RequireLogin from "@/components/RequireLogin";
 
 const emojis = [
   { id: 1, value: "🐶" },
@@ -58,34 +59,36 @@ const TeamCreationPage = () => {
   };
 
   return (
-    <>
-      <PageTitleWithBackButton>모임 추가하기</PageTitleWithBackButton>
-      <StyledForm>
-        <LabeledInput
-          labelText="모임명"
-          value={teamName}
-          setValue={setTeamName}
-        />
-        <LabeledTextArea
-          labelText="모임 설명"
-          ref={teamDescriptionRef}
-          placeholder="최대 100자까지 입력 가능합니다"
-        />
-        <LabeledRadio
-          labelText="모임을 표현하는 이모지를 선택해주세요"
-          radios={emojis}
-          onClickRadio={setEmoji}
-        />
-        <LabeledRadio
-          labelText="모임을 표현하는 색상을 선택해주세요"
-          radios={colors}
-          onClickRadio={setColor}
-        />
-        <Button type="submit" onClick={handleTeamCreationSubmit}>
-          확인
-        </Button>
-      </StyledForm>
-    </>
+    <RequireLogin>
+      <>
+        <PageTitleWithBackButton>모임 추가하기</PageTitleWithBackButton>
+        <StyledForm>
+          <LabeledInput
+            labelText="모임명"
+            value={teamName}
+            setValue={setTeamName}
+          />
+          <LabeledTextArea
+            labelText="모임 설명"
+            ref={teamDescriptionRef}
+            placeholder="최대 100자까지 입력 가능합니다"
+          />
+          <LabeledRadio
+            labelText="모임을 표현하는 이모지를 선택해주세요"
+            radios={emojis}
+            onClickRadio={setEmoji}
+          />
+          <LabeledRadio
+            labelText="모임을 표현하는 색상을 선택해주세요"
+            radios={colors}
+            onClickRadio={setColor}
+          />
+          <Button type="submit" onClick={handleTeamCreationSubmit}>
+            확인
+          </Button>
+        </StyledForm>
+      </>
+    </RequireLogin>
   );
 };
 

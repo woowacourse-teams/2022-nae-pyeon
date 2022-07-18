@@ -7,6 +7,7 @@ import appClient from "@/api";
 
 import RollingpaperList from "@/components/RollingpaperList";
 import TeamJoinSection from "@/components/TeamJoinSection";
+import RequireLogin from "@/components/RequireLogin";
 
 import { Rollingpaper } from "@/types";
 
@@ -54,19 +55,21 @@ const TeamDetailPage = () => {
   }
 
   return (
-    <StyledMain>
-      <TeamDescriptionBox
-        emoji={teamDetail.emoji}
-        name={teamDetail.name}
-        description={teamDetail.description}
-        color={teamDetail.color}
-      />
-      {teamDetail.joined ? (
-        <RollingpaperList rollingpapers={rollingpaperList} />
-      ) : (
-        <TeamJoinSection />
-      )}
-    </StyledMain>
+    <RequireLogin>
+      <StyledMain>
+        <TeamDescriptionBox
+          emoji={teamDetail.emoji}
+          name={teamDetail.name}
+          description={teamDetail.description}
+          color={teamDetail.color}
+        />
+        {teamDetail.joined ? (
+          <RollingpaperList rollingpapers={rollingpaperList} />
+        ) : (
+          <TeamJoinSection />
+        )}
+      </StyledMain>
+    </RequireLogin>
   );
 };
 

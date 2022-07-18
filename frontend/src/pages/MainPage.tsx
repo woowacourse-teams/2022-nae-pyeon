@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 
 import MainCard from "@/components/MainCard";
 import PlusButton from "@/components/PlusButton";
+import RequireLogin from "@/components/RequireLogin";
 
 import appClient from "@/api";
 
@@ -32,20 +33,22 @@ const MainPage = () => {
   }
 
   return (
-    <StyleMain>
-      <StyledCardList>
-        {teamList.map(({ id, name, description, emoji, color }) => (
-          <MainCard
-            key={id}
-            name={name}
-            description={description}
-            emoji={emoji}
-            color={color}
-          />
-        ))}
-      </StyledCardList>
-      <PlusButton />
-    </StyleMain>
+    <RequireLogin>
+      <StyleMain>
+        <StyledCardList>
+          {teamList.map(({ id, name, description, emoji, color }) => (
+            <MainCard
+              key={id}
+              name={name}
+              description={description}
+              emoji={emoji}
+              color={color}
+            />
+          ))}
+        </StyledCardList>
+        <PlusButton />
+      </StyleMain>
+    </RequireLogin>
   );
 };
 

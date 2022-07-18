@@ -5,9 +5,10 @@ import { useQuery, useMutation } from "react-query";
 
 import appClient from "@/api";
 import RollingpaperMessageDetail from "@/components/RollingpaperMessageDetail";
+import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
+import RequireLogin from "@/components/RequireLogin";
 
 import { Message } from "@/types";
-import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 
 const MessageDetailPage = () => {
   const { rollingpaperId, messageId } = useParams();
@@ -57,17 +58,19 @@ const MessageDetailPage = () => {
   }
 
   return (
-    <>
-      <PageTitleWithBackButton />
-      <StyledMain>
-        <RollingpaperMessageDetail
-          content={message.content}
-          author={message.from}
-          handleDeleteButtonClick={handleDeleteButtonClick}
-          handleEditButtonClick={handleEditButtonClick}
-        />
-      </StyledMain>
-    </>
+    <RequireLogin>
+      <>
+        <PageTitleWithBackButton />
+        <StyledMain>
+          <RollingpaperMessageDetail
+            content={message.content}
+            author={message.from}
+            handleDeleteButtonClick={handleDeleteButtonClick}
+            handleEditButtonClick={handleEditButtonClick}
+          />
+        </StyledMain>
+      </>
+    </RequireLogin>
   );
 };
 
