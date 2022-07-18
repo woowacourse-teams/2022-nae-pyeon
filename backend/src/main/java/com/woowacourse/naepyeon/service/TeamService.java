@@ -27,14 +27,18 @@ public class TeamService {
     private final TeamMemberRepository teamMemberRepository;
 
     @Transactional
-    public Long save(final TeamRequest teamRequest) {
+    public Long save(final TeamRequest teamRequest, final Long memberId) {
         final Team team = new Team(
                 teamRequest.getName(),
                 teamRequest.getDescription(),
                 teamRequest.getEmoji(),
                 teamRequest.getColor()
         );
-        return teamRepository.save(team);
+        final Long createdTeamId = teamRepository.save(team);
+        final Member owner = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundMemberException(memberId));
+        teamMemberRepository.save(new TeamParticipation(team, owner, "마스터"));
+        return createdTeamId;
     }
 
     @Transactional

@@ -70,10 +70,7 @@ public class AcceptanceFixture {
                 .as(TokenResponseDto.class);
     }
 
-    public static Long 모임_생성() {
-        final MemberRegisterRequest member =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+    public static Long 모임_생성(final TokenResponseDto tokenResponseDto) {
         final TeamRequest teamRequest = new TeamRequest(
                 "woowacourse-4th",
                 "테스트 모임입니다.",
