@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import Logo from "@/assets/images/logo.png";
 import { BiSearch, BiUser } from "react-icons/bi";
+import { deleteCookie } from "@/util/cookie";
+import { UserContext } from "@/context/UserContext";
+import IconButton from "./IconButton";
 
 const Header = () => {
+  const { setIsLoggedIn } = useContext(UserContext);
+
+  const handleLogoutClick = () => {
+    deleteCookie("accessToken");
+    setIsLoggedIn(false);
+  };
+
   return (
     <StyledHeader>
       <Link to={"/"}>
@@ -15,9 +25,9 @@ const Header = () => {
         <Link to={"/search"}>
           <BiSearch />
         </Link>
-        <Link to={"/"}>
+        <IconButton onClick={handleLogoutClick}>
           <BiUser />
-        </Link>
+        </IconButton>
       </StyledNav>
     </StyledHeader>
   );
