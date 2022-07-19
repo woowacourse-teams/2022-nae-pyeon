@@ -9,6 +9,8 @@ import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.TeamMemberRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
+import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
+import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.util.List;
@@ -51,16 +53,10 @@ public class TeamService {
         return teamMemberRepository.save(teamParticipation);
     }
 
-    public TeamResponseDto findById(final Long teamId) {
+    public TeamResponseDto findById(final Long teamId, final Long memberId) {
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
-        return new TeamResponseDto(
-                teamId,
-                team.getName(),
-                team.getDescription(),
-                team.getEmoji(),
-                team.getColor()
-        );
+        return TeamResponseDto.of(team, teamMemberRepository.isJoinedMember(memberId, teamId));
     }
 
     @Transactional
@@ -75,10 +71,12 @@ public class TeamService {
         teamRepository.delete(teamId);
     }
 
-    public TeamsResponseDto findAll() {
+    public TeamsResponseDto findAll(final Long memberId) {
         final List<Team> teams = teamRepository.findAll();
+        final List<Team> joinedTeams = teamMemberRepository.findTeamsByJoinedMemberId(memberId);
+
         final List<TeamResponseDto> teamResponseDtos = teams.stream()
-                .map(TeamResponseDto::from)
+                .map(team -> TeamResponseDto.of(team, joinedTeams.contains(team)))
                 .collect(Collectors.toList());
 
         return new TeamsResponseDto(teamResponseDtos);
@@ -87,9 +85,30 @@ public class TeamService {
     public TeamsResponseDto findByJoinedMemberId(final Long memberId) {
         final List<Team> teams = teamMemberRepository.findTeamsByJoinedMemberId(memberId);
         final List<TeamResponseDto> teamResponseDtos = teams.stream()
-                .map(TeamResponseDto::from)
+                .map(team -> TeamResponseDto.of(team, true))
                 .collect(Collectors.toList());
 
         return new TeamsResponseDto(teamResponseDtos);
+    }
+
+    public JoinedMembersResponseDto findJoinedMembers(final Long teamId) {
+        final List<TeamParticipation> participations = teamMemberRepository.findMembersByTeamId(teamId);
+
+        final List<JoinedMemberResponseDto> joinedMembers = participations.stream()
+                .map(
+                        participation -> new JoinedMemberResponseDto(
+                                participation.getMember().getId(),
+                                participation.getNickname()
+                        )
+                ).collect(Collectors.toList());
+
+        return new JoinedMembersResponseDto(joinedMembers);
+    }
+
+    public boolean isJoinedMember(final Long memberId, final Long teamId) {
+        if (teamRepository.findById(teamId).isEmpty()) {
+            throw new NotFoundTeamException(teamId);
+        }
+        return teamMemberRepository.isJoinedMember(memberId, teamId);
     }
 }

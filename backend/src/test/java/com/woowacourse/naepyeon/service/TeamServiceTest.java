@@ -77,7 +77,7 @@ class TeamServiceTest {
         final Long teamId = teamService.save(teamRequest, member.getId());
 
         // when
-        final TeamResponseDto findTeam = teamService.findById(teamId);
+        final TeamResponseDto findTeam = teamService.findById(teamId, member.getId());
 
         // then
         assertThat(findTeam)
@@ -129,7 +129,7 @@ class TeamServiceTest {
         teamService.updateName(teamId, expected);
 
         // then
-        assertThat(teamService.findById(teamId))
+        assertThat(teamService.findById(teamId, member.getId()))
                 .extracting("id", "name", "description", "emoji", "color")
                 .containsExactly(
                         teamId,
@@ -178,7 +178,7 @@ class TeamServiceTest {
     @Test
     @DisplayName("모든 모임을 조회한다.")
     void findAll() {
-        final TeamsResponseDto teams = teamService.findAll();
+        final TeamsResponseDto teams = teamService.findAll(member.getId());
         final List<String> teamNames = teams.getTeams()
                 .stream()
                 .map(TeamResponseDto::getName)

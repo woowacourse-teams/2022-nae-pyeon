@@ -43,4 +43,16 @@ public class JpaTeamMemberRepository implements TeamMemberRepository {
     public List<Team> findTeamsByJoinedMemberId(final Long memberId) {
         return teamMemberJpaDao.findTeamsByJoinedMemberId(memberId);
     }
+
+    @Override
+    public List<TeamParticipation> findMembersByTeamId(final Long teamId) {
+        return teamMemberJpaDao.findMembersByTeamId(teamId);
+    }
+
+    @Override
+    public boolean isJoinedMember(final Long memberId, final Long teamId) {
+        final List<Team> teams = teamMemberJpaDao.findTeamsByJoinedMemberId(memberId);
+        return teams.stream()
+                .anyMatch(team -> team.getId().equals(teamId));
+    }
 }

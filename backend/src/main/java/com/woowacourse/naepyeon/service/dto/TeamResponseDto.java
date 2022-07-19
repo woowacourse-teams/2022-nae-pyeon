@@ -16,14 +16,16 @@ public class TeamResponseDto {
     private String description;
     private String emoji;
     private String color;
+    private boolean joined;
 
-    public static TeamResponseDto from(final Team team) {
+    public static TeamResponseDto of(final Team team, final boolean joined) {
         return new TeamResponseDto(
                 team.getId(),
                 team.getName(),
                 team.getDescription(),
                 team.getEmoji(),
-                team.getColor()
+                team.getColor(),
+                joined
         );
     }
 }

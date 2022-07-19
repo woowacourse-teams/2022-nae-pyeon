@@ -14,4 +14,8 @@ public interface TeamMemberRepository {
     List<TeamParticipation> findByTeamId(final Long teamId);
 
     List<Team> findTeamsByJoinedMemberId(final Long memberId);
+
+    List<TeamParticipation> findMembersByTeamId(final Long teamId);
+
+    boolean isJoinedMember(final Long memberId, final Long teamId);
 }
