@@ -54,11 +54,11 @@ public class RollingpaperService {
 
     @Transactional(readOnly = true)
     public RollingpaperResponseDto findById(final Long rollingpaperId, final Long teamId, final Long loginMemberId) {
+        final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
+                .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
             throw new UncertificationTeamMemberException(teamId);
         }
-        final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
-                .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
         return new RollingpaperResponseDto(
                 rollingpaperId,
                 rollingpaper.getTitle(),
