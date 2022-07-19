@@ -44,7 +44,8 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
     @DisplayName("특정 회원에게 롤링페이퍼를 생성하고 조회한다.")
     void createRollingpaperToMember() {
         final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
-        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class).getId();
+        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
+                .getId();
 
         final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
@@ -69,7 +70,8 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
     @DisplayName("특정 회원에게 롤링페이퍼를 여러 번 생성할 수 있다.")
     void createRollingpapersToMember() {
         final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
-        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class).getId();
+        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
+                .getId();
 
         final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
@@ -98,7 +100,8 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
     @DisplayName("존재하지 않는 회원에게 롤링페이퍼를 생성하는 경우 예외를 발생시킨다.")
     void createRollingpaperWithNotFoundMember() {
         final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
-        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class).getId();
+        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
+                .getId();
 
         final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이알렉스", 2L);
         final ExtractableResponse<Response> response = 회원_롤링페이퍼_생성(tokenResponseDto1, teamId,
@@ -111,7 +114,8 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
     @DisplayName("모임에 속하지 않은 사람이 해당 모임에서 롤링페이퍼를 생성하는 경우 예외를 발생시킨다.")
     void createRollingpaperWithAnonymous() {
         final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
-        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class).getId();
+        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
+                .getId();
 
         final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
@@ -130,7 +134,8 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
     @DisplayName("특정 모임의 회원들 전체가 받은 롤링페이퍼 목록을 조회한다.")
     void findRollingpapersWithTeam() {
         final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
-        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class).getId();
+        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
+                .getId();
 
         final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
@@ -162,7 +167,8 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
     @DisplayName("모임에 속하지 않은 회원이 롤링페이퍼를 조회할 경우 예외를 발생시킨다.")
     void findRollingpaperWithAnonymous() {
         final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
-        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class).getId();
+        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
+                .getId();
 
         final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
@@ -184,7 +190,8 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
     @DisplayName("롤링페이퍼 이름을 수정한다.")
     void updateRollingpaperTitle() {
         final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
-        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class).getId();
+        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
+                .getId();
 
         final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
@@ -208,7 +215,8 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
     @DisplayName("롤링페이퍼 이름을 20자 초과하여 수정할 경우 예외를 발생시킨다.")
     void updateRollingpaperTitleWithExceedTitleLength() {
         final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
-        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class).getId();
+        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
+                .getId();
 
         final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
@@ -230,7 +238,8 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
     @DisplayName("모임에 속하지 않은 회원이 롤링페이퍼를 이름을 수정할 경우 예외를 발생시킨다.")
     void updateRollingpaperTitleWithAnonymous() {
         final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
-        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class).getId();
+        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
+                .getId();
 
         final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));

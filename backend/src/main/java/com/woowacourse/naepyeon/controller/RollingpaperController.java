@@ -35,8 +35,7 @@ public class RollingpaperController {
             @RequestBody @Valid final RollingpaperCreateRequest rollingpaperCreateRequest) {
         final Long rollingpaperId = rollingpaperService.createRollingpaper(rollingpaperCreateRequest.getTitle(), teamId,
                 loginMemberRequest.getId(), rollingpaperCreateRequest.getAddresseeId());
-        return ResponseEntity.created(
-                        URI.create("/api/v1/teams/" + teamId + "/rollingpapers/" + rollingpaperId))
+        return ResponseEntity.created(URI.create("/api/v1/teams/" + teamId + "/rollingpapers/" + rollingpaperId))
                 .body(new CreateResponse(rollingpaperId));
     }
 
@@ -44,8 +43,8 @@ public class RollingpaperController {
     public ResponseEntity<RollingpaperResponseDto> findRollingpaper(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long teamId, @PathVariable final Long rollingpaperId) {
-        final RollingpaperResponseDto rollingpaperResponseDto = rollingpaperService.findById(rollingpaperId, teamId,
-                loginMemberRequest.getId());
+        final RollingpaperResponseDto rollingpaperResponseDto =
+                rollingpaperService.findById(rollingpaperId, teamId, loginMemberRequest.getId());
         return ResponseEntity.ok(rollingpaperResponseDto);
     }
 
@@ -62,8 +61,8 @@ public class RollingpaperController {
     public ResponseEntity<RollingpapersResponseDto> findMemberRollingpapers(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long teamId) {
-        final RollingpapersResponseDto rollingpapersResponseDto = rollingpaperService.findByMemberId(teamId,
-                loginMemberRequest.getId());
+        final RollingpapersResponseDto rollingpapersResponseDto =
+                rollingpaperService.findByMemberId(teamId, loginMemberRequest.getId());
         return ResponseEntity.ok(rollingpapersResponseDto);
     }
 

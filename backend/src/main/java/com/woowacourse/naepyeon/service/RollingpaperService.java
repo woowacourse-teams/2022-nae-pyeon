@@ -32,8 +32,8 @@ public class RollingpaperService {
     private final TeamMemberRepository teamMemberRepository;
     private final MemberRepository memberRepository;
 
-    public Long createRollingpaper(final String title, final Long teamId, final Long loginMemberId,
-                                   final Long memberId) {
+    public Long createRollingpaper(final String title, final Long teamId,
+                                   final Long loginMemberId, final Long memberId) {
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
         final Member member = memberRepository.findById(memberId)
