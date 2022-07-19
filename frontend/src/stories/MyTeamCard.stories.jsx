@@ -1,12 +1,12 @@
 import React from "react";
-import MainCard from "@/components/MainCard";
+import MyTeamCard from "@/components/MyTeamCard";
 
 export default {
-  component: MainCard,
-  title: "MainCard",
+  component: MyTeamCard,
+  title: "MyTeamCard",
 };
 
-const Template = (args) => <MainCard {...args}></MainCard>;
+const Template = (args) => <MyTeamCard {...args}></MyTeamCard>;
 
 export const Default = Template.bind({});
 Default.args = {

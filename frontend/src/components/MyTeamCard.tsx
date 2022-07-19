@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 
-interface MainCardProps {
+interface MyTeamCardProps {
   id: number;
   name: string;
   description: string;
@@ -10,23 +10,29 @@ interface MainCardProps {
   color: string;
 }
 
-interface StyledMainCardProps {
+interface StyledMyTeamCardProps {
   color: string;
 }
 
-const MainCard = ({ id, name, description, emoji, color }: MainCardProps) => {
+const MyTeamCard = ({
+  id,
+  name,
+  description,
+  emoji,
+  color,
+}: MyTeamCardProps) => {
   return (
     <Link to={`team/${id}`}>
-      <StyledMainCard color={color}>
+      <StyledMyTeamCard color={color}>
         <StyledEmoji color={color}>{emoji}</StyledEmoji>
         <StyledName>{name}</StyledName>
         <StyledDescription>{description}</StyledDescription>
-      </StyledMainCard>
+      </StyledMyTeamCard>
     </Link>
   );
 };
 
-const StyledMainCard = styled.div<StyledMainCardProps>`
+const StyledMyTeamCard = styled.div<StyledMyTeamCardProps>`
   display: flex;
   flex-direction: column;
 
@@ -48,7 +54,7 @@ const StyledMainCard = styled.div<StyledMainCardProps>`
   }
 `;
 
-const StyledEmoji = styled.div<StyledMainCardProps>`
+const StyledEmoji = styled.div<StyledMyTeamCardProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -75,4 +81,4 @@ const StyledDescription = styled.div`
   font-size: 14px;
 `;
 
-export default MainCard;
+export default MyTeamCard;
