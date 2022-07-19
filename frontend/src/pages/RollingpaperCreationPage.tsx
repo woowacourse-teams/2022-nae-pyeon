@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "@emotion/styled";
-import { useMutation } from "react-query";
+import { useQuery, useMutation } from "react-query";
 
 import appClient from "@/api";
 
@@ -13,38 +13,28 @@ import RequireLogin from "@/components/RequireLogin";
 
 import { Rollingpaper } from "@/types";
 
-const memberListDummy = [
-  {
-    id: 1,
-    name: "도리",
-  },
-  {
-    id: 2,
-    name: "소피아",
-  },
-  {
-    id: 3,
-    name: "승팡",
-  },
-  {
-    id: 4,
-    name: "알렉스",
-  },
-  {
-    id: 5,
-    name: "제로",
-  },
-  {
-    id: 6,
-    name: "케이",
-  },
-];
+interface TeamMemberResponse {
+  members: TeamMember[];
+}
+
+interface TeamMember {
+  id: number;
+  nickname: string;
+}
 
 const RollingpaperCreationPage = () => {
   const navigate = useNavigate();
+  const { teamId } = useParams();
   const [rollingpaperTitle, setRollingpaperTitle] = useState("");
   const [rollingpaperTo, setRollingpaperTo] = useState("");
-  const teamId = 123;
+
+  const {
+    isLoading,
+    isError,
+    data: teamMemberResponse,
+  } = useQuery<TeamMemberResponse>(["team-member"], () =>
+    appClient.get(`/teams/${teamId}/members`).then((response) => response.data)
+  );
 
   const { mutate: postRollingpaper } = useMutation(
     ({
@@ -74,8 +64,8 @@ const RollingpaperCreationPage = () => {
   ) => {
     e.preventDefault();
 
-    const member = memberListDummy.find(
-      (member) => member.name === rollingpaperTo
+    const member = teamMemberResponse?.members.find(
+      (member) => member.nickname === rollingpaperTo
     );
 
     if (!member) {
@@ -85,6 +75,13 @@ const RollingpaperCreationPage = () => {
 
     postRollingpaper({ title: rollingpaperTitle, addresseeId: member.id });
   };
+
+  if (isLoading) {
+    return <div>로딩 중</div>;
+  }
+  if (isError || !teamMemberResponse) {
+    return <div>에러</div>;
+  }
 
   return (
     <RequireLogin>
@@ -100,7 +97,9 @@ const RollingpaperCreationPage = () => {
             labelText="롤링페이퍼 대상"
             value={rollingpaperTo}
             setValue={setRollingpaperTo}
-            searchKeywordList={memberListDummy.map((member) => member.name)}
+            searchKeywordList={teamMemberResponse.members.map(
+              (member) => member.nickname
+            )}
           />
           <Button type="submit">완료</Button>
         </StyledForm>
