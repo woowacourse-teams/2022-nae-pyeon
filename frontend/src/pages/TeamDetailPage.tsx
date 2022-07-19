@@ -9,8 +9,6 @@ import TeamRollingpaperList from "@/components/TeamRollingpaperList";
 import TeamJoinSection from "@/components/TeamJoinSection";
 import RequireLogin from "@/components/RequireLogin";
 
-import { Rollingpaper } from "@/types";
-
 interface Team {
   id: number;
   name: string;
@@ -31,26 +29,11 @@ const TeamDetailPage = () => {
     appClient.get(`/teams/${teamId}`).then((response) => response.data)
   );
 
-  const {
-    isLoading: isLoadingGetTeamRollingpaperList,
-    isError: isErrorGetTeamRollingpaperList,
-    data: rollingpaperList,
-  } = useQuery<Omit<Rollingpaper, "messages">[]>(["rollingpaperList"], () =>
-    appClient
-      .get(`/teams/${teamId}/rollingpapers`)
-      .then((response) => response.data)
-  );
-
-  if (isLoadingTeamDetail || isLoadingGetTeamRollingpaperList) {
+  if (isLoadingTeamDetail) {
     return <div>로딩중</div>;
   }
 
-  if (
-    isErrorTeamDetail ||
-    !teamDetail ||
-    isErrorGetTeamRollingpaperList ||
-    !rollingpaperList
-  ) {
+  if (isErrorTeamDetail || !teamDetail) {
     return <div>에러</div>;
   }
 
@@ -63,11 +46,7 @@ const TeamDetailPage = () => {
           description={teamDetail.description}
           color={teamDetail.color}
         />
-        {teamDetail.joined ? (
-          <TeamRollingpaperList rollingpapers={rollingpaperList} />
-        ) : (
-          <TeamJoinSection />
-        )}
+        {teamDetail.joined ? <TeamRollingpaperList /> : <TeamJoinSection />}
       </StyledMain>
     </RequireLogin>
   );
