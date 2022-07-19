@@ -13,7 +13,7 @@ import RequireLogin from "@/components/RequireLogin";
 import { Message } from "@/types";
 
 const MessageWritePage = () => {
-  const { rollingpaperId } = useParams();
+  const { teamId, rollingpaperId } = useParams();
   const navigate = useNavigate();
   const contentRef = useRef<HTMLTextAreaElement>(null);
 
@@ -27,7 +27,9 @@ const MessageWritePage = () => {
     },
     {
       onSuccess: () => {
-        navigate(`/rollingpaper/${rollingpaperId}`, { replace: true });
+        navigate(`/team/${teamId}/rollingpaper/${rollingpaperId}`, {
+          replace: true,
+        });
       },
       onError: (error) => {
         console.log(error);

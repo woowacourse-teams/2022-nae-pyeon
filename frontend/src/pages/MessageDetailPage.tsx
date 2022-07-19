@@ -1,7 +1,7 @@
 import React from "react";
+import { useQuery, useMutation } from "react-query";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
-import { useQuery, useMutation } from "react-query";
 
 import appClient from "@/api";
 import RollingpaperMessageDetail from "@/components/RollingpaperMessageDetail";
@@ -42,7 +42,7 @@ const MessageDetailPage = () => {
   );
 
   const handleEditButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    navigate(`/rollingpaper/${rollingpaperId}/message/${messageId}/edit`);
+    navigate("edit");
   };
 
   const handleDeleteButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {

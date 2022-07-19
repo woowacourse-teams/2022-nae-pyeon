@@ -1,9 +1,12 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useQuery } from "react-query";
 import styled from "@emotion/styled";
 
 import IconButton from "@/components/IconButton";
 import RollingpaperListItem from "@/components/RollingpaperListItem";
+
+import appClient from "@/api";
 
 import { BiPlus } from "react-icons/bi";
 
@@ -13,12 +16,31 @@ interface Rollingpaper {
   to: string;
 }
 
-interface RollingpaperListProp {
-  rollingpapers: Rollingpaper[];
+interface TeamRollingpaperListResponse {
+  rollingpapers: Omit<Rollingpaper, "messages">[];
 }
 
-const TeamRollingpaperList = ({ rollingpapers }: RollingpaperListProp) => {
+const TeamRollingpaperList = () => {
   const navigate = useNavigate();
+  const { teamId } = useParams();
+
+  const {
+    isLoading: isLoadingGetTeamRollingpaperList,
+    isError: isErrorGetTeamRollingpaperList,
+    data: teamRollinpaperListResponse,
+  } = useQuery<TeamRollingpaperListResponse>(["rollingpaperList"], () =>
+    appClient.get(`/teams/${teamId}/rollingpapers`).then((response) => {
+      return response.data;
+    })
+  );
+
+  if (isLoadingGetTeamRollingpaperList) {
+    return <div>로딩중</div>;
+  }
+
+  if (isErrorGetTeamRollingpaperList || !teamRollinpaperListResponse) {
+    return <div>에러</div>;
+  }
 
   return (
     <StyledRollingpaperListContainer>
@@ -34,8 +56,8 @@ const TeamRollingpaperList = ({ rollingpapers }: RollingpaperListProp) => {
         </IconButton>
       </StyledRollingpaperListHead>
       <StyledRollingpaperList>
-        {rollingpapers.map((rollingpaper) => (
-          <Link key={rollingpaper.id} to={`/rollingpaper/${rollingpaper.id}`}>
+        {teamRollinpaperListResponse.rollingpapers.map((rollingpaper) => (
+          <Link key={rollingpaper.id} to={`rollingpaper/${rollingpaper.id}`}>
             <RollingpaperListItem {...rollingpaper} />
           </Link>
         ))}

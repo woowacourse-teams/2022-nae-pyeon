@@ -8,7 +8,11 @@ import RequireLogin from "@/components/RequireLogin";
 
 import appClient from "@/api";
 
-interface TeamType {
+interface MyTeamListResponse {
+  teams: Team[];
+}
+
+interface Team {
   id: number;
   name: string;
   description: string;
@@ -20,15 +24,15 @@ const MainPage = () => {
   const {
     isLoading,
     isError,
-    data: teamList,
-  } = useQuery<TeamType[]>(["my-teams"], () =>
+    data: myTeamListResponse,
+  } = useQuery<MyTeamListResponse>(["my-teams"], () =>
     appClient.get(`/teams/me`).then((response) => response.data)
   );
 
   if (isLoading) {
     return <div>로딩 중</div>;
   }
-  if (isError || !teamList) {
+  if (isError || !myTeamListResponse) {
     return <div>에러</div>;
   }
 
@@ -36,16 +40,18 @@ const MainPage = () => {
     <RequireLogin>
       <StyleMain>
         <StyledCardList>
-          {teamList.map(({ id, name, description, emoji, color }) => (
-            <MyTeamCard
-              key={id}
-              id={id}
-              name={name}
-              description={description}
-              emoji={emoji}
-              color={color}
-            />
-          ))}
+          {myTeamListResponse.teams.map(
+            ({ id, name, description, emoji, color }) => (
+              <MyTeamCard
+                key={id}
+                id={id}
+                name={name}
+                description={description}
+                emoji={emoji}
+                color={color}
+              />
+            )
+          )}
         </StyledCardList>
         <TeamCreateButton />
       </StyleMain>

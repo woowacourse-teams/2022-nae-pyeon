@@ -9,7 +9,10 @@ import RequireLogin from "@/components/RequireLogin";
 
 import appClient from "@/api";
 
-interface TeamType {
+interface TotalTeamListResponse {
+  teams: Team[];
+}
+interface Team {
   id: number;
   name: string;
   description: string;
@@ -24,8 +27,8 @@ const TeamSearch = () => {
   const {
     isLoading,
     isError,
-    data: teamList,
-  } = useQuery<TeamType[]>(["total-teams"], () =>
+    data: totalTeamResponse,
+  } = useQuery<TotalTeamListResponse>(["total-teams"], () =>
     appClient.get(`/teams`).then((response) => response.data)
   );
 
@@ -48,7 +51,7 @@ const TeamSearch = () => {
   if (isLoading) {
     return <div>로딩 중</div>;
   }
-  if (isError || !teamList) {
+  if (isError || !totalTeamResponse) {
     return <div>에러</div>;
   }
 
@@ -62,7 +65,7 @@ const TeamSearch = () => {
           />
         </StyledSearch>
         <StyledTeamList>
-          {teamList.map((team) => (
+          {totalTeamResponse.teams.map((team) => (
             <TeamCard
               key={team.id}
               onClick={() => {
