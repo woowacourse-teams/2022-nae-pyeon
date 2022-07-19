@@ -34,9 +34,6 @@ public class TeamController {
     public ResponseEntity<TeamDetailResponseDto> getTeam(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long teamId) {
-        if (!teamService.isJoinedMember(loginMemberRequest.getId(), teamId)) {
-            throw new UncertificationTeamMemberException(teamId, loginMemberRequest.getId());
-        }
         return ResponseEntity.ok(teamService.findById(teamId));
     }
 

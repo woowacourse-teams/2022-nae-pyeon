@@ -107,6 +107,9 @@ public class TeamService {
     }
 
     public boolean isJoinedMember(final Long memberId, final Long teamId) {
+        if (teamRepository.findById(teamId).isEmpty()) {
+            throw new NotFoundTeamException(teamId);
+        }
         return teamMemberRepository.isJoinedMember(memberId, teamId);
     }
 }

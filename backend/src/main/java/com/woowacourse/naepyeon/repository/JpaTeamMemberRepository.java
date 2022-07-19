@@ -51,7 +51,8 @@ public class JpaTeamMemberRepository implements TeamMemberRepository {
 
     @Override
     public boolean isJoinedMember(final Long memberId, final Long teamId) {
-        final int joinCount = teamMemberJpaDao.isJoinedMember(memberId, teamId);
-        return joinCount == 1;
+        final List<Team> teams = teamMemberJpaDao.findTeamsByJoinedMemberId(memberId);
+        return teams.stream()
+                .anyMatch(team -> team.getId().equals(teamId));
     }
 }
