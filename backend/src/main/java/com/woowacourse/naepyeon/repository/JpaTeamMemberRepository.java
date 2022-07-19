@@ -49,4 +49,10 @@ public class JpaTeamMemberRepository implements TeamMemberRepository {
     public List<TeamParticipation> findMembersByTeamId(final Long teamId) {
         return teamMemberJpaDao.findMembersByTeamId(teamId);
     }
+
+    @Override
+    public boolean isJoinedMember(final Long memberId, final Long teamId) {
+        final int joinCount = teamMemberJpaDao.isJoinedMember(memberId, teamId);
+        return joinCount == 1;
+    }
 }

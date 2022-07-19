@@ -105,4 +105,8 @@ public class TeamService {
 
         return new JoinedMembersResponseDto(joinedMembers);
     }
+
+    public boolean isJoinedMember(final Long memberId, final Long teamId) {
+        return teamMemberRepository.isJoinedMember(memberId, teamId);
+    }
 }

@@ -5,6 +5,7 @@ import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
+import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
 import com.woowacourse.naepyeon.service.TeamService;
 import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamDetailResponseDto;
@@ -34,6 +35,9 @@ public class TeamController {
     public ResponseEntity<TeamDetailResponseDto> getTeam(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long teamId) {
+        if (!teamService.isJoinedMember(loginMemberRequest.getId(), teamId)) {
+            throw new UncertificationTeamMemberException(teamId, loginMemberRequest.getId());
+        }
         return ResponseEntity.ok(teamService.findById(teamId));
     }
 
@@ -53,6 +57,9 @@ public class TeamController {
     public ResponseEntity<JoinedMembersResponseDto> getJoinedMembers(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long teamId) {
+        if (!teamService.isJoinedMember(loginMemberRequest.getId(), teamId)) {
+            throw new UncertificationTeamMemberException(teamId, loginMemberRequest.getId());
+        }
         return ResponseEntity.ok(teamService.findJoinedMembers(teamId));
     }
 
@@ -69,6 +76,9 @@ public class TeamController {
     public ResponseEntity<Void> updateTeam(@AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
                                            @PathVariable final Long teamId,
                                            @RequestBody @Valid final TeamRequest teamRequest) {
+        if (!teamService.isJoinedMember(loginMemberRequest.getId(), teamId)) {
+            throw new UncertificationTeamMemberException(teamId, loginMemberRequest.getId());
+        }
         teamService.updateName(teamId, teamRequest.getName());
         return ResponseEntity.noContent().build();
     }
@@ -76,6 +86,9 @@ public class TeamController {
     @DeleteMapping("/{teamId}")
     public ResponseEntity<Void> deleteTeam(@AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
                                            @PathVariable final Long teamId) {
+        if (!teamService.isJoinedMember(loginMemberRequest.getId(), teamId)) {
+            throw new UncertificationTeamMemberException(teamId, loginMemberRequest.getId());
+        }
         teamService.delete(teamId);
         return ResponseEntity.noContent().build();
     }

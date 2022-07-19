@@ -21,4 +21,9 @@ public interface TeamMemberJpaDao extends JpaRepository<TeamParticipation, Long>
             + "from TeamParticipation p "
             + "where p.team.id = :teamId")
     List<TeamParticipation> findMembersByTeamId(@Param("teamId") final Long teamId);
+
+    @Query("select count(p) "
+            + "from TeamParticipation p "
+            + "where p.member.id = :memberId and p.team.id = :teamId")
+    int isJoinedMember(final Long memberId, final Long teamId);
 }

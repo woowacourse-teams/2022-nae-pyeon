@@ -45,7 +45,7 @@ public class RollingpaperService {
 
     private void validateTeamAndMember(final Long teamId, final Long loginMemberId, final Long memberId) {
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
-            throw new UncertificationTeamMemberException(teamId);
+            throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
         if (checkMemberNotIncludedTeam(teamId, memberId)) {
             throw new NotFoundTeamMemberException(memberId);
@@ -57,7 +57,7 @@ public class RollingpaperService {
         final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
                 .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
-            throw new UncertificationTeamMemberException(teamId);
+            throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
         return new RollingpaperResponseDto(
                 rollingpaperId,
@@ -70,7 +70,7 @@ public class RollingpaperService {
     @Transactional(readOnly = true)
     public RollingpapersResponseDto findByTeamId(final Long teamId, final Long loginMemberId) {
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
-            throw new UncertificationTeamMemberException(teamId);
+            throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
         final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByTeamId(teamId);
         final List<RollingpaperPreviewResponseDto> rollingpaperPreviewResponseDtos = rollingpapers.stream()
@@ -91,14 +91,14 @@ public class RollingpaperService {
     public void updateTitle(final Long rollingpaperId, final String newTitle, final Long teamId,
                             final Long loginMemberId) {
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
-            throw new UncertificationTeamMemberException(teamId);
+            throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
         rollingpaperRepository.update(rollingpaperId, newTitle);
     }
 
     public void deleteRollingpaper(final Long rollingpaperId, final Long teamId, final Long loginMemberId) {
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
-            throw new UncertificationTeamMemberException(teamId);
+            throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
         rollingpaperRepository.delete(rollingpaperId);
     }
