@@ -40,7 +40,7 @@ public class RollingpaperController {
     }
 
     @GetMapping("/{rollingpaperId}")
-    public ResponseEntity<RollingpaperResponseDto> findRollingpaper(
+    public ResponseEntity<RollingpaperResponseDto> findRollingpaperById(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long teamId, @PathVariable final Long rollingpaperId) {
         final RollingpaperResponseDto rollingpaperResponseDto =
@@ -49,7 +49,7 @@ public class RollingpaperController {
     }
 
     @GetMapping
-    public ResponseEntity<RollingpapersResponseDto> findTeamRollingpapers(
+    public ResponseEntity<RollingpapersResponseDto> findRollingpapersByTeamId(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long teamId) {
         final RollingpapersResponseDto rollingpapersResponseDto = rollingpaperService.findByTeamId(teamId,
@@ -58,7 +58,7 @@ public class RollingpaperController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<RollingpapersResponseDto> findMemberRollingpapers(
+    public ResponseEntity<RollingpapersResponseDto> findRollingpapersByMemberId(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long teamId) {
         final RollingpapersResponseDto rollingpapersResponseDto =
