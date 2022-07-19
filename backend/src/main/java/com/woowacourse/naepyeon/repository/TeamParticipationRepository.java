@@ -5,7 +5,7 @@ import com.woowacourse.naepyeon.domain.TeamParticipation;
 import java.util.List;
 import java.util.Optional;
 
-public interface TeamMemberRepository {
+public interface TeamParticipationRepository {
 
     Long save(final TeamParticipation teamParticipation);
 
@@ -16,6 +16,8 @@ public interface TeamMemberRepository {
     List<Team> findTeamsByJoinedMemberId(final Long memberId);
 
     List<TeamParticipation> findMembersByTeamId(final Long teamId);
+
+    String findNicknameByMemberId(final Long addresseeId, final Long teamId);
 
     boolean isJoinedMember(final Long memberId, final Long teamId);
 }

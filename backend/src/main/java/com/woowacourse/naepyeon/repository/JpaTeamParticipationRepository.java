@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class JpaTeamMemberRepository implements TeamMemberRepository {
+public class JpaTeamParticipationRepository implements TeamParticipationRepository {
 
     private final TeamMemberJpaDao teamMemberJpaDao;
 
@@ -47,6 +47,11 @@ public class JpaTeamMemberRepository implements TeamMemberRepository {
     @Override
     public List<TeamParticipation> findMembersByTeamId(final Long teamId) {
         return teamMemberJpaDao.findMembersByTeamId(teamId);
+    }
+
+    @Override
+    public String findNicknameByMemberId(final Long addresseeId, final Long teamId) {
+        return teamMemberJpaDao.findNicknameByMemberId(addresseeId, teamId);
     }
 
     @Override

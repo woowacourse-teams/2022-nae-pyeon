@@ -10,7 +10,6 @@ import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
 import com.woowacourse.naepyeon.service.dto.RollingpaperPreviewResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpapersResponseDto;
-import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -161,7 +160,6 @@ class RollingpaperServiceTest {
         final String expected = "woowacourse";
 
         rollingpaperService.updateTitle(rollingpaperId, expected, teamId, memberId);
-        final TeamsResponseDto teamsResponseDto = teamService.findByJoinedMemberId(memberId);
 
         final RollingpaperResponseDto rollingpaperResponse =
                 rollingpaperService.findById(rollingpaperId, teamId, memberId);

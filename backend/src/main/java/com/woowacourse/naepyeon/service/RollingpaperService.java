@@ -10,7 +10,7 @@ import com.woowacourse.naepyeon.exception.NotFoundTeamMemberException;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.RollingpaperRepository;
-import com.woowacourse.naepyeon.repository.TeamMemberRepository;
+import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
 import com.woowacourse.naepyeon.service.dto.RollingpaperPreviewResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperResponseDto;
@@ -29,7 +29,7 @@ public class RollingpaperService {
     private final RollingpaperRepository rollingpaperRepository;
     private final MessageService messageService;
     private final TeamRepository teamRepository;
-    private final TeamMemberRepository teamMemberRepository;
+    private final TeamParticipationRepository teamParticipationRepository;
     private final MemberRepository memberRepository;
 
     public Long createRollingpaper(final String title, final Long teamId,
@@ -62,7 +62,7 @@ public class RollingpaperService {
         return new RollingpaperResponseDto(
                 rollingpaperId,
                 rollingpaper.getTitle(),
-                findRollingpaperAddresseeNickname(rollingpaper),
+                findRollingpaperAddresseeNickname(rollingpaper, teamId),
                 messageService.findMessages(rollingpaperId)
         );
     }
@@ -75,7 +75,7 @@ public class RollingpaperService {
         final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByTeamId(teamId);
         final List<RollingpaperPreviewResponseDto> rollingpaperPreviewResponseDtos = rollingpapers.stream()
                 .map(rollingpaper -> RollingpaperPreviewResponseDto.from(
-                        rollingpaper, findRollingpaperAddresseeNickname(rollingpaper))
+                        rollingpaper, findRollingpaperAddresseeNickname(rollingpaper, teamId))
                 )
                 .collect(Collectors.toUnmodifiableList());
         return new RollingpapersResponseDto(rollingpaperPreviewResponseDtos);
@@ -86,16 +86,13 @@ public class RollingpaperService {
         final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByMemberId(loginMemberId);
         final List<RollingpaperPreviewResponseDto> rollingpaperPreviewResponseDtos = rollingpapers.stream()
                 .map(rollingpaper -> RollingpaperPreviewResponseDto.from(
-                        rollingpaper, findRollingpaperAddresseeNickname(rollingpaper))
+                        rollingpaper, findRollingpaperAddresseeNickname(rollingpaper, teamId))
                 ).collect(Collectors.toUnmodifiableList());
         return new RollingpapersResponseDto(rollingpaperPreviewResponseDtos);
     }
 
-    private String findRollingpaperAddresseeNickname(final Rollingpaper rollingpaper) {
-        final Long addresseeId = rollingpaper.getAddresseeId();
-        return teamMemberRepository.findById(rollingpaper.getAddresseeId())
-                .orElseThrow(() -> new NotFoundTeamMemberException(addresseeId))
-                .getNickname();
+    private String findRollingpaperAddresseeNickname(final Rollingpaper rollingpaper, final Long teamId) {
+        return teamParticipationRepository.findNicknameByMemberId(rollingpaper.getAddresseeId(), teamId);
     }
 
     public void updateTitle(final Long rollingpaperId, final String newTitle, final Long teamId,
@@ -114,7 +111,7 @@ public class RollingpaperService {
     }
 
     private boolean checkMemberNotIncludedTeam(final Long teamId, final Long memberId) {
-        final List<Long> joinedTeamsId = teamMemberRepository.findTeamsByJoinedMemberId(memberId)
+        final List<Long> joinedTeamsId = teamParticipationRepository.findTeamsByJoinedMemberId(memberId)
                 .stream()
                 .map(Team::getId)
                 .collect(Collectors.toUnmodifiableList());
