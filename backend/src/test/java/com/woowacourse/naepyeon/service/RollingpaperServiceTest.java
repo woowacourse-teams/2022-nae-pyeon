@@ -6,6 +6,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.exception.NotFoundRollingpaperException;
+import com.woowacourse.naepyeon.exception.NotFoundTeamMemberException;
+import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
 import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
 import com.woowacourse.naepyeon.service.dto.RollingpaperPreviewResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperResponseDto;
@@ -32,6 +34,7 @@ class RollingpaperServiceTest {
     private Long teamId;
     private Member member;
     private Member member2;
+    private Member member3;
 
     @Autowired
     private MemberJpaDao memberJpaDao;
@@ -44,6 +47,7 @@ class RollingpaperServiceTest {
     void setUp() {
         member = memberJpaDao.save(new Member("member", "m@hello.com", "abc@@1234"));
         member2 = memberJpaDao.save(new Member("writer", "w@hello.com", "abc@@1234"));
+        member3 = memberJpaDao.save(new Member("anonymous", "a@hello.com", "abc@@1234"));
         teamId = teamService.save(teamRequest, member.getId());
         teamService.joinMember(teamId, member2.getId(), "안뇽안뇽");
     }
@@ -51,6 +55,35 @@ class RollingpaperServiceTest {
     @Test
     @DisplayName("롤링페이퍼를 저장하고 id값으로 찾는다.")
     void saveRollingpaperAndFind() {
+        final Long rollingpaperId =
+                rollingpaperService.createRollingpaper(rollingPaperTitle, teamId, member2.getId(), member.getId());
+
+        final RollingpaperResponseDto rollingpaperResponse = rollingpaperService.findById(rollingpaperId, teamId,
+                member.getId());
+
+        assertThat(rollingpaperResponse).extracting("title", "to", "messages")
+                .containsExactly(rollingPaperTitle, member.getUsername(), List.of());
+    }
+
+    @Test
+    @DisplayName("모임에 속하지 않은 회원이 롤링페이퍼를 저장할 때 예외를 발생시킨다.")
+    void saveRollingpaperWithAnonymous() {
+        assertThatThrownBy(() -> rollingpaperService.createRollingpaper(rollingPaperTitle, teamId,
+                member3.getId(), member.getId()))
+                .isInstanceOf(UncertificationTeamMemberException.class);
+    }
+
+    @Test
+    @DisplayName("롤링페이퍼를 모임에 속하지 않은 회원에게 작성할 때 예외를 발생시킨다.")
+    void saveRollingpaperToAnonymous() {
+        assertThatThrownBy(() -> rollingpaperService.createRollingpaper(rollingPaperTitle, teamId,
+                member.getId(), member3.getId()))
+                .isInstanceOf(NotFoundTeamMemberException.class);
+    }
+
+    @Test
+    @DisplayName("모임에 속하지 않은 회원이 id값으로 롤링페이퍼를 찾을 때 예외를 발생시킨다.")
+    void saveRollingpaperAndFindWithAnonymous() {
         final Long rollingpaperId =
                 rollingpaperService.createRollingpaper(rollingPaperTitle, teamId, member2.getId(), member.getId());
 
@@ -79,6 +112,15 @@ class RollingpaperServiceTest {
         assertThat(rollingpaperPreviewResponseDtos)
                 .usingRecursiveComparison()
                 .isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("모임에 속하지 않은 회원이 teamId값으로 롤링페이퍼를 찾을 때 예외를 발생시킨다.")
+    void saveRollingpaperAndFindByTeamIdWithAnonymous() {
+        rollingpaperService.createRollingpaper(rollingPaperTitle, teamId, member2.getId(), member.getId());
+
+        assertThatThrownBy(() -> rollingpaperService.findByTeamId(teamId, member3.getId()))
+                .isInstanceOf(UncertificationTeamMemberException.class);
     }
 
     @Test
@@ -130,6 +172,16 @@ class RollingpaperServiceTest {
     }
 
     @Test
+    @DisplayName("모임에 속하지 않은 회원이 롤링페이퍼 타이틀을 수정할 경우 예외를 발생시킨다.")
+    void updateRollingpaperTitleWithAnonymous() {
+        final Long rollingpaperId =
+                rollingpaperService.createRollingpaper(rollingPaperTitle, teamId, member2.getId(), member.getId());
+
+        assertThatThrownBy(() -> rollingpaperService.updateTitle(rollingpaperId, "내맘대로수정할래", teamId, member3.getId()))
+                .isInstanceOf(UncertificationTeamMemberException.class);
+    }
+
+    @Test
     @DisplayName("롤링페이퍼를 id로 제거한다.")
     void deleteRollingpaper() {
         final Long rollingpaperId =
@@ -139,5 +191,15 @@ class RollingpaperServiceTest {
 
         assertThatThrownBy(() -> rollingpaperService.findById(rollingpaperId, teamId, member.getId()))
                 .isInstanceOf(NotFoundRollingpaperException.class);
+    }
+
+    @Test
+    @DisplayName("모임에 속하지 않은 회원이 롤링페이퍼를 삭제할 경우 예외를 발생시킨다.")
+    void deleteRollingpaperWithAnonymous() {
+        final Long rollingpaperId =
+                rollingpaperService.createRollingpaper(rollingPaperTitle, teamId, member2.getId(), member.getId());
+
+        assertThatThrownBy(() -> rollingpaperService.deleteRollingpaper(rollingpaperId, teamId, member3.getId()))
+                .isInstanceOf(UncertificationTeamMemberException.class);
     }
 }

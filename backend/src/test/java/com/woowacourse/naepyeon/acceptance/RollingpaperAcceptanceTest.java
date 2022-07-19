@@ -108,6 +108,25 @@ public class RollingpaperAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    @DisplayName("모임에 속하지 않은 사람이 해당 모임에서 롤링페이퍼를 생성하는 경우 예외를 발생시킨다.")
+    void createRollingpaperWithAnonymous() {
+        final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
+        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class).getId();
+
+        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
+        모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
+
+        // 모임에 가입하지는 않음
+        final TokenResponseDto tokenResponseDto3 = 회원가입_후_로그인(member3);
+
+        final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이케이", 2L);
+        final ExtractableResponse<Response> response = 회원_롤링페이퍼_생성(tokenResponseDto3, teamId,
+                rollingpaperCreateRequest);
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+    }
+
+    @Test
     @DisplayName("특정 모임의 회원들 전체가 받은 롤링페이퍼 목록을 조회한다.")
     void findRollingpapersWithTeam() {
         final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
