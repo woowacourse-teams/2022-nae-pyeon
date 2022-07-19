@@ -7,7 +7,7 @@ import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
-import com.woowacourse.naepyeon.repository.TeamMemberRepository;
+import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
@@ -26,7 +26,7 @@ public class TeamService {
 
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
-    private final TeamMemberRepository teamMemberRepository;
+    private final TeamParticipationRepository teamParticipationRepository;
 
     @Transactional
     public Long save(final TeamRequest teamRequest, final Long memberId) {
@@ -39,7 +39,7 @@ public class TeamService {
         final Long createdTeamId = teamRepository.save(team);
         final Member owner = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException(memberId));
-        teamMemberRepository.save(new TeamParticipation(team, owner, "마스터"));
+        teamParticipationRepository.save(new TeamParticipation(team, owner, "마스터"));
         return createdTeamId;
     }
 
@@ -50,13 +50,13 @@ public class TeamService {
         final Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException(memberId));
         final TeamParticipation teamParticipation = new TeamParticipation(team, member, nickname);
-        return teamMemberRepository.save(teamParticipation);
+        return teamParticipationRepository.save(teamParticipation);
     }
 
     public TeamResponseDto findById(final Long teamId, final Long memberId) {
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
-        return TeamResponseDto.of(team, teamMemberRepository.isJoinedMember(memberId, teamId));
+        return TeamResponseDto.of(team, teamParticipationRepository.isJoinedMember(memberId, teamId));
     }
 
     @Transactional
@@ -73,7 +73,7 @@ public class TeamService {
 
     public TeamsResponseDto findAll(final Long memberId) {
         final List<Team> teams = teamRepository.findAll();
-        final List<Team> joinedTeams = teamMemberRepository.findTeamsByJoinedMemberId(memberId);
+        final List<Team> joinedTeams = teamParticipationRepository.findTeamsByJoinedMemberId(memberId);
 
         final List<TeamResponseDto> teamResponseDtos = teams.stream()
                 .map(team -> TeamResponseDto.of(team, joinedTeams.contains(team)))
@@ -83,7 +83,7 @@ public class TeamService {
     }
 
     public TeamsResponseDto findByJoinedMemberId(final Long memberId) {
-        final List<Team> teams = teamMemberRepository.findTeamsByJoinedMemberId(memberId);
+        final List<Team> teams = teamParticipationRepository.findTeamsByJoinedMemberId(memberId);
         final List<TeamResponseDto> teamResponseDtos = teams.stream()
                 .map(team -> TeamResponseDto.of(team, true))
                 .collect(Collectors.toList());
@@ -92,7 +92,7 @@ public class TeamService {
     }
 
     public JoinedMembersResponseDto findJoinedMembers(final Long teamId) {
-        final List<TeamParticipation> participations = teamMemberRepository.findMembersByTeamId(teamId);
+        final List<TeamParticipation> participations = teamParticipationRepository.findMembersByTeamId(teamId);
 
         final List<JoinedMemberResponseDto> joinedMembers = participations.stream()
                 .map(
@@ -109,6 +109,6 @@ public class TeamService {
         if (teamRepository.findById(teamId).isEmpty()) {
             throw new NotFoundTeamException(teamId);
         }
-        return teamMemberRepository.isJoinedMember(memberId, teamId);
+        return teamParticipationRepository.isJoinedMember(memberId, teamId);
     }
 }
