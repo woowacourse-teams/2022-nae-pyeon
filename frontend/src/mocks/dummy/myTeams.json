@@ -5,112 +5,128 @@
       "name": "우테코 4기",
       "description": "우테코 4기 설명입니다",
       "emoji": "😎",
-      "color": "#FF8181"
+      "color": "#FF8181",
+      "joined": true
     },
     {
       "id": 2,
       "name": "우테코 4기",
       "description": "우테코 4기 설명입니다",
       "emoji": "😎",
-      "color": "#C5FF98"
+      "color": "#C5FF98",
+      "joined": false
     },
     {
       "id": 3,
       "name": "우테코 4기",
       "description": "우테코 4기 설명입니다",
       "emoji": "😎",
-      "color": "#FFF598"
+      "color": "#FFF598",
+      "joined": true
     },
     {
       "id": 4,
       "name": "우테코 4기",
       "description": "우테코 4기 설명입니다",
       "emoji": "😎",
-      "color": "#98DAFF"
+      "color": "#98DAFF",
+      "joined": true
     },
     {
       "id": 5,
       "name": "우테코 4기",
       "description": "우테코 4기 설명입니다",
       "emoji": "😎",
-      "color": "#FF8181"
+      "color": "#FF8181",
+      "joined": true
     },
     {
       "id": 6,
       "name": "우테코 4기",
       "description": "우테코 4기 설명입니다",
       "emoji": "😎",
-      "color": "#C5FF98"
+      "color": "#C5FF98",
+      "joined": true
     },
     {
       "id": 7,
       "name": "우테코 4기",
       "description": "우테코 4기 설명입니다",
       "emoji": "😎",
-      "color": "#FFF598"
+      "color": "#FFF598",
+      "joined": true
     },
     {
       "id": 8,
       "name": "우테코 4기",
       "description": "우테코 4기 설명입니다",
       "emoji": "😎",
-      "color": "#98DAFF"
+      "color": "#98DAFF",
+      "joined": true
     },
     {
       "id": 9,
       "name": "우테코 4기",
       "description": "우테코 4기 설명입니다",
       "emoji": "😎",
-      "color": "#FF8181"
+      "color": "#FF8181",
+      "joined": true
     },
     {
       "id": 10,
       "name": "우테코 4기",
       "description": "우테코 4기 설명입니다",
       "emoji": "😎",
-      "color": "#C5FF98"
+      "color": "#C5FF98",
+      "joined": true
     },
     {
       "id": 11,
       "name": "우테코 4기",
       "description": "우테코 4기 설명입니다",
       "emoji": "😎",
-      "color": "#FFF598"
+      "color": "#FFF598",
+      "joined": true
     },
     {
       "id": 12,
       "name": "우테코 4기",
       "description": "우테코 4기 설명입니다",
       "emoji": "😎",
-      "color": "#98DAFF"
+      "color": "#98DAFF",
+      "joined": true
     },
     {
       "id": 13,
       "name": "우테코 4기",
       "description": "우테코 4기 설명입니다",
       "emoji": "😎",
-      "color": "#FF8181"
+      "color": "#FF8181",
+      "joined": true
     },
     {
       "id": 14,
       "name": "우테코 4기",
       "description": "우테코 4기 설명입니다",
       "emoji": "😎",
-      "color": "#C5FF98"
+      "color": "#C5FF98",
+      "joined": true
     },
     {
       "id": 15,
       "name": "우테코 4기",
       "description": "우테코 4기 설명입니다",
       "emoji": "😎",
-      "color": "#FFF598"
+      "color": "#FFF598",
+      "joined": true
     },
     {
       "id": 16,
       "name": "우테코 4기",
       "description": "우테코 4기 설명입니다",
       "emoji": "😎",
-      "color": "#98DAFF"
+      "color": "#98DAFF",
+      "joined": true
     }
   ]
 }
