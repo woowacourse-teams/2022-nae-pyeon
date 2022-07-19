@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
-import RollingpaperList from "@/components/RollingpaperList";
+import TeamRollingpaperList from "@/components/TeamRollingpaperList";
 
 export default {
-  component: RollingpaperList,
-  title: "RollingpaperList",
+  component: TeamRollingpaperList,
+  title: "TeamRollingpaperList",
 };
 
 const dummyRollingpapers = [
@@ -33,7 +33,7 @@ const dummyRollingpapers = [
 const Template = (args) => {
   return (
     <BrowserRouter>
-      <RollingpaperList {...args}></RollingpaperList>
+      <TeamRollingpaperList {...args}></TeamRollingpaperList>
     </BrowserRouter>
   );
 };

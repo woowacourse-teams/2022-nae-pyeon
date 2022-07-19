@@ -2,8 +2,8 @@ import React from "react";
 import styled from "@emotion/styled";
 import { useQuery } from "react-query";
 
-import MainCard from "@/components/MainCard";
-import PlusButton from "@/components/PlusButton";
+import MyTeamCard from "@/components/MyTeamCard";
+import TeamCreateButton from "@/components/TeamCreateButton";
 import RequireLogin from "@/components/RequireLogin";
 
 import appClient from "@/api";
@@ -37,8 +37,9 @@ const MainPage = () => {
       <StyleMain>
         <StyledCardList>
           {teamList.map(({ id, name, description, emoji, color }) => (
-            <MainCard
+            <MyTeamCard
               key={id}
+              id={id}
               name={name}
               description={description}
               emoji={emoji}
@@ -46,7 +47,7 @@ const MainPage = () => {
             />
           ))}
         </StyledCardList>
-        <PlusButton />
+        <TeamCreateButton />
       </StyleMain>
     </RequireLogin>
   );
