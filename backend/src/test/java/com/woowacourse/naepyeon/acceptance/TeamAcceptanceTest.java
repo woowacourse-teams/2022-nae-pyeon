@@ -11,7 +11,7 @@ import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_추�
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임에_가입한_회원_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원가입_후_로그인;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
@@ -27,7 +27,6 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -164,7 +163,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
 
         assertThat(teamIds).contains(team1Id, team2Id);
     }
-    
+
     @Test
     @DisplayName("모든 모임 조회시 내가 가입한 모임의 joined컬럼이 true로, 가입하지 않은 모임은 false로 나온다.")
     void checkJoinedColumn() {
@@ -214,7 +213,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(notJoinedTeam.getName()).isEqualTo(teamName2)
         );
     }
-    
+
     @Test
     @DisplayName("팀에 가입한 회원 목록을 조회한다.")
     void findJoinedMembers() {
