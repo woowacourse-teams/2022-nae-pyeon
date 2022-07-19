@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.acceptance;
 
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.롤링페이퍼_내꺼_조회;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.나의_롤링페이퍼_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.롤링페이퍼_제목_수정;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.롤링페이퍼_특정_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입;
@@ -51,13 +51,13 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
 
         // when: seungpang이 yxxnghwan에게 롤링페이퍼 작성
-        final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이케이", 2L);
+        final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이알렉스", 2L);
         final Long rollingpaperId = 회원_롤링페이퍼_생성(tokenResponseDto1, teamId, rollingpaperCreateRequest)
                 .as(CreateResponse.class)
                 .getId();
 
         // then: yxxnghwan이 받은 롤링페이퍼 조회
-        final List<Long> actual = 롤링페이퍼_내꺼_조회(tokenResponseDto2, teamId).as(RollingpapersResponseDto.class)
+        final List<Long> actual = 나의_롤링페이퍼_조회(tokenResponseDto2, teamId).as(RollingpapersResponseDto.class)
                 .getRollingpapers()
                 .stream()
                 .map(RollingpaperPreviewResponseDto::getId)
@@ -87,7 +87,7 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
                 .getId();
 
         // then: yxxnghwan이 받은 롤링페이퍼 조회
-        final List<Long> actual = 롤링페이퍼_내꺼_조회(tokenResponseDto2, teamId).as(RollingpapersResponseDto.class)
+        final List<Long> actual = 나의_롤링페이퍼_조회(tokenResponseDto2, teamId).as(RollingpapersResponseDto.class)
                 .getRollingpapers()
                 .stream()
                 .map(RollingpaperPreviewResponseDto::getId)
@@ -117,13 +117,10 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
         final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
                 .getId();
 
-        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
-        모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
-
         // 모임에 가입하지는 않음
         final TokenResponseDto tokenResponseDto3 = 회원가입_후_로그인(member3);
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이케이", 2L);
+        final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이승팡", 1L);
         final ExtractableResponse<Response> response = 회원_롤링페이퍼_생성(tokenResponseDto3, teamId,
                 rollingpaperCreateRequest);
 
@@ -196,15 +193,14 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
         final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이케이", 2L);
+        final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이알렉스", 2L);
         final Long rollingpaperId = 회원_롤링페이퍼_생성(tokenResponseDto1, teamId, rollingpaperCreateRequest)
                 .as(CreateResponse.class)
                 .getId();
 
         final String expected = "알고리즘좀그만해!";
         final RollingpaperUpdateRequest rollingpaperUpdateRequest = new RollingpaperUpdateRequest("알고리즘좀그만해!");
-        final ExtractableResponse<Response> response = 롤링페이퍼_제목_수정(tokenResponseDto1, teamId, rollingpaperId,
-                rollingpaperUpdateRequest);
+        롤링페이퍼_제목_수정(tokenResponseDto1, teamId, rollingpaperId, rollingpaperUpdateRequest);
 
         final String actual = 롤링페이퍼_특정_조회(tokenResponseDto1, teamId, rollingpaperId).as(RollingpaperResponseDto.class)
                 .getTitle();
@@ -221,13 +217,13 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
         final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이케이", 2L);
+        final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이알렉스", 2L);
         final Long rollingpaperId = 회원_롤링페이퍼_생성(tokenResponseDto1, teamId, rollingpaperCreateRequest)
                 .as(CreateResponse.class)
                 .getId();
 
         final RollingpaperUpdateRequest rollingpaperUpdateRequest =
-                new RollingpaperUpdateRequest("케이. 사실은 나도 알고리즘 좋아하는데 숨기는 거였어...");
+                new RollingpaperUpdateRequest("알렉스. 사실은 나도 케이만큼 알고리즘 좋아하는데 숨기는 거였어...");
         final ExtractableResponse<Response> response = 롤링페이퍼_제목_수정(tokenResponseDto1, teamId, rollingpaperId,
                 rollingpaperUpdateRequest);
 
@@ -247,12 +243,11 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
         // 모임에 가입하지는 않음
         final TokenResponseDto tokenResponseDto3 = 회원가입_후_로그인(member3);
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이케이", 2L);
+        final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이알렉스", 2L);
         final Long rollingpaperId = 회원_롤링페이퍼_생성(tokenResponseDto1, teamId, rollingpaperCreateRequest)
                 .as(CreateResponse.class)
                 .getId();
 
-        final String expected = "알고리즘좀그만해!";
         final RollingpaperUpdateRequest rollingpaperUpdateRequest = new RollingpaperUpdateRequest("알고리즘좀그만해!");
         final ExtractableResponse<Response> response = 롤링페이퍼_제목_수정(tokenResponseDto3, teamId, rollingpaperId,
                 rollingpaperUpdateRequest);

@@ -143,7 +143,7 @@ public class AcceptanceFixture {
         return post(tokenResponseDto, rollingpaperCreateRequest, "/api/v1/teams/" + teamId + "/rollingpapers");
     }
 
-    public static ExtractableResponse<Response> 롤링페이퍼_내꺼_조회(final TokenResponseDto tokenResponseDto,
+    public static ExtractableResponse<Response> 나의_롤링페이퍼_조회(final TokenResponseDto tokenResponseDto,
                                                             final Long teamId) {
         return get(tokenResponseDto, "/api/v1/teams/" + teamId + "/rollingpapers/me");
     }
