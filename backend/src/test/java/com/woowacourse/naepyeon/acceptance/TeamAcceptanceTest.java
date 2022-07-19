@@ -19,7 +19,6 @@ import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
-import com.woowacourse.naepyeon.service.dto.TeamDetailResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
@@ -92,7 +91,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 .getId();
 
         final ExtractableResponse<Response> response = 모임_단건_조회(tokenResponseDto, teamId);
-        final TeamDetailResponseDto teamResponse = response.as(TeamDetailResponseDto.class);
+        final TeamResponseDto teamResponse = response.as(TeamResponseDto.class);
 
         assertThat(teamResponse).extracting("id", "name", "description", "emoji", "color")
                 .containsExactly(teamId, teamName, teamDescription, teamEmoji, teamColor);

@@ -10,7 +10,6 @@ import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.TeamMemberRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
-import com.woowacourse.naepyeon.service.dto.TeamDetailResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.util.List;
@@ -78,7 +77,7 @@ class TeamServiceTest {
         final Long teamId = teamService.save(teamRequest, member.getId());
 
         // when
-        final TeamDetailResponseDto findTeam = teamService.findById(teamId);
+        final TeamResponseDto findTeam = teamService.findById(teamId, member.getId());
 
         // then
         assertThat(findTeam)
@@ -130,7 +129,7 @@ class TeamServiceTest {
         teamService.updateName(teamId, expected);
 
         // then
-        assertThat(teamService.findById(teamId))
+        assertThat(teamService.findById(teamId, member.getId()))
                 .extracting("id", "name", "description", "emoji", "color")
                 .containsExactly(
                         teamId,

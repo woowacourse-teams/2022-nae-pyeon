@@ -11,7 +11,6 @@ import com.woowacourse.naepyeon.repository.TeamMemberRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
-import com.woowacourse.naepyeon.service.dto.TeamDetailResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.util.List;
@@ -54,10 +53,10 @@ public class TeamService {
         return teamMemberRepository.save(teamParticipation);
     }
 
-    public TeamDetailResponseDto findById(final Long teamId) {
+    public TeamResponseDto findById(final Long teamId, final Long memberId) {
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
-        return TeamDetailResponseDto.of(team);
+        return TeamResponseDto.of(team, teamMemberRepository.isJoinedMember(memberId, teamId));
     }
 
     @Transactional

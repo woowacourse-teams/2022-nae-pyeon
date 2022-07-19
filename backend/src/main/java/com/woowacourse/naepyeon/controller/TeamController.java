@@ -8,7 +8,7 @@ import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
 import com.woowacourse.naepyeon.service.TeamService;
 import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
-import com.woowacourse.naepyeon.service.dto.TeamDetailResponseDto;
+import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.net.URI;
 import javax.validation.Valid;
@@ -31,10 +31,10 @@ public class TeamController {
     private final TeamService teamService;
 
     @GetMapping("/{teamId}")
-    public ResponseEntity<TeamDetailResponseDto> getTeam(
+    public ResponseEntity<TeamResponseDto> getTeam(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long teamId) {
-        return ResponseEntity.ok(teamService.findById(teamId));
+        return ResponseEntity.ok(teamService.findById(teamId, loginMemberRequest.getId()));
     }
 
     @GetMapping("/me")
