@@ -28,7 +28,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-public class RollingpaperAcceptanceTest extends AcceptanceTest {
+class RollingpaperAcceptanceTest extends AcceptanceTest {
 
     private final TeamRequest teamRequest = new TeamRequest(
             "woowacourse", "테스트 모임입니다.", "testEmoji", "#123456"
