@@ -62,7 +62,7 @@ public class RollingpaperService {
         return new RollingpaperResponseDto(
                 rollingpaperId,
                 rollingpaper.getTitle(),
-                rollingpaper.getMember().getUsername(),
+                findRollingpaperAddresseeNickname(rollingpaper),
                 messageService.findMessages(rollingpaperId)
         );
     }
@@ -74,7 +74,9 @@ public class RollingpaperService {
         }
         final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByTeamId(teamId);
         final List<RollingpaperPreviewResponseDto> rollingpaperPreviewResponseDtos = rollingpapers.stream()
-                .map(RollingpaperPreviewResponseDto::from)
+                .map(rollingpaper -> RollingpaperPreviewResponseDto.from(
+                        rollingpaper, findRollingpaperAddresseeNickname(rollingpaper))
+                )
                 .collect(Collectors.toUnmodifiableList());
         return new RollingpapersResponseDto(rollingpaperPreviewResponseDtos);
     }
@@ -83,9 +85,17 @@ public class RollingpaperService {
     public RollingpapersResponseDto findByMemberId(final Long teamId, final Long loginMemberId) {
         final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByMemberId(loginMemberId);
         final List<RollingpaperPreviewResponseDto> rollingpaperPreviewResponseDtos = rollingpapers.stream()
-                .map(RollingpaperPreviewResponseDto::from)
-                .collect(Collectors.toUnmodifiableList());
+                .map(rollingpaper -> RollingpaperPreviewResponseDto.from(
+                        rollingpaper, findRollingpaperAddresseeNickname(rollingpaper))
+                ).collect(Collectors.toUnmodifiableList());
         return new RollingpapersResponseDto(rollingpaperPreviewResponseDtos);
+    }
+
+    private String findRollingpaperAddresseeNickname(final Rollingpaper rollingpaper) {
+        final Long addresseeId = rollingpaper.getAddresseeId();
+        return teamMemberRepository.findById(rollingpaper.getAddresseeId())
+                .orElseThrow(() -> new NotFoundTeamMemberException(addresseeId))
+                .getNickname();
     }
 
     public void updateTitle(final Long rollingpaperId, final String newTitle, final Long teamId,
