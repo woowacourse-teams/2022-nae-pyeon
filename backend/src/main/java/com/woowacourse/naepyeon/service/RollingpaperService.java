@@ -33,12 +33,12 @@ public class RollingpaperService {
     private final MemberRepository memberRepository;
 
     public Long createRollingpaper(final String title, final Long teamId,
-                                   final Long loginMemberId, final Long memberId) {
+                                   final Long loginMemberId, final Long addresseeId) {
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
-        final Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundMemberException(memberId));
-        validateTeamAndMember(teamId, loginMemberId, memberId);
+        final Member member = memberRepository.findById(addresseeId)
+                .orElseThrow(() -> new NotFoundMemberException(addresseeId));
+        validateTeamAndMember(teamId, loginMemberId, addresseeId);
         final Rollingpaper rollingpaper = new Rollingpaper(title, team, member);
         return rollingpaperRepository.save(rollingpaper);
     }
