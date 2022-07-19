@@ -47,7 +47,7 @@ const App = () => {
               <Route path="team/new" element={<TeamCreationPage />} />
 
               <Route
-                path="rollingpaper/new"
+                path="team/:teamId/rollingpaper/new"
                 element={<RollingpaperCreationPage />}
               />
               <Route

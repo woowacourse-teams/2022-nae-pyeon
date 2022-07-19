@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import IconButton from "@/components/IconButton";
@@ -17,7 +17,9 @@ interface RollingpaperListProp {
   rollingpapers: Rollingpaper[];
 }
 
-const RollingpaperList = ({ rollingpapers }: RollingpaperListProp) => {
+const TeamRollingpaperList = ({ rollingpapers }: RollingpaperListProp) => {
+  const navigate = useNavigate();
+
   return (
     <StyledRollingpaperListContainer>
       <StyledRollingpaperListHead>
@@ -25,7 +27,7 @@ const RollingpaperList = ({ rollingpapers }: RollingpaperListProp) => {
         <IconButton
           size="small"
           onClick={() => {
-            alert("롤링페이퍼 추가!");
+            navigate("rollingpaper/new");
           }}
         >
           <BiPlus />
@@ -69,4 +71,4 @@ const StyledRollingpaperList = styled.ul`
   gap: 24px;
 `;
 
-export default RollingpaperList;
+export default TeamRollingpaperList;

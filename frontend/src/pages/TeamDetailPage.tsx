@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 
 import appClient from "@/api";
 
-import RollingpaperList from "@/components/RollingpaperList";
+import TeamRollingpaperList from "@/components/TeamRollingpaperList";
 import TeamJoinSection from "@/components/TeamJoinSection";
 import RequireLogin from "@/components/RequireLogin";
 
@@ -64,7 +64,7 @@ const TeamDetailPage = () => {
           color={teamDetail.color}
         />
         {teamDetail.joined ? (
-          <RollingpaperList rollingpapers={rollingpaperList} />
+          <TeamRollingpaperList rollingpapers={rollingpaperList} />
         ) : (
           <TeamJoinSection />
         )}
