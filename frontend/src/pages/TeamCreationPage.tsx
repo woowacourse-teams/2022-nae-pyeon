@@ -10,6 +10,7 @@ import LabeledTextArea from "@/components/LabeledTextArea";
 import Button from "@/components/Button";
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import RequireLogin from "@/components/RequireLogin";
+import { useNavigate } from "react-router-dom";
 
 const emojis = [
   { id: 1, value: "🐶" },
@@ -35,6 +36,8 @@ const TeamCreationPage = () => {
   const [color, setColor] = useState("");
   const teamDescriptionRef = useRef<HTMLTextAreaElement>(null);
 
+  const navigate = useNavigate();
+
   const { mutate: createTeam, data } = useMutation(
     () => {
       return appClient
@@ -48,7 +51,7 @@ const TeamCreationPage = () => {
     },
     {
       onSuccess: () => {
-        console.log(data);
+        navigate("/");
       },
     }
   );
