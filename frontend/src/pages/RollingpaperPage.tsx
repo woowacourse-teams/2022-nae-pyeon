@@ -11,8 +11,7 @@ import RequireLogin from "@/components/RequireLogin";
 import { Rollingpaper } from "@/types";
 
 const RollingpaperPage = () => {
-  const { rollingpaperId } = useParams();
-  const teamId = 123;
+  const { teamId, rollingpaperId } = useParams();
 
   const {
     isLoading,

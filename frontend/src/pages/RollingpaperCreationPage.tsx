@@ -51,7 +51,9 @@ const RollingpaperCreationPage = () => {
     {
       onSuccess: (data) => {
         const { id: newRollingpaperId } = data;
-        navigate(`/rollingpaper/${newRollingpaperId}`, { replace: true });
+        navigate(`/team/${teamId}/rollingpaper/${newRollingpaperId}`, {
+          replace: true,
+        });
       },
       onError: (error) => {
         console.log(error);

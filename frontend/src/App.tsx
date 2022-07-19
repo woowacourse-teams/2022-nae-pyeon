@@ -51,19 +51,19 @@ const App = () => {
                 element={<RollingpaperCreationPage />}
               />
               <Route
-                path="rollingpaper/:rollingpaperId"
+                path="team/:teamId/rollingpaper/:rollingpaperId"
                 element={<RollingpaperPage />}
               />
               <Route
-                path="rollingpaper/:rollingpaperId/message/new"
+                path="team/:teamId/rollingpaper/:rollingpaperId/message/new"
                 element={<MessageWritePage />}
               />
               <Route
-                path="rollingpaper/:rollingpaperId/message/:messageId"
+                path="team/:teamId/rollingpaper/:rollingpaperId/message/:messageId"
                 element={<MessageDetailPage />}
               />
               <Route
-                path="rollingpaper/:rollingpaperId/message/:messageId/edit"
+                path="team/:teamId/rollingpaper/:rollingpaperId/message/:messageId/edit"
                 element={<MessageEditPage />}
               />
             </Routes>

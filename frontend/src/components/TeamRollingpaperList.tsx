@@ -57,7 +57,7 @@ const TeamRollingpaperList = () => {
       </StyledRollingpaperListHead>
       <StyledRollingpaperList>
         {teamRollinpaperListResponse.rollingpapers.map((rollingpaper) => (
-          <Link key={rollingpaper.id} to={`/rollingpaper/${rollingpaper.id}`}>
+          <Link key={rollingpaper.id} to={`rollingpaper/${rollingpaper.id}`}>
             <RollingpaperListItem {...rollingpaper} />
           </Link>
         ))}

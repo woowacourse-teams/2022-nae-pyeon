@@ -12,7 +12,7 @@ import RequireLogin from "@/components/RequireLogin";
 import { Message } from "@/types";
 
 const MessageEditPage = () => {
-  const { rollingpaperId, messageId } = useParams();
+  const { teamId, rollingpaperId, messageId } = useParams();
   const navigate = useNavigate();
 
   const contentRef = useRef<HTMLTextAreaElement>(null);
@@ -38,7 +38,9 @@ const MessageEditPage = () => {
     {
       onSuccess: () => {
         alert("메시지 수정 완료");
-        navigate(`/rollingpaper/${rollingpaperId}`, { replace: true });
+        navigate(`/team/${teamId}/rollingpaper/${rollingpaperId}`, {
+          replace: true,
+        });
       },
       onError: (error) => {
         console.log(error);
