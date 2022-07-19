@@ -239,12 +239,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final JoinedMembersResponseDto joinedMembers = 모임에_가입한_회원_조회(tokenResponseDto1, team1Id)
                 .as(JoinedMembersResponseDto.class);
 
-        final List<String> joinedMemberIds = joinedMembers.getMembers()
+        final List<String> joinedMemberNickNames = joinedMembers.getMembers()
                 .stream()
                 .map(JoinedMemberResponseDto::getNickname)
                 .collect(Collectors.toList());
 
-        assertThat(joinedMemberIds).contains("마스터", joinNickname);
+        assertThat(joinedMemberNickNames).contains("마스터", joinNickname);
     }
 
     @Test
