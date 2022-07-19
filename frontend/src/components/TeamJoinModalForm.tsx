@@ -32,7 +32,7 @@ const TeamJoinModalForm = ({ onClickCloseButton }: TeamJoinModalFormProp) => {
     {
       onSuccess: () => {
         alert("가입 성공!");
-        navigate(`/teams/${teamId}`);
+        navigate(0);
       },
       onError: (error) => {
         console.log(error);
