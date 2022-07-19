@@ -39,6 +39,7 @@ const MainPage = () => {
           {teamList.map(({ id, name, description, emoji, color }) => (
             <MainCard
               key={id}
+              id={id}
               name={name}
               description={description}
               emoji={emoji}

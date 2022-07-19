@@ -1,7 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 
 interface MainCardProps {
+  id: number;
   name: string;
   description: string;
   emoji: string;
@@ -12,13 +14,15 @@ interface StyledMainCardProps {
   color: string;
 }
 
-const MainCard = ({ name, description, emoji, color }: MainCardProps) => {
+const MainCard = ({ id, name, description, emoji, color }: MainCardProps) => {
   return (
-    <StyledMainCard color={color}>
-      <StyledEmoji color={color}>{emoji}</StyledEmoji>
-      <StyledName>{name}</StyledName>
-      <StyledDescription>{description}</StyledDescription>
-    </StyledMainCard>
+    <Link to={`team/${id}`}>
+      <StyledMainCard color={color}>
+        <StyledEmoji color={color}>{emoji}</StyledEmoji>
+        <StyledName>{name}</StyledName>
+        <StyledDescription>{description}</StyledDescription>
+      </StyledMainCard>
+    </Link>
   );
 };
 
