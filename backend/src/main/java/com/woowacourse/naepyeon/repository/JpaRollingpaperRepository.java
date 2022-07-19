@@ -26,6 +26,11 @@ public class JpaRollingpaperRepository implements RollingpaperRepository {
     }
 
     @Override
+    public List<Rollingpaper> findByMemberId(final Long memberId) {
+        return rollingpaperJpaDao.findByMemberId(memberId);
+    }
+
+    @Override
     public List<Rollingpaper> findByTeamId(final Long teamId) {
         return rollingpaperJpaDao.findByTeamId(teamId);
     }

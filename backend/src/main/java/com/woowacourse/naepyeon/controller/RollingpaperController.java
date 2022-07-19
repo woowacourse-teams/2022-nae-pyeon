@@ -1,6 +1,8 @@
 package com.woowacourse.naepyeon.controller;
 
+import com.woowacourse.naepyeon.controller.auth.AuthenticationPrincipal;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
+import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.RollingpaperCreateRequest;
 import com.woowacourse.naepyeon.controller.dto.RollingpaperUpdateRequest;
 import com.woowacourse.naepyeon.service.RollingpaperService;
@@ -28,38 +30,58 @@ public class RollingpaperController {
 
     @PostMapping
     public ResponseEntity<CreateResponse> createRollingpaper(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long teamId,
             @RequestBody @Valid final RollingpaperCreateRequest rollingpaperCreateRequest) {
         final Long rollingpaperId = rollingpaperService.createRollingpaper(rollingpaperCreateRequest.getTitle(), teamId,
-                rollingpaperCreateRequest.getMemberId());
-        return ResponseEntity.created(
-                        URI.create("/api/v1/teams/" + teamId + "/rollingpapers/" + rollingpaperId))
+                loginMemberRequest.getId(), rollingpaperCreateRequest.getAddresseeId());
+        return ResponseEntity.created(URI.create("/api/v1/teams/" + teamId + "/rollingpapers/" + rollingpaperId))
                 .body(new CreateResponse(rollingpaperId));
     }
 
     @GetMapping("/{rollingpaperId}")
-    public ResponseEntity<RollingpaperResponseDto> findRollingpaper(@PathVariable final Long teamId,
-                                                                    @PathVariable final Long rollingpaperId) {
-        final RollingpaperResponseDto rollingpaper = rollingpaperService.findById(rollingpaperId);
-        return ResponseEntity.ok(rollingpaper);
+    public ResponseEntity<RollingpaperResponseDto> findRollingpaper(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @PathVariable final Long teamId, @PathVariable final Long rollingpaperId) {
+        final RollingpaperResponseDto rollingpaperResponseDto =
+                rollingpaperService.findById(rollingpaperId, teamId, loginMemberRequest.getId());
+        return ResponseEntity.ok(rollingpaperResponseDto);
     }
 
     @GetMapping
-    public ResponseEntity<RollingpapersResponseDto> findRollingpapers(@PathVariable final Long teamId) {
-        final RollingpapersResponseDto rollingpapersResponseDto = rollingpaperService.findByTeamId(teamId);
+    public ResponseEntity<RollingpapersResponseDto> findTeamRollingpapers(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @PathVariable final Long teamId) {
+        final RollingpapersResponseDto rollingpapersResponseDto = rollingpaperService.findByTeamId(teamId,
+                loginMemberRequest.getId());
+        return ResponseEntity.ok(rollingpapersResponseDto);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<RollingpapersResponseDto> findMemberRollingpapers(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @PathVariable final Long teamId) {
+        final RollingpapersResponseDto rollingpapersResponseDto =
+                rollingpaperService.findByMemberId(teamId, loginMemberRequest.getId());
         return ResponseEntity.ok(rollingpapersResponseDto);
     }
 
     @PutMapping("/{rollingpaperId}")
-    public ResponseEntity<Void> updateRollingpaper(@PathVariable final Long rollingpaperId,
-                                                   @RequestBody final RollingpaperUpdateRequest updateRequest) {
-        rollingpaperService.updateTitle(rollingpaperId, updateRequest.getTitle());
+    public ResponseEntity<Void> updateRollingpaper(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @PathVariable final Long teamId,
+            @PathVariable final Long rollingpaperId,
+            @RequestBody final RollingpaperUpdateRequest updateRequest) {
+        rollingpaperService.updateTitle(rollingpaperId, updateRequest.getTitle(), teamId, loginMemberRequest.getId());
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{rollingpaperId}")
-    public ResponseEntity<Void> deleteRollingpaper(@PathVariable final Long rollingpaperId) {
-        rollingpaperService.deleteRollingpaper(rollingpaperId);
+    public ResponseEntity<Void> deleteRollingpaper(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @PathVariable final Long teamId,
+            @PathVariable final Long rollingpaperId) {
+        rollingpaperService.deleteRollingpaper(rollingpaperId, teamId, loginMemberRequest.getId());
         return ResponseEntity.noContent().build();
     }
 }

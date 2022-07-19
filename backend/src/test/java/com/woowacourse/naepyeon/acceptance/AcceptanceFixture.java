@@ -4,6 +4,8 @@ import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
+import com.woowacourse.naepyeon.controller.dto.RollingpaperCreateRequest;
+import com.woowacourse.naepyeon.controller.dto.RollingpaperUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.TokenRequest;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
@@ -133,5 +135,32 @@ public class AcceptanceFixture {
 
     public static ExtractableResponse<Response> 가입한_모임_조회(final TokenResponseDto tokenResponseDto) {
         return get(tokenResponseDto, "/api/v1/teams/me");
+    }
+
+    public static ExtractableResponse<Response> 회원_롤링페이퍼_생성(final TokenResponseDto tokenResponseDto,
+                                                            final Long teamId,
+                                                            final RollingpaperCreateRequest rollingpaperCreateRequest) {
+        return post(tokenResponseDto, rollingpaperCreateRequest, "/api/v1/teams/" + teamId + "/rollingpapers");
+    }
+
+    public static ExtractableResponse<Response> 나의_롤링페이퍼_조회(final TokenResponseDto tokenResponseDto,
+                                                            final Long teamId) {
+        return get(tokenResponseDto, "/api/v1/teams/" + teamId + "/rollingpapers/me");
+    }
+
+    public static ExtractableResponse<Response> 롤링페이퍼_특정_조회(final TokenResponseDto tokenResponseDto,
+                                                            final Long teamId, final Long rollingpaperId) {
+        return get(tokenResponseDto, "/api/v1/teams/" + teamId + "/rollingpapers/" + rollingpaperId);
+    }
+
+    public static ExtractableResponse<Response> 모임_모든_회원들_롤링페이퍼_조회(final TokenResponseDto tokenResponseDto,
+                                                                   final Long teamId) {
+        return get(tokenResponseDto, "/api/v1/teams/" + teamId + "/rollingpapers");
+    }
+
+    public static ExtractableResponse<Response> 롤링페이퍼_제목_수정(final TokenResponseDto tokenResponseDto, final Long teamId,
+                                                            final Long rollingpaperId,
+                                                            final RollingpaperUpdateRequest updateRequest) {
+        return put(tokenResponseDto, updateRequest, "/api/v1/teams/" + teamId + "/rollingpapers/" + rollingpaperId);
     }
 }

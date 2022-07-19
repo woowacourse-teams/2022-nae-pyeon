@@ -1,5 +1,14 @@
 package com.woowacourse.naepyeon.acceptance;
 
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.로그인_응답;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_삭제;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_유저네임_수정;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_조회;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_추가;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원가입_후_로그인;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.TokenRequest;
@@ -12,15 +21,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.http.HttpStatus;
-
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.로그인_응답;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_삭제;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_유저네임_수정;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_조회;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_추가;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원가입_후_로그인;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 class MemberAcceptanceTest extends AcceptanceTest {
 
@@ -138,7 +138,8 @@ class MemberAcceptanceTest extends AcceptanceTest {
 
         //회원정보 수정
         final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest("kei");
-        final ExtractableResponse<Response> response = 회원_유저네임_수정(new TokenResponseDto("invalidToken"), memberUpdateRequest);
+        final ExtractableResponse<Response> response = 회원_유저네임_수정(new TokenResponseDto("invalidToken"),
+                memberUpdateRequest);
 
         //회원정보 수정 실패
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
@@ -207,7 +208,8 @@ class MemberAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
     }
 
-    private void 회원이_추가됨(final ExtractableResponse<Response> response, final TokenResponseDto token, final MemberRegisterRequest member) {
+    private void 회원이_추가됨(final ExtractableResponse<Response> response, final TokenResponseDto token,
+                         final MemberRegisterRequest member) {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(response.header("Location")).isNotBlank();
         회원조회_확인(token, member);

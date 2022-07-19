@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface RollingpaperJpaDao extends JpaRepository<Rollingpaper, Long> {
 
     List<Rollingpaper> findByTeamId(final Long teamId);
+
+    List<Rollingpaper> findByMemberId(final Long memberId);
 }

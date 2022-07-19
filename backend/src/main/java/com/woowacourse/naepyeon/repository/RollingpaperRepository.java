@@ -10,6 +10,8 @@ public interface RollingpaperRepository {
 
     Optional<Rollingpaper> findById(final Long rollingpaperId);
 
+    List<Rollingpaper> findByMemberId(final Long memberId);
+
     List<Rollingpaper> findByTeamId(final Long teamId);
 
     void update(final Long rollingpaperId, final String newTitle);
