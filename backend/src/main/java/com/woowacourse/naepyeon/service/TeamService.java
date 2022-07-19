@@ -9,6 +9,7 @@ import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.TeamMemberRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
+import com.woowacourse.naepyeon.service.dto.TeamDetailResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.util.List;
@@ -51,16 +52,10 @@ public class TeamService {
         return teamMemberRepository.save(teamParticipation);
     }
 
-    public TeamResponseDto findById(final Long teamId) {
+    public TeamDetailResponseDto findById(final Long teamId) {
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
-        return new TeamResponseDto(
-                teamId,
-                team.getName(),
-                team.getDescription(),
-                team.getEmoji(),
-                team.getColor()
-        );
+        return TeamDetailResponseDto.of(team);
     }
 
     @Transactional
@@ -75,10 +70,12 @@ public class TeamService {
         teamRepository.delete(teamId);
     }
 
-    public TeamsResponseDto findAll() {
+    public TeamsResponseDto findAll(final Long memberId) {
         final List<Team> teams = teamRepository.findAll();
+        final List<Team> joinedTeams = teamMemberRepository.findTeamsByJoinedMemberId(memberId);
+
         final List<TeamResponseDto> teamResponseDtos = teams.stream()
-                .map(TeamResponseDto::from)
+                .map(team -> TeamResponseDto.of(team, joinedTeams.contains(team)))
                 .collect(Collectors.toList());
 
         return new TeamsResponseDto(teamResponseDtos);
@@ -87,7 +84,7 @@ public class TeamService {
     public TeamsResponseDto findByJoinedMemberId(final Long memberId) {
         final List<Team> teams = teamMemberRepository.findTeamsByJoinedMemberId(memberId);
         final List<TeamResponseDto> teamResponseDtos = teams.stream()
-                .map(TeamResponseDto::from)
+                .map(team -> TeamResponseDto.of(team, true))
                 .collect(Collectors.toList());
 
         return new TeamsResponseDto(teamResponseDtos);

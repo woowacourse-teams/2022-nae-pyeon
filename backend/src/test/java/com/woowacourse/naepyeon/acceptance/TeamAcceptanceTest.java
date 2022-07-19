@@ -10,11 +10,13 @@ import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_이�
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_추가;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원가입_후_로그인;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
+import com.woowacourse.naepyeon.service.dto.TeamDetailResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
@@ -22,6 +24,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -87,7 +90,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 .getId();
 
         final ExtractableResponse<Response> response = 모임_단건_조회(tokenResponseDto, teamId);
-        final TeamResponseDto teamResponse = response.as(TeamResponseDto.class);
+        final TeamDetailResponseDto teamResponse = response.as(TeamDetailResponseDto.class);
 
         assertThat(teamResponse).extracting("id", "name", "description", "emoji", "color")
                 .containsExactly(teamId, teamName, teamDescription, teamEmoji, teamColor);
@@ -157,6 +160,56 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 .collect(Collectors.toList());
 
         assertThat(teamIds).contains(team1Id, team2Id);
+    }
+    
+    @Test
+    @DisplayName("모든 모임 조회시 내가 가입한 모임의 joined컬럼이 true로, 가입하지 않은 모임은 false로 나온다.")
+    void checkJoinedColumn() {
+        //모임 생성
+        final MemberRegisterRequest member1 =
+                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
+        final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
+        final MemberRegisterRequest member2 =
+                new MemberRegisterRequest("seungpang2", "email2@email.com", "12345678aA!");
+        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
+        final String teamName1 = "woowacourse1";
+        final TeamRequest teamRequest1 = new TeamRequest(
+                teamName1,
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
+        final Long team1Id = 모임_추가(tokenResponseDto1, teamRequest1).as(CreateResponse.class)
+                .getId();
+        //모임 생성
+        final String teamName2 = "woowacourse2";
+        final TeamRequest teamRequest2 = new TeamRequest(
+                teamName2,
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
+        final Long team2Id = 모임_추가(tokenResponseDto1, teamRequest2).as(CreateResponse.class)
+                .getId();
+
+        모임_가입(tokenResponseDto2, team1Id, new JoinTeamMemberRequest("가입자"));
+
+        final List<TeamResponseDto> teams = 모든_모임_조회(tokenResponseDto2)
+                .as(TeamsResponseDto.class)
+                .getTeams();
+
+        final TeamResponseDto joinedTeam = teams.stream()
+                .filter(TeamResponseDto::isJoined)
+                .findAny().get();
+
+        final TeamResponseDto notJoinedTeam = teams.stream()
+                .filter(teamResponseDto -> !teamResponseDto.isJoined())
+                .findAny().get();
+
+        assertAll(
+                () -> assertThat(joinedTeam.getName()).isEqualTo(teamName1),
+                () -> assertThat(notJoinedTeam.getName()).isEqualTo(teamName2)
+        );
     }
 
     @Test

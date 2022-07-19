@@ -10,6 +10,7 @@ import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.TeamMemberRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
+import com.woowacourse.naepyeon.service.dto.TeamDetailResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.util.List;
@@ -77,7 +78,7 @@ class TeamServiceTest {
         final Long teamId = teamService.save(teamRequest, member.getId());
 
         // when
-        final TeamResponseDto findTeam = teamService.findById(teamId);
+        final TeamDetailResponseDto findTeam = teamService.findById(teamId);
 
         // then
         assertThat(findTeam)
@@ -178,7 +179,7 @@ class TeamServiceTest {
     @Test
     @DisplayName("모든 모임을 조회한다.")
     void findAll() {
-        final TeamsResponseDto teams = teamService.findAll();
+        final TeamsResponseDto teams = teamService.findAll(member.getId());
         final List<String> teamNames = teams.getTeams()
                 .stream()
                 .map(TeamResponseDto::getName)

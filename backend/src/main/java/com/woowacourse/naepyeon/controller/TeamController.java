@@ -6,6 +6,7 @@ import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.service.TeamService;
+import com.woowacourse.naepyeon.service.dto.TeamDetailResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.net.URI;
@@ -29,7 +30,7 @@ public class TeamController {
     private final TeamService teamService;
 
     @GetMapping("/{teamId}")
-    public ResponseEntity<TeamResponseDto> getTeam(
+    public ResponseEntity<TeamDetailResponseDto> getTeam(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long teamId) {
         return ResponseEntity.ok(teamService.findById(teamId));
@@ -42,8 +43,9 @@ public class TeamController {
     }
 
     @GetMapping
-    public ResponseEntity<TeamsResponseDto> getAllTeams() {
-        return ResponseEntity.ok(teamService.findAll());
+    public ResponseEntity<TeamsResponseDto> getAllTeams(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest) {
+        return ResponseEntity.ok(teamService.findAll(loginMemberRequest.getId()));
     }
 
     @PostMapping
