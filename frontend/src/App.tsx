@@ -43,6 +43,9 @@ const App = () => {
               </Route>
               <Route path="signup" element={<SignUpPage />} />
               <Route path="login" element={<LoginPage />} />
+
+              <Route path="team/new" element={<TeamCreationPage />} />
+
               <Route
                 path="rollingpaper/new"
                 element={<RollingpaperCreationPage />}
@@ -63,7 +66,6 @@ const App = () => {
                 path="rollingpaper/:rollingpaperId/message/:messageId/edit"
                 element={<MessageEditPage />}
               />
-              <Route path="team/new" element={<TeamCreationPage />} />
             </Routes>
           </UserProvider>
         </PageContainer>

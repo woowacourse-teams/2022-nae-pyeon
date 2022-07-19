@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { useQuery } from "react-query";
 
 import MainCard from "@/components/MainCard";
-import PlusButton from "@/components/PlusButton";
+import TeamCreateButton from "@/components/TeamCreateButton";
 import RequireLogin from "@/components/RequireLogin";
 
 import appClient from "@/api";
@@ -47,7 +47,7 @@ const MainPage = () => {
             />
           ))}
         </StyledCardList>
-        <PlusButton />
+        <TeamCreateButton />
       </StyleMain>
     </RequireLogin>
   );
