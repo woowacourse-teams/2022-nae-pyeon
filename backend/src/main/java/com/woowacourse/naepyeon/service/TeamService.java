@@ -9,6 +9,8 @@ import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.TeamMemberRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
+import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
+import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamDetailResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
@@ -88,5 +90,19 @@ public class TeamService {
                 .collect(Collectors.toList());
 
         return new TeamsResponseDto(teamResponseDtos);
+    }
+
+    public JoinedMembersResponseDto findJoinedMembers(final Long teamId) {
+        final List<TeamParticipation> participations = teamMemberRepository.findMembersByTeamId(teamId);
+
+        final List<JoinedMemberResponseDto> joinedMembers = participations.stream()
+                .map(
+                        participation -> new JoinedMemberResponseDto(
+                                participation.getMember().getId(),
+                                participation.getNickname()
+                        )
+                ).collect(Collectors.toList());
+
+        return new JoinedMembersResponseDto(joinedMembers);
     }
 }

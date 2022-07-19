@@ -6,6 +6,7 @@ import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.service.TeamService;
+import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamDetailResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
@@ -47,6 +48,14 @@ public class TeamController {
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest) {
         return ResponseEntity.ok(teamService.findAll(loginMemberRequest.getId()));
     }
+
+    @GetMapping("/{teamId}/members")
+    public ResponseEntity<JoinedMembersResponseDto> getJoinedMembers(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @PathVariable final Long teamId) {
+        return ResponseEntity.ok(teamService.findJoinedMembers(teamId));
+    }
+
 
     @PostMapping
     public ResponseEntity<CreateResponse> createTeam(

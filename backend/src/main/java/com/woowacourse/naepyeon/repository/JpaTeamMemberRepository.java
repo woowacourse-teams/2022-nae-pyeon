@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.repository;
 
+import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.exception.DuplicateTeamPaticipateException;
@@ -42,5 +43,10 @@ public class JpaTeamMemberRepository implements TeamMemberRepository {
     @Override
     public List<Team> findTeamsByJoinedMemberId(final Long memberId) {
         return teamMemberJpaDao.findTeamsByJoinedMemberId(memberId);
+    }
+
+    @Override
+    public List<TeamParticipation> findMembersByTeamId(final Long teamId) {
+        return teamMemberJpaDao.findMembersByTeamId(teamId);
     }
 }

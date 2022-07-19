@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.repository.jpa;
 
+import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import java.util.List;
@@ -15,4 +16,9 @@ public interface TeamMemberJpaDao extends JpaRepository<TeamParticipation, Long>
             + "from TeamParticipation p "
             + "where p.member.id = :memberId")
     List<Team> findTeamsByJoinedMemberId(@Param("memberId") final Long memberId);
+
+    @Query("select p "
+            + "from TeamParticipation p "
+            + "where p.team.id = :teamId")
+    List<TeamParticipation> findMembersByTeamId(@Param("teamId") final Long teamId);
 }

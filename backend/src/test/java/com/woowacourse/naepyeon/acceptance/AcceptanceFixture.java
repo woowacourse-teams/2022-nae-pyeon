@@ -137,6 +137,11 @@ public class AcceptanceFixture {
         return get(tokenResponseDto, "/api/v1/teams/me");
     }
 
+    public static ExtractableResponse<Response> 모임에_가입한_회원_조회(final TokenResponseDto tokenResponseDto,
+                                                              final Long teamId) {
+        return get(tokenResponseDto, "/api/v1/teams/" + teamId + "/members");
+    }
+
     public static ExtractableResponse<Response> 회원_롤링페이퍼_생성(final TokenResponseDto tokenResponseDto,
                                                             final Long teamId,
                                                             final RollingpaperCreateRequest rollingpaperCreateRequest) {

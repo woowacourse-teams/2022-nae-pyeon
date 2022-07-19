@@ -8,6 +8,7 @@ import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_삭�
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_생성;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_이름_수정;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_추가;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임에_가입한_회원_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원가입_후_로그인;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,6 +17,8 @@ import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
+import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
+import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamDetailResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
@@ -210,6 +213,40 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(joinedTeam.getName()).isEqualTo(teamName1),
                 () -> assertThat(notJoinedTeam.getName()).isEqualTo(teamName2)
         );
+    }
+    
+    @Test
+    @DisplayName("팀에 가입한 회원 목록을 조회한다.")
+    void findJoinedMembers() {
+        //모임 생성
+        final MemberRegisterRequest member1 =
+                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
+        final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
+        final MemberRegisterRequest member2 =
+                new MemberRegisterRequest("seungpang2", "email2@email.com", "12345678aA!");
+        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
+        final String teamName1 = "woowacourse1";
+        final TeamRequest teamRequest1 = new TeamRequest(
+                teamName1,
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
+        final Long team1Id = 모임_추가(tokenResponseDto1, teamRequest1).as(CreateResponse.class)
+                .getId();
+
+        final String joinNickname = "가입자";
+        모임_가입(tokenResponseDto2, team1Id, new JoinTeamMemberRequest(joinNickname));
+
+        final JoinedMembersResponseDto joinedMembers = 모임에_가입한_회원_조회(tokenResponseDto1, team1Id)
+                .as(JoinedMembersResponseDto.class);
+
+        final List<String> joinedMemberIds = joinedMembers.getMembers()
+                .stream()
+                .map(JoinedMemberResponseDto::getNickname)
+                .collect(Collectors.toList());
+
+        assertThat(joinedMemberIds).contains("마스터", joinNickname);
     }
 
     @Test
