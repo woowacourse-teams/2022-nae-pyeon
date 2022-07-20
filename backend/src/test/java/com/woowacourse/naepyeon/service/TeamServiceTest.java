@@ -8,7 +8,7 @@ import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.repository.MemberRepository;
-import com.woowacourse.naepyeon.repository.TeamMemberRepository;
+import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
@@ -54,7 +54,7 @@ class TeamServiceTest {
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
-    private TeamMemberRepository teamMemberRepository;
+    private TeamParticipationRepository teamParticipationRepository;
 
     @BeforeEach
     void setUp() {
@@ -165,7 +165,7 @@ class TeamServiceTest {
     void joinMember() {
         final String nickname = "닉네임";
         final Long joinedId = teamService.joinMember(team1.getId(), member.getId(), nickname);
-        final TeamParticipation findTeamParticipation = teamMemberRepository.findById(joinedId)
+        final TeamParticipation findTeamParticipation = teamParticipationRepository.findById(joinedId)
                 .orElseThrow();
 
         assertAll(
@@ -192,8 +192,8 @@ class TeamServiceTest {
     void findByJoinedMemberId() {
         final TeamParticipation teamParticipation1 = new TeamParticipation(team1, member, "닉네임1");
         final TeamParticipation teamParticipation2 = new TeamParticipation(team3, member, "닉네임2");
-        teamMemberRepository.save(teamParticipation1);
-        teamMemberRepository.save(teamParticipation2);
+        teamParticipationRepository.save(teamParticipation1);
+        teamParticipationRepository.save(teamParticipation2);
 
         final TeamsResponseDto teams = teamService.findByJoinedMemberId(member.getId());
         final List<String> teamNames = teams.getTeams()

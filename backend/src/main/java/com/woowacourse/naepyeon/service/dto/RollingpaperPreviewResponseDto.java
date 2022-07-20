@@ -16,12 +16,11 @@ public class RollingpaperPreviewResponseDto {
     private String title;
     private String to;
 
-    public static RollingpaperPreviewResponseDto from(final Rollingpaper rollingpaper) {
-        final Member member = rollingpaper.getMember();
+    public static RollingpaperPreviewResponseDto from(final Rollingpaper rollingpaper, final String nickname) {
         return new RollingpaperPreviewResponseDto(
                 rollingpaper.getId(),
                 rollingpaper.getTitle(),
-                member.getUsername()
+                nickname
         );
     }
 }
