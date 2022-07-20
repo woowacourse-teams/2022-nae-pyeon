@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
-import styled from "@emotion/styled";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
+import axios from "axios";
+import styled from "@emotion/styled";
 
 import Logo from "@/components/Logo";
 import LabeledInput from "@/components/LabeledInput";
@@ -13,10 +14,13 @@ import { UserContext } from "@/context/UserContext";
 
 import appClient from "@/api";
 import { setCookie } from "@/util/cookie";
+import { CustomError } from "@/types";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
   const { setIsLoggedIn } = useContext(UserContext);
 
   const navigate = useNavigate();
@@ -42,13 +46,27 @@ const LoginPage = () => {
         navigate(`/`, { replace: true });
       },
       onError: (error) => {
-        console.log(error);
+        if (axios.isAxiosError(error) && error.response) {
+          const customError = error.response.data as CustomError;
+          alert(customError.message);
+        }
       },
     }
   );
 
   const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!email) {
+      setEmailError(true);
+      return;
+    }
+
+    if (!password) {
+      setPasswordError(true);
+      return;
+    }
+
     login();
   };
 
@@ -71,6 +89,10 @@ const LoginPage = () => {
               value={password}
               setValue={setPassword}
             />
+            <StyledErrorMessage>
+              {(emailError && "이메일을 입력해주세요") ||
+                (passwordError && "비밀번호를 입력해주세요")}
+            </StyledErrorMessage>
             <Button type="submit">로그인</Button>
           </form>
           <hr />
@@ -129,4 +151,11 @@ const StyledGuideText = styled.div`
     }
   }
 `;
+
+const StyledErrorMessage = styled.div`
+  margin-top: 8px;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.RED_300};
+`;
+
 export default LoginPage;
