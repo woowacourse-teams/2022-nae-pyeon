@@ -92,7 +92,7 @@ public class TeamService {
     }
 
     public JoinedMembersResponseDto findJoinedMembers(final Long teamId) {
-        final List<TeamParticipation> participations = teamParticipationRepository.findMembersByTeamId(teamId);
+        final List<TeamParticipation> participations = teamParticipationRepository.findByTeamId(teamId);
 
         final List<JoinedMemberResponseDto> joinedMembers = participations.stream()
                 .map(
