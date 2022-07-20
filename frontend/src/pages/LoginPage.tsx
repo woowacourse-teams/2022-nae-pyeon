@@ -9,7 +9,7 @@ import LabeledInput from "@/components/LabeledInput";
 import PasswordInput from "@/components/PasswordInput";
 import Button from "@/components/Button";
 import SocialLoginButton from "@/components/SocialLoginButton";
-import RequireLogout from "@/components/RequireLogout";
+
 import { UserContext } from "@/context/UserContext";
 
 import appClient from "@/api";
@@ -71,38 +71,32 @@ const LoginPage = () => {
   };
 
   return (
-    <RequireLogout>
-      <>
-        <StyledTitle>
-          <Logo />
-          <div>내 마음을 편지로</div>
-        </StyledTitle>
-        <StyledMain>
-          <form onSubmit={handleLoginSubmit}>
-            <LabeledInput
-              labelText="이메일"
-              value={email}
-              setValue={setEmail}
-            />
-            <PasswordInput
-              labelText="비밀번호"
-              value={password}
-              setValue={setPassword}
-            />
-            <StyledErrorMessage>
-              {(emailError && "이메일을 입력해주세요") ||
-                (passwordError && "비밀번호를 입력해주세요")}
-            </StyledErrorMessage>
-            <Button type="submit">로그인</Button>
-          </form>
-          <hr />
-          <SocialLoginButton />
-          <StyledGuideText>
-            아직 내편의 회원이 아닌가요? <Link to="/signup">회원가입</Link>
-          </StyledGuideText>
-        </StyledMain>
-      </>
-    </RequireLogout>
+    <>
+      <StyledTitle>
+        <Logo />
+        <div>내 마음을 편지로</div>
+      </StyledTitle>
+      <StyledMain>
+        <form onSubmit={handleLoginSubmit}>
+          <LabeledInput labelText="이메일" value={email} setValue={setEmail} />
+          <PasswordInput
+            labelText="비밀번호"
+            value={password}
+            setValue={setPassword}
+          />
+          <StyledErrorMessage>
+            {(emailError && "이메일을 입력해주세요") ||
+              (passwordError && "비밀번호를 입력해주세요")}
+          </StyledErrorMessage>
+          <Button type="submit">로그인</Button>
+        </form>
+        <hr />
+        <SocialLoginButton />
+        <StyledGuideText>
+          아직 내편의 회원이 아닌가요? <Link to="/signup">회원가입</Link>
+        </StyledGuideText>
+      </StyledMain>
+    </>
   );
 };
 

@@ -9,7 +9,6 @@ import appClient from "@/api";
 import Button from "@/components/Button";
 import TextArea from "@/components/TextArea";
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
-import RequireLogin from "@/components/RequireLogin";
 
 import { CustomError, Message } from "@/types";
 
@@ -58,15 +57,13 @@ const MessageWritePage = () => {
   };
 
   return (
-    <RequireLogin>
-      <>
-        <PageTitleWithBackButton />
-        <StyledForm onSubmit={handleMessageFormSubmit}>
-          <TextArea ref={contentRef} />
-          <Button type="submit">완료</Button>
-        </StyledForm>
-      </>
-    </RequireLogin>
+    <>
+      <PageTitleWithBackButton />
+      <StyledForm onSubmit={handleMessageFormSubmit}>
+        <TextArea ref={contentRef} />
+        <Button type="submit">완료</Button>
+      </StyledForm>
+    </>
   );
 };
 

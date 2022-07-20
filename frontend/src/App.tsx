@@ -21,6 +21,8 @@ import LoginPage from "@/pages/LoginPage";
 import TeamSearch from "@/pages/TeamSearchPage";
 import ErrorPage from "@/pages/ErrorPage";
 
+import RequireLogin from "@/components/RequireLogin";
+import RequireLogout from "./components/RequireLogout";
 import PageContainer from "@/components/PageContainer";
 import { UserProvider } from "@/context/UserContext";
 
@@ -36,35 +38,97 @@ const App = () => {
           <UserProvider>
             <Routes>
               <Route path="/" element={<HeaderLayoutPage />}>
-                <Route path="/" element={<MainPage />} />
-                <Route path="team/:teamId" element={<TeamDetailPage />} />
-                <Route path="search" element={<TeamSearch />} />
+                <Route
+                  path="/"
+                  element={
+                    <RequireLogin>
+                      <MainPage />
+                    </RequireLogin>
+                  }
+                />
+                <Route
+                  path="team/:teamId"
+                  element={
+                    <RequireLogin>
+                      <TeamDetailPage />
+                    </RequireLogin>
+                  }
+                />
+                <Route
+                  path="search"
+                  element={
+                    <RequireLogin>
+                      <TeamSearch />
+                    </RequireLogin>
+                  }
+                />
                 <Route path="*" element={<ErrorPage />} />
               </Route>
-              <Route path="signup" element={<SignUpPage />} />
-              <Route path="login" element={<LoginPage />} />
+              <Route
+                path="signup"
+                element={
+                  <RequireLogout>
+                    <SignUpPage />
+                  </RequireLogout>
+                }
+              />
+              <Route
+                path="login"
+                element={
+                  <RequireLogout>
+                    <LoginPage />
+                  </RequireLogout>
+                }
+              />
 
-              <Route path="team/new" element={<TeamCreationPage />} />
+              <Route
+                path="team/new"
+                element={
+                  <RequireLogin>
+                    <TeamCreationPage />
+                  </RequireLogin>
+                }
+              />
 
               <Route
                 path="team/:teamId/rollingpaper/new"
-                element={<RollingpaperCreationPage />}
+                element={
+                  <RequireLogin>
+                    <RollingpaperCreationPage />
+                  </RequireLogin>
+                }
               />
               <Route
                 path="team/:teamId/rollingpaper/:rollingpaperId"
-                element={<RollingpaperPage />}
+                element={
+                  <RequireLogin>
+                    <RollingpaperPage />
+                  </RequireLogin>
+                }
               />
               <Route
                 path="team/:teamId/rollingpaper/:rollingpaperId/message/new"
-                element={<MessageWritePage />}
+                element={
+                  <RequireLogin>
+                    <MessageWritePage />
+                  </RequireLogin>
+                }
               />
               <Route
                 path="team/:teamId/rollingpaper/:rollingpaperId/message/:messageId"
-                element={<MessageDetailPage />}
+                element={
+                  <RequireLogin>
+                    <MessageDetailPage />
+                  </RequireLogin>
+                }
               />
               <Route
                 path="team/:teamId/rollingpaper/:rollingpaperId/message/:messageId/edit"
-                element={<MessageEditPage />}
+                element={
+                  <RequireLogin>
+                    <MessageEditPage />
+                  </RequireLogin>
+                }
               />
             </Routes>
           </UserProvider>

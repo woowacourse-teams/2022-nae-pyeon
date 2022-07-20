@@ -10,7 +10,6 @@ import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LabeledInput from "@/components/LabeledInput";
 import AutoCompleteInput from "@/components/AutoCompleteInput";
 import Button from "@/components/Button";
-import RequireLogin from "@/components/RequireLogin";
 
 import { Rollingpaper, CustomError } from "@/types";
 
@@ -90,27 +89,25 @@ const RollingpaperCreationPage = () => {
   }
 
   return (
-    <RequireLogin>
-      <>
-        <PageTitleWithBackButton>롤링페이퍼 만들기</PageTitleWithBackButton>
-        <StyledForm onSubmit={handleRollingpaperFormSubmit}>
-          <LabeledInput
-            labelText="롤링페이퍼 이름"
-            value={rollingpaperTitle}
-            setValue={setRollingpaperTitle}
-          />
-          <AutoCompleteInput
-            labelText="롤링페이퍼 대상"
-            value={rollingpaperTo}
-            setValue={setRollingpaperTo}
-            searchKeywordList={teamMemberResponse.members.map(
-              (member) => member.nickname
-            )}
-          />
-          <Button type="submit">완료</Button>
-        </StyledForm>
-      </>
-    </RequireLogin>
+    <>
+      <PageTitleWithBackButton>롤링페이퍼 만들기</PageTitleWithBackButton>
+      <StyledForm onSubmit={handleRollingpaperFormSubmit}>
+        <LabeledInput
+          labelText="롤링페이퍼 이름"
+          value={rollingpaperTitle}
+          setValue={setRollingpaperTitle}
+        />
+        <AutoCompleteInput
+          labelText="롤링페이퍼 대상"
+          value={rollingpaperTo}
+          setValue={setRollingpaperTo}
+          searchKeywordList={teamMemberResponse.members.map(
+            (member) => member.nickname
+          )}
+        />
+        <Button type="submit">완료</Button>
+      </StyledForm>
+    </>
   );
 };
 

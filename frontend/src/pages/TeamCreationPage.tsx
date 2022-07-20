@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import axios from "axios";
@@ -11,7 +11,6 @@ import LabeledRadio from "@/components/LabeledRadio";
 import LabeledTextArea from "@/components/LabeledTextArea";
 import Button from "@/components/Button";
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
-import RequireLogin from "@/components/RequireLogin";
 
 import { REGEX } from "@/constants";
 import { CustomError } from "@/types";
@@ -91,60 +90,58 @@ const TeamCreationPage = () => {
   };
 
   return (
-    <RequireLogin>
-      <>
-        <PageTitleWithBackButton>모임 추가하기</PageTitleWithBackButton>
-        <StyledForm>
-          <LabeledInput
-            labelText="모임명"
-            value={teamName}
-            setValue={setTeamName}
-            pattern={REGEX.TEAM_NAME.source}
-            errorMessage={"1~20자 사이의 모임명을 입력해주세요"}
-          />
-          <LabeledTextArea
-            labelText="모임 설명"
-            value={teamDescription}
-            setValue={setTeamDescription}
-            minLength={1}
-            maxLength={100}
-            placeholder="최대 100자까지 입력 가능합니다"
-          />
-          <LabeledInput
-            labelText="나의 닉네임"
-            value={nickname}
-            setValue={setNickname}
-            pattern={REGEX.USERNAME.source}
-            errorMessage={"2~20자 사이의 닉네임을 입력해주세요"}
-          />
-          <LabeledRadio
-            labelText="모임을 표현하는 이모지를 선택해주세요"
-            radios={emojis}
-            onClickRadio={setEmoji}
-          />
-          <LabeledRadio
-            labelText="모임을 표현하는 색상을 선택해주세요"
-            radios={colors}
-            onClickRadio={setColor}
-          />
-          <Button
-            type="submit"
-            onClick={handleTeamCreationSubmit}
-            disabled={
-              !(
-                REGEX.TEAM_NAME.test(nickname) &&
-                teamDescription &&
-                REGEX.USERNAME.test(nickname) &&
-                emoji &&
-                color
-              )
-            }
-          >
-            확인
-          </Button>
-        </StyledForm>
-      </>
-    </RequireLogin>
+    <>
+      <PageTitleWithBackButton>모임 추가하기</PageTitleWithBackButton>
+      <StyledForm>
+        <LabeledInput
+          labelText="모임명"
+          value={teamName}
+          setValue={setTeamName}
+          pattern={REGEX.TEAM_NAME.source}
+          errorMessage={"1~20자 사이의 모임명을 입력해주세요"}
+        />
+        <LabeledTextArea
+          labelText="모임 설명"
+          value={teamDescription}
+          setValue={setTeamDescription}
+          minLength={1}
+          maxLength={100}
+          placeholder="최대 100자까지 입력 가능합니다"
+        />
+        <LabeledInput
+          labelText="나의 닉네임"
+          value={nickname}
+          setValue={setNickname}
+          pattern={REGEX.USERNAME.source}
+          errorMessage={"2~20자 사이의 닉네임을 입력해주세요"}
+        />
+        <LabeledRadio
+          labelText="모임을 표현하는 이모지를 선택해주세요"
+          radios={emojis}
+          onClickRadio={setEmoji}
+        />
+        <LabeledRadio
+          labelText="모임을 표현하는 색상을 선택해주세요"
+          radios={colors}
+          onClickRadio={setColor}
+        />
+        <Button
+          type="submit"
+          onClick={handleTeamCreationSubmit}
+          disabled={
+            !(
+              REGEX.TEAM_NAME.test(nickname) &&
+              teamDescription &&
+              REGEX.USERNAME.test(nickname) &&
+              emoji &&
+              color
+            )
+          }
+        >
+          확인
+        </Button>
+      </StyledForm>
+    </>
   );
 };
 

@@ -8,7 +8,6 @@ import appClient from "@/api";
 
 import TeamRollingpaperList from "@/components/TeamRollingpaperList";
 import TeamJoinSection from "@/components/TeamJoinSection";
-import RequireLogin from "@/components/RequireLogin";
 
 import { CustomError } from "@/types";
 interface Team {
@@ -49,17 +48,15 @@ const TeamDetailPage = () => {
   }
 
   return (
-    <RequireLogin>
-      <StyledMain>
-        <TeamDescriptionBox
-          emoji={teamDetail.emoji}
-          name={teamDetail.name}
-          description={teamDetail.description}
-          color={teamDetail.color}
-        />
-        {teamDetail.joined ? <TeamRollingpaperList /> : <TeamJoinSection />}
-      </StyledMain>
-    </RequireLogin>
+    <StyledMain>
+      <TeamDescriptionBox
+        emoji={teamDetail.emoji}
+        name={teamDetail.name}
+        description={teamDetail.description}
+        color={teamDetail.color}
+      />
+      {teamDetail.joined ? <TeamRollingpaperList /> : <TeamJoinSection />}
+    </StyledMain>
   );
 };
 
