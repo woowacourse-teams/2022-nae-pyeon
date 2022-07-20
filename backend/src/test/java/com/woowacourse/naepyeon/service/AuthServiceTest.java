@@ -57,4 +57,9 @@ class AuthServiceTest {
         assertThatThrownBy(() -> authService.createToken(new TokenRequestDto("email@email.com", "password1234")))
                 .isInstanceOf(InvalidLoginException.class);
     }
+
+    @Test
+    void temptest() {
+        System.out.println();
+    }
 }
