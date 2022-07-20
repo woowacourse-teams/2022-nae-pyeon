@@ -46,7 +46,7 @@ public class JpaTeamParticipationRepository implements TeamParticipationReposito
 
     @Override
     public String findNicknameByMemberId(final Long addresseeId, final Long teamId) {
-        return teamParticipationJpaDao.findNicknameByMemberId(addresseeId, teamId);
+        return teamParticipationJpaDao.findNicknameByMemberIdAndTeamId(addresseeId, teamId);
     }
 
     @Override

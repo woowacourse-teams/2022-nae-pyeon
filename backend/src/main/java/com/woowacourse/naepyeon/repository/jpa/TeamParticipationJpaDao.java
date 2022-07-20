@@ -19,5 +19,5 @@ public interface TeamParticipationJpaDao extends JpaRepository<TeamParticipation
     @Query("select p.nickname "
             + "from TeamParticipation p "
             + "where p.member.id = :memberId and p.team.id = :teamId")
-    String findNicknameByMemberId(@Param("memberId") final Long memberId, @Param("teamId") final Long teamId);
+    String findNicknameByMemberIdAndTeamId(@Param("memberId") final Long memberId, @Param("teamId") final Long teamId);
 }
