@@ -11,3 +11,8 @@ export interface Rollingpaper {
   to: string;
   messages: Message[];
 }
+
+export type CustomError = {
+  errorCode: number;
+  message: string;
+};

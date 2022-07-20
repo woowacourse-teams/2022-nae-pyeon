@@ -1,7 +1,8 @@
 import React, { useRef } from "react";
-import styled from "@emotion/styled";
 import { useParams, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
+import axios from "axios";
+import styled from "@emotion/styled";
 
 import appClient from "@/api";
 
@@ -10,7 +11,7 @@ import TextArea from "@/components/TextArea";
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import RequireLogin from "@/components/RequireLogin";
 
-import { Message } from "@/types";
+import { CustomError, Message } from "@/types";
 
 const MessageWritePage = () => {
   const { teamId, rollingpaperId } = useParams();
@@ -32,7 +33,10 @@ const MessageWritePage = () => {
         });
       },
       onError: (error) => {
-        console.log(error);
+        if (axios.isAxiosError(error) && error.response) {
+          const customError = error.response.data as CustomError;
+          alert(customError.message);
+        }
       },
     }
   );

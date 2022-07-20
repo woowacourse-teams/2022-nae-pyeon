@@ -2,6 +2,7 @@ import React from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import styled from "@emotion/styled";
+import axios from "axios";
 
 import appClient from "@/api";
 
@@ -9,6 +10,7 @@ import TeamRollingpaperList from "@/components/TeamRollingpaperList";
 import TeamJoinSection from "@/components/TeamJoinSection";
 import RequireLogin from "@/components/RequireLogin";
 
+import { CustomError } from "@/types";
 interface Team {
   id: number;
   name: string;
@@ -24,6 +26,7 @@ const TeamDetailPage = () => {
   const {
     isLoading: isLoadingTeamDetail,
     isError: isErrorTeamDetail,
+    error: TeamDetailError,
     data: teamDetail,
   } = useQuery<Team>(["team"], () =>
     appClient.get(`/teams/${teamId}`).then((response) => response.data)
@@ -33,7 +36,15 @@ const TeamDetailPage = () => {
     return <div>로딩중</div>;
   }
 
-  if (isErrorTeamDetail || !teamDetail) {
+  if (isErrorTeamDetail) {
+    if (axios.isAxiosError(TeamDetailError) && TeamDetailError.response) {
+      const customError = TeamDetailError.response.data as CustomError;
+      return <div>{customError.message}</div>;
+    }
+    return <div>에러</div>;
+  }
+
+  if (!teamDetail) {
     return <div>에러</div>;
   }
 

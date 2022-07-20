@@ -1,12 +1,14 @@
 import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
+import axios from "axios";
 import styled from "@emotion/styled";
 
 import IconButton from "@/components/IconButton";
 import RollingpaperListItem from "@/components/RollingpaperListItem";
 
 import appClient from "@/api";
+import { CustomError } from "@/types";
 
 import { BiPlus } from "react-icons/bi";
 
@@ -27,6 +29,7 @@ const TeamRollingpaperList = () => {
   const {
     isLoading: isLoadingGetTeamRollingpaperList,
     isError: isErrorGetTeamRollingpaperList,
+    error: getTeamRollingpaperListError,
     data: teamRollinpaperListResponse,
   } = useQuery<TeamRollingpaperListResponse>(["rollingpaperList"], () =>
     appClient.get(`/teams/${teamId}/rollingpapers`).then((response) => {
@@ -38,7 +41,19 @@ const TeamRollingpaperList = () => {
     return <div>로딩중</div>;
   }
 
-  if (isErrorGetTeamRollingpaperList || !teamRollinpaperListResponse) {
+  if (isErrorGetTeamRollingpaperList) {
+    if (
+      axios.isAxiosError(getTeamRollingpaperListError) &&
+      getTeamRollingpaperListError.response
+    ) {
+      const customError = getTeamRollingpaperListError.response
+        .data as CustomError;
+      return <div>{customError.message}</div>;
+    }
+    return <div>에러</div>;
+  }
+
+  if (!teamRollinpaperListResponse) {
     return <div>에러</div>;
   }
 

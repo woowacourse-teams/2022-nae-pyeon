@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { useQuery, useMutation } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "@emotion/styled";
-import { useQuery, useMutation } from "react-query";
+import axios from "axios";
 
 import appClient from "@/api";
 
@@ -11,7 +12,7 @@ import AutoCompleteInput from "@/components/AutoCompleteInput";
 import Button from "@/components/Button";
 import RequireLogin from "@/components/RequireLogin";
 
-import { Rollingpaper } from "@/types";
+import { Rollingpaper, CustomError } from "@/types";
 
 interface TeamMemberResponse {
   members: TeamMember[];
@@ -56,7 +57,10 @@ const RollingpaperCreationPage = () => {
         });
       },
       onError: (error) => {
-        console.log(error);
+        if (axios.isAxiosError(error) && error.response) {
+          const customError = error.response.data as CustomError;
+          alert(customError.message);
+        }
       },
     }
   );

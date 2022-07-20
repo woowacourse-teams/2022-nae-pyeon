@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
+import axios from "axios";
 
 import appClient from "@/api";
 
@@ -8,7 +9,7 @@ import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LetterPaper from "@/components/LetterPaper";
 import RequireLogin from "@/components/RequireLogin";
 
-import { Rollingpaper } from "@/types";
+import { Rollingpaper, CustomError } from "@/types";
 
 const RollingpaperPage = () => {
   const { teamId, rollingpaperId } = useParams();
@@ -16,6 +17,7 @@ const RollingpaperPage = () => {
   const {
     isLoading,
     isError,
+    error: rollingpaperError,
     data: rollingpaper,
   } = useQuery<Rollingpaper>(["rollingpaper"], () =>
     appClient
@@ -26,7 +28,16 @@ const RollingpaperPage = () => {
   if (isLoading) {
     return <div>로딩 중</div>;
   }
-  if (isError || !rollingpaper) {
+
+  if (isError) {
+    if (axios.isAxiosError(rollingpaperError) && rollingpaperError.response) {
+      const customError = rollingpaperError.response.data as CustomError;
+      return <div>{customError.message}</div>;
+    }
+    return <div>에러</div>;
+  }
+
+  if (!rollingpaper) {
     return <div>에러</div>;
   }
 

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
+import axios from "axios";
 import styled from "@emotion/styled";
 
 import appClient from "@/api";
@@ -11,6 +12,7 @@ import Button from "@/components/Button";
 import RequireLogout from "@/components/RequireLogout";
 
 import { REGEX } from "@/constants";
+import { CustomError } from "@/types";
 
 type SignUpMemberInfo = {
   email: string;
@@ -42,7 +44,10 @@ const SignUpPage = () => {
         navigate("/login");
       },
       onError: (error) => {
-        console.log(error);
+        if (axios.isAxiosError(error) && error.response) {
+          const customError = error.response.data as CustomError;
+          alert(customError.message);
+        }
       },
     }
   );

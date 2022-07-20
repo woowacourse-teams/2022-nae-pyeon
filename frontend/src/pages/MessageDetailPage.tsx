@@ -1,6 +1,7 @@
 import React from "react";
 import { useQuery, useMutation } from "react-query";
 import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 import styled from "@emotion/styled";
 
 import appClient from "@/api";
@@ -8,7 +9,7 @@ import RollingpaperMessageDetail from "@/components/RollingpaperMessageDetail";
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import RequireLogin from "@/components/RequireLogin";
 
-import { Message } from "@/types";
+import { CustomError, Message } from "@/types";
 
 const MessageDetailPage = () => {
   const { rollingpaperId, messageId } = useParams();
@@ -17,6 +18,7 @@ const MessageDetailPage = () => {
   const {
     isLoading: isLoadingGetMessage,
     isError: isErrorGetMessage,
+    error: getMessageError,
     data: message,
   } = useQuery<Message>(["message"], () =>
     appClient
@@ -36,7 +38,10 @@ const MessageDetailPage = () => {
         navigate(`/rollingpaper/${rollingpaperId}`, { replace: true });
       },
       onError: (error) => {
-        console.log(error);
+        if (axios.isAxiosError(error) && error.response) {
+          const customError = error.response.data as CustomError;
+          alert(customError.message);
+        }
       },
     }
   );
@@ -53,7 +58,15 @@ const MessageDetailPage = () => {
     return <div>로딩중</div>;
   }
 
-  if (isErrorGetMessage || !message) {
+  if (isErrorGetMessage) {
+    if (axios.isAxiosError(getMessageError) && getMessageError.response) {
+      const customError = getMessageError.response.data as CustomError;
+      return <div>{customError.message}</div>;
+    }
+    return <div>에러</div>;
+  }
+
+  if (!message) {
     return <div>에러</div>;
   }
 

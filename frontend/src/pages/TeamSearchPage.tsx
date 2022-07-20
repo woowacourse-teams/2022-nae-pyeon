@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
+import axios from "axios";
 
 import SearchInput from "@/components/SearchInput";
 import TeamCard from "@/components/TeamCard";
 import RequireLogin from "@/components/RequireLogin";
 
 import appClient from "@/api";
+import { CustomError } from "@/types";
 
 interface TotalTeamListResponse {
   teams: Team[];
@@ -27,6 +29,7 @@ const TeamSearch = () => {
   const {
     isLoading,
     isError,
+    error: getTotalTeamsError,
     data: totalTeamResponse,
   } = useQuery<TotalTeamListResponse>(["total-teams"], () =>
     appClient.get(`/teams`).then((response) => response.data)
@@ -51,7 +54,16 @@ const TeamSearch = () => {
   if (isLoading) {
     return <div>로딩 중</div>;
   }
-  if (isError || !totalTeamResponse) {
+
+  if (isError) {
+    if (axios.isAxiosError(getTotalTeamsError) && getTotalTeamsError.response) {
+      const customError = getTotalTeamsError.response.data as CustomError;
+      return <div>{customError.message}</div>;
+    }
+    return <div>에러</div>;
+  }
+
+  if (!totalTeamResponse) {
     return <div>에러</div>;
   }
 

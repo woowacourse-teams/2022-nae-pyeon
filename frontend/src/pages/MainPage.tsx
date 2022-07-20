@@ -1,12 +1,14 @@
 import React from "react";
-import styled from "@emotion/styled";
 import { useQuery } from "react-query";
+import axios from "axios";
+import styled from "@emotion/styled";
 
 import MyTeamCard from "@/components/MyTeamCard";
 import TeamCreateButton from "@/components/TeamCreateButton";
 import RequireLogin from "@/components/RequireLogin";
 
 import appClient from "@/api";
+import { CustomError } from "@/types";
 
 interface MyTeamListResponse {
   teams: Team[];
@@ -24,6 +26,7 @@ const MainPage = () => {
   const {
     isLoading,
     isError,
+    error: getMyTeamListError,
     data: myTeamListResponse,
   } = useQuery<MyTeamListResponse>(["my-teams"], () =>
     appClient.get(`/teams/me`).then((response) => response.data)
@@ -32,7 +35,16 @@ const MainPage = () => {
   if (isLoading) {
     return <div>로딩 중</div>;
   }
-  if (isError || !myTeamListResponse) {
+
+  if (isError) {
+    if (axios.isAxiosError(getMyTeamListError) && getMyTeamListError.response) {
+      const customError = getMyTeamListError.response.data as CustomError;
+      return <div>{customError.message}</div>;
+    }
+    return <div>에러</div>;
+  }
+
+  if (!myTeamListResponse) {
     return <div>에러</div>;
   }
 

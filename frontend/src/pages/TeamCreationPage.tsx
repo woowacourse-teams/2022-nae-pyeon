@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
-import styled from "@emotion/styled";
+import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
+import axios from "axios";
+import styled from "@emotion/styled";
 
 import appClient from "@/api";
 
@@ -10,7 +12,9 @@ import LabeledTextArea from "@/components/LabeledTextArea";
 import Button from "@/components/Button";
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import RequireLogin from "@/components/RequireLogin";
-import { useNavigate } from "react-router-dom";
+
+import { REGEX } from "@/constants";
+import { CustomError } from "@/types";
 
 const emojis = [
   { id: 1, value: "🐶" },
@@ -32,6 +36,7 @@ const colors = [
 
 const TeamCreationPage = () => {
   const [teamName, setTeamName] = useState("");
+  const [teamDescription, setTeamDescription] = useState("");
   const [emoji, setEmoji] = useState("");
   const [color, setColor] = useState("");
   const teamDescriptionRef = useRef<HTMLTextAreaElement>(null);
@@ -43,7 +48,7 @@ const TeamCreationPage = () => {
       return appClient
         .post("/teams", {
           name: teamName,
-          description: teamDescriptionRef.current?.value,
+          description: teamDescription,
           emoji,
           color,
         })
@@ -53,11 +58,31 @@ const TeamCreationPage = () => {
       onSuccess: () => {
         navigate("/");
       },
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response) {
+          const customError = error.response.data as CustomError;
+          alert(customError.message);
+        }
+      },
     }
   );
 
   const handleTeamCreationSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    if (!teamName) {
+      return alert("모임명을 입력해주세요");
+    }
+    if (!teamDescriptionRef.current?.value) {
+      return alert("모임 설명을 입력해주세요");
+    }
+    if (!emoji) {
+      return alert("이모지를 선택해주세요");
+    }
+    if (!color) {
+      return alert("모임 색상을 선택해주세요");
+    }
+
     createTeam();
   };
 
@@ -70,10 +95,15 @@ const TeamCreationPage = () => {
             labelText="모임명"
             value={teamName}
             setValue={setTeamName}
+            pattern={REGEX.TEAM_NAME.source}
+            errorMessage={"1~20자 사이의 모임명을 입력해주세요"}
           />
           <LabeledTextArea
             labelText="모임 설명"
-            ref={teamDescriptionRef}
+            value={teamDescription}
+            setValue={setTeamDescription}
+            minLength={1}
+            maxLength={100}
             placeholder="최대 100자까지 입력 가능합니다"
           />
           <LabeledRadio
@@ -86,7 +116,11 @@ const TeamCreationPage = () => {
             radios={colors}
             onClickRadio={setColor}
           />
-          <Button type="submit" onClick={handleTeamCreationSubmit}>
+          <Button
+            type="submit"
+            onClick={handleTeamCreationSubmit}
+            disabled={!(teamName && emoji && color)}
+          >
             확인
           </Button>
         </StyledForm>
