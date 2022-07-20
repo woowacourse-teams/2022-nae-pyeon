@@ -38,7 +38,7 @@ const StyledTextarea = styled.textarea`
   width: 100%;
   height: 60px;
   padding: 10px;
-  margin-top: 8px;
+  margin: 8px 0 28px 0;
 
   font-size: 16px;
 
