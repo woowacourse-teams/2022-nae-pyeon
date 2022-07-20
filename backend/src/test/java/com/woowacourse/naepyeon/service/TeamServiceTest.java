@@ -61,7 +61,8 @@ class TeamServiceTest {
                 "woowacourse",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                "나는야모임장"
         );
         final Long teamId = teamService.save(teamRequest, member.getId());
 
@@ -88,7 +89,8 @@ class TeamServiceTest {
                 "woowacourse",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                "나는야모임장"
         );
         final Long teamId = teamService.save(teamRequest, member.getId());
 
@@ -109,7 +111,8 @@ class TeamServiceTest {
                 "woowacourse-4th",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                "나는야모임장"
         );
         final Long teamId = teamService.save(teamRequest, member.getId());
 
