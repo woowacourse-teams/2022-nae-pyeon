@@ -37,13 +37,13 @@ const colors = [
 const TeamCreationPage = () => {
   const [teamName, setTeamName] = useState("");
   const [teamDescription, setTeamDescription] = useState("");
+  const [nickname, setNickname] = useState("");
   const [emoji, setEmoji] = useState("");
   const [color, setColor] = useState("");
-  const teamDescriptionRef = useRef<HTMLTextAreaElement>(null);
 
   const navigate = useNavigate();
 
-  const { mutate: createTeam, data } = useMutation(
+  const { mutate: createTeam } = useMutation(
     () => {
       return appClient
         .post("/teams", {
@@ -51,6 +51,7 @@ const TeamCreationPage = () => {
           description: teamDescription,
           emoji,
           color,
+          nickname,
         })
         .then((response) => response.data);
     },
@@ -70,11 +71,14 @@ const TeamCreationPage = () => {
   const handleTeamCreationSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (!teamName) {
+    if (!REGEX.TEAM_NAME.test(nickname)) {
       return alert("모임명을 입력해주세요");
     }
-    if (!teamDescriptionRef.current?.value) {
+    if (!teamDescription) {
       return alert("모임 설명을 입력해주세요");
+    }
+    if (!REGEX.USERNAME.test(nickname)) {
+      return alert("올바르지 않은 닉네임 형식입니다");
     }
     if (!emoji) {
       return alert("이모지를 선택해주세요");
@@ -106,6 +110,13 @@ const TeamCreationPage = () => {
             maxLength={100}
             placeholder="최대 100자까지 입력 가능합니다"
           />
+          <LabeledInput
+            labelText="나의 닉네임"
+            value={nickname}
+            setValue={setNickname}
+            pattern={REGEX.USERNAME.source}
+            errorMessage={"2~20자 사이의 닉네임을 입력해주세요"}
+          />
           <LabeledRadio
             labelText="모임을 표현하는 이모지를 선택해주세요"
             radios={emojis}
@@ -119,7 +130,15 @@ const TeamCreationPage = () => {
           <Button
             type="submit"
             onClick={handleTeamCreationSubmit}
-            disabled={!(teamName && emoji && color)}
+            disabled={
+              !(
+                REGEX.TEAM_NAME.test(nickname) &&
+                teamDescription &&
+                REGEX.USERNAME.test(nickname) &&
+                emoji &&
+                color
+              )
+            }
           >
             확인
           </Button>
@@ -133,6 +152,10 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
 
-  gap: 40px;
+  gap: 20px;
+
+  fieldset {
+    margin-bottom: 20px;
+  }
 `;
 export default TeamCreationPage;
