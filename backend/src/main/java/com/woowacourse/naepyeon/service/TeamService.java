@@ -39,7 +39,7 @@ public class TeamService {
         final Long createdTeamId = teamRepository.save(team);
         final Member owner = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException(memberId));
-        teamParticipationRepository.save(new TeamParticipation(team, owner, "마스터"));
+        teamParticipationRepository.save(new TeamParticipation(team, owner, teamRequest.getNickname()));
         return createdTeamId;
     }
 

@@ -77,7 +77,8 @@ public class AcceptanceFixture {
                 "woowacourse-4th",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                "나는야모임장"
         );
         return 모임_추가(tokenResponseDto, teamRequest).as(CreateResponse.class)
                 .getId();

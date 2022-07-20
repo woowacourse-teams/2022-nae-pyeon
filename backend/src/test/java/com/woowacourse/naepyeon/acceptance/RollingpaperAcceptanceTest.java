@@ -31,7 +31,7 @@ import org.springframework.http.HttpStatus;
 class RollingpaperAcceptanceTest extends AcceptanceTest {
 
     private final TeamRequest teamRequest = new TeamRequest(
-            "woowacourse", "테스트 모임입니다.", "testEmoji", "#123456"
+            "woowacourse", "테스트 모임입니다.", "testEmoji", "#123456", "나는야모임장"
     );
     private final MemberRegisterRequest member1 =
             new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");

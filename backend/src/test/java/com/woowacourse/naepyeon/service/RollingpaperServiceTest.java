@@ -26,7 +26,7 @@ class RollingpaperServiceTest {
     private static final String MEMBER_NICKNAME = "마스터";
 
     private final TeamRequest teamRequest =
-            new TeamRequest("nae-pyeon", "테스트 모임입니다.", "testEmoji", "#123456");
+            new TeamRequest("nae-pyeon", "테스트 모임입니다.", "testEmoji", "#123456", MEMBER_NICKNAME);
     private Long teamId;
     private Long memberId;
     private Long member2Id;

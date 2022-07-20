@@ -43,7 +43,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "woowacourse",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                "나는야모임장"
         );
         final ExtractableResponse<Response> response = 모임_추가(tokenResponseDto, teamRequest);
 
@@ -85,7 +86,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 teamName,
                 teamDescription,
                 teamEmoji,
-                teamColor
+                teamColor,
+                "나는야모임장"
         );
         final Long teamId = 모임_추가(tokenResponseDto, teamRequest).as(CreateResponse.class)
                 .getId();
@@ -119,7 +121,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "woowacourse",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                "나는야모임장"
         );
         모임_추가(tokenResponseDto, teamRequest);
 
@@ -139,7 +142,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "woowacourse1",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                "나는야모임장"
         );
         final Long team1Id = 모임_추가(tokenResponseDto, teamRequest1).as(CreateResponse.class)
                 .getId();
@@ -148,7 +152,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "woowacourse2",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                "나는야모임장"
         );
         final Long team2Id = 모임_추가(tokenResponseDto, teamRequest2).as(CreateResponse.class)
                 .getId();
@@ -178,7 +183,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 teamName1,
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                "나는야모임장"
         );
         final Long team1Id = 모임_추가(tokenResponseDto1, teamRequest1).as(CreateResponse.class)
                 .getId();
@@ -188,7 +194,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 teamName2,
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                "나는야모임장"
         );
         final Long team2Id = 모임_추가(tokenResponseDto1, teamRequest2).as(CreateResponse.class)
                 .getId();
@@ -224,11 +231,13 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 new MemberRegisterRequest("seungpang2", "email2@email.com", "12345678aA!");
         final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
         final String teamName1 = "woowacourse1";
+        final String masterNickname = "나는야모임장";
         final TeamRequest teamRequest1 = new TeamRequest(
                 teamName1,
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                masterNickname
         );
         final Long team1Id = 모임_추가(tokenResponseDto1, teamRequest1).as(CreateResponse.class)
                 .getId();
@@ -244,7 +253,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 .map(JoinedMemberResponseDto::getNickname)
                 .collect(Collectors.toList());
 
-        assertThat(joinedMemberNickNames).contains("마스터", joinNickname);
+        assertThat(joinedMemberNickNames).contains(masterNickname, joinNickname);
     }
 
     @Test
@@ -261,7 +270,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "woowacourse-5th",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                "나는야모임장"
         );
         final ExtractableResponse<Response> response = 모임_이름_수정(tokenResponseDto, teamId, changeTeamRequest);
         모임이름이_수정됨(response);
@@ -328,7 +338,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "woowacourse1",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                "나는야모임장"
         );
         final Long team1Id = 모임_추가(tokenResponseDto, teamRequest1).as(CreateResponse.class)
                 .getId();
@@ -336,7 +347,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "woowacourse2",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                "나는야모임장"
         );
         final Long team2Id = 모임_추가(tokenResponseDto, teamRequest2).as(CreateResponse.class)
                 .getId();
@@ -344,7 +356,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "woowacourse3",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                "나는야모임장"
         );
         final Long team3Id = 모임_추가(tokenResponseDto, teamRequest3).as(CreateResponse.class)
                 .getId();
@@ -375,7 +388,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "a".repeat(21),
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                "나는야모임장"
         );
         final ExtractableResponse<Response> response = 모임_이름_수정(tokenResponseDto, teamId, changeTeamRequest);
 
