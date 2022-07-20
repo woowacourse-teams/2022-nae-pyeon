@@ -83,6 +83,8 @@ const StyledCardList = styled.div`
   grid-column-gap: 10px;
   justify-items: center;
 
+  min-height: calc(100vh - 150px);
+
   @media only screen and (min-width: 960px) {
     grid-template-columns: repeat(3, 1fr);
   }
