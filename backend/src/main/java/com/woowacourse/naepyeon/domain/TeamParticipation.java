@@ -63,4 +63,12 @@ public class TeamParticipation {
             throw new ExceedNicknameLengthException(nickname);
         }
     }
+
+    public Long findMemberId() {
+        return member.getId();
+    }
+
+    public Long findTeamId() {
+        return team.getId();
+    }
 }
