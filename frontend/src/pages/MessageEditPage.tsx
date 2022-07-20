@@ -8,7 +8,6 @@ import appClient from "@/api";
 import Button from "@/components/Button";
 import TextArea from "@/components/TextArea";
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
-import RequireLogin from "@/components/RequireLogin";
 
 import { CustomError, Message } from "@/types";
 
@@ -86,17 +85,15 @@ const MessageEditPage = () => {
   }
 
   return (
-    <RequireLogin>
-      <>
-        <PageTitleWithBackButton />
-        <StyledForm onSubmit={handleMessageFormSubmit}>
-          {initialMessage && (
-            <TextArea ref={contentRef} defaultValue={initialMessage.content} />
-          )}
-          <Button type="submit">완료</Button>
-        </StyledForm>
-      </>
-    </RequireLogin>
+    <>
+      <PageTitleWithBackButton />
+      <StyledForm onSubmit={handleMessageFormSubmit}>
+        {initialMessage && (
+          <TextArea ref={contentRef} defaultValue={initialMessage.content} />
+        )}
+        <Button type="submit">완료</Button>
+      </StyledForm>
+    </>
   );
 };
 

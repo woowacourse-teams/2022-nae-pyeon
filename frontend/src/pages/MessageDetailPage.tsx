@@ -7,7 +7,6 @@ import styled from "@emotion/styled";
 import appClient from "@/api";
 import RollingpaperMessageDetail from "@/components/RollingpaperMessageDetail";
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
-import RequireLogin from "@/components/RequireLogin";
 
 import { CustomError, Message } from "@/types";
 
@@ -71,19 +70,17 @@ const MessageDetailPage = () => {
   }
 
   return (
-    <RequireLogin>
-      <>
-        <PageTitleWithBackButton />
-        <StyledMain>
-          <RollingpaperMessageDetail
-            content={message.content}
-            author={message.from}
-            handleDeleteButtonClick={handleDeleteButtonClick}
-            handleEditButtonClick={handleEditButtonClick}
-          />
-        </StyledMain>
-      </>
-    </RequireLogin>
+    <>
+      <PageTitleWithBackButton />
+      <StyledMain>
+        <RollingpaperMessageDetail
+          content={message.content}
+          author={message.from}
+          handleDeleteButtonClick={handleDeleteButtonClick}
+          handleEditButtonClick={handleEditButtonClick}
+        />
+      </StyledMain>
+    </>
   );
 };
 

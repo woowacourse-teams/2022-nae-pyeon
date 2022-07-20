@@ -5,7 +5,6 @@ import styled from "@emotion/styled";
 
 import MyTeamCard from "@/components/MyTeamCard";
 import TeamCreateButton from "@/components/TeamCreateButton";
-import RequireLogin from "@/components/RequireLogin";
 
 import appClient from "@/api";
 import { CustomError } from "@/types";
@@ -49,25 +48,23 @@ const MainPage = () => {
   }
 
   return (
-    <RequireLogin>
-      <StyleMain>
-        <StyledCardList>
-          {myTeamListResponse.teams.map(
-            ({ id, name, description, emoji, color }) => (
-              <MyTeamCard
-                key={id}
-                id={id}
-                name={name}
-                description={description}
-                emoji={emoji}
-                color={color}
-              />
-            )
-          )}
-        </StyledCardList>
-        <TeamCreateButton />
-      </StyleMain>
-    </RequireLogin>
+    <StyleMain>
+      <StyledCardList>
+        {myTeamListResponse.teams.map(
+          ({ id, name, description, emoji, color }) => (
+            <MyTeamCard
+              key={id}
+              id={id}
+              name={name}
+              description={description}
+              emoji={emoji}
+              color={color}
+            />
+          )
+        )}
+      </StyledCardList>
+      <TeamCreateButton />
+    </StyleMain>
   );
 };
 
