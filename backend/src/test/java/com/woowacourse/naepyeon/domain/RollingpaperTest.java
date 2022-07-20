@@ -59,19 +59,4 @@ class RollingpaperTest {
         assertThatThrownBy(() -> new Rollingpaper("seungpang seungpang seungpang", team, member))
                 .isInstanceOf(ExceedRollingpaperNameLengthException.class);
     }
-
-    @Test
-    @DisplayName("롤링페이퍼 수신인의 아이디를 올바르게 반환한다.")
-    void getAddresseeId() {
-        final Team team = new Team(
-                "nae-pyeon",
-                "테스트 모임입니다.",
-                "testEmoji",
-                "#123456"
-        );
-        final Member member = new Member("member", "m@hello.com", "abc@@1234");
-        final Rollingpaper rollingpaper = new Rollingpaper("seungpang", team, member);
-
-        assertThat(rollingpaper.getAddresseeId()).isEqualTo(member.getId());
-    }
 }

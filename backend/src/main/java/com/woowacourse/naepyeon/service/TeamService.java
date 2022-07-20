@@ -97,7 +97,7 @@ public class TeamService {
         final List<JoinedMemberResponseDto> joinedMembers = participations.stream()
                 .map(
                         participation -> new JoinedMemberResponseDto(
-                                participation.getMember().getId(),
+                                participation.findMemberId(),
                                 participation.getNickname()
                         )
                 ).collect(Collectors.toList());
