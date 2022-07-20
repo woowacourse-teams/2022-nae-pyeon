@@ -1,15 +1,19 @@
 package com.woowacourse.naepyeon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
+import com.woowacourse.naepyeon.exception.NotFoundMemberException;
+import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
+import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.util.List;
@@ -26,26 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 class TeamServiceTest {
 
     private final Member member = new Member("내편이", "naePyeon@test.com", "testtest123");
-    private final Team team1 = new Team(
-            "wooteco1",
-            "테스트 모임입니다.",
-            "testEmoji",
-            "#123456"
-    );
-
-    private final Team team2 = new Team(
-            "wooteco2",
-            "테스트 모임입니다.",
-            "testEmoji",
-            "#123456"
-    );
-
-    private final Team team3 = new Team(
-            "wooteco3",
-            "테스트 모임입니다.",
-            "testEmoji",
-            "#123456"
-    );
+    private final Member member2 = new Member("알렉스형", "alex@test.com", "testtest123");
+    private final Team team1 = new Team("wooteco1", "테스트 모임입니다.", "testEmoji", "#123456");
+    private final Team team2 = new Team("wooteco2", "테스트 모임입니다.", "testEmoji", "#123456");
+    private final Team team3 = new Team("wooteco3", "테스트 모임입니다.", "testEmoji", "#123456");
 
     @Autowired
     private TeamService teamService;
@@ -59,6 +47,7 @@ class TeamServiceTest {
     @BeforeEach
     void setUp() {
         memberRepository.save(member);
+        memberRepository.save(member2);
         teamRepository.save(team1);
         teamRepository.save(team2);
         teamRepository.save(team3);
@@ -176,6 +165,22 @@ class TeamServiceTest {
     }
 
     @Test
+    @DisplayName("존재하지 않는 회원을 가입시킬 경우 예외를 발생시킨다.")
+    void joinNotFoundMember() {
+        final String nickname = "닉네임";
+        assertThatThrownBy(() -> teamService.joinMember(team3.getId(), member.getId() + 1000L, nickname))
+                .isInstanceOf(NotFoundMemberException.class);
+    }
+
+    @Test
+    @DisplayName("회원을 존재하지 않는 모임에 가입시킬 경우 예외를 발생시킨다.")
+    void joinMemberWithNotFoundTeam() {
+        final String nickname = "닉네임";
+        assertThatThrownBy(() -> teamService.joinMember(team3.getId() + 1000L, member.getId(), nickname))
+                .isInstanceOf(NotFoundTeamException.class);
+    }
+
+    @Test
     @DisplayName("모든 모임을 조회한다.")
     void findAll() {
         final TeamsResponseDto teams = teamService.findAll(member.getId());
@@ -202,5 +207,46 @@ class TeamServiceTest {
                 .collect(Collectors.toList());
 
         assertThat(teamNames).contains(team1.getName(), team3.getName());
+    }
+
+    @Test
+    @DisplayName("모임에 가입된 회원들을 조회한다.")
+    void findJoinedMembers() {
+        final TeamParticipation teamParticipation1 = new TeamParticipation(team1, member, "닉네임1");
+        final TeamParticipation teamParticipation2 = new TeamParticipation(team1, member2, "닉네임2");
+        teamParticipationRepository.save(teamParticipation1);
+        teamParticipationRepository.save(teamParticipation2);
+
+        final List<JoinedMemberResponseDto> actual = teamService.findJoinedMembers(team1.getId())
+                .getMembers();
+
+        final List<JoinedMemberResponseDto> expected = List.of(
+                new JoinedMemberResponseDto(member.getId(), "닉네임1"),
+                new JoinedMemberResponseDto(member2.getId(), "닉네임2")
+        );
+
+        assertThat(actual)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("모임에 회원 가입 여부를 확인할 때, 가입 여부를 반환한다.")
+    void isJoinedMember() {
+        final TeamParticipation teamParticipation = new TeamParticipation(team1, member, "닉네임1");
+        teamParticipationRepository.save(teamParticipation);
+
+        assertAll(
+                () -> assertThat(teamService.isJoinedMember(member.getId(), team1.getId())).isTrue(),
+                () -> assertThat(teamService.isJoinedMember(member.getId(), team2.getId())).isFalse(),
+                () -> assertThat(teamService.isJoinedMember(member2.getId(), team1.getId())).isFalse()
+        );
+    }
+
+    @Test
+    @DisplayName("모임에 회원 가입 여부를 확인할 때, 해당 모임이 존재하지 않으면 예외를 발생시킨다.")
+    void isJoinedMemberWithNotFoundTeam() {
+        assertThatThrownBy(() -> teamService.isJoinedMember(member.getId(), team1.getId() + 1000L))
+                .isInstanceOf(NotFoundTeamException.class);
     }
 }

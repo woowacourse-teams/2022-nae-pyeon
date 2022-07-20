@@ -73,7 +73,7 @@ public class TeamService {
 
     public TeamsResponseDto findAll(final Long memberId) {
         final List<Team> teams = teamRepository.findAll();
-        final List<Team> joinedTeams = teamParticipationRepository.findTeamsByJoinedMemberId(memberId);
+        final List<Team> joinedTeams = teamParticipationRepository.findTeamsByMemberId(memberId);
 
         final List<TeamResponseDto> teamResponseDtos = teams.stream()
                 .map(team -> TeamResponseDto.of(team, joinedTeams.contains(team)))
@@ -83,7 +83,7 @@ public class TeamService {
     }
 
     public TeamsResponseDto findByJoinedMemberId(final Long memberId) {
-        final List<Team> teams = teamParticipationRepository.findTeamsByJoinedMemberId(memberId);
+        final List<Team> teams = teamParticipationRepository.findTeamsByMemberId(memberId);
         final List<TeamResponseDto> teamResponseDtos = teams.stream()
                 .map(team -> TeamResponseDto.of(team, true))
                 .collect(Collectors.toList());
