@@ -98,12 +98,13 @@ const StyledTeamList = styled.ul`
   display: flex;
   flex-direction: column;
 
-  height: 70vh;
+  height: 75vh;
+  margin-top: 10px;
   padding: 20px;
 
   gap: 24px;
 
-  overflow: scroll;
+  overflow-y: scroll;
 `;
 
 export default TeamSearch;
