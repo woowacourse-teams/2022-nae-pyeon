@@ -12,7 +12,7 @@ import RequireLogin from "@/components/RequireLogin";
 import { CustomError, Message } from "@/types";
 
 const MessageDetailPage = () => {
-  const { rollingpaperId, messageId } = useParams();
+  const { teamId, rollingpaperId, messageId } = useParams();
   const navigate = useNavigate();
 
   const {
@@ -35,7 +35,9 @@ const MessageDetailPage = () => {
     {
       onSuccess: () => {
         alert("메시지 삭제 완료");
-        navigate(`/rollingpaper/${rollingpaperId}`, { replace: true });
+        navigate(`/team/${teamId}/rollingpaper/${rollingpaperId}`, {
+          replace: true,
+        });
       },
       onError: (error) => {
         if (axios.isAxiosError(error) && error.response) {
