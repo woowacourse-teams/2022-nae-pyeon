@@ -1,7 +1,8 @@
 import React, { useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import styled from "@emotion/styled";
 import { useQuery, useMutation } from "react-query";
+import axios from "axios";
+import styled from "@emotion/styled";
 
 import appClient from "@/api";
 import Button from "@/components/Button";
@@ -9,7 +10,7 @@ import TextArea from "@/components/TextArea";
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import RequireLogin from "@/components/RequireLogin";
 
-import { Message } from "@/types";
+import { CustomError, Message } from "@/types";
 
 const MessageEditPage = () => {
   const { teamId, rollingpaperId, messageId } = useParams();
@@ -20,6 +21,7 @@ const MessageEditPage = () => {
   const {
     isLoading: isLoadingGetMessage,
     isError: isErrorGetMessage,
+    error: getMessageError,
     data: initialMessage,
   } = useQuery<Message>(["message"], () =>
     appClient
@@ -43,7 +45,10 @@ const MessageEditPage = () => {
         });
       },
       onError: (error) => {
-        console.log(error);
+        if (axios.isAxiosError(error) && error.response) {
+          const customError = error.response.data as CustomError;
+          alert(customError.message);
+        }
       },
     }
   );
@@ -68,7 +73,15 @@ const MessageEditPage = () => {
     return <div>로딩중</div>;
   }
 
-  if (isErrorGetMessage || !initialMessage) {
+  if (isErrorGetMessage) {
+    if (axios.isAxiosError(getMessageError) && getMessageError.response) {
+      const customError = getMessageError.response.data as CustomError;
+      return <div>{customError.message}</div>;
+    }
+    return <div>에러</div>;
+  }
+
+  if (!initialMessage) {
     return <div>에러</div>;
   }
 
