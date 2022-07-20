@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import Logo from "@/assets/images/logo.png";
@@ -10,10 +10,15 @@ import IconButton from "./IconButton";
 
 const Header = () => {
   const { setIsLoggedIn } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const handleLogoutClick = () => {
     deleteCookie("accessToken");
     setIsLoggedIn(false);
+  };
+
+  const handleSearchClick = () => {
+    navigate("/search");
   };
 
   return (
@@ -22,10 +27,10 @@ const Header = () => {
         <img src={Logo} />
       </Link>
       <StyledNav>
-        <Link to={"/search"}>
+        <IconButton onClick={handleSearchClick} size="medium">
           <BiSearch />
-        </Link>
-        <IconButton onClick={handleLogoutClick}>
+        </IconButton>
+        <IconButton onClick={handleLogoutClick} size="medium">
           <BiUser />
         </IconButton>
       </StyledNav>
@@ -58,9 +63,11 @@ const StyledNav = styled.nav`
 
   height: 100%;
 
-  // svg {
-  //   margin-top: 10px;
-  // }
+  button {
+    &:hover {
+      color: ${({ theme }) => theme.colors.GRAY_600};
+    }
+  }
 `;
 
 export default Header;
