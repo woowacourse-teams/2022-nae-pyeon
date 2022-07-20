@@ -18,7 +18,7 @@ class MemberRepositoryTest {
 
     @Test
     @DisplayName("회원을 id값으로 찾는다.")
-    public void findById() {
+    void findById() {
         // given
         final Member member = new Member("seungpang", "email@email.com", "password123!A");
         final Long memberId = memberRepository.save(member);
@@ -34,7 +34,7 @@ class MemberRepositoryTest {
 
     @Test
     @DisplayName("회원을 id값을 통해 제거한다.")
-    public void delete() {
+    void delete() {
         // given
         final Member member = new Member("seungpang", "email@email.com", "password123!A");
         final Long memberId = memberRepository.save(member);

@@ -7,9 +7,6 @@ import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Message;
 import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
-import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
-import com.woowacourse.naepyeon.repository.jpa.RollingpaperJpaDao;
-import com.woowacourse.naepyeon.repository.jpa.TeamJpaDao;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,20 +32,20 @@ class MessageRepositoryTest {
     private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", team, member);
 
     @Autowired
-    private TeamJpaDao teamJpaDao;
+    private TeamRepository teamRepository;
     @Autowired
-    private MemberJpaDao memberJpaDao;
+    private MemberRepository memberRepository;
     @Autowired
-    private RollingpaperJpaDao rollingpaperJpaDao;
+    private RollingpaperRepository rollingpaperRepository;
     @Autowired
     private MessageRepository messageRepository;
 
     @BeforeEach
     void setUp() {
-        teamJpaDao.save(team);
-        memberJpaDao.save(member);
-        memberJpaDao.save(author);
-        rollingpaperJpaDao.save(rollingpaper);
+        teamRepository.save(team);
+        memberRepository.save(member);
+        memberRepository.save(author);
+        rollingpaperRepository.save(rollingpaper);
     }
 
     @Test
@@ -86,9 +83,11 @@ class MessageRepositoryTest {
 
 
     @Test
-    @DisplayName("메시지 내용을 변경한다.")
+    @DisplayName("본인이 작성한 메시지 내용을 변경한다.")
     void update() {
-        final Message message = createMessage();
+        final Member member = memberRepository.findByEmail(author.getEmail())
+                .orElseThrow();
+        final Message message = new Message(content, member, rollingpaper);
         final Long messageId = messageRepository.save(message);
         final String newContent = "알고리즘이 좋아요";
 
@@ -102,7 +101,9 @@ class MessageRepositoryTest {
     @Test
     @DisplayName("메시지를 id값을 통해 삭제한다.")
     void delete() {
-        final Message message = createMessage();
+        final Member member = memberRepository.findByEmail(author.getEmail())
+                .orElseThrow();
+        final Message message = new Message(content, member, rollingpaper);
         final Long messageId = messageRepository.save(message);
 
         messageRepository.delete(messageId);
