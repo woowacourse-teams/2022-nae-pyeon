@@ -13,7 +13,7 @@ public interface TeamParticipationRepository {
 
     List<TeamParticipation> findByTeamId(final Long teamId);
 
-    List<Team> findTeamsByJoinedMemberId(final Long memberId);
+    List<Team> findTeamsByMemberId(final Long memberId);
 
     String findNicknameByMemberId(final Long addresseeId, final Long teamId);
 

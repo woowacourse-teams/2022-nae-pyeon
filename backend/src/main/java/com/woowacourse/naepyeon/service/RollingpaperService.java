@@ -111,7 +111,7 @@ public class RollingpaperService {
     }
 
     private boolean checkMemberNotIncludedTeam(final Long teamId, final Long memberId) {
-        final List<Long> joinedTeamsId = teamParticipationRepository.findTeamsByJoinedMemberId(memberId)
+        final List<Long> joinedTeamsId = teamParticipationRepository.findTeamsByMemberId(memberId)
                 .stream()
                 .map(Team::getId)
                 .collect(Collectors.toUnmodifiableList());

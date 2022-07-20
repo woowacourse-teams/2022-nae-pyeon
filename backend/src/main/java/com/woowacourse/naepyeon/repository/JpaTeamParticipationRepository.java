@@ -40,8 +40,8 @@ public class JpaTeamParticipationRepository implements TeamParticipationReposito
     }
 
     @Override
-    public List<Team> findTeamsByJoinedMemberId(final Long memberId) {
-        return teamParticipationJpaDao.findTeamsByJoinedMemberId(memberId);
+    public List<Team> findTeamsByMemberId(final Long memberId) {
+        return teamParticipationJpaDao.findTeamsByMemberId(memberId);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class JpaTeamParticipationRepository implements TeamParticipationReposito
 
     @Override
     public boolean isJoinedMember(final Long memberId, final Long teamId) {
-        final List<Team> teams = teamParticipationJpaDao.findTeamsByJoinedMemberId(memberId);
+        final List<Team> teams = teamParticipationJpaDao.findTeamsByMemberId(memberId);
         return teams.stream()
                 .anyMatch(team -> team.getId().equals(teamId));
     }
