@@ -53,4 +53,8 @@ public class Message {
             throw new ExceedMessageContentLengthException(content);
         }
     }
+
+    public boolean isAuthor(final Long memberId) {
+        return this.author.isSameMember(memberId);
+    }
 }

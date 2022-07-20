@@ -63,7 +63,7 @@ public class RollingpaperService {
                 rollingpaperId,
                 rollingpaper.getTitle(),
                 findRollingpaperAddresseeNickname(rollingpaper, teamId),
-                messageService.findMessages(rollingpaperId)
+                messageService.findMessages(rollingpaperId, teamId)
         );
     }
 
