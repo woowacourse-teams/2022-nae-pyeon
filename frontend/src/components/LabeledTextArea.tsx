@@ -4,23 +4,27 @@ import styled from "@emotion/styled";
 interface LabeledRadioProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   labelText: string;
+  setValue: (value: string) => void;
 }
 
-const LabeledTextArea = React.forwardRef<
-  HTMLTextAreaElement,
-  LabeledRadioProps
->((props, ref) => {
+const LabeledTextArea = ({
+  labelText,
+  placeholder,
+  setValue,
+}: LabeledRadioProps) => {
   return (
     <StyledLabel>
-      {props.labelText}
+      {labelText}
       <StyledTextarea
         maxLength={100}
-        ref={ref}
-        placeholder={props.placeholder}
+        placeholder={placeholder}
+        onChange={(e) => {
+          setValue(e.target.value);
+        }}
       />
     </StyledLabel>
   );
-});
+};
 
 const StyledLabel = styled.label`
   display: flex;
