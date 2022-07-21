@@ -68,7 +68,7 @@ class MessageServiceTest {
         );
 
         final Team team = rollingpaper.getTeam();
-        final MessageResponseDto messageResponse = messageService.findMessage(messageId, team.getId());
+        final MessageResponseDto messageResponse = messageService.findMessage(messageId, rollingpaper.getId());
 
         assertThat(messageResponse).extracting("content", "from", "authorId")
                 .containsExactly(messageRequest.getContent(), "테스트닉네임", author.getId());
