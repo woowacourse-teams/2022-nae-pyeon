@@ -7,10 +7,13 @@ import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.domain.TeamParticipation;
+import com.woowacourse.naepyeon.exception.NotAuthorException;
 import com.woowacourse.naepyeon.exception.NotFoundMessageException;
-import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
-import com.woowacourse.naepyeon.repository.jpa.RollingpaperJpaDao;
-import com.woowacourse.naepyeon.repository.jpa.TeamJpaDao;
+import com.woowacourse.naepyeon.repository.MemberRepository;
+import com.woowacourse.naepyeon.repository.RollingpaperRepository;
+import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
+import com.woowacourse.naepyeon.repository.TeamRepository;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,23 +34,27 @@ class MessageServiceTest {
     private final Member member = new Member("member", "m@hello.com", "abc@@1234");
     private final Member author = new Member("author", "au@hello.com", "abc@@1234");
     private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", team, member);
+    private final TeamParticipation teamParticipation = new TeamParticipation(team, author, "테스트닉네임");
 
     @Autowired
     private MessageService messageService;
 
     @Autowired
-    private TeamJpaDao teamJpaDao;
+    private TeamRepository teamRepository;
     @Autowired
-    private MemberJpaDao memberJpaDao;
+    private MemberRepository memberRepository;
     @Autowired
-    private RollingpaperJpaDao rollingpaperJpaDao;
+    private RollingpaperRepository rollingpaperRepository;
+    @Autowired
+    private TeamParticipationRepository teamParticipationRepository;
 
     @BeforeEach
     void setUp() {
-        teamJpaDao.save(team);
-        memberJpaDao.save(member);
-        memberJpaDao.save(author);
-        rollingpaperJpaDao.save(rollingpaper);
+        teamRepository.save(team);
+        memberRepository.save(member);
+        memberRepository.save(author);
+        rollingpaperRepository.save(rollingpaper);
+        teamParticipationRepository.save(teamParticipation);
     }
 
     @Test
@@ -56,14 +63,15 @@ class MessageServiceTest {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
                 messageRequest.getContent(),
-                messageRequest.getAuthorId(),
+                author.getId(),
                 rollingpaper.getId()
         );
 
-        final MessageResponseDto messageResponse = messageService.findMessage(messageId);
+        final Team team = rollingpaper.getTeam();
+        final MessageResponseDto messageResponse = messageService.findMessage(messageId, rollingpaper.getId());
 
         assertThat(messageResponse).extracting("content", "from", "authorId")
-                .containsExactly(messageRequest.getContent(), author.getUsername(), author.getId());
+                .containsExactly(messageRequest.getContent(), "테스트닉네임", author.getId());
     }
 
     @Test
@@ -72,15 +80,30 @@ class MessageServiceTest {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
                 messageRequest.getContent(),
-                messageRequest.getAuthorId(),
+                author.getId(),
                 rollingpaper.getId()
         );
         final String expected = "안녕하지 못합니다.";
 
-        messageService.updateContent(messageId, expected);
+        messageService.updateContent(messageId, expected, author.getId());
 
-        final MessageResponseDto messageResponse = messageService.findMessage(messageId);
+        final MessageResponseDto messageResponse = messageService.findMessage(messageId, rollingpaper.getId());
         assertThat(messageResponse.getContent()).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("메시지 작성자가 아닌 멤버가 메시지 내용을 수정할 때 예외 발생")
+    void updateContentWithNotAuthor() {
+        final MessageRequest messageRequest = createMessageRequest();
+        final Long messageId = messageService.saveMessage(
+                messageRequest.getContent(),
+                author.getId(),
+                rollingpaper.getId()
+        );
+        final String expected = "안녕하지 못합니다.";
+
+        assertThatThrownBy(() -> messageService.updateContent(messageId, expected, 9999L))
+                .isInstanceOf(NotAuthorException.class);
     }
 
     @Test
@@ -89,17 +112,31 @@ class MessageServiceTest {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
                 messageRequest.getContent(),
-                messageRequest.getAuthorId(),
+                author.getId(),
                 rollingpaper.getId()
         );
 
-        messageService.deleteMessage(messageId);
+        messageService.deleteMessage(messageId, author.getId());
 
-        assertThatThrownBy(() -> messageService.findMessage(messageId))
+        assertThatThrownBy(() -> messageService.findMessage(messageId, rollingpaper.getId()))
                 .isInstanceOf(NotFoundMessageException.class);
     }
 
+    @Test
+    @DisplayName("메시지 작성자가 아닌 멤버가 메시지를 삭제할 경우 예외발생")
+    void deleteMessageWithNotAuthor() {
+        final MessageRequest messageRequest = createMessageRequest();
+        final Long messageId = messageService.saveMessage(
+                messageRequest.getContent(),
+                author.getId(),
+                rollingpaper.getId()
+        );
+
+        assertThatThrownBy(() -> messageService.deleteMessage(messageId, 9999L))
+                .isInstanceOf(NotAuthorException.class);
+    }
+
     private MessageRequest createMessageRequest() {
-        return new MessageRequest("안녕하세요", author.getId());
+        return new MessageRequest("안녕하세요");
     }
 }

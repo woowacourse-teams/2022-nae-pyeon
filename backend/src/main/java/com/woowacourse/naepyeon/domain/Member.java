@@ -29,7 +29,7 @@ public class Member {
     private static final Pattern USER_PATTERN = Pattern.compile("^[가-힣a-zA-Z0-9]+$");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$");
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(
-            "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d~!@#$%^&*()+|=]{0,}$");
+            "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d~!@#$%^&*()+|=]*$");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -113,5 +113,9 @@ public class Member {
         if (!matcher.matches()) {
             throw new InvalidMemberPasswordException(password);
         }
+    }
+
+    public boolean isSameMember(final Long memberId) {
+        return this.id.equals(memberId);
     }
 }

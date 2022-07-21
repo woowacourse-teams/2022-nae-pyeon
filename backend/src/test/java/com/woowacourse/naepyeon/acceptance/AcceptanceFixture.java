@@ -4,6 +4,8 @@ import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
+import com.woowacourse.naepyeon.controller.dto.MessageRequest;
+import com.woowacourse.naepyeon.controller.dto.MessageUpdateContentRequest;
 import com.woowacourse.naepyeon.controller.dto.RollingpaperCreateRequest;
 import com.woowacourse.naepyeon.controller.dto.RollingpaperUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
@@ -168,5 +170,31 @@ public class AcceptanceFixture {
                                                             final Long rollingpaperId,
                                                             final RollingpaperUpdateRequest updateRequest) {
         return put(tokenResponseDto, updateRequest, "/api/v1/teams/" + teamId + "/rollingpapers/" + rollingpaperId);
+    }
+
+    public static ExtractableResponse<Response> 메시지_작성(final TokenResponseDto tokenResponseDto,
+                                                       final Long rollingpaperId,
+                                                       final MessageRequest messageRequest) {
+        return post(tokenResponseDto, messageRequest, "/api/v1/rollingpapers/" + rollingpaperId + "/messages");
+    }
+
+    public static ExtractableResponse<Response> 메시지_수정(final TokenResponseDto tokenResponseDto,
+                                                       final Long rollingpaperId,
+                                                       final Long messageId,
+                                                       final MessageUpdateContentRequest messageUpdateContentRequest) {
+        return put(tokenResponseDto, messageUpdateContentRequest,
+                "/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId);
+    }
+
+    public static ExtractableResponse<Response> 메시지_삭제(final TokenResponseDto tokenResponseDto,
+                                                       final Long rollingpaperId,
+                                                       final Long messageId) {
+        return delete(tokenResponseDto, "/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId);
+    }
+
+    public static ExtractableResponse<Response> 메시지_조회(final TokenResponseDto tokenResponseDto,
+                                                final Long rollingpaperId,
+                                                final Long messageId) {
+        return get(tokenResponseDto, "/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId);
     }
 }
