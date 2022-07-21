@@ -30,7 +30,7 @@ module.exports = {
         use: ["babel-loader", "ts-loader"],
       },
       {
-        test: /\.(png|jpe?g|gif|svg|woff|woff2|eot|ttf|otf)$/i,
+        test: /\.(png|jpe?g|gif|svg)$/i,
         type: "asset/resource",
       },
     ],
