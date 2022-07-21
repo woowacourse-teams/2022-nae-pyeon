@@ -135,6 +135,31 @@ class MessageAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    @DisplayName("롤링페이퍼에 본인이 작성하지 않은 메시지를 수정할 경우 예외 발생")
+    void updateMessageFromOthersMessage() {
+        final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
+        final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
+                .getId();
+
+        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
+        모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("알렉스당"));
+
+        final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이알렉스", 2L);
+        final Long rollingpaperId = 회원_롤링페이퍼_생성(tokenResponseDto1, teamId, rollingpaperCreateRequest)
+                .as(CreateResponse.class)
+                .getId();
+
+        final Long messageId = 메시지_작성(tokenResponseDto2, rollingpaperId, new MessageRequest("테스트 메시지2"))
+                .as(CreateResponse.class)
+                .getId();
+
+        final ExtractableResponse<Response> response = 메시지_수정(tokenResponseDto1, rollingpaperId, messageId,
+                new MessageUpdateContentRequest("수정할 때 예외 발생"));
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+    }
+
+    @Test
     @DisplayName("존재하지 않는 롤링페이퍼에 메시지를 작성할 경우 예외 발생")
     void createMessageWithNRollingpaperNotExist() {
         final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
