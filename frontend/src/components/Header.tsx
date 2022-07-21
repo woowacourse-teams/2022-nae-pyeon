@@ -24,7 +24,7 @@ const Header = () => {
   return (
     <StyledHeader>
       <Link to={"/"}>
-        <img src={Logo} />
+        <StyledHome>내편</StyledHome>
       </Link>
       <StyledNav>
         <IconButton onClick={handleSearchClick} size="medium">
@@ -68,6 +68,13 @@ const StyledNav = styled.nav`
       color: ${({ theme }) => theme.colors.GRAY_600};
     }
   }
+`;
+
+const StyledHome = styled.div`
+  font-size: 30px;
+  font-weight: 600;
+
+  color: ${({ theme }) => theme.colors.SKY_BLUE_400};
 `;
 
 export default Header;
