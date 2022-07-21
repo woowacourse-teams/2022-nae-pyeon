@@ -12,7 +12,7 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
-      favicon: "src/assets/images/logo_background.png",
+      favicon: path.resolve(__dirname, "public/logo.png"),
     }),
     new webpack.HotModuleReplacementPlugin(),
   ],
