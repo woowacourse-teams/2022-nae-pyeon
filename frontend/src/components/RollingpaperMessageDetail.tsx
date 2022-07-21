@@ -31,7 +31,6 @@ const RollingpaperMessageDetail = ({
             <BiTrash />
           </IconButton>
         </StyledMenu>
-
         <StyledAuthor>{author}</StyledAuthor>
       </StyledBottom>
     </StyledMessage>
@@ -50,7 +49,7 @@ const StyledMessage = styled.div`
 
   border: none;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.YELLOW_200};
+  background-color: ${({ theme }) => theme.colors.YELLOW_300};
 
   @media only screen and (min-width: 960px) {
     width: 600px;

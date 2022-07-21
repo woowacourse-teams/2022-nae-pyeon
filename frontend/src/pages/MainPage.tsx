@@ -82,6 +82,7 @@ const StyledCardList = styled.div`
   grid-row-gap: 24px;
   grid-column-gap: 10px;
   justify-items: center;
+  align-items: stretch;
 
   min-height: calc(100vh - 150px);
 
@@ -91,6 +92,10 @@ const StyledCardList = styled.div`
 
   @media only screen and (min-width: 1280px) {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  a {
+    height: fit-content;
   }
 `;
 
