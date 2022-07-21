@@ -5,7 +5,6 @@ import com.woowacourse.naepyeon.exception.ExceedMemberUsernameLengthException;
 import com.woowacourse.naepyeon.exception.InvalidMemberEmailException;
 import com.woowacourse.naepyeon.exception.InvalidMemberPasswordException;
 import com.woowacourse.naepyeon.exception.InvalidMemberUsernameException;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.persistence.Column;

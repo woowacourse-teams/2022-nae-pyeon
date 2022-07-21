@@ -6,7 +6,6 @@ import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageUpdateContentRequest;
 import com.woowacourse.naepyeon.service.MessageService;
-import com.woowacourse.naepyeon.service.RollingpaperService;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import java.net.URI;
 import javax.validation.Valid;
