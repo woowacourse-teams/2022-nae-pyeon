@@ -29,10 +29,10 @@ public class MessageController {
 
     @PostMapping
     public ResponseEntity<CreateResponse> createMessage(@AuthenticationPrincipal LoginMemberRequest loginMemberRequest,
-                                                        @RequestBody@Valid final MessageRequest messageRequest,
+                                                        @RequestBody @Valid final MessageRequest messageRequest,
                                                         @PathVariable final Long rollingpaperId) {
-        final Long messageId = messageService.saveMessage(messageRequest.getContent(), loginMemberRequest.getId(),
-                rollingpaperId);
+        final Long messageId =
+                messageService.saveMessage(messageRequest.getContent(), loginMemberRequest.getId(), rollingpaperId);
         return ResponseEntity.created(
                 URI.create("/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId)
         ).body(new CreateResponse(messageId));
