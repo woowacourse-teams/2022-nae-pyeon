@@ -25,6 +25,7 @@ const StyledLogo = styled.div`
   }
 
   h1 {
+    margin-top: 8px;
     font-size: 56px;
   }
 `;

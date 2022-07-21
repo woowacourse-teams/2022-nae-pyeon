@@ -34,6 +34,10 @@ const StyledTeamCreateButton = styled.button`
   font-size: 30px;
 
   box-shadow: 0px 4px 4px 0px ${({ theme }) => `${theme.colors.BLACK}1f`};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.SKY_BLUE_400};
+  }
 `;
 
 export default TeamCreateButton;

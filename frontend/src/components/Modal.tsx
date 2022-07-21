@@ -5,7 +5,7 @@ import IconButton from "./IconButton";
 import { BiX } from "react-icons/bi";
 
 interface ModalProps {
-  onClickCloseButton: React.MouseEventHandler<HTMLButtonElement>;
+  onClickCloseButton: React.MouseEventHandler;
 }
 
 const Modal = ({
@@ -14,7 +14,7 @@ const Modal = ({
 }: PropsWithChildren<ModalProps>) => {
   return (
     <>
-      <StyledDimmer />
+      <StyledDimmer onClick={onClickCloseButton} />
       <StyledModalContainer>
         <StyledCloseButtonWrapper>
           <CloseButton onClick={onClickCloseButton} />
@@ -43,9 +43,8 @@ const StyledDimmer = styled.div`
   width: 100vw;
   height: 100vh;
 
-  background-color: ${({ theme }) => `${theme.colors.GRAY_100}29`};
-  filter: blur(10px);
-  backdrop-filter: blur(8px);
+  background-color: ${({ theme }) => `${theme.colors.GRAY_700}66`};
+  backdrop-filter: blur(1px);
 `;
 
 const StyledModalContainer = styled.div`
@@ -68,7 +67,7 @@ const StyledCloseButtonWrapper = styled.div`
   top: 0;
   left: 0;
 
-  padding: 4px;
+  padding: 10px;
 `;
 
 export default Modal;
