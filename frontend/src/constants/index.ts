@@ -7,7 +7,7 @@ const REGEX = {
 
 const API_URL =
   process.env.NODE_ENV === "production"
-    ? "https://baseurl.com/api/v1"
+    ? "http://54.180.122.233:8080/api/v1"
     : "/api/v1";
 
 export { REGEX, API_URL };

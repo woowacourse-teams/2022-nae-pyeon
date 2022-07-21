@@ -30,8 +30,6 @@
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
-    "favicons": "6.2.2",
-    "favicons-webpack-plugin": "^5.0.2",
     "html-webpack-plugin": "^5.5.0",
     "msw": "^0.42.3",
     "prettier": "^2.7.1",
