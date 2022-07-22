@@ -1,0 +1,13 @@
+= NAEPYEON(내편) Application API Document
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+
+include::./src/docs/asciidoc/auth.adoc[]
+include::./src/docs/asciidoc/members.adoc[]
+include::./src/docs/asciidoc/teams.adoc[]
+include::./src/docs/asciidoc/rollingpapers.adoc[]
+include::./src/docs/asciidoc/messages.adoc[]
