@@ -1,0 +1,28 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        default_batch_fetch_size: '1000'
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: validate
+    open-in-view: 'false'
+  datasource:
+    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${MYSQL_USERNAME}
+    url: ${MYSQL_URL}
+  h2:
+    console:
+      enabled: 'true'
+security:
+  jwt:
+    token:
+      expire-length: ${JWT_EXPIRE_LENGTH}
+      secret-key: ${JWT_SECRET_KEY}
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: info

@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 
 interface ButtonAttributes
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  size?: "small" | "large";
+  size?: "small" | "medium" | "large";
 }
 
 const IconButton = ({
@@ -24,7 +24,12 @@ const StyledIconButton = styled.button<ButtonAttributes>`
   align-items: center;
   justify-content: center;
 
-  font-size: ${(props) => (props.size === "small" ? "20px" : "40px")};
+  font-size: ${(props) =>
+    props.size === "small"
+      ? "20px"
+      : props.size === "medium"
+      ? "30px"
+      : "40px"};
 `;
 
 export default IconButton;

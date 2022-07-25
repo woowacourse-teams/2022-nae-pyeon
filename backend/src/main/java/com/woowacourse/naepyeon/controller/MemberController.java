@@ -1,15 +1,17 @@
 package com.woowacourse.naepyeon.controller;
 
-import com.woowacourse.naepyeon.controller.dto.CreateResponse;
+import com.woowacourse.naepyeon.controller.auth.AuthenticationPrincipal;
+import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
 import com.woowacourse.naepyeon.service.MemberService;
+import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
 import java.net.URI;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,23 +26,32 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping
-    public ResponseEntity<CreateResponse> createMember(
+    public ResponseEntity<Void> createMember(
             @RequestBody @Valid final MemberRegisterRequest memberRegisterRequest) {
-        final Long memberId = memberService.save(memberRegisterRequest.getUsername(), memberRegisterRequest.getEmail(),
+        memberService.save(memberRegisterRequest.getUsername(), memberRegisterRequest.getEmail(),
                 memberRegisterRequest.getPassword());
-        return ResponseEntity.created(URI.create("/api/v1/members/" + memberId)).body(new CreateResponse(memberId));
+        return ResponseEntity.created(URI.create("/api/v1/members/me")).build();
     }
 
-    @PutMapping("/{memberId}")
-    public ResponseEntity<Void> updateMember(@PathVariable final Long memberId,
-                                             @RequestBody @Valid final MemberUpdateRequest memberUpdateRequest) {
-        memberService.updateUsername(memberId, memberUpdateRequest.getUsername());
+    @GetMapping("/me")
+    public ResponseEntity<MemberResponseDto> findMember(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest) {
+        final MemberResponseDto memberResponseDto = memberService.findById(loginMemberRequest.getId());
+        return ResponseEntity.ok().body(memberResponseDto);
+    }
+
+    @PutMapping("/me")
+    public ResponseEntity<Void> updateMember(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @RequestBody @Valid final MemberUpdateRequest memberUpdateRequest) {
+        memberService.updateUsername(loginMemberRequest.getId(), memberUpdateRequest.getUsername());
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{memberId}")
-    public ResponseEntity<Void> deleteMember(@PathVariable final Long memberId) {
-        memberService.delete(memberId);
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> deleteMember(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest) {
+        memberService.delete(loginMemberRequest.getId());
         return ResponseEntity.noContent().build();
     }
 }

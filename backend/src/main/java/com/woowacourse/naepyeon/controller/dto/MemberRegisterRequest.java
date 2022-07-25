@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @Getter
 public class MemberRegisterRequest {
 
-    @NotBlank(message = "이름을 입력해주세요.")
+    @NotBlank(message = "3004:유저네임은 공백일 수 없습니다.")
     private String username;
 
-    @NotBlank(message = "이메일을 입력해주세요.")
+    @NotBlank(message = "3001:이메일은 공백일 수 없습니다.")
     private String email;
 
-    @NotBlank(message = "패스워드를 입력해주세요.")
+    @NotBlank(message = "3007:비밀번호는 공백일 수 없습니다.")
     private String password;
 }

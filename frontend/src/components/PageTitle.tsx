@@ -10,7 +10,12 @@ const PageTitle = ({ children }: PageTitleProps) => {
 };
 
 const StyledPageTitle = styled.h1`
-  display: inline-block;
+  width: 100%;
+  padding: 20px 0;
+  margin-bottom: 10px;
+
+  text-align: center;
+
   font-size: 32px;
   font-weight: 600;
 `;

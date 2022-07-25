@@ -3,19 +3,38 @@ import styled from "@emotion/styled";
 
 type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const Button = ({ type, onClick, children }: ButtonAttributes) => {
+const Button = ({
+  type = "button",
+  onClick,
+  disabled,
+  children,
+}: ButtonAttributes) => {
   return (
-    <StyledButton type={type} onClick={onClick}>
+    <StyledButton type={type} onClick={onClick} disabled={disabled}>
       {children}
     </StyledButton>
   );
 };
 
 const StyledButton = styled.button`
-  padding: 10px 6px;
+  width: 100%;
+
+  background-color: ${({ theme }) => theme.colors.SKY_BLUE_300};
+  color: ${({ theme }) => theme.colors.WHITE};
+  border-radius: 8px;
+  padding: 10px 0;
 
   font-size: 16px;
   font-weight: 600;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.SKY_BLUE_400};
+  }
+
+  &:disabled {
+    cursor: default;
+    background-color: ${({ theme }) => theme.colors.GRAY_300};
+  }
 `;
 
 export default Button;

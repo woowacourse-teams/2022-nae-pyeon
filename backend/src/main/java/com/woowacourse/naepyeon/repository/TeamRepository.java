@@ -1,6 +1,7 @@
 package com.woowacourse.naepyeon.repository;
 
 import com.woowacourse.naepyeon.domain.Team;
+import java.util.List;
 import java.util.Optional;
 
 public interface TeamRepository {
@@ -10,4 +11,6 @@ public interface TeamRepository {
     Optional<Team> findById(final Long teamId);
 
     void delete(final Long teamId);
+
+    List<Team> findAll();
 }

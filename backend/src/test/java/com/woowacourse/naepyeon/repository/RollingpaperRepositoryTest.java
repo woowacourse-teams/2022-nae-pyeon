@@ -22,8 +22,13 @@ class RollingpaperRepositoryTest {
 
     private static final String rollingPaperTitle = "AlexAndKei";
 
-    private final Team team = new Team("nae-pyeon");
-    private final Member member = new Member("member", "m@hello", "abc@@1234");
+    private final Team team = new Team(
+            "nae-pyeon",
+            "테스트 모임입니다.",
+            "testEmoji",
+            "#123456"
+    );
+    private final Member member = new Member("member", "m@hello.com", "abc@@1234");
 
     @Autowired
     private TeamJpaDao teamJpaDao;
@@ -69,6 +74,17 @@ class RollingpaperRepositoryTest {
         final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByTeamId(team.getId());
 
         assertThat(rollingpapers).hasSize(2);
+    }
+
+    @Test
+    @DisplayName("롤링페이퍼들을 memberId로 찾는다.")
+    void findByMemberId() {
+        final Rollingpaper rollingPaper1 = createRollingPaper();
+        rollingpaperRepository.save(rollingPaper1);
+
+        final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByMemberId(member.getId());
+
+        assertThat(rollingpapers).hasSize(1);
     }
 
     @Test

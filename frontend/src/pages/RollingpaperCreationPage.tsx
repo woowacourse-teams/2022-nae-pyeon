@@ -1,58 +1,76 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useQuery, useMutation } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "@emotion/styled";
 import axios from "axios";
 
-import Header from "@/components/Header";
-import IconButton from "@/components/IconButton";
-import PageTitle from "@/components/PageTitle";
+import appClient from "@/api";
+
+import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LabeledInput from "@/components/LabeledInput";
-import SearchInput from "@/components/SearchInput";
+import AutoCompleteInput from "@/components/AutoCompleteInput";
 import Button from "@/components/Button";
 
-import { BiChevronLeft } from "react-icons/bi";
+import { Rollingpaper, CustomError } from "@/types";
 
-const memberListDummy = [
-  {
-    id: 1,
-    name: "도리",
-  },
-  {
-    id: 2,
-    name: "소피아",
-  },
-  {
-    id: 3,
-    name: "승팡",
-  },
-  {
-    id: 4,
-    name: "알렉스",
-  },
-  {
-    id: 5,
-    name: "제로",
-  },
-  {
-    id: 6,
-    name: "케이",
-  },
-];
+interface TeamMemberResponse {
+  members: TeamMember[];
+}
+
+interface TeamMember {
+  id: number;
+  nickname: string;
+}
 
 const RollingpaperCreationPage = () => {
   const navigate = useNavigate();
+  const { teamId } = useParams();
   const [rollingpaperTitle, setRollingpaperTitle] = useState("");
   const [rollingpaperTo, setRollingpaperTo] = useState("");
 
-  const teamId = 123;
+  const {
+    isLoading,
+    isError,
+    data: teamMemberResponse,
+  } = useQuery<TeamMemberResponse>(["team-member"], () =>
+    appClient.get(`/teams/${teamId}/members`).then((response) => response.data)
+  );
+
+  const { mutate: postRollingpaper } = useMutation(
+    ({
+      title,
+      addresseeId,
+    }: Pick<Rollingpaper, "title"> & { addresseeId: number }) => {
+      return appClient
+        .post(`/teams/${teamId}/rollingpapers`, {
+          title,
+          addresseeId,
+        })
+        .then((response) => response.data);
+    },
+    {
+      onSuccess: (data) => {
+        const { id: newRollingpaperId } = data;
+        navigate(`/team/${teamId}/rollingpaper/${newRollingpaperId}`, {
+          replace: true,
+        });
+      },
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response) {
+          const customError = error.response.data as CustomError;
+          alert(customError.message);
+        }
+      },
+    }
+  );
 
   const handleRollingpaperFormSubmit = (
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
 
-    const member = memberListDummy.find(
-      (member) => member.name === rollingpaperTo
+    const member = teamMemberResponse?.members.find(
+      (member) => member.nickname === rollingpaperTo
     );
 
     if (!member) {
@@ -60,53 +78,44 @@ const RollingpaperCreationPage = () => {
       return;
     }
 
-    axios
-      .post(`/api/v1/teams/${teamId}/rollingpapers`, {
-        title: rollingpaperTitle,
-        memberId: member.id,
-      })
-      .then((response) => {
-        const { id: newRollingpaperId } = response.data;
-        navigate(`/rollingpaper/${newRollingpaperId}`, { replace: true });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    postRollingpaper({ title: rollingpaperTitle, addresseeId: member.id });
   };
+
+  if (isLoading) {
+    return <div>로딩 중</div>;
+  }
+  if (isError || !teamMemberResponse) {
+    return <div>에러</div>;
+  }
 
   return (
     <>
-      <Header>
-        <IconButton>
-          <BiChevronLeft />
-        </IconButton>
-        <PageTitle>롤링페이퍼 만들기</PageTitle>
-      </Header>
-      <StyledMain onSubmit={handleRollingpaperFormSubmit}>
+      <PageTitleWithBackButton>롤링페이퍼 만들기</PageTitleWithBackButton>
+      <StyledForm onSubmit={handleRollingpaperFormSubmit}>
         <LabeledInput
           labelText="롤링페이퍼 이름"
           value={rollingpaperTitle}
           setValue={setRollingpaperTitle}
         />
-        <SearchInput
+        <AutoCompleteInput
           labelText="롤링페이퍼 대상"
           value={rollingpaperTo}
           setValue={setRollingpaperTo}
-          searchKeywordList={memberListDummy.map((member) => member.name)}
+          searchKeywordList={teamMemberResponse.members.map(
+            (member) => member.nickname
+          )}
         />
         <Button type="submit">완료</Button>
-      </StyledMain>
+      </StyledForm>
     </>
   );
 };
 
-const StyledMain = styled.form`
+const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 40px;
-
-  padding: 48px 25px;
 
   button {
     align-self: flex-end;

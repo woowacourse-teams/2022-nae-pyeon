@@ -1,6 +1,7 @@
 package com.woowacourse.naepyeon.repository;
 
 import com.woowacourse.naepyeon.domain.Message;
+import com.woowacourse.naepyeon.exception.NotFoundMessageException;
 import com.woowacourse.naepyeon.repository.jpa.MessageJpaDao;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class JpaMessageRepository implements MessageRepository {
     @Override
     public void update(final Long id, final String newContent) {
         final Message message = findById(id)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new NotFoundMessageException(id));
         message.changeContent(newContent);
     }
 

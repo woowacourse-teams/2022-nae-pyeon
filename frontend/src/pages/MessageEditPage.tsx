@@ -1,22 +1,56 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import styled from "@emotion/styled";
+import { useQuery, useMutation } from "react-query";
 import axios from "axios";
+import styled from "@emotion/styled";
 
-import Header from "@/components/Header";
+import appClient from "@/api";
 import Button from "@/components/Button";
-import IconButton from "@/components/IconButton";
 import TextArea from "@/components/TextArea";
+import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 
-import { BiChevronLeft } from "react-icons/bi";
+import { CustomError, Message } from "@/types";
 
 const MessageEditPage = () => {
-  const { rollingpaperId, messageId } = useParams();
+  const { teamId, rollingpaperId, messageId } = useParams();
   const navigate = useNavigate();
 
-  const [initialMessageContent, setInitialMessageContent] = useState(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
-  const authorId = 123;
+
+  const {
+    isLoading: isLoadingGetMessage,
+    isError: isErrorGetMessage,
+    error: getMessageError,
+    data: initialMessage,
+  } = useQuery<Message>(["message"], () =>
+    appClient
+      .get(`/rollingpapers/${rollingpaperId}/messages/${messageId}`)
+      .then((response) => response.data)
+  );
+
+  const { mutate: updateMessage } = useMutation(
+    ({ content }: Pick<Message, "content">) => {
+      return appClient
+        .put(`/rollingpapers/${rollingpaperId}/messages/${messageId}`, {
+          content,
+        })
+        .then((response) => response.data);
+    },
+    {
+      onSuccess: () => {
+        alert("메시지 수정 완료");
+        navigate(`/team/${teamId}/rollingpaper/${rollingpaperId}`, {
+          replace: true,
+        });
+      },
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response) {
+          const customError = error.response.data as CustomError;
+          alert(customError.message);
+        }
+      },
+    }
+  );
 
   const handleMessageFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,54 +65,43 @@ const MessageEditPage = () => {
       return;
     }
 
-    axios
-      .put(`/api/v1/rollingpapers/${rollingpaperId}/messages/${messageId}`, {
-        content: contentRef.current.value,
-      })
-      .then((response) => {
-        alert("메시지 수정 완료");
-        navigate(`/rollingpaper/${rollingpaperId}`, { replace: true });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    updateMessage({ content: contentRef.current.value });
   };
 
-  useEffect(() => {
-    axios
-      .get(`/api/v1/rollingpapers/${rollingpaperId}/messages/${messageId}`)
-      .then((response) => {
-        setInitialMessageContent(response.data.content);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  if (isLoadingGetMessage) {
+    return <div>로딩중</div>;
+  }
+
+  if (isErrorGetMessage) {
+    if (axios.isAxiosError(getMessageError) && getMessageError.response) {
+      const customError = getMessageError.response.data as CustomError;
+      return <div>{customError.message}</div>;
+    }
+    return <div>에러</div>;
+  }
+
+  if (!initialMessage) {
+    return <div>에러</div>;
+  }
 
   return (
     <>
-      <Header>
-        <IconButton>
-          <BiChevronLeft />
-        </IconButton>
-      </Header>
-      <StyledMain onSubmit={handleMessageFormSubmit}>
-        {initialMessageContent && (
-          <TextArea ref={contentRef} defaultValue={initialMessageContent} />
+      <PageTitleWithBackButton />
+      <StyledForm onSubmit={handleMessageFormSubmit}>
+        {initialMessage && (
+          <TextArea ref={contentRef} defaultValue={initialMessage.content} />
         )}
         <Button type="submit">완료</Button>
-      </StyledMain>
+      </StyledForm>
     </>
   );
 };
 
-const StyledMain = styled.form`
+const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 40px;
-
-  padding: 48px 25px;
 
   button {
     align-self: flex-end;

@@ -1,26 +1,47 @@
 import React, { useRef } from "react";
-import styled from "@emotion/styled";
-import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
+import axios from "axios";
+import styled from "@emotion/styled";
 
-import Header from "@/components/Header";
+import appClient from "@/api";
+
 import Button from "@/components/Button";
-import IconButton from "@/components/IconButton";
 import TextArea from "@/components/TextArea";
+import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 
-import { BiChevronLeft } from "react-icons/bi";
+import { CustomError, Message } from "@/types";
 
 const MessageWritePage = () => {
-  const { rollingpaperId } = useParams();
+  const { teamId, rollingpaperId } = useParams();
   const navigate = useNavigate();
-
   const contentRef = useRef<HTMLTextAreaElement>(null);
-  const authorId = 123;
+
+  const { mutate: createMessage } = useMutation(
+    ({ content }: Pick<Message, "content">) => {
+      return appClient
+        .post(`/rollingpapers/${rollingpaperId}/messages`, {
+          content,
+        })
+        .then((response) => response.data);
+    },
+    {
+      onSuccess: () => {
+        navigate(`/team/${teamId}/rollingpaper/${rollingpaperId}`, {
+          replace: true,
+        });
+      },
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response) {
+          const customError = error.response.data as CustomError;
+          alert(customError.message);
+        }
+      },
+    }
+  );
 
   const handleMessageFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    console.log(contentRef.current?.value);
 
     if (!contentRef.current) {
       console.error("ERROR :: No contentRef.current");
@@ -32,41 +53,25 @@ const MessageWritePage = () => {
       return;
     }
 
-    axios
-      .post(`/api/v1/rollingpapers/${rollingpaperId}/messages`, {
-        content: contentRef.current.value,
-        authorId: authorId,
-      })
-      .then((response) => {
-        navigate(`/rollingpaper/${rollingpaperId}`, { replace: true });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    createMessage({ content: contentRef.current.value });
   };
 
   return (
     <>
-      <Header>
-        <IconButton>
-          <BiChevronLeft />
-        </IconButton>
-      </Header>
-      <StyledMain onSubmit={handleMessageFormSubmit}>
+      <PageTitleWithBackButton />
+      <StyledForm onSubmit={handleMessageFormSubmit}>
         <TextArea ref={contentRef} />
         <Button type="submit">완료</Button>
-      </StyledMain>
+      </StyledForm>
     </>
   );
 };
 
-const StyledMain = styled.form`
+const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 40px;
-
-  padding: 48px 25px;
 
   button {
     align-self: flex-end;

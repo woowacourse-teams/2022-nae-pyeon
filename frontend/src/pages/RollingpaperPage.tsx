@@ -1,76 +1,53 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
-import styled from "@emotion/styled";
+import { useQuery } from "react-query";
 import axios from "axios";
 
-import Header from "@/components/Header";
-import IconButton from "@/components/IconButton";
-import PageTitle from "@/components/PageTitle";
+import appClient from "@/api";
+
+import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LetterPaper from "@/components/LetterPaper";
 
-import { BiChevronLeft } from "react-icons/bi";
-
-type Message = {
-  id: number;
-  content: string;
-  from: string;
-  authorId: number;
-};
-
-interface RollingpaperType {
-  id: number;
-  title: string;
-  to: string;
-  messages: Message[];
-}
+import { Rollingpaper, CustomError } from "@/types";
 
 const RollingpaperPage = () => {
-  const { rollingpaperId } = useParams();
-  const teamId = 123;
-  const [rollingpaper, setRollingpaper] = useState<RollingpaperType | null>(
-    null
+  const { teamId, rollingpaperId } = useParams();
+
+  const {
+    isLoading,
+    isError,
+    error: rollingpaperError,
+    data: rollingpaper,
+  } = useQuery<Rollingpaper>(["rollingpaper"], () =>
+    appClient
+      .get(`/teams/${teamId}/rollingpapers/${rollingpaperId}`)
+      .then((response) => response.data)
   );
 
-  useEffect(() => {
-    axios
-      .get(`/api/v1/teams/${teamId}/rollingpapers/${rollingpaperId}`)
-      .then((response) => {
-        setRollingpaper(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  if (isLoading) {
+    return <div>로딩 중</div>;
+  }
 
-  if (rollingpaper === null) {
-    return (
-      <>
-        <Header>
-          <IconButton>
-            <BiChevronLeft />
-          </IconButton>
-        </Header>
-      </>
-    );
+  if (isError) {
+    if (axios.isAxiosError(rollingpaperError) && rollingpaperError.response) {
+      const customError = rollingpaperError.response.data as CustomError;
+      return <div>{customError.message}</div>;
+    }
+    return <div>에러</div>;
+  }
+
+  if (!rollingpaper) {
+    return <div>에러</div>;
   }
 
   return (
     <>
-      <Header>
-        <IconButton>
-          <BiChevronLeft />
-        </IconButton>
-        <PageTitle>{rollingpaper.title}</PageTitle>
-      </Header>
-      <StyledMain>
+      <PageTitleWithBackButton>{rollingpaper.title}</PageTitleWithBackButton>
+      <main>
         <LetterPaper to={rollingpaper.to} messageList={rollingpaper.messages} />
-      </StyledMain>
+      </main>
     </>
   );
 };
-
-const StyledMain = styled.main`
-  padding: 10px 25px;
-`;
 
 export default RollingpaperPage;

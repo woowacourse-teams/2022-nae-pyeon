@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.service.dto;
 
+import com.woowacourse.naepyeon.domain.Team;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,4 +13,19 @@ public class TeamResponseDto {
 
     private Long id;
     private String name;
+    private String description;
+    private String emoji;
+    private String color;
+    private boolean joined;
+
+    public static TeamResponseDto of(final Team team, final boolean joined) {
+        return new TeamResponseDto(
+                team.getId(),
+                team.getName(),
+                team.getDescription(),
+                team.getEmoji(),
+                team.getColor(),
+                joined
+        );
+    }
 }

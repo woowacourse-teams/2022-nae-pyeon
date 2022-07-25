@@ -3,6 +3,7 @@ package com.woowacourse.naepyeon.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,8 +29,8 @@ class MemberServiceTest {
 
         // then
         assertThat(findMember)
-                .extracting("id", "username", "email", "password")
-                .containsExactly(memberId, "seungpang", "email@email.com", "password123!A");
+                .extracting("username", "email")
+                .containsExactly("seungpang", "email@email.com");
     }
 
     @Test
@@ -43,8 +44,8 @@ class MemberServiceTest {
 
         // then
         assertThat(memberService.findById(memberId))
-                .extracting("id", "username", "email", "password")
-                .containsExactly(memberId, "zero", "email@email.com", "password123!A");
+                .extracting("username", "email")
+                .containsExactly("zero", "email@email.com");
     }
 
     @Test
@@ -58,6 +59,6 @@ class MemberServiceTest {
 
         // then
         assertThatThrownBy(() -> memberService.findById(memberId))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(NotFoundMemberException.class);
     }
 }

@@ -1,8 +1,12 @@
 package com.woowacourse.naepyeon.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.exception.NotFoundTeamException;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +22,14 @@ class TeamRepositoryTest {
 
     @Test
     @DisplayName("모임을 id로 찾는다.")
-    public void findById() {
+    void findById() {
         // given
-        final Team team = new Team("woowacourse");
+        final Team team = new Team("woowacourse", "테스트 모임입니다.", "testEmoji", "#123456");
         final Long teamId = teamRepository.save(team);
 
         // when
-        final Team findTeam = teamRepository.findById(teamId).get();
+        final Team findTeam = teamRepository.findById(teamId)
+                .orElseThrow();
 
         // then
         assertThat(findTeam)
@@ -34,9 +39,9 @@ class TeamRepositoryTest {
 
     @Test
     @DisplayName("모임을 id로 제거한다.")
-    public void delete() {
+    void delete() {
         // given
-        final Team team = new Team("woowacourse");
+        final Team team = new Team("woowacourse", "테스트 모임입니다.", "testEmoji", "#123456");
         final Long teamId = teamRepository.save(team);
 
         // when
@@ -45,5 +50,33 @@ class TeamRepositoryTest {
         // then
         assertThat(teamRepository.findById(teamId))
                 .isEmpty();
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 모임을 삭제할 경우 예외를 발생시킨다.")
+    void deleteWithNotFoundTeam() {
+        // given
+        final Team team = new Team("woowacourse", "테스트 모임입니다.", "testEmoji", "#123456");
+        final Long teamId = teamRepository.save(team);
+
+        // when // then
+        assertThatThrownBy(() -> teamRepository.delete(teamId + 1L))
+                .isInstanceOf(NotFoundTeamException.class);
+    }
+
+    @Test
+    @DisplayName("모임 전체를 조회한다.")
+    void findAll() {
+        final Team team1 = new Team("a", "it's a.", "testEmoji", "#123456");
+        final Team team2 = new Team("b", "it's b.", "testEmoji", "#123456");
+        final Team team3 = new Team("c", "it's c.", "testEmoji", "#123456");
+        teamRepository.save(team1);
+        teamRepository.save(team2);
+
+        final List<Team> teams = teamRepository.findAll();
+        assertAll(
+                () -> assertThat(teams).contains(team1, team2),
+                () -> assertThat(teams).doesNotContain(team3)
+        );
     }
 }

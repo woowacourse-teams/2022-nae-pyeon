@@ -1,0 +1,84 @@
+import React from "react";
+import styled from "@emotion/styled";
+
+import { BiError } from "react-icons/bi";
+
+interface UnderlineInputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  errorMessage?: string;
+  setValue: (value: string) => void;
+}
+
+const UnderlineInput = ({
+  type = "text",
+  placeholder,
+  pattern,
+  errorMessage,
+  value,
+  setValue,
+}: UnderlineInputProps) => {
+  return (
+    <StyledInputContainer>
+      <StyledInput
+        type={type}
+        value={value}
+        placeholder={placeholder}
+        pattern={pattern}
+        onChange={(e) => {
+          setValue(e.target.value);
+        }}
+      />
+      <div>
+        <BiError />
+        {errorMessage}
+      </div>
+    </StyledInputContainer>
+  );
+};
+
+const StyledInputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  margin: 8px 0;
+
+  div {
+    visibility: hidden;
+
+    margin-top: 8px;
+    color: ${({ theme }) => theme.colors.RED_300};
+
+    svg {
+      position: relative;
+      top: 2px;
+      margin-right: 4px;
+    }
+  }
+`;
+
+const StyledInput = styled.input`
+  height: 32px;
+  padding: 0 8px;
+
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.GRAY_700};
+
+  font-size: 16px;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:invalid {
+    border: none;
+    border-bottom: 2px solid ${({ theme }) => theme.colors.RED_300};
+  }
+
+  &:invalid + div {
+    visibility: visible;
+  }
+`;
+
+export default UnderlineInput;

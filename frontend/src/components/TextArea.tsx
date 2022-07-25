@@ -12,8 +12,10 @@ const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaAttributes>(
 const StyledTextArea = styled.textarea`
   width: 300px;
   height: 300px;
-
   padding: 20px;
+
+  line-height: 1.4;
+  font-size: 16px;
 
   border: none;
   border-radius: 8px;
