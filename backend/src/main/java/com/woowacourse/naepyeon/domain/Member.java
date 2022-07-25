@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member extends BaseEntity {
 
     public static final int MIN_USERNAME_LENGTH = 2;
     public static final int MAX_USERNAME_LENGTH = 20;

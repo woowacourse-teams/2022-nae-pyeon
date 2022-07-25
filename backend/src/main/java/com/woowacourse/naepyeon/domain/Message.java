@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Message {
+public class Message extends BaseEntity {
 
     public static final int MAX_CONTENT_LENGTH = 500;
 

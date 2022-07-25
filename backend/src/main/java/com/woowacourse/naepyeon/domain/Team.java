@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Team {
+public class Team extends BaseEntity {
 
     public static final int MAX_TEAMNAME_LENGTH = 20;
 

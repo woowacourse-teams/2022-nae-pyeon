@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TeamParticipation {
+public class TeamParticipation extends BaseEntity {
 
     public static final int MAX_NICKNAME_LENGTH = 20;
 

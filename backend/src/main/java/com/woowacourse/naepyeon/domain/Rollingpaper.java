@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "rollingpaper")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Rollingpaper {
+public class Rollingpaper extends BaseEntity {
 
     public static final int MAX_TITLE_LENGTH = 20;
 

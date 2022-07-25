@@ -7,7 +7,9 @@ import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Message;
 import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
+import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +23,21 @@ class MessageRepositoryTest {
 
     private static final String content = "안녕하세요";
 
+    @Autowired
+    private TeamRepository teamRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private RollingpaperRepository rollingpaperRepository;
+
+    @Autowired
+    private MessageRepository messageRepository;
+
+    @Autowired
+    private EntityManager em;
+
     private final Team team = new Team(
             "nae-pyeon",
             "테스트 모임입니다.",
@@ -30,15 +47,6 @@ class MessageRepositoryTest {
     private final Member member = new Member("member", "email1@email.com", "password123");
     private final Member author = new Member("author", "email2@email.com", "password123");
     private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", team, member);
-
-    @Autowired
-    private TeamRepository teamRepository;
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private RollingpaperRepository rollingpaperRepository;
-    @Autowired
-    private MessageRepository messageRepository;
 
     @BeforeEach
     void setUp() {
@@ -110,6 +118,31 @@ class MessageRepositoryTest {
 
         assertThat(messageRepository.findById(messageId))
                 .isEmpty();
+    }
+
+    @Test
+    @DisplayName("메시지를 생성할 때 생성일자가 올바르게 나온다.")
+    void createMemberWhen() {
+        final Message message = createMessage();
+        final Long messageId = messageRepository.save(message);
+
+        final Message actual = messageRepository.findById(messageId)
+                .orElseThrow();
+        assertThat(actual.getCreatedDate()).isAfter(LocalDateTime.MIN);
+    }
+
+    @Test
+    @DisplayName("메시지를 수정할 때 수정일자가 올바르게 나온다.")
+    void updateMemberWhen() {
+        final Message message = createMessage();
+        final Long messageId = messageRepository.save(message);
+
+        message.changeContent("updateupdate");
+        em.flush();
+
+        final Message actual = messageRepository.findById(messageId)
+                .orElseThrow();
+        assertThat(actual.getLastModifiedDate()).isAfter(actual.getCreatedDate());
     }
 
     private Message createMessage() {

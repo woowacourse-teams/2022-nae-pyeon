@@ -6,7 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.exception.NotFoundTeamException;
+import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ class TeamRepositoryTest {
 
     @Autowired
     private TeamRepository teamRepository;
+
+    @Autowired
+    private EntityManager em;
 
     @Test
     @DisplayName("모임을 id로 찾는다.")
@@ -78,5 +83,30 @@ class TeamRepositoryTest {
                 () -> assertThat(teams).contains(team1, team2),
                 () -> assertThat(teams).doesNotContain(team3)
         );
+    }
+
+    @Test
+    @DisplayName("모임을 생성할 때 생성일자가 올바르게 나온다.")
+    void createMemberWhen() {
+        final Team team = new Team("woowacourse", "테스트 모임입니다.", "testEmoji", "#123456");
+        final Long teamId = teamRepository.save(team);
+
+        final Team actual = teamRepository.findById(teamId)
+                .orElseThrow();
+        assertThat(actual.getCreatedDate()).isAfter(LocalDateTime.MIN);
+    }
+
+    @Test
+    @DisplayName("모임을 수정할 때 수정일자가 올바르게 나온다.")
+    void updateMemberWhen() {
+        final Team team = new Team("woowacourse", "테스트 모임입니다.", "testEmoji", "#123456");
+        final Long teamId = teamRepository.save(team);
+
+        team.changeName("updateupdate");
+        em.flush();
+
+        final Team actual = teamRepository.findById(teamId)
+                .orElseThrow();
+        assertThat(actual.getLastModifiedDate()).isAfter(actual.getCreatedDate());
     }
 }

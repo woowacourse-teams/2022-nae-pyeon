@@ -5,10 +5,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.domain.Member;
+import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.exception.DuplicateTeamPaticipateException;
+import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,6 +31,9 @@ class TeamParticipationRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private EntityManager em;
 
     private final Member member1 = new Member("내편이1", "naePyeon1@test.com", "testtest123");
     private final Member member2 = new Member("내편이2", "naePyeon2@test.com", "testtest123");
@@ -134,5 +140,16 @@ class TeamParticipationRepositoryTest {
                 () -> assertThat(teamParticipationRepository.isJoinedMember(member1.getId(), team1.getId())).isTrue(),
                 () -> assertThat(teamParticipationRepository.isJoinedMember(member2.getId(), team1.getId())).isFalse()
         );
+    }
+
+    @Test
+    @DisplayName("회원 가입일자가 올바르게 나온다.")
+    void createMemberWhen() {
+        final TeamParticipation teamParticipation = new TeamParticipation(team1, member1, "닉네임1");
+        final Long teamParticipationId = teamParticipationRepository.save(teamParticipation);
+
+        final TeamParticipation actual = teamParticipationRepository.findById(teamParticipationId)
+                .orElseThrow();
+        assertThat(actual.getCreatedDate()).isAfter(LocalDateTime.MIN);
     }
 }
