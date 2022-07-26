@@ -27,7 +27,7 @@ public class Rollingpaper extends BaseEntity {
     @Column(name = "rollingpaper_id")
     private Long id;
 
-    @Column(length = 20, nullable = false)
+    @Column(name = "title", length = 20, nullable = false)
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,7 +35,7 @@ public class Rollingpaper extends BaseEntity {
     private Team team;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     public Rollingpaper(final String title, final Team team, final Member member) {

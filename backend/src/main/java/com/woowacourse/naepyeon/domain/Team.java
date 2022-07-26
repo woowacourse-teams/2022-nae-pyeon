@@ -25,13 +25,13 @@ public class Team extends BaseEntity {
     @Column(name = "team_name", length = 20, nullable = false, unique = true)
     private String name;
 
-    @Column(length = 100, nullable = false)
+    @Column(name = "description", length = 100, nullable = false)
     private String description;
 
-    @Column(nullable = false)
+    @Column(name = "emoji", nullable = false)
     private String emoji;
 
-    @Column(length = 15, nullable = false)
+    @Column(name = "color", length = 15, nullable = false)
     private String color;
 
     public Team(final String name, final String description, final String emoji, final String color) {
