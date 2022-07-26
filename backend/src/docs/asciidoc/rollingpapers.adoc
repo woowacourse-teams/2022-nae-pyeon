@@ -1,4 +1,4 @@
-== rollingpaper
+== 롤링페이퍼
 
 === 롤링페이퍼 생성(/api/v1/teams/{teamId}/rollingpapers)
 operation::rollingpaper-controller-test/create-rollingpaper[snippets='http-request,http-response']

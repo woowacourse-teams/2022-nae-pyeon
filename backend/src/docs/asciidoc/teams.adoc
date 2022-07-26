@@ -1,4 +1,4 @@
-== teams
+== 모임
 
 === 모임 단건 조회(/api/v1/teams/{teamId})
 operation::team-controller-test/get-team[snippets='http-request,http-response']

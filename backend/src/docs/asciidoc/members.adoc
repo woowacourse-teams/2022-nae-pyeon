@@ -1,4 +1,4 @@
-== members
+== 유저
 
 === 회원가입(/api/v1/members)
 operation::member-controller-test/create-member[snippets='http-request,http-response']

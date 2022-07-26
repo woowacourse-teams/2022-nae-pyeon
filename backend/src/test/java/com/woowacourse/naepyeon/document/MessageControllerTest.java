@@ -4,11 +4,6 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
@@ -25,19 +20,7 @@ class MessageControllerTest extends TestSupport {
                                 .content(readJson("/json/messages/message-create.json"))
                 )
                 .andExpect(status().isCreated())
-                .andDo(
-                        restDocs.document(
-                                pathParameters(
-                                        parameterWithName("rollingpaperId").description("롤링페이퍼 식별자 값")
-                                ),
-                                requestFields(
-                                        fieldWithPath("content").description("메시지 내용")
-                                ),
-                                responseFields(
-                                        fieldWithPath("id").description("메시지 식별자 값")
-                                )
-                        )
-                );
+                .andDo(restDocs.document());
     }
 
     @Test
@@ -47,20 +30,7 @@ class MessageControllerTest extends TestSupport {
                                 .header("Authorization", "Bearer " + teamMemberAccessToken)
                 )
                 .andExpect(status().isOk())
-                .andDo(
-                        restDocs.document(
-                                pathParameters(
-                                        parameterWithName("rollingpaperId").description("롤링페이퍼 식별자 값"),
-                                        parameterWithName("messageId").description("메시지 식별자 값")
-                                ),
-                                responseFields(
-                                        fieldWithPath("id").description("메시지 식별자 값"),
-                                        fieldWithPath("content").description("메시지 내용"),
-                                        fieldWithPath("from").description("메시지 작성자 닉네임"),
-                                        fieldWithPath("authorId").description("메시지 작성자 식별자 값")
-                                )
-                        )
-                );
+                .andDo(restDocs.document());
     }
 
     @Test
@@ -72,17 +42,7 @@ class MessageControllerTest extends TestSupport {
                                 .content(readJson("/json/messages/message-update.json"))
                 )
                 .andExpect(status().isNoContent())
-                .andDo(
-                        restDocs.document(
-                                pathParameters(
-                                        parameterWithName("rollingpaperId").description("롤링페이퍼 식별자 값"),
-                                        parameterWithName("messageId").description("메시지 식별자 값")
-                                ),
-                                requestFields(
-                                        fieldWithPath("content").description("메시지 수정할 내용")
-                                )
-                        )
-                );
+                .andDo(restDocs.document());
     }
 
     @Test
@@ -92,13 +52,6 @@ class MessageControllerTest extends TestSupport {
                                 .header("Authorization", "Bearer " + teamMemberAccessToken)
                 )
                 .andExpect(status().isNoContent())
-                .andDo(
-                        restDocs.document(
-                                pathParameters(
-                                        parameterWithName("rollingpaperId").description("롤링페이퍼 식별자 값"),
-                                        parameterWithName("messageId").description("메시지 식별자 값")
-                                )
-                        )
-                );
+                .andDo(restDocs.document());
     }
 }

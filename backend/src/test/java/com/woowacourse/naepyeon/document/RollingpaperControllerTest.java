@@ -3,11 +3,6 @@ package com.woowacourse.naepyeon.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
@@ -24,20 +19,7 @@ class RollingpaperControllerTest extends TestSupport {
                                 .content(readJson("/json/rollingpapers/rollingpaper-create.json"))
                 )
                 .andExpect(status().isCreated())
-                .andDo(
-                        restDocs.document(
-                                pathParameters(
-                                        parameterWithName("teamId").description("모임 식별자 값")
-                                ),
-                                requestFields(
-                                        fieldWithPath("title").description("롤링페이퍼 제목"),
-                                        fieldWithPath("addresseeId").description("롤링페이퍼 수신자 식별자 값")
-                                ),
-                                responseFields(
-                                        fieldWithPath("id").description("롤링페이퍼 식별자 값")
-                                )
-                        )
-                );
+                .andDo(restDocs.document());
     }
 
     @Test
@@ -47,23 +29,7 @@ class RollingpaperControllerTest extends TestSupport {
                                 .header("Authorization", "Bearer " + teamMemberAccessToken)
                 )
                 .andExpect(status().isOk())
-                .andDo(
-                        restDocs.document(
-                                pathParameters(
-                                        parameterWithName("teamId").description("모임 식별자 값"),
-                                        parameterWithName("rollingpaperId").description("롤링페이퍼 식별자 값")
-                                ),
-                                responseFields(
-                                        fieldWithPath("id").description("롤링페이퍼 식별자 값"),
-                                        fieldWithPath("title").description("롤링페이퍼 제목"),
-                                        fieldWithPath("to").description("롤링페이퍼 수신자"),
-                                        fieldWithPath("messages.[].id").description("메시지 식별자 값"),
-                                        fieldWithPath("messages.[].content").description("메시지 내용"),
-                                        fieldWithPath("messages.[].from").description("메시지 발송자"),
-                                        fieldWithPath("messages.[].authorId").description("메시지 작성자")
-                                )
-                        )
-                );
+                .andDo(restDocs.document());
     }
 
     @Test
@@ -73,18 +39,7 @@ class RollingpaperControllerTest extends TestSupport {
                                 .header("Authorization", "Bearer " + teamMemberAccessToken)
                 )
                 .andExpect(status().isOk())
-                .andDo(
-                        restDocs.document(
-                                pathParameters(
-                                        parameterWithName("teamId").description("모임 식별자 값")
-                                ),
-                                responseFields(
-                                        fieldWithPath("rollingpapers.[].id").description("롤링페이퍼 식별자 값"),
-                                        fieldWithPath("rollingpapers.[].title").description("롤링페이퍼 제목"),
-                                        fieldWithPath("rollingpapers.[].to").description("롤링페이퍼 대상 닉네임")
-                                )
-                        )
-                );
+                .andDo(restDocs.document());
     }
 
     @Test
@@ -94,18 +49,7 @@ class RollingpaperControllerTest extends TestSupport {
                                 .header("Authorization", "Bearer " + teamMemberAccessToken)
                 )
                 .andExpect(status().isOk())
-                .andDo(
-                        restDocs.document(
-                                pathParameters(
-                                        parameterWithName("teamId").description("모임 식별자 값")
-                                ),
-                                responseFields(
-                                        fieldWithPath("rollingpapers.[].id").description("롤링페이퍼 식별자 값"),
-                                        fieldWithPath("rollingpapers.[].title").description("롤링페이퍼 제목"),
-                                        fieldWithPath("rollingpapers.[].to").description("롤링페이퍼 대상 닉네임")
-                                )
-                        )
-                );
+                .andDo(restDocs.document());
     }
 
     @Test
@@ -117,16 +61,6 @@ class RollingpaperControllerTest extends TestSupport {
                                 .content(readJson("/json/rollingpapers/rollingpaper-update.json"))
                 )
                 .andExpect(status().isNoContent())
-                .andDo(
-                        restDocs.document(
-                                pathParameters(
-                                        parameterWithName("teamId").description("모임 식별자 값"),
-                                        parameterWithName("rollingpaperId").description("롤링페이퍼 식별자 값")
-                                ),
-                                requestFields(
-                                        fieldWithPath("title").description("롤링페이퍼 수정 제목")
-                                )
-                        )
-                );
+                .andDo(restDocs.document());
     }
 }

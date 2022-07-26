@@ -1,4 +1,4 @@
-== auth
+== 로그인
 
 === 로그인(/api/v1/login)
 operation::auth-controller-test/login[snippets='http-request,http-response']
