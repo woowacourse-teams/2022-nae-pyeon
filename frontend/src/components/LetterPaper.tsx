@@ -6,7 +6,7 @@ import IconButton from "@components/IconButton";
 import RollingpaperMessage from "@components/RollingpaperMessage";
 import { Message } from "@/types";
 
-import { BiPencil } from "react-icons/bi";
+import PencilIcon from "@/assets/icons/bx-pencil.svg";
 
 interface LetterPaperProp {
   to: string;
@@ -28,7 +28,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
       <StyledLetterPaperTop>
         <StyledTo>To. {to}</StyledTo>
         <IconButton size="small" onClick={handleMessageWriteButtonClick}>
-          <BiPencil />
+          <PencilIcon />
         </IconButton>
       </StyledLetterPaperTop>
       <StyledMessageList>

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import { BiError } from "react-icons/bi";
+import ErrorIcon from "@/assets/icons/bxs-error.svg";
 
 interface LabeledInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -32,7 +32,7 @@ const LabeledInput = ({
         }}
       />
       <div>
-        <BiError />
+        <ErrorIcon />
         {errorMessage}
       </div>
     </StyledLabel>
@@ -82,6 +82,8 @@ const StyledLabel = styled.label`
       position: relative;
       top: 2px;
       margin-right: 4px;
+
+      fill: ${({ theme }) => theme.colors.RED_300};
     }
   }
 `;

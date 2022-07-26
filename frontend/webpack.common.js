@@ -30,8 +30,18 @@ module.exports = {
         use: ["babel-loader", "ts-loader"],
       },
       {
-        test: /\.(png|jpe?g|gif|svg)$/i,
+        test: /\.(png|jpe?g|gif)$/i,
         type: "asset/resource",
+      },
+      {
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        use: [
+          {
+            loader: "@svgr/webpack",
+            options: { icon: true },
+          },
+        ],
       },
     ],
   },

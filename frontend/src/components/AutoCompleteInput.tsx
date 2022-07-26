@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 
-import { BiSearch } from "react-icons/bi";
+import SearchIcon from "@/assets/icons/bx-search.svg";
 
 interface AutoCompleteInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -49,7 +49,7 @@ const AutoCompleteInput = ({
     <StyledLabel>
       {labelText}
       <StyledInputContainer>
-        <BiSearch />
+        <SearchIcon />
         <input
           ref={AutoCompleteInputRef}
           value={value}

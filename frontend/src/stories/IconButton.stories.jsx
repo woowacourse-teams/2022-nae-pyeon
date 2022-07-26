@@ -1,6 +1,7 @@
 import React from "react";
 import IconButton from "@components/IconButton";
-import { BiPencil } from "react-icons/bi";
+
+import PencilIcon from "@/assets/images/bx-pencil.svg";
 
 export default {
   component: IconButton,
@@ -11,5 +12,5 @@ const Template = (args) => <IconButton {...args}></IconButton>;
 
 export const Default = Template.bind({});
 Default.args = {
-  children: <BiPencil />,
+  children: <PencilIcon />,
 };

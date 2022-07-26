@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import { BiPencil, BiTrash } from "react-icons/bi";
-
 import IconButton from "./IconButton";
+
+import PencilIcon from "@/assets/icons/bx-pencil.svg";
+import TrashIcon from "@/assets/icons/bx-trash.svg";
 
 interface RollingpaperMessageDetailProps {
   content: string;
@@ -25,10 +26,10 @@ const RollingpaperMessageDetail = ({
       <StyledBottom>
         <StyledMenu>
           <IconButton size="small" onClick={handleEditButtonClick}>
-            <BiPencil />
+            <PencilIcon />
           </IconButton>
           <IconButton size="small" onClick={handleDeleteButtonClick}>
-            <BiTrash />
+            <TrashIcon />
           </IconButton>
         </StyledMenu>
         <StyledAuthor>{author}</StyledAuthor>
