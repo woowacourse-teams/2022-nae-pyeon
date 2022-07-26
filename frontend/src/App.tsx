@@ -24,6 +24,7 @@ import ErrorPage from "@/pages/ErrorPage";
 import RequireLogin from "@/components/RequireLogin";
 import RequireLogout from "./components/RequireLogout";
 import PageContainer from "@/components/PageContainer";
+import MyPage from "@/pages/MyPage";
 import { UserProvider } from "@/context/UserContext";
 
 const queryClient = new QueryClient();
@@ -62,6 +63,14 @@ const App = () => {
                     </RequireLogin>
                   }
                 />
+                <Route
+                  path="mypage"
+                  element={
+                    <RequireLogin>
+                      <MyPage />
+                    </RequireLogin>
+                  }
+                />
                 <Route path="*" element={<ErrorPage />} />
               </Route>
               <Route
@@ -80,7 +89,6 @@ const App = () => {
                   </RequireLogout>
                 }
               />
-
               <Route
                 path="team/new"
                 element={
@@ -89,7 +97,6 @@ const App = () => {
                   </RequireLogin>
                 }
               />
-
               <Route
                 path="team/:teamId/rollingpaper/new"
                 element={
