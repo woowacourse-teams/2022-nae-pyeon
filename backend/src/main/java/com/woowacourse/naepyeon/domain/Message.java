@@ -30,6 +30,9 @@ public class Message extends BaseEntity {
     @Column(name = "content", length = 500, nullable = false)
     private String content;
 
+    @Column(name = "color")
+    private String color;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member author;
@@ -38,9 +41,10 @@ public class Message extends BaseEntity {
     @JoinColumn(name = "rollingpaper_id", nullable = false)
     private Rollingpaper rollingpaper;
 
-    public Message(final String content, final Member author, final Rollingpaper rollingpaper) {
+    public Message(final String content, final String color, final Member author, final Rollingpaper rollingpaper) {
         validateContentLength(content);
         this.content = content;
+        this.color = color;
         this.author = author;
         this.rollingpaper = rollingpaper;
     }
