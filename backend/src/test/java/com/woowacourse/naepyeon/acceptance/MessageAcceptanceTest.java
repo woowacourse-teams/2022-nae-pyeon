@@ -85,7 +85,7 @@ class MessageAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("작성한 메시지의 내용을 수정한다.")
+    @DisplayName("작성한 메시지의 내용과 색상을 수정한다.")
     void updateMessageContent() {
         final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
         final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
@@ -104,9 +104,19 @@ class MessageAcceptanceTest extends AcceptanceTest {
                 .getId();
 
         final ExtractableResponse<Response> response = 메시지_수정(tokenResponseDto1, rollingpaperId, messageId,
-                new MessageUpdateContentRequest("오늘 뭐해??", "green"));
+                new MessageUpdateContentRequest("오늘 뭐해??", "red"));
 
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+        final MessageResponseDto actual = 메시지_조회(tokenResponseDto1, rollingpaperId, messageId)
+                .as(MessageResponseDto.class);
+        final MessageResponseDto expected =
+                new MessageResponseDto(actual.getId(), "오늘 뭐해??", "red", actual.getFrom(), actual.getAuthorId());
+
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value()),
+                () -> assertThat(actual)
+                        .usingRecursiveComparison()
+                        .isEqualTo(expected)
+        );
     }
 
     @Test
@@ -261,6 +271,7 @@ class MessageAcceptanceTest extends AcceptanceTest {
                 .getId();
 
         final String content = "상세조회용 메시지 입니다.";
+        final String color = "green";
         final Long messageId = 메시지_작성(tokenResponseDto2, rollingpaperId, new MessageRequest(content, "green"))
                 .as(CreateResponse.class)
                 .getId();
@@ -271,8 +282,8 @@ class MessageAcceptanceTest extends AcceptanceTest {
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(messageResponseDto)
-                        .extracting("id", "content", "from", "authorId")
-                        .containsExactly(messageId, content, nickname, 2L)
+                        .extracting("id", "content", "color", "from", "authorId")
+                        .containsExactly(messageId, content, color, nickname, 2L)
         );
     }
 }

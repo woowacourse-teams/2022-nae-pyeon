@@ -29,12 +29,12 @@ public class MessageService {
     private final MemberRepository memberRepository;
     private final TeamParticipationRepository teamParticipationRepository;
 
-    public Long saveMessage(final String content, final Long authorId, final Long rollingpaperId) {
+    public Long saveMessage(final String content, final String color, final Long rollingpaperId, final Long authorId) {
         final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
                 .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
         final Member author = memberRepository.findById(authorId)
                 .orElseThrow(() -> new NotFoundMemberException(authorId));
-        final Message message = new Message(content, "green", author, rollingpaper);
+        final Message message = new Message(content, color, author, rollingpaper);
         return messageRepository.save(message);
     }
 
@@ -47,6 +47,7 @@ public class MessageService {
                     return new MessageResponseDto(
                             message.getId(),
                             message.getContent(),
+                            message.getColor(),
                             findMessageWriterNickname(teamId, message),
                             author.getId()
                     );
@@ -68,14 +69,15 @@ public class MessageService {
         final Team team = rollingpaper.getTeam();
         final Member author = message.getAuthor();
         final String nickname = findMessageWriterNickname(team.getId(), message);
-        return new MessageResponseDto(messageId, message.getContent(), nickname, author.getId());
+        return new MessageResponseDto(messageId, message.getContent(), message.getColor(), nickname, author.getId());
     }
 
-    public void updateContent(final Long messageId, final String newContent, final Long memberId) {
+    public void updateMessage(final Long messageId, final String newContent, final String newColor,
+                              final Long memberId) {
         final Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new NotFoundMessageException(messageId));
         validateAuthor(memberId, message);
-        messageRepository.update(messageId, newContent);
+        messageRepository.update(messageId, newColor, newContent);
     }
 
     public void deleteMessage(final Long messageId, final Long memberId) {
