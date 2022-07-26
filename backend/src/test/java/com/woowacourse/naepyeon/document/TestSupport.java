@@ -25,8 +25,8 @@ import org.springframework.web.context.WebApplicationContext;
 @ExtendWith(RestDocumentationExtension.class)
 @Import(RestDocsConfiguration.class)
 @AutoConfigureTestDatabase
-@Sql(scripts = {"classpath:schema.sql", "classpath:test.sql"})
-public class TestSupport {
+@Sql(scripts = {"classpath:schema.sql", "classpath:testData.sql"})
+public abstract class TestSupport {
 
     protected static String accessToken;
     protected static String teamMemberAccessToken;
