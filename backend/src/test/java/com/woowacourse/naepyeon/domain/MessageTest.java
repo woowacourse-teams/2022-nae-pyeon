@@ -44,4 +44,24 @@ class MessageTest {
         assertThatThrownBy(() -> new Message("a".repeat(501), "green", author, rollingpaper))
                 .isInstanceOf(ExceedMessageContentLengthException.class);
     }
+
+    @Test
+    @DisplayName("메시지 색상을 변경한다.")
+    void changeColor() {
+        final Team team = new Team(
+                "nae-pyeon",
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
+        final Member member = new Member("member", "m@hello.com", "abc@@2345");
+        final Member author = new Member("author", "a@hello.com", "abc@@2345");
+        final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", team, member);
+        final Message message = new Message("헬로우", "green", author, rollingpaper);
+        final String expected = "red";
+
+        message.changeColor(expected);
+
+        assertThat(message.getColor()).isEqualTo(expected);
+    }
 }

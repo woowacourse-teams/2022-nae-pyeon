@@ -54,6 +54,10 @@ public class Message extends BaseEntity {
         this.content = newContent;
     }
 
+    public void changeColor(final String newColor) {
+        this.color = newColor;
+    }
+
     private void validateContentLength(final String content) {
         if (content.length() > MAX_CONTENT_LENGTH) {
             throw new ExceedMessageContentLengthException(content);
