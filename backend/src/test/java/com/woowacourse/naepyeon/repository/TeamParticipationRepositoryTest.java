@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.domain.Member;
-import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.exception.DuplicateTeamPaticipateException;
@@ -80,6 +79,16 @@ class TeamParticipationRepositoryTest {
     }
 
     @Test
+    @DisplayName("모임에 가입한 회원을 memberId와 teamId로 찾는다.")
+    void findMemberByMemberIdAndTeamId() {
+        final TeamParticipation teamParticipation1 = new TeamParticipation(team1, member1, "닉네임1");
+        teamParticipationRepository.save(teamParticipation1);
+
+        assertThat(teamParticipationRepository.findMemberByMemberIdAndTeamId(member1.getId(), team1.getId()))
+                .isEqualTo(member1);
+    }
+
+    @Test
     @DisplayName("모임에 가입한 회원들을 team id로 조회한다.")
     void findByTeamId() {
         final TeamParticipation teamParticipation1 = new TeamParticipation(team1, member1, "닉네임1");
@@ -127,6 +136,20 @@ class TeamParticipationRepositoryTest {
     }
 
     @Test
+    @DisplayName("특정 팀의 모든 닉네임들을 조회한다.")
+    void findAllNicknamesByTeamId() {
+        final TeamParticipation teamParticipation1 = new TeamParticipation(team1, member1, "닉네임1");
+        final TeamParticipation teamParticipation2 = new TeamParticipation(team1, member2, "닉네임2");
+
+        teamParticipationRepository.save(teamParticipation1);
+        teamParticipationRepository.save(teamParticipation2);
+
+        final List<String> actual = teamParticipationRepository.findAllNicknames(team1.getId());
+
+        assertThat(actual).contains("닉네임1", "닉네임2");
+    }
+
+    @Test
     @DisplayName("특정 모임에 회원이 가입했는지 여부를 반환한다.")
     void isJoinedMember() {
         final TeamParticipation teamParticipation1 = new TeamParticipation(team1, member1, "닉네임1");
@@ -151,5 +174,21 @@ class TeamParticipationRepositoryTest {
         final TeamParticipation actual = teamParticipationRepository.findById(teamParticipationId)
                 .orElseThrow();
         assertThat(actual.getCreatedDate()).isAfter(LocalDateTime.MIN);
+    }
+
+    @Test
+    @DisplayName("회원이 특정 팀의 닉네임을 변경한다.")
+    void updateNickname() {
+        final String expected = "닉네임2";
+        final TeamParticipation teamParticipation = new TeamParticipation(team1, member1, "닉네임1");
+        final Long teamParticipationId = teamParticipationRepository.save(teamParticipation);
+
+        teamParticipationRepository.updateNickname(expected, member1.getId(), team1.getId());
+        em.flush();
+
+        final String actual = teamParticipationRepository.findById(teamParticipationId)
+                .orElseThrow()
+                .getNickname();
+        assertThat(actual).isEqualTo(expected);
     }
 }

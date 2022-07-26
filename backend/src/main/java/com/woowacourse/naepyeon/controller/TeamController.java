@@ -5,9 +5,11 @@ import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
+import com.woowacourse.naepyeon.controller.dto.UpdateTeamMemberRequest;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
 import com.woowacourse.naepyeon.service.TeamService;
 import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
+import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.net.URI;
@@ -94,6 +96,23 @@ public class TeamController {
                                            @PathVariable final Long teamId,
                                            @RequestBody final JoinTeamMemberRequest joinTeamMemberRequest) {
         teamService.joinMember(teamId, loginMemberRequest.getId(), joinTeamMemberRequest.getNickname());
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{teamId}/me")
+    public ResponseEntity<TeamMemberResponseDto> getMyInfoInTeam(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @PathVariable final Long teamId) {
+        final TeamMemberResponseDto responseDto = teamService.findMyInfoInTeam(teamId, loginMemberRequest.getId());
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @PutMapping("/{teamId}/me")
+    public ResponseEntity<Void> updateNickname(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @PathVariable final Long teamId,
+            @RequestBody final UpdateTeamMemberRequest updateTeamMemberRequest) {
+        teamService.updateNickname(teamId, loginMemberRequest.getId(), updateTeamMemberRequest.getNickname());
         return ResponseEntity.noContent().build();
     }
 }
