@@ -8,7 +8,9 @@ import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
 import com.woowacourse.naepyeon.repository.jpa.TeamJpaDao;
+import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,18 @@ class RollingpaperRepositoryTest {
 
     private static final String rollingPaperTitle = "AlexAndKei";
 
+    @Autowired
+    private TeamJpaDao teamJpaDao;
+
+    @Autowired
+    private MemberJpaDao memberJpaDao;
+
+    @Autowired
+    private RollingpaperRepository rollingpaperRepository;
+
+    @Autowired
+    private EntityManager em;
+
     private final Team team = new Team(
             "nae-pyeon",
             "테스트 모임입니다.",
@@ -29,13 +43,6 @@ class RollingpaperRepositoryTest {
             "#123456"
     );
     private final Member member = new Member("member", "m@hello.com", "abc@@1234");
-
-    @Autowired
-    private TeamJpaDao teamJpaDao;
-    @Autowired
-    private MemberJpaDao memberJpaDao;
-    @Autowired
-    private RollingpaperRepository rollingpaperRepository;
 
     @BeforeEach
     void setUp() {
@@ -111,6 +118,31 @@ class RollingpaperRepositoryTest {
 
         assertThat(rollingpaperRepository.findById(rollingPaperId))
                 .isEmpty();
+    }
+
+    @Test
+    @DisplayName("롤링페이퍼를 생성할 때 생성일자가 올바르게 나온다.")
+    void createMemberWhen() {
+        final Rollingpaper message = createRollingPaper();
+        final Long rollingpaperId = rollingpaperRepository.save(message);
+
+        final Rollingpaper actual = rollingpaperRepository.findById(rollingpaperId)
+                .orElseThrow();
+        assertThat(actual.getCreatedDate()).isAfter(LocalDateTime.MIN);
+    }
+
+    @Test
+    @DisplayName("롤링페이퍼를 수정할 때 수정일자가 올바르게 나온다.")
+    void updateMemberWhen() {
+        final Rollingpaper rollingpaper = createRollingPaper();
+        final Long rollingpaperId = rollingpaperRepository.save(rollingpaper);
+
+        rollingpaper.changeTitle("updateupdate");
+        em.flush();
+
+        final Rollingpaper actual = rollingpaperRepository.findById(rollingpaperId)
+                .orElseThrow();
+        assertThat(actual.getLastModifiedDate()).isAfter(actual.getCreatedDate());
     }
 
     private Rollingpaper createRollingPaper() {

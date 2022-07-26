@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "rollingpaper")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Rollingpaper {
+public class Rollingpaper extends BaseEntity {
 
     public static final int MAX_TITLE_LENGTH = 20;
 
@@ -27,7 +27,7 @@ public class Rollingpaper {
     @Column(name = "rollingpaper_id")
     private Long id;
 
-    @Column(length = 20, nullable = false)
+    @Column(name = "title", length = 20, nullable = false)
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,7 +35,7 @@ public class Rollingpaper {
     private Team team;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     public Rollingpaper(final String title, final Team team, final Member member) {

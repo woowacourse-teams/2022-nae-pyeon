@@ -9,14 +9,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Table(name = "message")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Message {
+public class Message extends BaseEntity {
 
     public static final int MAX_CONTENT_LENGTH = 500;
 
@@ -25,15 +27,15 @@ public class Message {
     @Column(name = "message_id")
     private Long id;
 
-    @Column(length = 500, nullable = false)
+    @Column(name = "content", length = 500, nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member author;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rollingpaper_id")
+    @JoinColumn(name = "rollingpaper_id", nullable = false)
     private Rollingpaper rollingpaper;
 
     public Message(final String content, final Member author, final Rollingpaper rollingpaper) {
