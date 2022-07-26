@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from "react";
 import styled from "@emotion/styled";
 import IconButton from "./IconButton";
 
-import { BiX } from "react-icons/bi";
+import XIcon from "@/assets/icons/bx-x.svg";
 
 interface ModalProps {
   onClickCloseButton: React.MouseEventHandler;
@@ -30,7 +30,7 @@ const CloseButton = ({
 }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <IconButton type="button" size="small" onClick={onClick}>
-      <BiX />
+      <XIcon />
     </IconButton>
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import { BiError } from "react-icons/bi";
+import ErrorIcon from "@/assets/icons/bxs-error.svg";
 
 interface UnderlineInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -29,7 +29,7 @@ const UnderlineInput = ({
         }}
       />
       <div>
-        <BiError />
+        <ErrorIcon />
         {errorMessage}
       </div>
     </StyledInputContainer>
@@ -53,6 +53,8 @@ const StyledInputContainer = styled.div`
       position: relative;
       top: 2px;
       margin-right: 4px;
+
+      fill: ${({ theme }) => theme.colors.RED_300};
     }
   }
 `;

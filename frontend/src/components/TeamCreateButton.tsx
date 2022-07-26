@@ -2,14 +2,14 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
-import { BiPlus } from "react-icons/bi";
+import PlusIcon from "@/assets/icons/bx-plus.svg";
 
 const TeamCreateButton = () => {
   const navigate = useNavigate();
 
   return (
     <StyledTeamCreateButton>
-      <BiPlus
+      <PlusIcon
         onClick={() => {
           navigate("team/new");
         }}
@@ -29,7 +29,6 @@ const StyledTeamCreateButton = styled.button`
   border-radius: 4px;
 
   background-color: ${({ theme }) => theme.colors.SKY_BLUE_300};
-  color: ${({ theme }) => theme.colors.WHITE};
 
   font-size: 30px;
 
@@ -37,6 +36,10 @@ const StyledTeamCreateButton = styled.button`
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.SKY_BLUE_400};
+  }
+
+  svg {
+    fill: ${({ theme }) => theme.colors.WHITE};
   }
 `;
 

@@ -10,7 +10,7 @@ import RollingpaperListItem from "@/components/RollingpaperListItem";
 import appClient from "@/api";
 import { CustomError } from "@/types";
 
-import { BiPlus } from "react-icons/bi";
+import PlusIcon from "@/assets/icons/bx-plus.svg";
 
 interface Rollingpaper {
   id: number;
@@ -67,7 +67,7 @@ const TeamRollingpaperList = () => {
             navigate("rollingpaper/new");
           }}
         >
-          <BiPlus />
+          <PlusIcon />
         </IconButton>
       </StyledRollingpaperListHead>
       <StyledRollingpaperList>

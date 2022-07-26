@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 
-import { BiShow, BiHide } from "react-icons/bi";
+import ShowIcon from "@/assets/icons/bx-show.svg";
+import HideIcon from "@/assets/icons/bx-hide.svg";
 
 interface PasswordInput extends React.InputHTMLAttributes<HTMLInputElement> {
   labelText: string;
@@ -24,8 +25,8 @@ const PasswordInput = ({ labelText, value, setValue }: PasswordInput) => {
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
-        {showPassword && <BiShow onClick={handleShowClick} />}
-        {!showPassword && <BiHide onClick={handleShowClick} />}
+        {showPassword && <ShowIcon onClick={handleShowClick} />}
+        {!showPassword && <HideIcon onClick={handleShowClick} />}
       </StyledPasswordInput>
     </StyledLabel>
   );
@@ -36,7 +37,6 @@ const StyledLabel = styled.label`
   flex-direction: column;
 
   font-size: 14px;
-  color: ${({ theme }) => theme.colors.GRAY_600};
 `;
 
 const StyledPasswordInput = styled.div`
@@ -52,6 +52,10 @@ const StyledPasswordInput = styled.div`
   svg {
     margin-top: 8px;
     font-size: 24px;
+
+    fill: ${({ theme }) => theme.colors.GRAY_600};
+
+    cursor: pointer;
   }
 
   input {

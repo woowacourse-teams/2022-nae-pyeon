@@ -3,10 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import Logo from "@/assets/images/logo.png";
-import { BiSearch, BiUser } from "react-icons/bi";
+
 import { deleteCookie } from "@/util/cookie";
 import { UserContext } from "@/context/UserContext";
 import IconButton from "./IconButton";
+
+import SearchIcon from "@/assets/icons/bx-search.svg";
+import UserIcon from "@/assets/icons/bx-user.svg";
 
 const Header = () => {
   const { setIsLoggedIn } = useContext(UserContext);
@@ -28,10 +31,10 @@ const Header = () => {
       </Link>
       <StyledNav>
         <IconButton onClick={handleSearchClick} size="medium">
-          <BiSearch />
+          <SearchIcon />
         </IconButton>
         <IconButton onClick={handleLogoutClick} size="medium">
-          <BiUser />
+          <UserIcon />
         </IconButton>
       </StyledNav>
     </StyledHeader>

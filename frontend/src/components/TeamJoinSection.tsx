@@ -6,7 +6,7 @@ import IconButton from "@/components/IconButton";
 import LineButton from "@/components/LineButton";
 import TeamJoinModalForm from "@/components/TeamJoinModalForm";
 
-import { BiPlus } from "react-icons/bi";
+import PlusIcon from "@/assets/icons/bx-plus.svg";
 
 const dummyRollingpapers = [
   {
@@ -49,7 +49,7 @@ const TeamJoinSection = () => {
       <StyledRollingpaperListHead>
         <h4>롤링페이퍼 목록</h4>
         <IconButton size="small">
-          <BiPlus />
+          <PlusIcon />
         </IconButton>
       </StyledRollingpaperListHead>
       <StyledRollingpaperList>

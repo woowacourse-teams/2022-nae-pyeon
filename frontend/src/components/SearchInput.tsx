@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import { BiSearch } from "react-icons/bi";
+import SearchIcon from "@/assets/icons/bx-search.svg";
 
 type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
 type InputAttributes = React.InputHTMLAttributes<HTMLInputElement>;
@@ -14,7 +14,7 @@ const SearchInput = ({
     <StyledSearch>
       <StyledInput onChange={onChange} />
       <button type="submit" onClick={onClick}>
-        <BiSearch />
+        <SearchIcon />
       </button>
     </StyledSearch>
   );
@@ -46,7 +46,7 @@ const StyledSearch = styled.form`
     padding: 4px;
     margin: auto;
 
-    color: ${({ theme }) => theme.colors.WHITE};
+    fill: ${({ theme }) => theme.colors.WHITE};
 
     font-size: 40px;
   }
