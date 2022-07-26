@@ -9,7 +9,7 @@ operation::team-controller-test/get-joined-teams[snippets='http-request,http-res
 === 모든 모임 조회(/api/v1/teams)
 operation::team-controller-test/get-all-teams[snippets='http-request,http-response']
 
-=== 모임에 참여중인 회원정보(/api/v1/teams/{teamId}/members
+=== 모임에 참여중인 회원정보(/api/v1/teams/{teamId}/members)
 operation::team-controller-test/get-joined-members[snippets='http-request,http-response']
 
 === 모임 생성(/api/v1/teams)
