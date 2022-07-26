@@ -34,7 +34,7 @@ public class MessageService {
                 .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
         final Member author = memberRepository.findById(authorId)
                 .orElseThrow(() -> new NotFoundMemberException(authorId));
-        final Message message = new Message(content, author, rollingpaper);
+        final Message message = new Message(content, "green", author, rollingpaper);
         return messageRepository.save(message);
     }
 

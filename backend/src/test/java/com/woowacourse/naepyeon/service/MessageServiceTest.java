@@ -67,7 +67,6 @@ class MessageServiceTest {
                 rollingpaper.getId()
         );
 
-        final Team team = rollingpaper.getTeam();
         final MessageResponseDto messageResponse = messageService.findMessage(messageId, rollingpaper.getId());
 
         assertThat(messageResponse).extracting("content", "from", "authorId")
@@ -137,6 +136,6 @@ class MessageServiceTest {
     }
 
     private MessageRequest createMessageRequest() {
-        return new MessageRequest("안녕하세요");
+        return new MessageRequest("안녕하세요", "green");
     }
 }

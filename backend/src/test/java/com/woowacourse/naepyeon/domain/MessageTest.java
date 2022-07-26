@@ -21,7 +21,7 @@ class MessageTest {
         final Member member = new Member("member", "m@hello.com", "abc@@2345");
         final Member author = new Member("author", "a@hello.com", "abc@@2345");
         final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", team, member);
-        final Message message = new Message("헬로우", author, rollingpaper);
+        final Message message = new Message("헬로우", "green", author, rollingpaper);
         final String expected = "낫 헬로우";
 
         message.changeContent(expected);
@@ -41,7 +41,7 @@ class MessageTest {
         final Member member = new Member("member", "m@hello.com", "abc@@1234");
         final Member author = new Member("author", "a@hello.com", "abc@@1234");
         final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", team, member);
-        assertThatThrownBy(() -> new Message("a".repeat(501), author, rollingpaper))
+        assertThatThrownBy(() -> new Message("a".repeat(501), "green", author, rollingpaper))
                 .isInstanceOf(ExceedMessageContentLengthException.class);
     }
 }

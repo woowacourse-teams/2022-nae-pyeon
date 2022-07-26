@@ -95,7 +95,7 @@ class MessageRepositoryTest {
     void update() {
         final Member member = memberRepository.findByEmail(author.getEmail())
                 .orElseThrow();
-        final Message message = new Message(content, member, rollingpaper);
+        final Message message = new Message(content, "green", member, rollingpaper);
         final Long messageId = messageRepository.save(message);
         final String newContent = "알고리즘이 좋아요";
 
@@ -111,7 +111,7 @@ class MessageRepositoryTest {
     void delete() {
         final Member member = memberRepository.findByEmail(author.getEmail())
                 .orElseThrow();
-        final Message message = new Message(content, member, rollingpaper);
+        final Message message = new Message(content, "green", member, rollingpaper);
         final Long messageId = messageRepository.save(message);
 
         messageRepository.delete(messageId);
@@ -146,6 +146,6 @@ class MessageRepositoryTest {
     }
 
     private Message createMessage() {
-        return new Message(content, author, rollingpaper);
+        return new Message(content, "green", author, rollingpaper);
     }
 }
