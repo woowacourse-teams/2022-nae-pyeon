@@ -17,7 +17,6 @@ class MemberControllerTest extends TestSupport {
                         post("/api/v1/members")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(readJson("/json/members/member-create.json"))
-
                 )
                 .andExpect(status().isCreated())
                 .andDo(restDocs.document());
