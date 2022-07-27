@@ -1,21 +1,21 @@
 package com.woowacourse.naepyeon.document;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
-
 class MessageControllerTest extends TestSupport {
 
     @Test
     void createMessage() throws Exception {
         mockMvc.perform(
-                        post("/api/v1/rollingpapers/{rollingpaperId}/messages", 1L)
-                                .header("Authorization", "Bearer " + teamMemberAccessToken)
+                        post("/api/v1/rollingpapers/{rollingpaperId}/messages", rollingpaperId1)
+                                .header("Authorization", "Bearer " + joinedMemberAccessToken)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(readJson("/json/messages/message-create.json"))
                 )
@@ -26,8 +26,8 @@ class MessageControllerTest extends TestSupport {
     @Test
     void findMessage() throws Exception {
         mockMvc.perform(
-                        get("/api/v1/rollingpapers/{rollingpaperId}/messages/{messageId}", 1L, 2L)
-                                .header("Authorization", "Bearer " + teamMemberAccessToken)
+                        get("/api/v1/rollingpapers/{rollingpaperId}/messages/{messageId}", rollingpaperId1, messageId)
+                                .header("Authorization", "Bearer " + joinedMemberAccessToken)
                 )
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
@@ -36,8 +36,8 @@ class MessageControllerTest extends TestSupport {
     @Test
     void updateMessageContent() throws Exception {
         mockMvc.perform(
-                        put("/api/v1/rollingpapers/{rollingpaperId}/messages/{messageId}", 1L, 2L)
-                                .header("Authorization", "Bearer " + teamMemberAccessToken)
+                        put("/api/v1/rollingpapers/{rollingpaperId}/messages/{messageId}", rollingpaperId1, messageId)
+                                .header("Authorization", "Bearer " + joinedMemberAccessToken)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(readJson("/json/messages/message-update.json"))
                 )
@@ -48,8 +48,8 @@ class MessageControllerTest extends TestSupport {
     @Test
     void deleteMessage() throws Exception {
         mockMvc.perform(
-                        delete("/api/v1/rollingpapers/{rollingpaperId}/messages/{messageId}", 1L, 2L)
-                                .header("Authorization", "Bearer " + teamMemberAccessToken)
+                        delete("/api/v1/rollingpapers/{rollingpaperId}/messages/{messageId}", rollingpaperId1, messageId)
+                                .header("Authorization", "Bearer " + joinedMemberAccessToken)
                 )
                 .andExpect(status().isNoContent())
                 .andDo(restDocs.document());

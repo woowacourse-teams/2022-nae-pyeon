@@ -1,20 +1,20 @@
 package com.woowacourse.naepyeon.document;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
 
 class TeamControllerTest extends TestSupport {
 
     @Test
     void getTeam() throws Exception {
         mockMvc.perform(
-                        get("/api/v1/teams/{teamId}", 1L)
-                                .header("Authorization", "Bearer " + teamMemberAccessToken)
+                        get("/api/v1/teams/{teamId}", teamId)
+                                .header("Authorization", "Bearer " + joinedMemberAccessToken)
                 )
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
@@ -24,7 +24,7 @@ class TeamControllerTest extends TestSupport {
     void getJoinedTeams() throws Exception {
         mockMvc.perform(
                         get("/api/v1/teams/me")
-                                .header("Authorization", "Bearer " + teamMemberAccessToken)
+                                .header("Authorization", "Bearer " + joinedMemberAccessToken)
                 )
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
@@ -34,7 +34,7 @@ class TeamControllerTest extends TestSupport {
     void getAllTeams() throws Exception {
         mockMvc.perform(
                         get("/api/v1/teams")
-                                .header("Authorization", "Bearer " + teamMemberAccessToken)
+                                .header("Authorization", "Bearer " + joinedMemberAccessToken)
                 )
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
@@ -44,8 +44,8 @@ class TeamControllerTest extends TestSupport {
     @Test
     void getJoinedMembers() throws Exception {
         mockMvc.perform(
-                        get("/api/v1/teams/{teamId}/members", 1L)
-                                .header("Authorization", "Bearer " + teamMemberAccessToken)
+                        get("/api/v1/teams/{teamId}/members", teamId)
+                                .header("Authorization", "Bearer " + joinedMemberAccessToken)
                 )
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
@@ -55,7 +55,7 @@ class TeamControllerTest extends TestSupport {
     void createTeam() throws Exception {
         mockMvc.perform(
                         post("/api/v1/teams")
-                                .header("Authorization", "Bearer " + teamMemberAccessToken)
+                                .header("Authorization", "Bearer " + joinedMemberAccessToken)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(readJson("/json/teams/team-create.json"))
                 )
@@ -66,8 +66,8 @@ class TeamControllerTest extends TestSupport {
     @Test
     void updateTeam() throws Exception {
         mockMvc.perform(
-                        put("/api/v1/teams/{teamId}", 1L)
-                                .header("Authorization", "Bearer " + teamMemberAccessToken)
+                        put("/api/v1/teams/{teamId}", teamId)
+                                .header("Authorization", "Bearer " + joinedMemberAccessToken)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(readJson("/json/teams/team-update.json"))
                 )
@@ -78,8 +78,8 @@ class TeamControllerTest extends TestSupport {
     @Test
     void joinMember() throws Exception {
         mockMvc.perform(
-                        post("/api/v1/teams/{teamId}", 1L)
-                                .header("Authorization", "Bearer " + accessToken)
+                        post("/api/v1/teams/{teamId}", teamId)
+                                .header("Authorization", "Bearer " + notJoinedMemberAccessToken)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(readJson("/json/teams/team-join.json"))
                 )

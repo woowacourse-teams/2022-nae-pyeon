@@ -1,13 +1,13 @@
 package com.woowacourse.naepyeon.document;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
 
 class MemberControllerTest extends TestSupport {
 
