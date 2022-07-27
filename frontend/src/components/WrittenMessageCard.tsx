@@ -43,6 +43,10 @@ const StyledMessage = styled.div<StyledMessageProp>`
   height: 125px;
 
   cursor: pointer;
+
+  &:hover {
+    background-color: ${(props) => props.color};
+  }
 `;
 
 const StyledTitle = styled.div`
