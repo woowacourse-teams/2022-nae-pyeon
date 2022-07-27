@@ -10,33 +10,41 @@ import UnderlineInput from "@/components/UnderlineInput";
 import { deleteCookie } from "@/util/cookie";
 import { UserContext } from "@/context/UserContext";
 import { REGEX } from "@/constants";
+import { ValueOf } from "@/types";
 
+const MODE = {
+  NORMAL: "normal",
+  EDIT: "edit",
+} as const;
 interface UserProfileProp {
   name: string;
   email: string;
 }
 
+type UserProfileMode = ValueOf<typeof MODE>;
+
 const UserProfile = ({ name, email }: UserProfileProp) => {
-  const [mode, setMode] = useState("normal");
+  const [mode, setMode] = useState<UserProfileMode>(MODE.NORMAL);
   const [editName, setEditName] = useState(name);
 
   const { setIsLoggedIn } = useContext(UserContext);
 
   const handleButtonClick = () => {
-    if (mode === "normal") {
+    if (mode === MODE.NORMAL) {
       deleteCookie("accessToken");
       setIsLoggedIn(false);
     }
   };
+
   return (
     <StyledProfile>
-      {mode === "normal" ? (
+      {mode === MODE.NORMAL ? (
         <>
           <StyledNormal>
             <StyledName>{name}</StyledName>
             <IconButton
               onClick={() => {
-                setMode("edit");
+                setMode(MODE.EDIT);
               }}
             >
               <Pencil />
@@ -55,7 +63,7 @@ const UserProfile = ({ name, email }: UserProfileProp) => {
         </StyledEdit>
       )}
       <LineButton onClick={handleButtonClick}>
-        {mode === "normal" ? "로그아웃" : "완료"}
+        {mode === MODE.NORMAL ? "로그아웃" : "완료"}
       </LineButton>
     </StyledProfile>
   );
