@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import axios from "axios";
 import styled from "@emotion/styled";
 
 import appClient from "@/api";
+import { SnackbarContext } from "@/context/SnackbarContext";
 
 import PageTitle from "@/components/PageTitle";
 import LabeledInput from "@/components/LabeledInput";
@@ -21,6 +22,7 @@ type SignUpMemberInfo = {
 
 const SignUpPage = () => {
   const navigate = useNavigate();
+  const { openSnackbar } = useContext(SnackbarContext);
 
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -39,7 +41,7 @@ const SignUpPage = () => {
     },
     {
       onSuccess: () => {
-        alert("회원가입 성공!");
+        openSnackbar("회원가입 성공!");
         navigate("/login");
       },
       onError: (error) => {
