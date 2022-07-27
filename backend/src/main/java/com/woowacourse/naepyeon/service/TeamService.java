@@ -124,9 +124,6 @@ public class TeamService {
     }
 
     private void checkMemberNotIncludedTeam(final Long teamId, final Long memberId) {
-        if (teamRepository.findById(teamId).isEmpty()) {
-            throw new NotFoundTeamException(teamId);
-        }
         if (!isJoinedMember(memberId, teamId)) {
             throw new UncertificationTeamMemberException(teamId, memberId);
         }
