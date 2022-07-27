@@ -66,36 +66,15 @@ const Paging = ({ currentPage, maxPage, setCurrentPage }: PagingProp) => {
         </StyledPageButtons>
       ) : (
         <StyledPageButtons>
-          <StyledPage
-            isCurrent={false}
-            onClick={() => handleNumberclick(currentPage - 2)}
-          >
-            {currentPage - 2}
-          </StyledPage>
-          <StyledPage
-            isCurrent={false}
-            onClick={() => handleNumberclick(currentPage - 1)}
-          >
-            {currentPage - 1}
-          </StyledPage>
-          <StyledPage
-            isCurrent={true}
-            onClick={() => handleNumberclick(currentPage)}
-          >
-            {currentPage}
-          </StyledPage>
-          <StyledPage
-            isCurrent={false}
-            onClick={() => handleNumberclick(currentPage + 1)}
-          >
-            {currentPage + 1}
-          </StyledPage>
-          <StyledPage
-            isCurrent={false}
-            onClick={() => handleNumberclick(currentPage + 2)}
-          >
-            {currentPage + 2}
-          </StyledPage>
+          {[...Array(5).keys()].map((num) => (
+            <StyledPage
+              isCurrent={currentPage === currentPage - (2 - num)}
+              key={num}
+              onClick={() => handleNumberclick(maxPage - num)}
+            >
+              {currentPage - (2 - num)}
+            </StyledPage>
+          ))}
         </StyledPageButtons>
       )}
       <IconButton onClick={handlePlusClick}>
