@@ -1,21 +1,16 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-interface CounterWithTextProp {
+interface MyPageTabProp {
   number: number;
   text: string;
   activate?: boolean;
   onClick: () => void;
 }
 
-type StyledCounterWithTextPropProps = Pick<CounterWithTextProp, "activate">;
+type StyledMyPageTabPropProps = Pick<MyPageTabProp, "activate">;
 
-const CounterWithText = ({
-  number,
-  text,
-  activate,
-  onClick,
-}: CounterWithTextProp) => {
+const MyPageTab = ({ number, text, activate, onClick }: MyPageTabProp) => {
   return (
     <StyledCounter onClick={onClick}>
       <StyledNumber activate={activate}>{number}</StyledNumber>
@@ -31,7 +26,7 @@ const StyledCounter = styled.div`
   cursor: pointer;
 `;
 
-const StyledNumber = styled.div<StyledCounterWithTextPropProps>`
+const StyledNumber = styled.div<StyledMyPageTabPropProps>`
   margin-bottom: 8px;
 
   font-size: 24px;
@@ -43,7 +38,7 @@ const StyledNumber = styled.div<StyledCounterWithTextPropProps>`
       : `${props.theme.colors.GRAY_400}`};
 `;
 
-const StyledText = styled.div<StyledCounterWithTextPropProps>`
+const StyledText = styled.div<StyledMyPageTabPropProps>`
   font-size: 14px;
 
   color: ${(props) =>
@@ -52,4 +47,4 @@ const StyledText = styled.div<StyledCounterWithTextPropProps>`
       : `${props.theme.colors.GRAY_400}`};
 `;
 
-export default CounterWithText;
+export default MyPageTab;

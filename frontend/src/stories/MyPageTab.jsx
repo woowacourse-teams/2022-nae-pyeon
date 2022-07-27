@@ -1,12 +1,12 @@
 import React from "react";
-import CounterWithText from "@/components/CounterWithText";
+import MyPageTab from "@/components/MyPageTab";
 
 export default {
-  component: CounterWithText,
-  title: "CounterWithText",
+  component: MyPageTab,
+  title: "MyPageTab",
 };
 
-const Template = (args) => <CounterWithText {...args}></CounterWithText>;
+const Template = (args) => <MyPageTab {...args}></MyPageTab>;
 
 export const Disabled = Template.bind({});
 Disabled.args = {

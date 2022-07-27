@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 
-import CounterWithText from "@/components/CounterWithText";
+import MyPageTab from "@/components/MyPageTab";
 import ReceivedRollingpaperCard from "@/components/ReceivedRollingpaperCard";
 import WrittenMessageCard from "@/components/WrittenMessageCard";
 import UserProfile from "@/components/UserProfile";
@@ -72,7 +72,7 @@ const MyPage = () => {
     <div>
       <UserProfile name="도리" email="sunho620@naver.com" />
       <StyledCounters>
-        <CounterWithText
+        <MyPageTab
           number={rollingpapers.length}
           text="받은 롤링페이퍼"
           activate={"rolling" === tab}
@@ -80,7 +80,7 @@ const MyPage = () => {
             setTab("rolling");
           }}
         />
-        <CounterWithText
+        <MyPageTab
           number={messages.length}
           text="작성한 메시지"
           activate={"written" === tab}
