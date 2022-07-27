@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -31,16 +32,21 @@ public class JpaTeamRepository implements TeamRepository {
     }
 
     @Override
+    public List<Team> findTeamsByContainingTeamName(final String keyword, final PageRequest pageRequest) {
+        return teamJpaDao.findByNameContaining(keyword, pageRequest);
+    }
+
+    @Override
+    public List<Team> findAll() {
+        return teamJpaDao.findAll();
+    }
+
+    @Override
     public void delete(Long teamId) {
         final int affectedRow = teamJpaDao.deleteByIdAndGetAffectedRow(teamId);
 
         if (affectedRow != 1) {
             throw new NotFoundTeamException(teamId);
         }
-    }
-
-    @Override
-    public List<Team> findAll() {
-        return teamJpaDao.findAll();
     }
 }

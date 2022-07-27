@@ -19,6 +19,7 @@ import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,6 +73,18 @@ public class TeamService {
     @Transactional
     public void delete(final Long teamId) {
         teamRepository.delete(teamId);
+    }
+
+    public TeamsResponseDto findTeamsByContainingTeamName(final String keyword, final Long memberId,
+                                                          final PageRequest pageRequest) {
+        final List<Team> teams = teamRepository.findTeamsByContainingTeamName(keyword, pageRequest);
+        final List<Team> joinedTeams = teamParticipationRepository.findTeamsByMemberId(memberId);
+
+        final List<TeamResponseDto> teamResponseDtos = teams.stream()
+                .map(team -> TeamResponseDto.of(team, joinedTeams.contains(team)))
+                .collect(Collectors.toList());
+
+        return new TeamsResponseDto(teamResponseDtos);
     }
 
     public TeamsResponseDto findAll(final Long memberId) {

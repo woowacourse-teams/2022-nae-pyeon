@@ -4,6 +4,7 @@ import com.woowacourse.naepyeon.controller.auth.AuthenticationPrincipal;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
+import com.woowacourse.naepyeon.controller.dto.PageSizeRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
@@ -15,6 +16,7 @@ import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.net.URI;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -47,8 +50,13 @@ public class TeamController {
 
     @GetMapping
     public ResponseEntity<TeamsResponseDto> getAllTeams(
-            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest) {
-        return ResponseEntity.ok(teamService.findAll(loginMemberRequest.getId()));
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @RequestParam("keyword") final String keyword, @RequestParam("page") final Integer page,
+            @RequestBody final PageSizeRequest pageSizeRequest) {
+        final PageRequest pageRequest = PageRequest.of(page, pageSizeRequest.getSize());
+        return ResponseEntity.ok(
+                teamService.findTeamsByContainingTeamName(keyword, loginMemberRequest.getId(), pageRequest)
+        );
     }
 
     @GetMapping("/{teamId}/members")

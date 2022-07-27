@@ -26,6 +26,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -184,6 +185,18 @@ class TeamServiceTest {
         final String nickname = "닉네임";
         assertThatThrownBy(() -> teamService.joinMember(team3.getId() + 1000L, member.getId(), nickname))
                 .isInstanceOf(NotFoundTeamException.class);
+    }
+
+    @Test
+    @DisplayName("이름에 특정 키워드가 포함된 모임들을 조회한다.")
+    void findTeamsByContainingTeamName() {
+        final List<TeamResponseDto> actual =
+                teamService.findTeamsByContainingTeamName("wooteco1", member.getId(), PageRequest.of(0, 5))
+                        .getTeams();
+        final List<TeamResponseDto> expected = List.of(TeamResponseDto.of(team1, false));
+        assertThat(actual)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
     }
 
     @Test

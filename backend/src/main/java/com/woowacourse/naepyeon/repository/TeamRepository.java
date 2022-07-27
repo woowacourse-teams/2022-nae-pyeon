@@ -3,6 +3,7 @@ package com.woowacourse.naepyeon.repository;
 import com.woowacourse.naepyeon.domain.Team;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.PageRequest;
 
 public interface TeamRepository {
 
@@ -10,7 +11,9 @@ public interface TeamRepository {
 
     Optional<Team> findById(final Long teamId);
 
-    void delete(final Long teamId);
+    List<Team> findTeamsByContainingTeamName(final String keyword, final PageRequest pageREquest);
 
     List<Team> findAll();
+
+    void delete(final Long teamId);
 }

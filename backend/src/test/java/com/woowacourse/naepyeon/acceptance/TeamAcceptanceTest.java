@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
+import com.woowacourse.naepyeon.controller.dto.PageSizeRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
@@ -86,14 +87,10 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final String teamDescription = "테스트 모임입니다.";
         final String teamEmoji = "testEmoji";
         final String teamColor = "#123456";
-        final TeamRequest teamRequest = new TeamRequest(
-                teamName,
-                teamDescription,
-                teamEmoji,
-                teamColor,
-                "나는야모임장"
-        );
-        final Long teamId = 모임_추가(tokenResponseDto, teamRequest).as(CreateResponse.class)
+        final TeamRequest teamRequest =
+                new TeamRequest(teamName, teamDescription, teamEmoji, teamColor, "나는야모임장");
+        final Long teamId = 모임_추가(tokenResponseDto, teamRequest)
+                .as(CreateResponse.class)
                 .getId();
 
         final ExtractableResponse<Response> response = 모임_단건_조회(tokenResponseDto, teamId);
@@ -142,34 +139,31 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final MemberRegisterRequest member =
                 new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
         final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
-        final TeamRequest teamRequest1 = new TeamRequest(
-                "woowacourse1",
-                "테스트 모임입니다.",
-                "testEmoji",
-                "#123456",
-                "나는야모임장"
-        );
+        final TeamRequest teamRequest1 =
+                new TeamRequest("내편이야", ".", "a", "#123456", "나는야모임장");
         final Long team1Id = 모임_추가(tokenResponseDto, teamRequest1).as(CreateResponse.class)
                 .getId();
         //모임 생성
-        final TeamRequest teamRequest2 = new TeamRequest(
-                "woowacourse2",
-                "테스트 모임입니다.",
-                "testEmoji",
-                "#123456",
-                "나는야모임장"
-        );
+        final TeamRequest teamRequest2 =
+                new TeamRequest("내편아니야", ".", "a", "#123456", "테스트");
         final Long team2Id = 모임_추가(tokenResponseDto, teamRequest2).as(CreateResponse.class)
                 .getId();
 
-        final List<Long> teamIds = 모든_모임_조회(tokenResponseDto).body()
-                .as(TeamsResponseDto.class)
-                .getTeams()
-                .stream()
-                .map(TeamResponseDto::getId)
-                .collect(Collectors.toList());
+        //결과 조회
+        final PageSizeRequest pageSizeRequest = new PageSizeRequest(5);
+        final ExtractableResponse<Response> response =
+                모든_모임_조회(tokenResponseDto, pageSizeRequest, 0, "내편");
 
-        assertThat(teamIds).contains(team1Id, team2Id);
+        final List<TeamResponseDto> actual = response.as(TeamsResponseDto.class)
+                .getTeams();
+        final List<TeamResponseDto> expected = List.of(
+                TeamResponseDto.byRequest(team1Id, teamRequest1, true),
+                TeamResponseDto.byRequest(team2Id, teamRequest2, true)
+        );
+
+        assertThat(actual)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -205,9 +199,11 @@ class TeamAcceptanceTest extends AcceptanceTest {
 
         모임_가입(tokenResponseDto2, team1Id, new JoinTeamMemberRequest("가입자"));
 
-        final List<TeamResponseDto> teams = 모든_모임_조회(tokenResponseDto2)
-                .as(TeamsResponseDto.class)
-                .getTeams();
+        final PageSizeRequest pageSizeRequest = new PageSizeRequest(5);
+        final List<TeamResponseDto> teams =
+                모든_모임_조회(tokenResponseDto2, pageSizeRequest, 0, "woowa")
+                        .as(TeamsResponseDto.class)
+                        .getTeams();
 
         final TeamResponseDto joinedTeam = teams.stream()
                 .filter(TeamResponseDto::isJoined)
@@ -456,7 +452,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
 
         final MemberRegisterRequest member2 =
                 new MemberRegisterRequest("kth990303", "kth990303@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member);
+        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
         final JoinTeamMemberRequest request = new JoinTeamMemberRequest("애플");
         모임_가입(tokenResponseDto2, teamId, request);
 
