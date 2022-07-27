@@ -7,18 +7,22 @@ import WrittenMessageCard from "@/components/WrittenMessageCard";
 import UserProfile from "@/components/UserProfile";
 import Paging from "@/components/Paging";
 import { ValueOf } from "@/types";
+import MyPageRollingpaperList from "@/components/MyPageRollingpaperList";
+import MyPageWrittenMessageList from "@/components/MyPageWrittenMessageList";
 
 const rollingpapers = [
-  { id: 1, title: "소피아 생일 축하해", teamName: "우테코 4기" },
-  { id: 2, title: "소피아 생일 축하해", teamName: "우테코 4기" },
-  { id: 3, title: "소피아 생일 축하해", teamName: "우테코 4기" },
-  { id: 4, title: "소피아 생일 축하해", teamName: "우테코 4기" },
-  { id: 5, title: "소피아 생일 축하해", teamName: "우테코 4기" },
+  { id: 1, title: "소피아 생일 축하해", teamId: 1, teamName: "우테코 4기" },
+  { id: 2, title: "소피아 생일 축하해", teamId: 1, teamName: "우테코 4기" },
+  { id: 3, title: "소피아 생일 축하해", teamId: 1, teamName: "우테코 4기" },
+  { id: 4, title: "소피아 생일 축하해", teamId: 1, teamName: "우테코 4기" },
+  { id: 5, title: "소피아 생일 축하해", teamId: 1, teamName: "우테코 4기" },
 ];
 
 const messages = [
   {
     id: 1,
+    rollingpaperId: 1,
+    teamId: 1,
     rollingpaperTitle: "소피아의 생일을 축하해",
     to: "소피아",
     team: "우테코 4기",
@@ -28,6 +32,8 @@ const messages = [
   },
   {
     id: 2,
+    rollingpaperId: 1,
+    teamId: 1,
     rollingpaperTitle: "소피아의 생일을 축하해",
     to: "소피아",
     team: "우테코 4기",
@@ -37,6 +43,8 @@ const messages = [
   },
   {
     id: 3,
+    rollingpaperId: 1,
+    teamId: 1,
     rollingpaperTitle: "소피아의 생일을 축하해",
     to: "소피아",
     team: "우테코 4기",
@@ -46,6 +54,8 @@ const messages = [
   },
   {
     id: 4,
+    rollingpaperId: 1,
+    teamId: 1,
     rollingpaperTitle: "소피아의 생일을 축하해",
     to: "소피아",
     team: "우테코 4기",
@@ -55,6 +65,8 @@ const messages = [
   },
   {
     id: 5,
+    rollingpaperId: 1,
+    teamId: 1,
     rollingpaperTitle: "소피아의 생일을 축하해",
     to: "소피아",
     team: "우테코 4기",
@@ -99,13 +111,7 @@ const MyPage = () => {
       </StyledCounters>
       {tab === TAB.RECEIVED_PAPER ? (
         <>
-          <StyledRollingpaperList>
-            {rollingpapers.map(({ title, teamName, id }) => (
-              <li key={id}>
-                <ReceivedRollingpaperCard title={title} teamName={teamName} />
-              </li>
-            ))}
-          </StyledRollingpaperList>
+          <MyPageRollingpaperList rollingpapers={rollingpapers} />
           <StyledPaging>
             <Paging
               currentPage={receivedCurrentPage}
@@ -116,21 +122,7 @@ const MyPage = () => {
         </>
       ) : (
         <>
-          <StyledMessageList>
-            {messages.map(
-              ({ id, rollingpaperTitle, to, team, content, color }) => (
-                <li key={id}>
-                  <WrittenMessageCard
-                    rollingpaperTitle={rollingpaperTitle}
-                    to={to}
-                    team={team}
-                    content={content}
-                    color={color}
-                  />
-                </li>
-              )
-            )}
-          </StyledMessageList>
+          <MyPageWrittenMessageList messages={messages} />
           <StyledPaging>
             <Paging
               currentPage={writtenCurrentPage}
@@ -152,22 +144,6 @@ const StyledCounters = styled.div`
 
   padding: 12px;
   gap: 20px;
-`;
-
-const StyledRollingpaperList = styled.ul`
-  display: flex;
-  flex-direction: column;
-
-  margin-top: 16px;
-  gap: 8px;
-`;
-
-const StyledMessageList = styled.ul`
-  display: flex;
-  flex-direction: column;
-
-  margin-top: 16px;
-  gap: 8px;
 `;
 
 const StyledPaging = styled.div`
