@@ -123,13 +123,6 @@ public class TeamService {
         teamParticipationRepository.updateNickname(newNickname, memberId, teamId);
     }
 
-    public boolean isJoinedMember(final Long memberId, final Long teamId) {
-        if (teamRepository.findById(teamId).isEmpty()) {
-            throw new NotFoundTeamException(teamId);
-        }
-        return teamParticipationRepository.isJoinedMember(memberId, teamId);
-    }
-
     private void checkMemberNotIncludedTeam(final Long teamId, final Long memberId) {
         if (teamRepository.findById(teamId).isEmpty()) {
             throw new NotFoundTeamException(teamId);
@@ -137,5 +130,12 @@ public class TeamService {
         if (!isJoinedMember(memberId, teamId)) {
             throw new UncertificationTeamMemberException(teamId, memberId);
         }
+    }
+
+    public boolean isJoinedMember(final Long memberId, final Long teamId) {
+        if (teamRepository.findById(teamId).isEmpty()) {
+            throw new NotFoundTeamException(teamId);
+        }
+        return teamParticipationRepository.isJoinedMember(memberId, teamId);
     }
 }
