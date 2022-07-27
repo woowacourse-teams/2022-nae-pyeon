@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import IconButton from "@components/IconButton";
+import MessageTextArea from "@/components/MessageTextArea";
 import RollingpaperMessage from "@components/RollingpaperMessage";
 import { Message } from "@/types";
 
@@ -16,6 +17,7 @@ interface LetterPaperProp {
 
 const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
   const navigate = useNavigate();
+  const [writeNewMessage, setWriteNewMessage] = useState(true);
   const [slicedMessageLists, setSlicedMessageLists] = useState<Message[][]>([
     [],
     [],
@@ -69,6 +71,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
       <StyledSlicedMessageLists>
         {slicedMessageLists.map((messageList, index) => (
           <StyledMessageList key={index}>
+            {index === 0 && writeNewMessage && <MessageTextArea />}
             {messageList.map((message) => (
               <Link key={message.id} to={`message/${message.id}`}>
                 <RollingpaperMessage
