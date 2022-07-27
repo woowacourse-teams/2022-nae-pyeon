@@ -70,7 +70,7 @@ const Paging = ({ currentPage, maxPage, setCurrentPage }: PagingProp) => {
             <StyledPage
               isCurrent={currentPage === currentPage - (2 - num)}
               key={num}
-              onClick={() => handleNumberClick(maxPage - num)}
+              onClick={() => handleNumberClick(currentPage - (2 - num))}
             >
               {currentPage - (2 - num)}
             </StyledPage>
