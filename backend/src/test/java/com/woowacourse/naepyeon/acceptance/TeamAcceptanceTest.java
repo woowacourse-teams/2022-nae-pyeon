@@ -4,7 +4,7 @@ import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.가입한_�
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모든_모임_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입_정보_조회;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_닉네임_변경;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_내_닉네임_변경;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_단건_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_삭제;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_생성;
@@ -19,7 +19,7 @@ import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
-import com.woowacourse.naepyeon.controller.dto.UpdateTeamMemberRequest;
+import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
@@ -422,9 +422,10 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
         final Long teamId = 모임_생성(tokenResponseDto);
 
-        final TeamMemberResponseDto actual = 모임_가입_정보_조회(tokenResponseDto, teamId)
-                .as(TeamMemberResponseDto.class);
-        assertThat(actual.getNickname()).isEqualTo(expected);
+        final String actual = 모임_가입_정보_조회(tokenResponseDto, teamId)
+                .as(TeamMemberResponseDto.class)
+                .getNickname();
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -436,12 +437,13 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
         final Long teamId = 모임_생성(tokenResponseDto);
 
-        final UpdateTeamMemberRequest updateTeamMemberRequest = new UpdateTeamMemberRequest(expected);
-        모임_닉네임_변경(tokenResponseDto, teamId, updateTeamMemberRequest);
+        final UpdateTeamParticipantRequest updateTeamParticipantRequest = new UpdateTeamParticipantRequest(expected);
+        모임_내_닉네임_변경(tokenResponseDto, teamId, updateTeamParticipantRequest);
 
-        final TeamMemberResponseDto actual = 모임_가입_정보_조회(tokenResponseDto, teamId)
-                .as(TeamMemberResponseDto.class);
-        assertThat(actual.getNickname()).isEqualTo(expected);
+        final String actual = 모임_가입_정보_조회(tokenResponseDto, teamId)
+                .as(TeamMemberResponseDto.class)
+                .getNickname();
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -458,8 +460,9 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final JoinTeamMemberRequest request = new JoinTeamMemberRequest("애플");
         모임_가입(tokenResponseDto2, teamId, request);
 
-        final UpdateTeamMemberRequest updateTeamMemberRequest = new UpdateTeamMemberRequest("나는야모임장");
-        final ExtractableResponse<Response> response = 모임_닉네임_변경(tokenResponseDto, teamId, updateTeamMemberRequest);
+        final UpdateTeamParticipantRequest updateTeamParticipantRequest = new UpdateTeamParticipantRequest("나는야모임장");
+        final ExtractableResponse<Response> response = 모임_내_닉네임_변경(tokenResponseDto, teamId,
+                updateTeamParticipantRequest);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 

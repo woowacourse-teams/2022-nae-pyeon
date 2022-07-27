@@ -115,7 +115,7 @@ public class TeamService {
     }
 
     @Transactional
-    public void updateNickname(final Long teamId, final Long memberId, final String newNickname) {
+    public void updateMyInfo(final Long teamId, final Long memberId, final String newNickname) {
         checkMemberNotIncludedTeam(teamId, memberId);
         if (teamParticipationRepository.findAllNicknamesByTeamId(teamId).contains(newNickname)) {
             throw new DuplicateNicknameException(newNickname);

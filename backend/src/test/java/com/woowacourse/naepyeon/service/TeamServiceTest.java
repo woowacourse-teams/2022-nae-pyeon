@@ -294,9 +294,10 @@ class TeamServiceTest {
         teamParticipationRepository.save(teamParticipation1);
         teamParticipationRepository.save(teamParticipation2);
 
-        teamService.updateNickname(team2.getId(), member2.getId(), expected);
+        teamService.updateMyInfo(team2.getId(), member2.getId(), expected);
 
-        final String actual = teamParticipationRepository.findNicknameByMemberIdAndTeamId(member2.getId(), team2.getId());
+        final String actual = teamParticipationRepository.findNicknameByMemberIdAndTeamId(member2.getId(),
+                team2.getId());
         assertThat(actual).isEqualTo(expected);
     }
 
@@ -309,7 +310,7 @@ class TeamServiceTest {
         teamParticipationRepository.save(teamParticipation1);
         teamParticipationRepository.save(teamParticipation2);
 
-        assertThatThrownBy(() -> teamService.updateNickname(team1.getId(), member2.getId(), expected))
+        assertThatThrownBy(() -> teamService.updateMyInfo(team1.getId(), member2.getId(), expected))
                 .isInstanceOf(DuplicateNicknameException.class);
     }
 
@@ -319,14 +320,14 @@ class TeamServiceTest {
         final TeamParticipation teamParticipation = new TeamParticipation(team1, member, "해커");
         teamParticipationRepository.save(teamParticipation);
 
-        assertThatThrownBy(() -> teamService.updateNickname(team2.getId(), member.getId(), "선량한시민"))
+        assertThatThrownBy(() -> teamService.updateMyInfo(team2.getId(), member.getId(), "선량한시민"))
                 .isInstanceOf(UncertificationTeamMemberException.class);
     }
 
     @Test
     @DisplayName("존재하지 않는 모임에서 닉네임 변경을 하려 할 경우 예외를 발생시킨다.")
     void updateNicknameNotExistTeam() {
-        assertThatThrownBy(() -> teamService.updateNickname(team1.getId() + 10000L, member.getId(), "해커"))
+        assertThatThrownBy(() -> teamService.updateMyInfo(team1.getId() + 10000L, member.getId(), "해커"))
                 .isInstanceOf(NotFoundTeamException.class);
     }
 }

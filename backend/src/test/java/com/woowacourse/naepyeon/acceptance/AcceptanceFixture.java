@@ -10,7 +10,7 @@ import com.woowacourse.naepyeon.controller.dto.RollingpaperCreateRequest;
 import com.woowacourse.naepyeon.controller.dto.RollingpaperUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.TokenRequest;
-import com.woowacourse.naepyeon.controller.dto.UpdateTeamMemberRequest;
+import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -151,10 +151,10 @@ public class AcceptanceFixture {
         return get(tokenResponseDto, "/api/v1/teams/" + teamId + "/me");
     }
 
-    public static ExtractableResponse<Response> 모임_닉네임_변경(final TokenResponseDto tokenResponseDto,
-                                                          final Long teamId,
-                                                          final UpdateTeamMemberRequest updateTeamMemberRequest) {
-        return put(tokenResponseDto, updateTeamMemberRequest, "/api/v1/teams/" + teamId + "/me");
+    public static ExtractableResponse<Response> 모임_내_닉네임_변경(final TokenResponseDto tokenResponseDto,
+                                                            final Long teamId,
+                                                            final UpdateTeamParticipantRequest updateTeamParticipantRequest) {
+        return put(tokenResponseDto, updateTeamParticipantRequest, "/api/v1/teams/" + teamId + "/me");
     }
 
     public static ExtractableResponse<Response> 회원_롤링페이퍼_생성(final TokenResponseDto tokenResponseDto,
@@ -205,8 +205,8 @@ public class AcceptanceFixture {
     }
 
     public static ExtractableResponse<Response> 메시지_조회(final TokenResponseDto tokenResponseDto,
-                                                final Long rollingpaperId,
-                                                final Long messageId) {
+                                                       final Long rollingpaperId,
+                                                       final Long messageId) {
         return get(tokenResponseDto, "/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId);
     }
 }

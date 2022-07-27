@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class UpdateTeamMemberRequest {
+public class UpdateTeamParticipantRequest {
 
     @NotBlank(message = "4009:닉네임은 공백일 수 없습니다.")
     private String nickname;
