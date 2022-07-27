@@ -4,6 +4,7 @@ import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,7 +24,8 @@ public interface TeamParticipationJpaDao extends JpaRepository<TeamParticipation
             + "from TeamParticipation p "
             + "join Member m on m.id = :memberId "
             + "where p.team.id = :teamId")
-    Member findMemberByMemberIdAndTeamId(@Param("memberId") final Long memberId, @Param("teamId") final Long teamId);
+    Optional<Member> findMemberByMemberIdAndTeamId(@Param("memberId") final Long memberId,
+                                                   @Param("teamId") final Long teamId);
 
     @Query("select p.nickname "
             + "from TeamParticipation p "

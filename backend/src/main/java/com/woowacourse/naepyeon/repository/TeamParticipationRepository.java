@@ -12,7 +12,7 @@ public interface TeamParticipationRepository {
 
     Optional<TeamParticipation> findById(final Long id);
 
-    Member findMemberByMemberIdAndTeamId(final Long memberId, final Long teamId);
+    Optional<Member> findMemberByMemberIdAndTeamId(final Long memberId, final Long teamId);
 
     List<TeamParticipation> findByTeamId(final Long teamId);
 

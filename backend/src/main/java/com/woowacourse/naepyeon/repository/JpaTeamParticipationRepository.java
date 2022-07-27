@@ -36,8 +36,9 @@ public class JpaTeamParticipationRepository implements TeamParticipationReposito
     }
 
     @Override
-    public Member findMemberByMemberIdAndTeamId(final Long memberId, final Long teamId) {
+    public Optional<Member> findMemberByMemberIdAndTeamId(final Long memberId, final Long teamId) {
         return teamParticipationJpaDao.findMemberByMemberIdAndTeamId(memberId, teamId);
+
     }
 
     @Override

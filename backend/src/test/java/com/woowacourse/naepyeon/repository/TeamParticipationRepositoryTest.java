@@ -84,8 +84,9 @@ class TeamParticipationRepositoryTest {
         final TeamParticipation teamParticipation1 = new TeamParticipation(team1, member1, "닉네임1");
         teamParticipationRepository.save(teamParticipation1);
 
-        assertThat(teamParticipationRepository.findMemberByMemberIdAndTeamId(member1.getId(), team1.getId()))
-                .isEqualTo(member1);
+        final Member actual = teamParticipationRepository.findMemberByMemberIdAndTeamId(member1.getId(), team1.getId())
+                .orElseThrow();
+        assertThat(actual).isEqualTo(member1);
     }
 
     @Test
