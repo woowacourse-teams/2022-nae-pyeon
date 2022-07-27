@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import IconButton from "@components/IconButton";
-import MessageTextArea from "@/components/MessageTextArea";
+import MessageForm from "@/components/MessageForm";
 import RollingpaperMessage from "@components/RollingpaperMessage";
 import { Message } from "@/types";
 
@@ -16,8 +16,7 @@ interface LetterPaperProp {
 }
 
 const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
-  const navigate = useNavigate();
-  const [writeNewMessage, setWriteNewMessage] = useState(true);
+  const [writeNewMessage, setWriteNewMessage] = useState(false);
   const [slicedMessageLists, setSlicedMessageLists] = useState<Message[][]>([
     [],
     [],
@@ -28,8 +27,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
   const handleMessageWriteButtonClick: React.MouseEventHandler<
     HTMLButtonElement
   > = (e) => {
-    e.preventDefault();
-    navigate(`message/new`);
+    setWriteNewMessage(true);
   };
 
   const updateSlicedMessageListByWindowWidth = () => {
@@ -45,6 +43,10 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
     }
 
     setSlicedMessageLists(newSlicedMessageList);
+  };
+
+  const hideMessageForm = () => {
+    setWriteNewMessage(false);
   };
 
   useEffect(() => {
@@ -64,14 +66,18 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
     <StyledLetterPaper>
       <StyledLetterPaperTop>
         <StyledTo>To. {to}</StyledTo>
-        <IconButton size="small" onClick={handleMessageWriteButtonClick}>
-          <PencilIcon />
-        </IconButton>
+        {!writeNewMessage && (
+          <IconButton size="small" onClick={handleMessageWriteButtonClick}>
+            <PencilIcon />
+          </IconButton>
+        )}
       </StyledLetterPaperTop>
       <StyledSlicedMessageLists>
         {slicedMessageLists.map((messageList, index) => (
           <StyledMessageList key={index}>
-            {index === 0 && writeNewMessage && <MessageTextArea />}
+            {index === 0 && writeNewMessage && (
+              <MessageForm hideMessageForm={hideMessageForm} />
+            )}
             {messageList.map((message) => (
               <Link key={message.id} to={`message/${message.id}`}>
                 <RollingpaperMessage
