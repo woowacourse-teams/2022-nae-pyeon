@@ -272,7 +272,7 @@ class MessageAcceptanceTest extends AcceptanceTest {
 
         final String content = "상세조회용 메시지 입니다.";
         final String color = "green";
-        final Long messageId = 메시지_작성(tokenResponseDto2, rollingpaperId, new MessageRequest(content, "green"))
+        final Long messageId = 메시지_작성(tokenResponseDto2, rollingpaperId, new MessageRequest(content, color))
                 .as(CreateResponse.class)
                 .getId();
 
