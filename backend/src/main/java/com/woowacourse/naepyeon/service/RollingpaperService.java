@@ -92,7 +92,7 @@ public class RollingpaperService {
     }
 
     private String findRollingpaperAddresseeNickname(final Rollingpaper rollingpaper, final Long teamId) {
-        return teamParticipationRepository.findNicknameByMemberId(rollingpaper.getAddresseeId(), teamId);
+        return teamParticipationRepository.findNicknameByMemberIdAndTeamId(rollingpaper.getAddresseeId(), teamId);
     }
 
     public void updateTitle(final Long rollingpaperId, final String newTitle, final Long teamId,

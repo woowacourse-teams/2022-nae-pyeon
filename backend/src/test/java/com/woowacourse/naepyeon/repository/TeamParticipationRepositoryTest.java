@@ -130,7 +130,7 @@ class TeamParticipationRepositoryTest {
         teamParticipationRepository.save(teamParticipation1);
 
         final String actual =
-                teamParticipationRepository.findNicknameByMemberId(member1.getId(), team1.getId());
+                teamParticipationRepository.findNicknameByMemberIdAndTeamId(member1.getId(), team1.getId());
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -144,7 +144,7 @@ class TeamParticipationRepositoryTest {
         teamParticipationRepository.save(teamParticipation1);
         teamParticipationRepository.save(teamParticipation2);
 
-        final List<String> actual = teamParticipationRepository.findAllNicknames(team1.getId());
+        final List<String> actual = teamParticipationRepository.findAllNicknamesByTeamId(team1.getId());
 
         assertThat(actual).contains("닉네임1", "닉네임2");
     }

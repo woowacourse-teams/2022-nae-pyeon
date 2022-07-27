@@ -18,9 +18,9 @@ public interface TeamParticipationRepository {
 
     List<Team> findTeamsByMemberId(final Long memberId);
 
-    String findNicknameByMemberId(final Long memberId, final Long teamId);
+    String findNicknameByMemberIdAndTeamId(final Long memberId, final Long teamId);
 
-    List<String> findAllNicknames(final Long teamId);
+    List<String> findAllNicknamesByTeamId(final Long teamId);
 
     boolean isJoinedMember(final Long memberId, final Long teamId);
 

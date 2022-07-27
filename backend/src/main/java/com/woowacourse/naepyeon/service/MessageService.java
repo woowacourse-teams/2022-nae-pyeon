@@ -56,7 +56,7 @@ public class MessageService {
 
     private String findMessageWriterNickname(final Long teamId, final Message message) {
         final Member author = message.getAuthor();
-        return teamParticipationRepository.findNicknameByMemberId(author.getId(), teamId);
+        return teamParticipationRepository.findNicknameByMemberIdAndTeamId(author.getId(), teamId);
     }
 
     @Transactional(readOnly = true)

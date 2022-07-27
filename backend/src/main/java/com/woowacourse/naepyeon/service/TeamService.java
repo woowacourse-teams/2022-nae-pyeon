@@ -110,14 +110,14 @@ public class TeamService {
 
     public TeamMemberResponseDto findMyInfoInTeam(final Long teamId, final Long memberId) {
         checkMemberNotIncludedTeam(teamId, memberId);
-        final String nickname = teamParticipationRepository.findNicknameByMemberId(memberId, teamId);
+        final String nickname = teamParticipationRepository.findNicknameByMemberIdAndTeamId(memberId, teamId);
         return new TeamMemberResponseDto(nickname);
     }
 
     @Transactional
     public void updateNickname(final Long teamId, final Long memberId, final String newNickname) {
         checkMemberNotIncludedTeam(teamId, memberId);
-        if (teamParticipationRepository.findAllNicknames(teamId).contains(newNickname)) {
+        if (teamParticipationRepository.findAllNicknamesByTeamId(teamId).contains(newNickname)) {
             throw new DuplicateNicknameException(newNickname);
         }
         teamParticipationRepository.updateNickname(newNickname, memberId, teamId);
