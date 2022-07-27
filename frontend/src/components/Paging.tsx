@@ -17,7 +17,7 @@ type StyledPaging = {
 };
 
 const Paging = ({ currentPage, maxPage, setCurrentPage }: PagingProp) => {
-  const handleNumberclick = (number: number) => {
+  const handleNumberClick = (number: number) => {
     setCurrentPage(number);
   };
 
@@ -46,7 +46,7 @@ const Paging = ({ currentPage, maxPage, setCurrentPage }: PagingProp) => {
             <StyledPage
               isCurrent={currentPage === num + 1}
               key={num}
-              onClick={() => handleNumberclick(num + 1)}
+              onClick={() => handleNumberClick(num + 1)}
             >
               {num + 1}
             </StyledPage>
@@ -58,7 +58,7 @@ const Paging = ({ currentPage, maxPage, setCurrentPage }: PagingProp) => {
             <StyledPage
               isCurrent={currentPage === maxPage - num}
               key={num}
-              onClick={() => handleNumberclick(maxPage - num)}
+              onClick={() => handleNumberClick(maxPage - num)}
             >
               {maxPage - num}
             </StyledPage>
@@ -70,7 +70,7 @@ const Paging = ({ currentPage, maxPage, setCurrentPage }: PagingProp) => {
             <StyledPage
               isCurrent={currentPage === currentPage - (2 - num)}
               key={num}
-              onClick={() => handleNumberclick(maxPage - num)}
+              onClick={() => handleNumberClick(maxPage - num)}
             >
               {currentPage - (2 - num)}
             </StyledPage>
