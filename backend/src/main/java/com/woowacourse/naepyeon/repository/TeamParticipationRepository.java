@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.repository;
 
+import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import java.util.List;
@@ -11,11 +12,17 @@ public interface TeamParticipationRepository {
 
     Optional<TeamParticipation> findById(final Long id);
 
+    Optional<Member> findMemberByMemberIdAndTeamId(final Long memberId, final Long teamId);
+
     List<TeamParticipation> findByTeamId(final Long teamId);
 
     List<Team> findTeamsByMemberId(final Long memberId);
 
-    String findNicknameByMemberId(final Long addresseeId, final Long teamId);
+    String findNicknameByMemberIdAndTeamId(final Long memberId, final Long teamId);
+
+    List<String> findAllNicknamesByTeamId(final Long teamId);
 
     boolean isJoinedMember(final Long memberId, final Long teamId);
+
+    void updateNickname(final String newNickname, final Long memberId, final Long teamId);
 }

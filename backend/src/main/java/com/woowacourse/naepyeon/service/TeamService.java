@@ -4,13 +4,16 @@ import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
+import com.woowacourse.naepyeon.exception.DuplicateNicknameException;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamException;
+import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
+import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.util.List;
@@ -103,6 +106,27 @@ public class TeamService {
                 ).collect(Collectors.toList());
 
         return new JoinedMembersResponseDto(joinedMembers);
+    }
+
+    public TeamMemberResponseDto findMyInfoInTeam(final Long teamId, final Long memberId) {
+        checkMemberNotIncludedTeam(teamId, memberId);
+        final String nickname = teamParticipationRepository.findNicknameByMemberIdAndTeamId(memberId, teamId);
+        return new TeamMemberResponseDto(nickname);
+    }
+
+    @Transactional
+    public void updateMyInfo(final Long teamId, final Long memberId, final String newNickname) {
+        checkMemberNotIncludedTeam(teamId, memberId);
+        if (teamParticipationRepository.findAllNicknamesByTeamId(teamId).contains(newNickname)) {
+            throw new DuplicateNicknameException(newNickname);
+        }
+        teamParticipationRepository.updateNickname(newNickname, memberId, teamId);
+    }
+
+    private void checkMemberNotIncludedTeam(final Long teamId, final Long memberId) {
+        if (!isJoinedMember(memberId, teamId)) {
+            throw new UncertificationTeamMemberException(teamId, memberId);
+        }
     }
 
     public boolean isJoinedMember(final Long memberId, final Long teamId) {
