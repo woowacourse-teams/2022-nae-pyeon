@@ -6,6 +6,7 @@ import ReceivedRollingpaperCard from "@/components/ReceivedRollingpaperCard";
 import WrittenMessageCard from "@/components/WrittenMessageCard";
 import UserProfile from "@/components/UserProfile";
 import Paging from "@/components/Paging";
+import { ValueOf } from "@/types";
 
 const rollingpapers = [
   { id: 1, title: "소피아 생일 축하해", teamName: "우테코 4기" },
@@ -63,8 +64,15 @@ const messages = [
   },
 ];
 
+const TAB = {
+  RECEIVED_PAPER: "received_paper",
+  SEND_MESSAGE: "send_message",
+} as const;
+
+type TabMode = ValueOf<typeof TAB>;
+
 const MyPage = () => {
-  const [tab, setTab] = useState("rolling");
+  const [tab, setTab] = useState<TabMode>(TAB.RECEIVED_PAPER);
   const [receivedCurrentPage, setReceivedCurrentPage] = useState(1);
   const [writtenCurrentPage, setWrittenCurrentPage] = useState(1);
 
@@ -75,21 +83,21 @@ const MyPage = () => {
         <MyPageTab
           number={rollingpapers.length}
           text="받은 롤링페이퍼"
-          activate={"rolling" === tab}
+          activate={tab === TAB.RECEIVED_PAPER}
           onClick={() => {
-            setTab("rolling");
+            setTab(TAB.RECEIVED_PAPER);
           }}
         />
         <MyPageTab
           number={messages.length}
           text="작성한 메시지"
-          activate={"written" === tab}
+          activate={tab === TAB.SEND_MESSAGE}
           onClick={() => {
-            setTab("written");
+            setTab(TAB.SEND_MESSAGE);
           }}
         />
       </StyledCounters>
-      {tab === "rolling" ? (
+      {tab === TAB.RECEIVED_PAPER ? (
         <>
           <StyledRollingpaperList>
             {rollingpapers.map(({ title, teamName, id }) => (
