@@ -55,8 +55,10 @@ public class MessageController {
             @PathVariable final Long rollingpaperId,
             @PathVariable final Long messageId) {
         messageService.updateMessage(
-                messageId, messageUpdateContentRequest.getContent(),
-                messageUpdateContentRequest.getColor(), loginMemberRequest.getId()
+                messageId,
+                messageUpdateContentRequest.getContent(),
+                messageUpdateContentRequest.getColor(),
+                loginMemberRequest.getId()
         );
         return ResponseEntity.noContent().build();
     }
