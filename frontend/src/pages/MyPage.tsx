@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 
 import MyPageTab from "@/components/MyPageTab";
-import ReceivedRollingpaperCard from "@/components/ReceivedRollingpaperCard";
-import WrittenMessageCard from "@/components/WrittenMessageCard";
 import UserProfile from "@/components/UserProfile";
 import Paging from "@/components/Paging";
 import { ValueOf } from "@/types";
@@ -78,7 +76,7 @@ const messages = [
 
 const TAB = {
   RECEIVED_PAPER: "received_paper",
-  SEND_MESSAGE: "send_message",
+  SENT_MESSAGE: "sent_message",
 } as const;
 
 type TabMode = ValueOf<typeof TAB>;
@@ -103,9 +101,9 @@ const MyPage = () => {
         <MyPageTab
           number={messages.length}
           text="작성한 메시지"
-          activate={tab === TAB.SEND_MESSAGE}
+          activate={tab === TAB.SENT_MESSAGE}
           onClick={() => {
-            setTab(TAB.SEND_MESSAGE);
+            setTab(TAB.SENT_MESSAGE);
           }}
         />
       </StyledCounters>
