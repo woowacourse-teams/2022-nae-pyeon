@@ -1,34 +1,40 @@
-create table member
+drop table if exists message;
+drop table if exists rollingpaper;
+drop table if exists team;
+drop table if exists member;
+drop table if exists team_member;
+
+CREATE TABLE member
 (
     member_id bigint       not null auto_increment,
     email     varchar(255) not null,
     password  varchar(255) not null,
     username  varchar(20)  not null,
     primary key (member_id)
-) engine = InnoDB
+) engine=InnoDB
   default charset utf8mb4;
 
-create table message
+CREATE TABLE message
 (
     message_id      bigint       not null auto_increment,
     content         varchar(500) not null,
     member_id       bigint,
     rollingpaper_id bigint,
     primary key (message_id)
-) engine = InnoDB
+) engine=InnoDB
   default charset utf8mb4;
 
-create table rollingpaper
+CREATE TABLE rollingpaper
 (
     rollingpaper_id bigint      not null auto_increment,
     title           varchar(20) not null,
     member_id       bigint,
     team_id         bigint      not null,
     primary key (rollingpaper_id)
-) engine = InnoDB
+) engine=InnoDB
   default charset utf8mb4;
 
-create table team
+CREATE TABLE team
 (
     team_id     bigint       not null auto_increment,
     color       varchar(15)  not null,
@@ -36,17 +42,17 @@ create table team
     emoji       varchar(255) not null,
     team_name   varchar(20)  not null,
     primary key (team_id)
-) engine = InnoDB
+) engine=InnoDB
   default charset utf8mb4;
 
-create table team_member
+CREATE TABLE team_member
 (
     team_member_id bigint      not null auto_increment,
     nickname       varchar(20) not null,
     member_id      bigint,
     team_id        bigint,
     primary key (team_member_id)
-) engine = InnoDB
+) engine=InnoDB
   default charset utf8mb4;
 
 alter table member
