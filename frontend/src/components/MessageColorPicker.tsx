@@ -81,10 +81,7 @@ const StyledRadio = styled.div<StyledRadioProps>`
   border-radius: 50%;
 
   font-size: 25px;
-  background-color: ${(props) =>
-    props.backgroundColor
-      ? props.backgroundColor
-      : props.theme.colors.GRAY_200};
+  background-color: ${(props) => props.backgroundColor};
 
   cursor: pointer;
 
