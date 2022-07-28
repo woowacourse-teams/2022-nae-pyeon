@@ -3,10 +3,10 @@ import styled from "@emotion/styled";
 
 import MyPageTab from "@/components/MyPageTab";
 import UserProfile from "@/components/UserProfile";
-import Paging from "@/components/Paging";
+import MyPageRollingpaperListPaging from "@/components/MyPageRollingpaperListPaging";
+import MyPageWrittenMessageListPaging from "@/components/MyPageWrittenMessageListPaging";
+
 import { ValueOf } from "@/types";
-import MyPageRollingpaperList from "@/components/MyPageRollingpaperList";
-import MyPageWrittenMessageList from "@/components/MyPageWrittenMessageList";
 
 const rollingpapers = [
   { id: 1, title: "소피아 생일 축하해", teamId: 1, teamName: "우테코 4기" },
@@ -87,7 +87,7 @@ const MyPage = () => {
   const [writtenCurrentPage, setWrittenCurrentPage] = useState(1);
 
   return (
-    <div>
+    <>
       <UserProfile name="도리" email="sunho620@naver.com" />
       <StyledCounters>
         <MyPageTab
@@ -108,29 +108,21 @@ const MyPage = () => {
         />
       </StyledCounters>
       {tab === TAB.RECEIVED_PAPER ? (
-        <>
-          <MyPageRollingpaperList rollingpapers={rollingpapers} />
-          <StyledPaging>
-            <Paging
-              currentPage={receivedCurrentPage}
-              maxPage={10}
-              setCurrentPage={setReceivedCurrentPage}
-            />
-          </StyledPaging>
-        </>
+        <MyPageRollingpaperListPaging
+          rollingpapers={rollingpapers}
+          currentPage={receivedCurrentPage}
+          maxPage={10}
+          setCurrentPage={setReceivedCurrentPage}
+        />
       ) : (
-        <>
-          <MyPageWrittenMessageList messages={messages} />
-          <StyledPaging>
-            <Paging
-              currentPage={writtenCurrentPage}
-              maxPage={10}
-              setCurrentPage={setWrittenCurrentPage}
-            />
-          </StyledPaging>
-        </>
+        <MyPageWrittenMessageListPaging
+          messages={messages}
+          currentPage={writtenCurrentPage}
+          maxPage={10}
+          setCurrentPage={setWrittenCurrentPage}
+        />
       )}
-    </div>
+    </>
   );
 };
 
@@ -142,12 +134,6 @@ const StyledCounters = styled.div`
 
   padding: 12px;
   gap: 20px;
-`;
-
-const StyledPaging = styled.div`
-  padding: 20px 0 20px 0;
-  display: flex;
-  justify-content: center;
 `;
 
 export default MyPage;
