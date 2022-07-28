@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Global, ThemeProvider } from "@emotion/react";
 import { Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -26,10 +26,14 @@ import RequireLogout from "./components/RequireLogout";
 import PageContainer from "@/components/PageContainer";
 import MyPage from "@/pages/MyPage";
 import { UserProvider } from "@/context/UserContext";
+import { useSnackbar } from "@/context/SnackbarContext";
+import Snackbar from "@/components/Snackbar";
 
 const queryClient = new QueryClient();
 
 const App = () => {
+  const { isOpened } = useSnackbar();
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
@@ -138,6 +142,7 @@ const App = () => {
                 }
               />
             </Routes>
+            {isOpened && <Snackbar />}
           </UserProvider>
         </PageContainer>
       </ThemeProvider>
