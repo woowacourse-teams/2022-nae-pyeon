@@ -2,12 +2,14 @@ spring:
   jpa:
     properties:
       hibernate:
+        jdbc.lob.non_contextual_creation: true
         default_batch_fetch_size: '1000'
         dialect: org.hibernate.dialect.MySQL5Dialect
         format_sql: 'true'
     hibernate:
       ddl-auto: validate
     open-in-view: 'false'
+    generate-ddl: false
   datasource:
     password: ${MYSQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -16,6 +18,9 @@ spring:
   h2:
     console:
       enabled: 'true'
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
 security:
   jwt:
     token:
