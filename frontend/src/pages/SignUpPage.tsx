@@ -1,11 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import axios from "axios";
 import styled from "@emotion/styled";
 
 import appClient from "@/api";
-import { SnackbarContext } from "@/context/SnackbarContext";
 
 import PageTitle from "@/components/PageTitle";
 import LabeledInput from "@/components/LabeledInput";
@@ -13,6 +12,7 @@ import Button from "@/components/Button";
 
 import { REGEX } from "@/constants";
 import { CustomError } from "@/types";
+import { useSnackbar } from "@/context/SnackbarContext";
 
 type SignUpMemberInfo = {
   email: string;
@@ -22,7 +22,7 @@ type SignUpMemberInfo = {
 
 const SignUpPage = () => {
   const navigate = useNavigate();
-  const { openSnackbar } = useContext(SnackbarContext);
+  const { openSnackbar } = useSnackbar();
 
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");

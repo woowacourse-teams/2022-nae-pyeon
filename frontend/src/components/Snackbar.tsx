@@ -1,12 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
 import ReactDom from "react-dom";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 
-import { SnackbarContext } from "@/context/SnackbarContext";
+import { useSnackbar } from "@/context/SnackbarContext";
 
 const Snackbar = () => {
-  const { message } = useContext(SnackbarContext);
+  const { message } = useSnackbar();
 
   return ReactDom.createPortal(
     <StyledSnackbar>{message}</StyledSnackbar>,

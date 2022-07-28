@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { useState, createContext, PropsWithChildren } from "react";
+import { useState, createContext, PropsWithChildren, useContext } from "react";
 
 interface SnackbarContextType {
   openSnackbar: (message: string) => void;
@@ -15,11 +15,11 @@ const SnackbarContext = createContext<SnackbarContextType>({
   isOpened: true,
 });
 
-let timer: NodeJS.Timeout;
-
 const SnackbarProvider = ({ children }: PropsWithChildren) => {
   const [isOpened, setIsOpened] = useState(false);
   const [message, setMessage] = useState("");
+
+  let timer: NodeJS.Timeout;
 
   const openSnackbar = (message: string) => {
     setIsOpened(true);
@@ -44,4 +44,12 @@ const SnackbarProvider = ({ children }: PropsWithChildren) => {
   );
 };
 
-export { SnackbarContext, SnackbarProvider };
+function useSnackbar() {
+  const context = useContext(SnackbarContext);
+  if (context === undefined) {
+    throw new Error("useSnackbar는 SnackbarContext가 필요합니다");
+  }
+  return context;
+}
+
+export { useSnackbar, SnackbarProvider };
