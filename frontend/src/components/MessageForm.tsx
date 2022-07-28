@@ -44,10 +44,11 @@ export const MessageForm = ({ hideMessageForm }: MessageFormProps) => {
   const handleTextAreaChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
     e
   ) => {
-    if (e.target.value.length > 500) {
+    const newContent = e.target.value;
+    if (newContent.length > 500) {
       return;
     }
-    setContent(e.target.value);
+    setContent(newContent);
   };
 
   const handleSubmitButtonClick: React.MouseEventHandler = () => {
