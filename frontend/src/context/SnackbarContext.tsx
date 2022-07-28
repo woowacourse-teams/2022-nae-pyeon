@@ -44,12 +44,12 @@ const SnackbarProvider = ({ children }: PropsWithChildren) => {
   );
 };
 
-function useSnackbar() {
+const useSnackbar = () => {
   const context = useContext(SnackbarContext);
   if (context === undefined) {
     throw new Error("useSnackbar는 SnackbarContext가 필요합니다");
   }
   return context;
-}
+};
 
 export { useSnackbar, SnackbarProvider };
