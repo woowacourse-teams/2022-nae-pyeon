@@ -7,7 +7,6 @@ import Pencil from "@/assets/icons/bx-pencil.svg";
 import LineButton from "@/components/LineButton";
 import UnderlineInput from "@/components/UnderlineInput";
 
-import { deleteCookie } from "@/util/cookie";
 import { UserContext } from "@/context/UserContext";
 import { REGEX } from "@/constants";
 import { ValueOf } from "@/types";
@@ -27,12 +26,11 @@ const UserProfile = ({ name, email }: UserProfileProp) => {
   const [mode, setMode] = useState<UserProfileMode>(MODE.NORMAL);
   const [editName, setEditName] = useState(name);
 
-  const { setIsLoggedIn } = useContext(UserContext);
+  const { logout } = useContext(UserContext);
 
   const handleButtonClick = () => {
     if (mode === MODE.NORMAL) {
-      deleteCookie("accessToken");
-      setIsLoggedIn(false);
+      logout();
     }
   };
 
