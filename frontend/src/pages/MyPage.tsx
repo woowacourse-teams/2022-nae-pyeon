@@ -89,7 +89,7 @@ const MyPage = () => {
   return (
     <>
       <UserProfile name="도리" email="sunho620@naver.com" />
-      <StyledCounters>
+      <StyledTabs>
         <MyPageTab
           number={rollingpapers.length}
           text="받은 롤링페이퍼"
@@ -106,7 +106,7 @@ const MyPage = () => {
             setTab(TAB.SENT_MESSAGE);
           }}
         />
-      </StyledCounters>
+      </StyledTabs>
       {tab === TAB.RECEIVED_PAPER ? (
         <MyPageRollingpaperListPaging
           rollingpapers={rollingpapers}
@@ -126,7 +126,7 @@ const MyPage = () => {
   );
 };
 
-const StyledCounters = styled.div`
+const StyledTabs = styled.div`
   display: flex;
 
   border-top: 1px solid ${({ theme }) => theme.colors.GRAY_400};
