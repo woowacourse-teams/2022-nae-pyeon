@@ -25,17 +25,6 @@ const fadein = keyframes`
     }
 `;
 
-const fadeout = keyframes`
-    from {
-      bottom: 20px;
-      opacity: 1;
-    }
-    to {
-      bottom: 0;
-      opacity: 0;
-    }
-`;
-
 const StyledSnackbar = styled.div`
   display: flex;
   justify-content: center;
