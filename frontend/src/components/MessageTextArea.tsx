@@ -59,8 +59,7 @@ const StyledMessageContainer = styled.div<StyledMessageContainerProps>`
   line-height: 16px;
 
   border: 2px solid ${({ theme }) => theme.colors.GRAY_700};
-  background-color: ${({ backgroundColor, theme }) =>
-    backgroundColor || theme.colors.YELLOW_300};
+  background-color: ${({ backgroundColor }) => backgroundColor};
 
   @media only screen and (min-width: 600px) {
     width: 180px;
