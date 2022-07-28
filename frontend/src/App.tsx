@@ -25,13 +25,13 @@ import RequireLogin from "@/components/RequireLogin";
 import RequireLogout from "./components/RequireLogout";
 import PageContainer from "@/components/PageContainer";
 import { UserProvider } from "@/context/UserContext";
-import { SnackbarContext } from "@/context/SnackbarContext";
+import { useSnackbar } from "@/context/SnackbarContext";
 import Snackbar from "@/components/Snackbar";
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  const { isOpened } = useContext(SnackbarContext);
+  const { isOpened } = useSnackbar();
 
   return (
     <QueryClientProvider client={queryClient}>
