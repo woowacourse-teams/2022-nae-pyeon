@@ -5,7 +5,7 @@ interface MyPageTabProp {
   number: number;
   text: string;
   activate?: boolean;
-  onClick: () => void;
+  onClick: React.MouseEventHandler<HTMLDivElement>;
 }
 
 type StyledMyPageTabPropProps = Pick<MyPageTabProp, "activate">;
