@@ -23,7 +23,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
 
   const handleMessageWriteButtonClick: React.MouseEventHandler<
     HTMLButtonElement
-  > = (e) => {
+  > = () => {
     setWriteNewMessage(true);
   };
 
