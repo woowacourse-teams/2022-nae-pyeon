@@ -5,11 +5,11 @@ spring:
   profiles:
     active: local
   datasource:
-    #    url: jdbc:h2:tcp://localhost/~/naepyeon
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    #    url: jdbc:h2:mem:testdb
+    url: jdbc:mysql://127.0.0.1:3306/naepyeon?serverTimezone=Asia/Seoul&character_set_server=utf8mb4&useUnicode=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
