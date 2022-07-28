@@ -1,7 +1,7 @@
 import React from "react";
 import IconButton from "@components/IconButton";
 
-import PencilIcon from "@/assets/images/bx-pencil.svg";
+import PencilIcon from "@/assets/icons/bx-pencil.svg";
 
 export default {
   component: IconButton,
