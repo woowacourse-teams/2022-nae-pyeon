@@ -17,12 +17,9 @@ interface LetterPaperProp {
 
 const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
   const [writeNewMessage, setWriteNewMessage] = useState(false);
-  const [slicedMessageLists, setSlicedMessageLists] = useState<Message[][]>([
-    [],
-    [],
-    [],
-    [],
-  ]);
+  const [slicedMessageLists, setSlicedMessageLists] = useState<Message[][]>(
+    Array.from(Array(4), () => [])
+  );
 
   const handleMessageWriteButtonClick: React.MouseEventHandler<
     HTMLButtonElement
