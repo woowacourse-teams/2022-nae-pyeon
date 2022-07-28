@@ -5,21 +5,27 @@ spring:
   profiles:
     active: local
   datasource:
-    #    url: jdbc:h2:tc가p://localhost/~/naepyeon
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    #    url: jdbc:h2:mem:testdb
+    url: jdbc:mysql://127.0.0.1:3306/naepyeon?serverTimezone=Asia/Seoul&character_set_server=utf8mb4&useUnicode=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         #        show_sql: true
+        jdbc.lob.non_contextual_creation: true
         format_sql: true
         default_batch_fetch_size: 1000 #최적화 옵션
+        dialect: org.hibernate.dialect.MySQL5Dialect
     open-in-view: false
+    generate-ddl: false
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
 
 logging.level:
   org.hibernate.SQL: debug
