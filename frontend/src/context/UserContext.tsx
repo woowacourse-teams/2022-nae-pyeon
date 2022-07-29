@@ -1,4 +1,7 @@
 import { useState, createContext, PropsWithChildren } from "react";
+import { useQuery } from "react-query";
+import axios from "axios";
+
 import { deleteCookie, getCookie, setCookie } from "@/util/cookie";
 
 import appClient from "@/api";
@@ -10,21 +13,42 @@ interface UserContextType {
   memberId: number | null;
 }
 
+interface UserInfo {
+  id: number;
+  username: string;
+  email: string;
+}
+
 const UserContext = createContext<UserContextType>(null!);
 
 const UserProvider = ({ children }: PropsWithChildren) => {
-  const initialMemberId = getCookie("memberId")
-    ? Number(getCookie("memberId"))
-    : null;
-  const [isLoggedIn, setIsLoggedIn] = useState(!!getCookie("accessToken"));
-  const [memberId, setMemberId] = useState(initialMemberId);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [memberId, setMemberId] = useState<number | null>(null);
+
+  useQuery<UserInfo>(
+    ["memberId"],
+    () =>
+      axios
+        .get("/api/v1/members/me", {
+          headers: {
+            Authorization: `Bearer ${getCookie("accessToken") || ""}`,
+          },
+        })
+        .then((response) => response.data),
+    {
+      enabled: !!getCookie("accessToken"),
+      onSuccess: (data) => {
+        setMemberId(data.id);
+        setIsLoggedIn(true);
+      },
+    }
+  );
 
   const login = (accessToken: string, memberId: number) => {
     appClient.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${accessToken}`;
     setCookie("accessToken", accessToken);
-    setCookie("memberId", JSON.stringify(memberId));
     setIsLoggedIn(true);
     setMemberId(memberId);
   };
@@ -32,7 +56,6 @@ const UserProvider = ({ children }: PropsWithChildren) => {
   const logout = () => {
     appClient.defaults.headers.common["Authorization"] = `Bearer `;
     deleteCookie("accessToken");
-    deleteCookie("memberId");
     setIsLoggedIn(false);
     setMemberId(null);
   };
