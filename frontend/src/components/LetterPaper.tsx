@@ -14,6 +14,7 @@ import { Message, CustomError } from "@/types";
 import PencilIcon from "@/assets/icons/bx-pencil.svg";
 import { divideArrayByIndexRemainder } from "@/util";
 import { useSnackbar } from "@/context/SnackbarContext";
+import { INIT_COLOR } from "@/constants";
 
 interface LetterPaperProp {
   to: string;
@@ -26,7 +27,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
     Array.from(Array(4), () => [])
   );
   const [content, setContent] = useState("");
-  const [color, setColor] = useState("#C5FF98");
+  const [color, setColor] = useState(INIT_COLOR);
 
   const { rollingpaperId } = useParams();
   const { openSnackbar } = useSnackbar();
@@ -76,11 +77,15 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
 
   const submitMessageForm = () => {
     createMessage({ content, color });
+    setContent("");
+    setColor(INIT_COLOR);
     setWriteNewMessage(false);
   };
 
   const cancelMessageWrite = () => {
     if (confirm("메시지 작성을 취소하시겠습니까?")) {
+      setContent("");
+      setColor(INIT_COLOR);
       setWriteNewMessage(false);
     }
   };

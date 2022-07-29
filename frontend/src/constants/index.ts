@@ -1,3 +1,5 @@
+import { colors } from "@/styles/theme";
+
 const REGEX = {
   EMAIL: /^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\w+\.)+\w+$/,
   USERNAME: /^[가-힣a-zA-Z0-9]{2,20}$/,
@@ -5,4 +7,15 @@ const REGEX = {
   TEAM_NAME: /^[가-힣a-zA-Z\d~!@#$%^&*()+_\-\s]{1,20}$/,
 };
 
-export { REGEX };
+const COLORS = {
+  GREEN: colors.LIGHT_GREEN_300,
+  RED: colors.RED_300,
+  YELLOW: colors.YELLOW_300,
+  BLUE: colors.SKY_BLUE_300,
+  PURPLE: colors.PURPLE_300,
+  PINK: colors.PINK_300,
+};
+
+const INIT_COLOR = COLORS.YELLOW;
+
+export { REGEX, COLORS, INIT_COLOR };
