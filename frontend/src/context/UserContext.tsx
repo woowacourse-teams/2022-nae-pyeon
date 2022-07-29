@@ -46,6 +46,10 @@ const UserProvider = ({ children }: PropsWithChildren) => {
       onSuccess: (data) => {
         setMemberId(data.id);
         setIsLoggedIn(true);
+
+        appClient.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${accessTokenCookie}`;
       },
     }
   );
