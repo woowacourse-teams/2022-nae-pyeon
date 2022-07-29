@@ -35,7 +35,7 @@ const LoginPage = () => {
     },
     {
       onSuccess: (data) => {
-        login(data.accessToken, data.memberId);
+        login(data.accessToken, data.id);
         navigate(`/`, { replace: true });
       },
       onError: (error) => {

@@ -12,7 +12,7 @@ const memberHandlers = [
   rest.post("/api/v1/login", (req, res, ctx) => {
     const { email, password } = req.body;
 
-    const result = { accessToken: "accessToken2", memberId: 1 };
+    const result = { accessToken: "accessToken2", id: 1 };
 
     return res(ctx.status(200), ctx.json(result));
   }),
