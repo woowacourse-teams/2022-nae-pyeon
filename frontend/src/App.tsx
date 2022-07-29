@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Global, ThemeProvider } from "@emotion/react";
 import { Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -24,11 +24,16 @@ import ErrorPage from "@/pages/ErrorPage";
 import RequireLogin from "@/components/RequireLogin";
 import RequireLogout from "./components/RequireLogout";
 import PageContainer from "@/components/PageContainer";
+import MyPage from "@/pages/MyPage";
 import { UserProvider } from "@/context/UserContext";
+import { useSnackbar } from "@/context/SnackbarContext";
+import Snackbar from "@/components/Snackbar";
 
 const queryClient = new QueryClient();
 
 const App = () => {
+  const { isOpened } = useSnackbar();
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
@@ -62,6 +67,14 @@ const App = () => {
                     </RequireLogin>
                   }
                 />
+                <Route
+                  path="mypage"
+                  element={
+                    <RequireLogin>
+                      <MyPage />
+                    </RequireLogin>
+                  }
+                />
                 <Route path="*" element={<ErrorPage />} />
               </Route>
               <Route
@@ -80,7 +93,6 @@ const App = () => {
                   </RequireLogout>
                 }
               />
-
               <Route
                 path="team/new"
                 element={
@@ -89,7 +101,6 @@ const App = () => {
                   </RequireLogin>
                 }
               />
-
               <Route
                 path="team/:teamId/rollingpaper/new"
                 element={
@@ -131,6 +142,7 @@ const App = () => {
                 }
               />
             </Routes>
+            {isOpened && <Snackbar />}
           </UserProvider>
         </PageContainer>
       </ThemeProvider>
