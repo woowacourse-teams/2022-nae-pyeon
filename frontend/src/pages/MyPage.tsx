@@ -3,8 +3,8 @@ import styled from "@emotion/styled";
 
 import MyPageTab from "@/components/MyPageTab";
 import UserProfile from "@/components/UserProfile";
-import MyPageRollingpaperListPaging from "@/components/MyPageRollingpaperListPaging";
-import MyPageWrittenMessageListPaging from "@/components/MyPageWrittenMessageListPaging";
+import MyPagePaginatedRollingpaperList from "@/components/MyPagePaginatedRollingpaperList";
+import MyPagePaginatedMessageList from "@/components/MyPagePaginatedMessageList";
 
 import { ValueOf } from "@/types";
 
@@ -108,14 +108,14 @@ const MyPage = () => {
         />
       </StyledTabs>
       {tab === TAB.RECEIVED_PAPER ? (
-        <MyPageRollingpaperListPaging
+        <MyPagePaginatedRollingpaperList
           rollingpapers={rollingpapers}
           currentPage={receivedCurrentPage}
           maxPage={10}
           setCurrentPage={setReceivedCurrentPage}
         />
       ) : (
-        <MyPageWrittenMessageListPaging
+        <MyPagePaginatedMessageList
           messages={messages}
           currentPage={writtenCurrentPage}
           maxPage={10}

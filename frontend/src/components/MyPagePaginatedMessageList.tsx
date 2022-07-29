@@ -15,19 +15,19 @@ interface WrittenMessage {
   color: string;
 }
 
-interface MyPageWrittenMessageListPagingProp {
+interface MyPagePaginatedMessageListProp {
   messages: WrittenMessage[];
   currentPage: number;
   maxPage: number;
   setCurrentPage: Dispatch<SetStateAction<number>>;
 }
 
-const MyPageWrittenMessageListPaging = ({
+const MyPagePaginatedMessageList = ({
   messages,
   currentPage,
   maxPage,
   setCurrentPage,
-}: MyPageWrittenMessageListPagingProp) => {
+}: MyPagePaginatedMessageListProp) => {
   return (
     <>
       <StyledMessageList>
@@ -68,4 +68,4 @@ const StyledPaging = styled.div`
   justify-content: center;
 `;
 
-export default MyPageWrittenMessageListPaging;
+export default MyPagePaginatedMessageList;

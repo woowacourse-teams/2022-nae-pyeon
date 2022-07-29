@@ -11,19 +11,19 @@ interface MyPageRollingpaper {
   teamName: string;
 }
 
-interface MyPageRollingpaperListPaging {
+interface MyPagePaginatedRollingpaperList {
   rollingpapers: MyPageRollingpaper[];
   currentPage: number;
   maxPage: number;
   setCurrentPage: Dispatch<SetStateAction<number>>;
 }
 
-const MyPageRollingpaperListPaging = ({
+const MyPagePaginatedRollingpaperList = ({
   rollingpapers,
   currentPage,
   maxPage,
   setCurrentPage,
-}: MyPageRollingpaperListPaging) => {
+}: MyPagePaginatedRollingpaperList) => {
   return (
     <>
       <StyledRollingpaperList>
@@ -58,4 +58,4 @@ const StyledPaging = styled.div`
   justify-content: center;
 `;
 
-export default MyPageRollingpaperListPaging;
+export default MyPagePaginatedRollingpaperList;
