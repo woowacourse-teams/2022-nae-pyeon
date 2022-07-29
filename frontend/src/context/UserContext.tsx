@@ -6,6 +6,10 @@ import { deleteCookie, getCookie, setCookie } from "@/util/cookie";
 
 import appClient from "@/api";
 
+const COOKIE_KEY = {
+  ACCESS_TOKEN: "accessToken",
+};
+
 interface UserContextType {
   isLoggedIn: boolean;
   login: (accessToken: string, memberId: number) => void;
@@ -31,12 +35,12 @@ const UserProvider = ({ children }: PropsWithChildren) => {
       axios
         .get("/api/v1/members/me", {
           headers: {
-            Authorization: `Bearer ${getCookie("accessToken") || ""}`,
+            Authorization: `Bearer ${getCookie(COOKIE_KEY.ACCESS_TOKEN) || ""}`,
           },
         })
         .then((response) => response.data),
     {
-      enabled: !!getCookie("accessToken"),
+      enabled: !!getCookie(COOKIE_KEY.ACCESS_TOKEN),
       onSuccess: (data) => {
         setMemberId(data.id);
         setIsLoggedIn(true);
@@ -48,14 +52,14 @@ const UserProvider = ({ children }: PropsWithChildren) => {
     appClient.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${accessToken}`;
-    setCookie("accessToken", accessToken);
+    setCookie(COOKIE_KEY.ACCESS_TOKEN, accessToken);
     setIsLoggedIn(true);
     setMemberId(memberId);
   };
 
   const logout = () => {
     appClient.defaults.headers.common["Authorization"] = `Bearer `;
-    deleteCookie("accessToken");
+    deleteCookie(COOKIE_KEY.ACCESS_TOKEN);
     setIsLoggedIn(false);
     setMemberId(null);
   };
