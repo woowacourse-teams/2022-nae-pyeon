@@ -1,13 +1,3 @@
-CREATE TABLE IF NOT EXISTS member
-(
-    member_id bigint       not null auto_increment,
-    email     varchar(255) not null,
-    password  varchar(255) not null,
-    username  varchar(20)  not null,
-    primary key (member_id)
-) engine=InnoDB
-  default charset utf8mb4;
-
 CREATE TABLE IF NOT EXISTS message
 (
     message_id      bigint       not null auto_increment,
@@ -28,17 +18,6 @@ CREATE TABLE IF NOT EXISTS rollingpaper
 ) engine=InnoDB
   default charset utf8mb4;
 
-CREATE TABLE IF NOT EXISTS team
-(
-    team_id     bigint       not null auto_increment,
-    color       varchar(15)  not null,
-    description varchar(100) not null,
-    emoji       varchar(255) not null,
-    team_name   varchar(20)  not null,
-    primary key (team_id)
-) engine=InnoDB
-  default charset utf8mb4;
-
 CREATE TABLE IF NOT EXISTS team_member
 (
     team_member_id bigint      not null auto_increment,
@@ -48,6 +27,27 @@ CREATE TABLE IF NOT EXISTS team_member
     primary key (team_member_id)
 ) engine=InnoDB
   default charset utf8mb4;
+
+CREATE TABLE IF NOT EXISTS team
+(
+    team_id     bigint       not null auto_increment,
+    color       varchar(15)  not null,
+    description varchar(100) not null,
+    emoji       varchar(255) not null,
+    team_name   varchar(20)  not null,
+    primary key (team_id)
+    ) engine=InnoDB
+    default charset utf8mb4;
+
+CREATE TABLE IF NOT EXISTS member
+(
+    member_id bigint       not null auto_increment,
+    email     varchar(255) not null,
+    password  varchar(255) not null,
+    username  varchar(20)  not null,
+    primary key (member_id)
+    ) engine=InnoDB
+    default charset utf8mb4;
 
 alter table member
     add constraint uk_member_email unique (email);
