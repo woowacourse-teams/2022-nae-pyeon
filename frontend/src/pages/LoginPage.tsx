@@ -13,7 +13,6 @@ import SocialLoginButton from "@/components/SocialLoginButton";
 import { UserContext } from "@/context/UserContext";
 
 import appClient from "@/api";
-import { setCookie } from "@/util/cookie";
 import { CustomError } from "@/types";
 
 const LoginPage = () => {
@@ -21,11 +20,11 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const { setIsLoggedIn } = useContext(UserContext);
+  const { login } = useContext(UserContext);
 
   const navigate = useNavigate();
 
-  const { mutate: login } = useMutation(
+  const { mutate: requestLogin } = useMutation(
     () => {
       return appClient
         .post(`/login`, {
@@ -36,13 +35,7 @@ const LoginPage = () => {
     },
     {
       onSuccess: (data) => {
-        appClient.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${data.accessToken}`;
-        setCookie("accessToken", data.accessToken);
-
-        setIsLoggedIn(true);
-
+        login(data.accessToken, data.id);
         navigate(`/`, { replace: true });
       },
       onError: (error) => {
@@ -67,7 +60,7 @@ const LoginPage = () => {
       return;
     }
 
-    login();
+    requestLogin();
   };
 
   return (

@@ -2,9 +2,6 @@ import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
-import Logo from "@/assets/images/logo.png";
-
-import { deleteCookie } from "@/util/cookie";
 import { UserContext } from "@/context/UserContext";
 import IconButton from "./IconButton";
 
@@ -12,12 +9,11 @@ import SearchIcon from "@/assets/icons/bx-search.svg";
 import UserIcon from "@/assets/icons/bx-user.svg";
 
 const Header = () => {
-  const { setIsLoggedIn } = useContext(UserContext);
+  const { logout } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleLogoutClick = () => {
-    deleteCookie("accessToken");
-    setIsLoggedIn(false);
+    logout();
   };
 
   const handleSearchClick = () => {
