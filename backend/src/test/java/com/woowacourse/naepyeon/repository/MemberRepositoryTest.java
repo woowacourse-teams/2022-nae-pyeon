@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.repository;
 
+import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.naepyeon.domain.Member;
@@ -65,11 +66,12 @@ class MemberRepositoryTest {
 
     @Test
     @DisplayName("회원 정보를 수정할 때 수정일자가 올바르게 나온다.")
-    void updateMemberWhen() {
+    void updateMemberWhen() throws InterruptedException {
         final Member member = new Member("alex", "alex@naepyeon.com", "abc12345");
         final Long memberId = memberRepository.save(member);
 
         em.flush();
+        sleep(1);
         member.changeUsername("kth990303");
         em.flush();
 

@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.repository;
 
+import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -179,12 +180,13 @@ class TeamParticipationRepositoryTest {
 
     @Test
     @DisplayName("회원이 특정 팀의 닉네임을 변경한다.")
-    void updateNickname() {
+    void updateNickname() throws InterruptedException {
         final String expected = "닉네임2";
         final TeamParticipation teamParticipation = new TeamParticipation(team1, member1, "닉네임1");
         final Long teamParticipationId = teamParticipationRepository.save(teamParticipation);
 
         em.flush();
+        sleep(1);
         teamParticipationRepository.updateNickname(expected, member1.getId(), team1.getId());
         em.flush();
 
