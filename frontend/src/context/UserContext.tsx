@@ -26,7 +26,9 @@ interface UserInfo {
 const UserContext = createContext<UserContextType>(null!);
 
 const UserProvider = ({ children }: PropsWithChildren) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const accessTokenCookie = getCookie(COOKIE_KEY.ACCESS_TOKEN);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(!!accessTokenCookie);
   const [memberId, setMemberId] = useState<number | null>(null);
 
   useQuery<UserInfo>(
@@ -35,15 +37,19 @@ const UserProvider = ({ children }: PropsWithChildren) => {
       axios
         .get("/api/v1/members/me", {
           headers: {
-            Authorization: `Bearer ${getCookie(COOKIE_KEY.ACCESS_TOKEN) || ""}`,
+            Authorization: `Bearer ${accessTokenCookie || ""}`,
           },
         })
         .then((response) => response.data),
     {
-      enabled: !!getCookie(COOKIE_KEY.ACCESS_TOKEN),
+      enabled: !!accessTokenCookie,
       onSuccess: (data) => {
         setMemberId(data.id);
         setIsLoggedIn(true);
+
+        appClient.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${accessTokenCookie}`;
       },
     }
   );
