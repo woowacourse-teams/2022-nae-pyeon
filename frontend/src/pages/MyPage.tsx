@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useQuery } from "react-query";
+import axios from "axios";
 import styled from "@emotion/styled";
 
 import MyPageTab from "@/components/MyPageTab";
@@ -6,7 +8,9 @@ import UserProfile from "@/components/UserProfile";
 import MyPagePaginatedRollingpaperList from "@/components/MyPagePaginatedRollingpaperList";
 import MyPagePaginatedMessageList from "@/components/MyPagePaginatedMessageList";
 
-import { ValueOf } from "@/types";
+import appClient from "@/api";
+
+import { CustomError, ValueOf } from "@/types";
 
 const rollingpapers = [
   { id: 1, title: "소피아 생일 축하해", teamId: 1, teamName: "우테코 4기" },
@@ -81,14 +85,48 @@ const TAB = {
 
 type TabMode = ValueOf<typeof TAB>;
 
+interface UserProfile {
+  id: number;
+  username: string;
+  email: string;
+}
+
 const MyPage = () => {
   const [tab, setTab] = useState<TabMode>(TAB.RECEIVED_PAPER);
   const [receivedCurrentPage, setReceivedCurrentPage] = useState(1);
   const [writtenCurrentPage, setWrittenCurrentPage] = useState(1);
 
+  const {
+    isLoading: isLoadingGetUserProfile,
+    isError: isErrorGetUserProfile,
+    error: getUserProfileError,
+    data: userProfile,
+  } = useQuery<UserProfile>(["user-profile"], () =>
+    appClient.get("/members/me").then((response) => response.data)
+  );
+
+  if (isLoadingGetUserProfile) {
+    return <div>로딩중</div>;
+  }
+
+  if (isErrorGetUserProfile) {
+    if (
+      axios.isAxiosError(getUserProfileError) &&
+      getUserProfileError.response
+    ) {
+      const customError = getUserProfileError.response.data as CustomError;
+      return <div>{customError.message}</div>;
+    }
+    return <div>에러</div>;
+  }
+
+  if (!userProfile) {
+    return <div>에러</div>;
+  }
+
   return (
     <>
-      <UserProfile name="도리" email="sunho620@naver.com" />
+      <UserProfile name={userProfile.username} email={userProfile.email} />
       <StyledTabs>
         <MyPageTab
           number={rollingpapers.length}
