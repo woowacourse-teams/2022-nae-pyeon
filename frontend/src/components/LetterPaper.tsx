@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useMutation } from "react-query";
 import axios from "axios";
 import styled from "@emotion/styled";
@@ -133,13 +133,15 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
               />
             )}
             {messageList.map((message) => (
-              <Link key={message.id} to={`message/${message.id}`}>
-                <RollingpaperMessage
-                  content={message.content}
-                  author={message.from}
-                  color={message.color}
-                />
-              </Link>
+              <RollingpaperMessage
+                content={message.content}
+                author={message.from}
+                color={message.color}
+                authorId={message.authorId}
+                rollingpaperId={Number(rollingpaperId)}
+                messageId={message.id}
+                key={message.id}
+              />
             ))}
           </StyledMessageList>
         ))}
