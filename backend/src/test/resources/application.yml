@@ -1,25 +1,23 @@
 spring:
+  h2:
+    console:
+      enabled: true
+  profiles:
+    active: local
   datasource:
-    url: jdbc:mysql://localhost:3306/naepyeon?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useUnicode=true
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:h2:mem:testdb;MODE=MYSQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
 
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
     properties:
       hibernate:
-        #        show_sql: true
         format_sql: true
         default_batch_fetch_size: 1000 #최적화 옵션
-        jdbc.lob.non_contextual_creation: true
-        dialect: org.hibernate.dialect.MySQL5Dialect
     open-in-view: false
-    generate-ddl: false
-  flyway:
-    enabled: true
-    baseline-on-migrate: true
 
 logging.level:
   org.hibernate.SQL: debug

@@ -137,6 +137,7 @@ class MessageRepositoryTest {
         final Message message = createMessage();
         final Long messageId = messageRepository.save(message);
 
+        em.flush();
         message.changeContent("updateupdate");
         em.flush();
 

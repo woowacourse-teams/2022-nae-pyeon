@@ -137,6 +137,7 @@ class RollingpaperRepositoryTest {
         final Rollingpaper rollingpaper = createRollingPaper();
         final Long rollingpaperId = rollingpaperRepository.save(rollingpaper);
 
+        em.flush();
         rollingpaper.changeTitle("updateupdate");
         em.flush();
 

@@ -1,10 +1,4 @@
-drop table if exists message;
-drop table if exists rollingpaper;
-drop table if exists team;
-drop table if exists member;
-drop table if exists team_member;
-
-CREATE TABLE member
+CREATE TABLE IF NOT EXISTS member
 (
     member_id bigint       not null auto_increment,
     email     varchar(255) not null,
@@ -14,7 +8,7 @@ CREATE TABLE member
 ) engine=InnoDB
   default charset utf8mb4;
 
-CREATE TABLE message
+CREATE TABLE IF NOT EXISTS message
 (
     message_id      bigint       not null auto_increment,
     content         varchar(500) not null,
@@ -24,7 +18,7 @@ CREATE TABLE message
 ) engine=InnoDB
   default charset utf8mb4;
 
-CREATE TABLE rollingpaper
+CREATE TABLE IF NOT EXISTS rollingpaper
 (
     rollingpaper_id bigint      not null auto_increment,
     title           varchar(20) not null,
@@ -34,7 +28,7 @@ CREATE TABLE rollingpaper
 ) engine=InnoDB
   default charset utf8mb4;
 
-CREATE TABLE team
+CREATE TABLE IF NOT EXISTS team
 (
     team_id     bigint       not null auto_increment,
     color       varchar(15)  not null,
@@ -45,7 +39,7 @@ CREATE TABLE team
 ) engine=InnoDB
   default charset utf8mb4;
 
-CREATE TABLE team_member
+CREATE TABLE IF NOT EXISTS team_member
 (
     team_member_id bigint      not null auto_increment,
     nickname       varchar(20) not null,
