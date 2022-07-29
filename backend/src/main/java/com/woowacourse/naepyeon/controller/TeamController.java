@@ -17,6 +17,7 @@ import java.net.URI;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,7 +55,7 @@ public class TeamController {
             @RequestParam("keyword") final String keyword, @RequestParam("page") final Integer page,
             @RequestBody final PageSizeRequest pageSizeRequest) {
         final int currentPage = page - 1;
-        final PageRequest pageRequest = PageRequest.of(currentPage, pageSizeRequest.getSize());
+        final Pageable pageRequest = PageRequest.of(currentPage, pageSizeRequest.getSize());
         return ResponseEntity.ok(
                 teamService.findTeamsByContainingTeamName(keyword, loginMemberRequest.getId(), pageRequest)
         );
