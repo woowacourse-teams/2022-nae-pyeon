@@ -53,7 +53,8 @@ public class TeamController {
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @RequestParam("keyword") final String keyword, @RequestParam("page") final Integer page,
             @RequestBody final PageSizeRequest pageSizeRequest) {
-        final PageRequest pageRequest = PageRequest.of(page, pageSizeRequest.getSize());
+        final int currentPage = page - 1;
+        final PageRequest pageRequest = PageRequest.of(currentPage, pageSizeRequest.getSize());
         return ResponseEntity.ok(
                 teamService.findTeamsByContainingTeamName(keyword, loginMemberRequest.getId(), pageRequest)
         );

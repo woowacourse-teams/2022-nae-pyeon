@@ -152,7 +152,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
         //결과 조회
         final PageSizeRequest pageSizeRequest = new PageSizeRequest(5);
         final ExtractableResponse<Response> response =
-                키워드로_모든_모임_조회(tokenResponseDto, pageSizeRequest, 0, "내편");
+                키워드로_모든_모임_조회(tokenResponseDto, pageSizeRequest, 1, "");
 
         final List<TeamResponseDto> actual = response.as(TeamsResponseDto.class)
                 .getTeams();
@@ -201,7 +201,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
 
         final PageSizeRequest pageSizeRequest = new PageSizeRequest(5);
         final List<TeamResponseDto> teams =
-                키워드로_모든_모임_조회(tokenResponseDto2, pageSizeRequest, 0, "woowa")
+                키워드로_모든_모임_조회(tokenResponseDto2, pageSizeRequest, 1, "woowa")
                         .as(TeamsResponseDto.class)
                         .getTeams();
 
