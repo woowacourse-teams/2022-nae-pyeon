@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import styled from "@emotion/styled";
 import MessageTextArea from "./MessageTextArea";
 import MessageColorPicker from "./MessageColorPicker";
@@ -16,7 +16,12 @@ const colors = [
 ];
 
 type MessageFormProps = {
-  hideMessageForm: () => void;
+  submitMessageForm: () => void;
+  cancelMessageWrite: () => void;
+  content: string;
+  onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
+  color: string;
+  onClickColor: Dispatch<SetStateAction<string>>;
 };
 
 type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -37,25 +42,29 @@ const MessageCancelButton = ({ onClick }: ButtonAttributes) => {
   );
 };
 
-export const MessageForm = ({ hideMessageForm }: MessageFormProps) => {
-  const [content, setContent] = useState("");
-  const [color, setColor] = useState(colors[0].value);
-
+export const MessageForm = ({
+  submitMessageForm,
+  cancelMessageWrite,
+  content,
+  onChange,
+  color,
+  onClickColor,
+}: MessageFormProps) => {
   const handleTextAreaChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
     e
   ) => {
     if (e.target.value.length > 500) {
       return;
     }
-    setContent(e.target.value);
+    onChange(e);
   };
 
   const handleSubmitButtonClick: React.MouseEventHandler = () => {
-    hideMessageForm();
+    submitMessageForm();
   };
 
   const handleCancelButtonClick: React.MouseEventHandler = () => {
-    hideMessageForm();
+    cancelMessageWrite();
   };
 
   return (
@@ -71,7 +80,7 @@ export const MessageForm = ({ hideMessageForm }: MessageFormProps) => {
         <MessageColorPicker
           radios={colors}
           initialSelectedId={colors[0].id}
-          onClickRadio={setColor}
+          onClickRadio={onClickColor}
         />
         <IconButtonContainer>
           <MessageSubmitButton onClick={handleSubmitButtonClick} />

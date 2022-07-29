@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useMutation } from "react-query";
+import axios from "axios";
 import styled from "@emotion/styled";
 
 import IconButton from "@components/IconButton";
 import MessageForm from "@/components/MessageForm";
 import RollingpaperMessage from "@components/RollingpaperMessage";
-import { Message } from "@/types";
+
+import appClient from "@/api";
+import { Message, CustomError } from "@/types";
 
 import PencilIcon from "@/assets/icons/bx-pencil.svg";
 import { divideArrayByIndexRemainder } from "@/util";
+import { useSnackbar } from "@/context/SnackbarContext";
 
 interface LetterPaperProp {
   to: string;
@@ -19,6 +24,33 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
   const [writeNewMessage, setWriteNewMessage] = useState(false);
   const [slicedMessageLists, setSlicedMessageLists] = useState<Message[][]>(
     Array.from(Array(4), () => [])
+  );
+  const [content, setContent] = useState("");
+  const [color, setColor] = useState("#C5FF98");
+
+  const { rollingpaperId } = useParams();
+  const { openSnackbar } = useSnackbar();
+
+  const { mutate: createMessage } = useMutation(
+    ({ content, color }: Pick<Message, "content" | "color">) => {
+      return appClient
+        .post(`/rollingpapers/${rollingpaperId}/messages`, {
+          content,
+          color,
+        })
+        .then((response) => response.data);
+    },
+    {
+      onSuccess: () => {
+        openSnackbar("메시지 작성 완료");
+      },
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response) {
+          const customError = error.response.data as CustomError;
+          alert(customError.message);
+        }
+      },
+    }
   );
 
   const handleMessageWriteButtonClick: React.MouseEventHandler<
@@ -42,8 +74,21 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
     setSlicedMessageLists(newSlicedMessageList);
   };
 
-  const hideMessageForm = () => {
+  const submitMessageForm = () => {
+    createMessage({ content, color });
     setWriteNewMessage(false);
+  };
+
+  const cancelMessageWrite = () => {
+    if (confirm("메시지 작성을 취소하시겠습니까?")) {
+      setWriteNewMessage(false);
+    }
+  };
+
+  const handleMessageChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
+    e
+  ) => {
+    setContent(e.target.value);
   };
 
   useEffect(() => {
@@ -73,7 +118,14 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
         {slicedMessageLists.map((messageList, index) => (
           <StyledMessageList key={index}>
             {index === 0 && writeNewMessage && (
-              <MessageForm hideMessageForm={hideMessageForm} />
+              <MessageForm
+                submitMessageForm={submitMessageForm}
+                cancelMessageWrite={cancelMessageWrite}
+                content={content}
+                onChange={handleMessageChange}
+                color={color}
+                onClickColor={setColor}
+              />
             )}
             {messageList.map((message) => (
               <Link key={message.id} to={`message/${message.id}`}>
