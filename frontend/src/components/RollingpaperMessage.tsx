@@ -4,11 +4,16 @@ import styled from "@emotion/styled";
 interface RollingpaperMessageProp {
   content: string;
   author: string;
+  color: string;
 }
 
-const RollingpaperMessage = ({ content, author }: RollingpaperMessageProp) => {
+const RollingpaperMessage = ({
+  content,
+  author,
+  color,
+}: RollingpaperMessageProp) => {
   return (
-    <StyledMessage>
+    <StyledMessage color={color}>
       <StyledMessageContent>{content}</StyledMessageContent>
       <StyledMessageAuthor>{author}</StyledMessageAuthor>
     </StyledMessage>
@@ -25,7 +30,7 @@ const StyledMessage = styled.div`
   min-height: 130px;
   padding: 20px 15px 10px;
 
-  background-color: ${({ theme }) => theme.colors.YELLOW_300};
+  background-color: ${(props) => props.color};
 
   @media only screen and (min-width: 600px) {
     width: 180px;

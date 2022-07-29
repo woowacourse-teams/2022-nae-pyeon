@@ -132,6 +132,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
                 <RollingpaperMessage
                   content={message.content}
                   author={message.from}
+                  color={message.color}
                 />
               </Link>
             ))}
