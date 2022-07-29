@@ -5,6 +5,8 @@ import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface TeamParticipationRepository {
 
@@ -17,6 +19,8 @@ public interface TeamParticipationRepository {
     List<TeamParticipation> findByTeamId(final Long teamId);
 
     List<Team> findTeamsByMemberId(final Long memberId);
+
+    Page<Team> findTeamsByMemberIdAndPageRequest(final Long memberId, final Pageable pageRequest);
 
     String findNicknameByMemberIdAndTeamId(final Long memberId, final Long teamId);
 

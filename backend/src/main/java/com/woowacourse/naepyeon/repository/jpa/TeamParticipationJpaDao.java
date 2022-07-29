@@ -5,6 +5,8 @@ import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +21,12 @@ public interface TeamParticipationJpaDao extends JpaRepository<TeamParticipation
             + "join p.team t "
             + "where p.member.id = :memberId")
     List<Team> findTeamsByMemberId(@Param("memberId") final Long memberId);
+
+    @Query("select t "
+            + "from TeamParticipation p "
+            + "join p.team t "
+            + "where p.member.id = :memberId")
+    Page<Team> findTeamsByMemberIdAndPageRequest(@Param("memberId") final Long memberId, final Pageable pageRequest);
 
     @Query("select p.member "
             + "from TeamParticipation p "

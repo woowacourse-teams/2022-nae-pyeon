@@ -13,6 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,7 +69,7 @@ class TeamRepositoryTest {
         teamRepository.save(team2);
         teamRepository.save(team3);
 
-        final List<Team> teams = teamRepository.findTeamsByContainingTeamName("woowa", PageRequest.of(0, 5));
+        final Page<Team> teams = teamRepository.findTeamsByContainingTeamName("woowa", PageRequest.of(0, 5));
         assertAll(
                 () -> assertThat(teams).contains(team1, team2),
                 () -> assertThat(teams).doesNotContain(team3)
@@ -93,7 +94,7 @@ class TeamRepositoryTest {
         teamRepository.save(team6);
         teamRepository.save(team7);
 
-        final List<Team> teams = teamRepository.findTeamsByContainingTeamName("woowa", PageRequest.of(1, 5));
+        final Page<Team> teams = teamRepository.findTeamsByContainingTeamName("woowa", PageRequest.of(1, 5));
         assertAll(
                 () -> assertThat(teams).contains(team6, team7),
                 () -> assertThat(teams).doesNotContain(team1, team2, team3, team4, team5)

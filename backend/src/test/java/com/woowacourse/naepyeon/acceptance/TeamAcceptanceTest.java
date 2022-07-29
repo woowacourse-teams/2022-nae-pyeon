@@ -1,7 +1,6 @@
 package com.woowacourse.naepyeon.acceptance;
 
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.가입한_모임_조회;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.키워드로_모든_모임_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입_정보_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_내_닉네임_변경;
@@ -11,6 +10,7 @@ import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_생�
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_이름_수정;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_추가;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임에_가입한_회원_목록_조회;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.키워드로_모든_모임_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원가입_후_로그인;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -66,7 +66,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
         final Long teamId = 모임_생성(tokenResponseDto);
 
-        final List<Long> joinedTeamIds = 가입한_모임_조회(tokenResponseDto).body()
+        final PageSizeRequest pageSizeRequest = new PageSizeRequest(5);
+        final List<Long> joinedTeamIds = 가입한_모임_조회(tokenResponseDto, pageSizeRequest, 1).body()
                 .as(TeamsResponseDto.class)
                 .getTeams()
                 .stream()
@@ -362,7 +363,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
         모임_가입(tokenResponseDto, team1Id, new JoinTeamMemberRequest("닉네임1"));
         모임_가입(tokenResponseDto, team3Id, new JoinTeamMemberRequest("닉네임3"));
 
-        final List<Long> joinedTeamIds = 가입한_모임_조회(tokenResponseDto).body()
+        final PageSizeRequest pageSizeRequest = new PageSizeRequest(5);
+        final List<Long> joinedTeamIds = 가입한_모임_조회(tokenResponseDto, pageSizeRequest, 1).body()
                 .as(TeamsResponseDto.class)
                 .getTeams()
                 .stream()
@@ -401,7 +403,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final MemberRegisterRequest member =
                 new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
         final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
-        final Long teamId = 모임_생성(tokenResponseDto);
+        모임_생성(tokenResponseDto);
 
         //모임 삭제
         final ExtractableResponse<Response> response = 모임_삭제(tokenResponseDto, 10000L);

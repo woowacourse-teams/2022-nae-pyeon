@@ -154,8 +154,10 @@ public class AcceptanceFixture {
         return get_search(tokenResponseDto, "/api/v1/teams", pageSizeRequest, page, keyword);
     }
 
-    public static ExtractableResponse<Response> 가입한_모임_조회(final TokenResponseDto tokenResponseDto) {
-        return get(tokenResponseDto, "/api/v1/teams/me");
+    public static ExtractableResponse<Response> 가입한_모임_조회(final TokenResponseDto tokenResponseDto,
+                                                          final PageSizeRequest pageSizeRequest,
+                                                          final int page) {
+        return get_search(tokenResponseDto, "/api/v1/teams/me", pageSizeRequest, page, "");
     }
 
     public static ExtractableResponse<Response> 모임에_가입한_회원_목록_조회(final TokenResponseDto tokenResponseDto,

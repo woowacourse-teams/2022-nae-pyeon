@@ -45,8 +45,12 @@ public class TeamController {
 
     @GetMapping("/me")
     public ResponseEntity<TeamsResponseDto> getJoinedTeams(
-            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest) {
-        return ResponseEntity.ok(teamService.findByJoinedMemberId(loginMemberRequest.getId()));
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @RequestParam("page") final Integer page,
+            @RequestBody final PageSizeRequest pageSizeRequest) {
+        final int currentPage = page - 1;
+        final Pageable pageRequest = PageRequest.of(currentPage, pageSizeRequest.getSize());
+        return ResponseEntity.ok(teamService.findByJoinedMemberId(loginMemberRequest.getId(), pageRequest));
     }
 
     @GetMapping

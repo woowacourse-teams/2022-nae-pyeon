@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -33,7 +33,7 @@ public class JpaTeamRepository implements TeamRepository {
     }
 
     @Override
-    public List<Team> findTeamsByContainingTeamName(final String keyword, final Pageable pageRequest) {
+    public Page<Team> findTeamsByContainingTeamName(final String keyword, final Pageable pageRequest) {
         return teamJpaDao.findByNameContaining(keyword, pageRequest);
     }
 
