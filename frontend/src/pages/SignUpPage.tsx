@@ -12,6 +12,7 @@ import Button from "@/components/Button";
 
 import { REGEX } from "@/constants";
 import { CustomError } from "@/types";
+import { useSnackbar } from "@/context/SnackbarContext";
 
 type SignUpMemberInfo = {
   email: string;
@@ -21,6 +22,7 @@ type SignUpMemberInfo = {
 
 const SignUpPage = () => {
   const navigate = useNavigate();
+  const { openSnackbar } = useSnackbar();
 
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -39,7 +41,7 @@ const SignUpPage = () => {
     },
     {
       onSuccess: () => {
-        alert("회원가입 성공!");
+        openSnackbar("회원가입 성공!");
         navigate("/login");
       },
       onError: (error) => {

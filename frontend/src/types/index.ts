@@ -16,3 +16,5 @@ export type CustomError = {
   errorCode: number;
   message: string;
 };
+
+export type ValueOf<T> = T[keyof T];

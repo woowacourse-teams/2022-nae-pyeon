@@ -22,35 +22,26 @@ const StyledMessage = styled.div`
   white-space: pre-line;
 
   width: 130px;
-  height: 130px;
+  min-height: 130px;
   padding: 20px 15px 10px;
 
   background-color: ${({ theme }) => theme.colors.YELLOW_300};
 
   @media only screen and (min-width: 600px) {
     width: 180px;
-    height: 180px;
+    min-height: 180px;
   }
 `;
 
 const StyledMessageContent = styled.div`
-  height: 64px;
   overflow: hidden;
 
   font-size: 14px;
   line-height: 16px;
 
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
-
   @media only screen and (min-width: 600px) {
-    height: 126px;
-
     font-size: 14px;
     line-height: 18px;
-
-    -webkit-line-clamp: 7;
   }
 `;
 
