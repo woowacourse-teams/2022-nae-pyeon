@@ -92,15 +92,16 @@ class MessageRepositoryTest {
 
 
     @Test
-    @DisplayName("본인이 작성한 메시지 내용을 변경한다.")
+    @DisplayName("본인이 작성한 메시지 내용과 색상을 변경한다.")
     void update() {
         final Member member = memberRepository.findByEmail(author.getEmail())
                 .orElseThrow();
-        final Message message = new Message(content, member, rollingpaper);
+        final Message message = new Message(content, "green", member, rollingpaper);
         final Long messageId = messageRepository.save(message);
         final String newContent = "알고리즘이 좋아요";
+        final String newColor = "red";
 
-        messageRepository.update(messageId, newContent);
+        messageRepository.update(messageId, newColor, newContent);
         final Message updateMessage = messageRepository.findById(messageId)
                 .orElseThrow();
 
@@ -112,7 +113,7 @@ class MessageRepositoryTest {
     void delete() {
         final Member member = memberRepository.findByEmail(author.getEmail())
                 .orElseThrow();
-        final Message message = new Message(content, member, rollingpaper);
+        final Message message = new Message(content, "green", member, rollingpaper);
         final Long messageId = messageRepository.save(message);
 
         messageRepository.delete(messageId);
@@ -148,6 +149,6 @@ class MessageRepositoryTest {
     }
 
     private Message createMessage() {
-        return new Message(content, author, rollingpaper);
+        return new Message(content, "green", author, rollingpaper);
     }
 }

@@ -12,7 +12,7 @@ public interface MessageRepository {
 
     List<Message> findAllByRollingpaperId(final Long rollingpaperId);
 
-    void update(final Long id, final String newContent);
+    void update(final Long id, final String newColor, final String newContent);
 
     void delete(final Long id);
 }

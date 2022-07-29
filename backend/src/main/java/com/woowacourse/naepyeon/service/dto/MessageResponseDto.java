@@ -12,6 +12,7 @@ public class MessageResponseDto {
 
     private Long id;
     private String content;
+    private String color;
     private String from;
     private Long authorId;
 }

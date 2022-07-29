@@ -13,4 +13,6 @@ public class MessageUpdateContentRequest {
 
     @NotBlank(message = "2001:메시지는 공백일 수 없습니다.")
     private String content;
+
+    private String color;
 }
