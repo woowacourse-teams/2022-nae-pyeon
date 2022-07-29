@@ -19,6 +19,9 @@ spring:
         default_batch_fetch_size: 1000 #최적화 옵션
     open-in-view: false
 
+  flyway:
+    enabled: false
+
 logging.level:
   org.hibernate.SQL: debug
 
