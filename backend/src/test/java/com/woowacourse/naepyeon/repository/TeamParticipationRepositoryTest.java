@@ -185,7 +185,6 @@ class TeamParticipationRepositoryTest {
         final TeamParticipation teamParticipation = new TeamParticipation(team1, member1, "닉네임1");
         final Long teamParticipationId = teamParticipationRepository.save(teamParticipation);
 
-        em.flush();
         sleep(1);
         teamParticipationRepository.updateNickname(expected, member1.getId(), team1.getId());
         em.flush();
