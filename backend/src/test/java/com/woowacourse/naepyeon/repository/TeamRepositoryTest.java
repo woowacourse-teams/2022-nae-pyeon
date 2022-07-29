@@ -102,6 +102,7 @@ class TeamRepositoryTest {
         final Team team = new Team("woowacourse", "테스트 모임입니다.", "testEmoji", "#123456");
         final Long teamId = teamRepository.save(team);
 
+        em.flush();
         team.changeName("updateupdate");
         em.flush();
 

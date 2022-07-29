@@ -69,6 +69,7 @@ class MemberRepositoryTest {
         final Member member = new Member("alex", "alex@naepyeon.com", "abc12345");
         final Long memberId = memberRepository.save(member);
 
+        em.flush();
         member.changeUsername("kth990303");
         em.flush();
 
