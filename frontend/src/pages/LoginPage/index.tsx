@@ -14,6 +14,7 @@ import { UserContext } from "@/context/UserContext";
 
 import appClient from "@/api";
 import { CustomError } from "@/types";
+import { KAKAO_OAUTH_URL } from "@/constants";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -46,6 +47,12 @@ const LoginPage = () => {
       },
     }
   );
+
+  const handleKakaoLoginButtonClick: React.MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
+    location.href = KAKAO_OAUTH_URL.AUTHORIZE_CODE;
+  };
 
   const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -84,7 +91,7 @@ const LoginPage = () => {
           <Button type="submit">로그인</Button>
         </form>
         <hr />
-        <SocialLoginButton />
+        <SocialLoginButton onClick={handleKakaoLoginButtonClick} />
         <StyledGuideText>
           아직 내편의 회원이 아닌가요? <Link to="/signup">회원가입</Link>
         </StyledGuideText>
