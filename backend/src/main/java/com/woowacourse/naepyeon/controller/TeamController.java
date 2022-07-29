@@ -49,7 +49,7 @@ public class TeamController {
     }
 
     @GetMapping
-    public ResponseEntity<TeamsResponseDto> getAllTeams(
+    public ResponseEntity<TeamsResponseDto> getAllTeamsByKeyword(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @RequestParam("keyword") final String keyword, @RequestParam("page") final Integer page,
             @RequestBody final PageSizeRequest pageSizeRequest) {

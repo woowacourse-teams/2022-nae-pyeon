@@ -11,7 +11,7 @@ public interface TeamRepository {
 
     Optional<Team> findById(final Long teamId);
 
-    List<Team> findTeamsByContainingTeamName(final String keyword, final PageRequest pageREquest);
+    List<Team> findTeamsByContainingTeamName(final String keyword, final PageRequest pageRequest);
 
     List<Team> findAll();
 

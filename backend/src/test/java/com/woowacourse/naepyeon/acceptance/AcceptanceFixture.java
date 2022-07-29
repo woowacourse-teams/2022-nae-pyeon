@@ -148,7 +148,7 @@ public class AcceptanceFixture {
         return get(tokenResponseDto, "/api/v1/teams/" + teamId);
     }
 
-    public static ExtractableResponse<Response> 모든_모임_조회(
+    public static ExtractableResponse<Response> 키워드로_모든_모임_조회(
             final TokenResponseDto tokenResponseDto, final PageSizeRequest pageSizeRequest,
             final int page, final String keyword) {
         return get_search(tokenResponseDto, "/api/v1/teams", pageSizeRequest, page, keyword);

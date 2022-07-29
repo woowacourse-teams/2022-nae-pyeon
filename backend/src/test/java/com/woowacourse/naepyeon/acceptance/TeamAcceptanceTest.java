@@ -1,7 +1,7 @@
 package com.woowacourse.naepyeon.acceptance;
 
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.가입한_모임_조회;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모든_모임_조회;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.키워드로_모든_모임_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입_정보_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_내_닉네임_변경;
@@ -152,7 +152,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
         //결과 조회
         final PageSizeRequest pageSizeRequest = new PageSizeRequest(5);
         final ExtractableResponse<Response> response =
-                모든_모임_조회(tokenResponseDto, pageSizeRequest, 0, "내편");
+                키워드로_모든_모임_조회(tokenResponseDto, pageSizeRequest, 0, "내편");
 
         final List<TeamResponseDto> actual = response.as(TeamsResponseDto.class)
                 .getTeams();
@@ -201,7 +201,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
 
         final PageSizeRequest pageSizeRequest = new PageSizeRequest(5);
         final List<TeamResponseDto> teams =
-                모든_모임_조회(tokenResponseDto2, pageSizeRequest, 0, "woowa")
+                키워드로_모든_모임_조회(tokenResponseDto2, pageSizeRequest, 0, "woowa")
                         .as(TeamsResponseDto.class)
                         .getTeams();
 
