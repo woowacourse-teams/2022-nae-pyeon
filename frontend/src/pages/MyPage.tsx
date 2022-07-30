@@ -10,7 +10,13 @@ import MyPagePaginatedMessageList from "@/components/MyPagePaginatedMessageList"
 
 import appClient from "@/api";
 
-import { CustomError, ValueOf } from "@/types";
+import {
+  ReceivedRollingpaper,
+  UserInfo,
+  SentMessage,
+  CustomError,
+  ValueOf,
+} from "@/types";
 
 type TabMode = ValueOf<typeof TAB>;
 
@@ -18,30 +24,6 @@ const TAB = {
   RECEIVED_PAPER: "received_paper",
   SENT_MESSAGE: "sent_message",
 } as const;
-
-interface UserProfile {
-  id: number;
-  username: string;
-  email: string;
-}
-
-interface ReceivedRollingpaper {
-  id: number;
-  title: string;
-  teamId: number;
-  teamName: string;
-}
-
-interface SentMessage {
-  id: number;
-  rollingpaperId: number;
-  rollingpaperTitle: string;
-  teamId: number;
-  teamName: string;
-  to: string;
-  content: string;
-  color: string;
-}
 
 interface ResponseReceivedRollingpapers {
   totalCount: number;
@@ -55,26 +37,35 @@ interface ResponseSentMessages {
   messages: SentMessage[];
 }
 
+const contentCountPerPage = 5;
+
+const INITIAL_DATA = {
+  USER_INFO: { id: -1, username: "", email: "" },
+  RECEIVED_ROLLINGPAPERS: {
+    totalCount: -1,
+    currentPage: -1,
+    rollingpapers: [],
+  },
+  SENT_MESSAGES: {
+    totalCount: -1,
+    currentPage: -1,
+    messages: [],
+  },
+};
+
 const MyPage = () => {
   const [tab, setTab] = useState<TabMode>(TAB.RECEIVED_PAPER);
   const [receivedRollingpapersPage, setReceivedRollingpapersPage] = useState(1);
   const [sentMessagesCurrentPage, setSentMessagesCurrentPage] = useState(1);
 
-  const {
-    isLoading: isLoadingGetUserProfile,
-    isError: isErrorGetUserProfile,
-    error: getUserProfileError,
-    data: userProfile,
-  } = useQuery<UserProfile>(["user-profile"], () =>
-    appClient.get("/members/me").then((response) => response.data)
-  );
+  const fetchUserInfo = () => {
+    return appClient.get("/members/me").then((response) => response.data);
+  };
 
-  const contentCountPerPage = 5;
-
-  const fetchReceivedRollingpapers = (page = 1) => {
+  const fetchReceivedRollingpapers = (page = 1, count = 5) => {
     const searchParams = new URLSearchParams({
       page: page.toString(),
-      count: contentCountPerPage.toString(),
+      count: count.toString(),
     });
 
     return appClient
@@ -82,10 +73,10 @@ const MyPage = () => {
       .then((response) => response.data);
   };
 
-  const fetchSentMessage = (page = 1) => {
+  const fetchSentMessage = (page = 1, count = 5) => {
     const searchParams = new URLSearchParams({
       page: page.toString(),
-      count: contentCountPerPage.toString(),
+      count: count.toString(),
     });
 
     return appClient
@@ -94,14 +85,30 @@ const MyPage = () => {
   };
 
   const {
+    isLoading: isLoadingGetUserProfile,
+    isError: isErrorGetUserProfile,
+    error: getUserProfileError,
+    data: userProfile,
+  } = useQuery<UserInfo>(["user-profile"], () => fetchUserInfo(), {
+    initialData: INITIAL_DATA.USER_INFO,
+  });
+
+  const {
     isLoading: isLoadingGetReceivedRollingpapers,
     isError: isErrorGetReceivedRollingpapers,
     error: getReceivedRollingpapersError,
     data: responseReceivedRollingpapers,
   } = useQuery<ResponseReceivedRollingpapers>(
     ["received-rollingpapers", receivedRollingpapersPage],
-    () => fetchReceivedRollingpapers(receivedRollingpapersPage),
-    { keepPreviousData: true }
+    () =>
+      fetchReceivedRollingpapers(
+        receivedRollingpapersPage,
+        contentCountPerPage
+      ),
+    {
+      keepPreviousData: true,
+      initialData: INITIAL_DATA.RECEIVED_ROLLINGPAPERS,
+    }
   );
 
   const {
@@ -111,8 +118,11 @@ const MyPage = () => {
     data: responseSentMessages,
   } = useQuery<ResponseSentMessages>(
     ["sent-messages", sentMessagesCurrentPage],
-    () => fetchSentMessage(sentMessagesCurrentPage),
-    { keepPreviousData: true }
+    () => fetchSentMessage(sentMessagesCurrentPage, contentCountPerPage),
+    {
+      keepPreviousData: true,
+      initialData: INITIAL_DATA.SENT_MESSAGES,
+    }
   );
 
   if (
@@ -157,15 +167,7 @@ const MyPage = () => {
     return <div>에러</div>;
   }
 
-  if (!userProfile) {
-    return <div>에러</div>;
-  }
-
-  if (!responseReceivedRollingpapers) {
-    return <div>에러</div>;
-  }
-
-  if (!responseSentMessages) {
+  if (!userProfile || !responseReceivedRollingpapers || !responseSentMessages) {
     return <div>에러</div>;
   }
 
