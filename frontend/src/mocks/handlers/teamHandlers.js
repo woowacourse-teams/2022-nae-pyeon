@@ -36,10 +36,14 @@ const teamHandlers = [
     const page = +req.url.searchParams.get("page");
     const count = +req.url.searchParams.get("count");
 
+    const keywordTeam = totalTeams.filter((team) =>
+      team.name.includes(keyword)
+    );
+
     const result = {
-      totalCount: totalTeams.length,
-      currentPage: page,
-      teams: totalTeams.slice((page - 1) * count, (page - 1) * count + count),
+      totalCount: keywordTeam.length,
+      currentPage: Number(page),
+      teams: keywordTeam.slice((page - 1) * count, (page - 1) * count + count),
     };
 
     return res(ctx.json(result));

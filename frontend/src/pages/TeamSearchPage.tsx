@@ -32,12 +32,14 @@ const TeamSearch = () => {
     { rootMargin: "10px", threshold: 1.0 }
   );
 
-  const fetchTeams = ({ pageParam = 1 }) => {
-    const data = appClient
-      .get(`teams?keyword=''&page=${pageParam}&count=5`)
-      .then((response) => response.data);
-    return data;
-  };
+  const fetchTeams =
+    (keyword: string) =>
+    async ({ pageParam = 1 }) => {
+      const data = appClient
+        .get(`teams?keyword=${keyword}&page=${pageParam}&count=5`)
+        .then((response) => response.data);
+      return data;
+    };
 
   const {
     data: totalTeamResponse,
@@ -47,7 +49,8 @@ const TeamSearch = () => {
     isFetching,
     isError,
     isLoading,
-  } = useInfiniteQuery(["projects"], fetchTeams, {
+    refetch,
+  } = useInfiniteQuery(["projects"], fetchTeams(searchKeyword), {
     getNextPageParam: (lastPage) => {
       let endPage = lastPage.totalCount / 5;
       if (lastPage.totalCount % 5 !== 0) {
@@ -61,9 +64,8 @@ const TeamSearch = () => {
   });
 
   const handleSearchClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    // 키워드로 api call 하기
     e.preventDefault();
-    console.log(searchKeyword);
+    refetch();
   };
 
   const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = (
