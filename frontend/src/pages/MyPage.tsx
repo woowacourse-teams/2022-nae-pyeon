@@ -12,78 +12,12 @@ import appClient from "@/api";
 
 import { CustomError, ValueOf } from "@/types";
 
-const rollingpapers = [
-  { id: 1, title: "소피아 생일 축하해", teamId: 1, teamName: "우테코 4기" },
-  { id: 2, title: "소피아 생일 축하해", teamId: 1, teamName: "우테코 4기" },
-  { id: 3, title: "소피아 생일 축하해", teamId: 1, teamName: "우테코 4기" },
-  { id: 4, title: "소피아 생일 축하해", teamId: 1, teamName: "우테코 4기" },
-  { id: 5, title: "소피아 생일 축하해", teamId: 1, teamName: "우테코 4기" },
-];
-
-const messages = [
-  {
-    id: 1,
-    rollingpaperId: 1,
-    teamId: 1,
-    rollingpaperTitle: "소피아의 생일을 축하해",
-    to: "소피아",
-    team: "우테코 4기",
-    content:
-      "소피아야 생일 축하해~ 축카추카추 소피아야 생일 축하해~ 축카추카추",
-    color: "#C5FF98",
-  },
-  {
-    id: 2,
-    rollingpaperId: 1,
-    teamId: 1,
-    rollingpaperTitle: "소피아의 생일을 축하해",
-    to: "소피아",
-    team: "우테코 4기",
-    content:
-      "소피아야 생일 축하해~ 축카추카추 소피아야 생일 축하해~ 축카추카추",
-    color: "#C5FF98",
-  },
-  {
-    id: 3,
-    rollingpaperId: 1,
-    teamId: 1,
-    rollingpaperTitle: "소피아의 생일을 축하해",
-    to: "소피아",
-    team: "우테코 4기",
-    content:
-      "소피아야 생일 축하해~ 축카추카추 소피아야 생일 축하해~ 축카추카추",
-    color: "#FF8181",
-  },
-  {
-    id: 4,
-    rollingpaperId: 1,
-    teamId: 1,
-    rollingpaperTitle: "소피아의 생일을 축하해",
-    to: "소피아",
-    team: "우테코 4기",
-    content:
-      "소피아야 생일 축하해~ 축카추카추 소피아야 생일 축하해~ 축카추카추",
-    color: "#C5FF98",
-  },
-  {
-    id: 5,
-    rollingpaperId: 1,
-    teamId: 1,
-    rollingpaperTitle: "소피아의 생일을 축하해",
-    to: "소피아",
-    team: "우테코 4기",
-    content:
-      "소피아야 생일 축하해~ 축카추카추 소피아야 생일 축하해~ 축카추카추",
-    color: "#C5FF98",
-  },
-];
+type TabMode = ValueOf<typeof TAB>;
 
 const TAB = {
   RECEIVED_PAPER: "received_paper",
   SENT_MESSAGE: "sent_message",
 } as const;
-
-type TabMode = ValueOf<typeof TAB>;
 
 interface UserProfile {
   id: number;
