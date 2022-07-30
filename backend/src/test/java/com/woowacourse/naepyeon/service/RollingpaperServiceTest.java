@@ -7,6 +7,8 @@ import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.exception.NotFoundRollingpaperException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamMemberException;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
+import com.woowacourse.naepyeon.service.dto.ReceivedRollingpaperResponseDto;
+import com.woowacourse.naepyeon.service.dto.ReceivedRollingpapersResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperPreviewResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpapersResponseDto;
@@ -16,6 +18,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -130,10 +133,10 @@ class RollingpaperServiceTest {
 
         // when
         final RollingpapersResponseDto responseDto = rollingpaperService.findByMemberId(teamId, memberId);
-        final List<RollingpaperPreviewResponseDto> rollingpaperPreviewResponseDtos = responseDto.getRollingpapers();
+        final List<RollingpaperPreviewResponseDto> actual = responseDto.getRollingpapers();
 
         // then
-        assertThat(rollingpaperPreviewResponseDtos)
+        assertThat(actual)
                 .usingRecursiveComparison()
                 .isEqualTo(expected);
     }
@@ -150,6 +153,30 @@ class RollingpaperServiceTest {
                 new RollingpaperPreviewResponseDto(rollingpaperResponseDto2.getId(),
                         rollingpaperResponseDto2.getTitle(), rollingpaperResponseDto2.getTo())
         );
+    }
+
+    @Test
+    @DisplayName("내가 받은 롤링페이퍼 목록을 조회한다.")
+    void findReceivedRollingpapers() {
+        // given
+        final Long rollingpaperId1 =
+                rollingpaperService.createRollingpaper(rollingPaperTitle, teamId, member2Id, memberId);
+        final Long rollingpaperId2 =
+                rollingpaperService.createRollingpaper(rollingPaperTitle, teamId, member2Id, memberId);
+
+        // when
+        final ReceivedRollingpapersResponseDto receivedRollingpapersResponseDto =
+                rollingpaperService.findReceivedRollingpapers(memberId, PageRequest.of(0, 2));
+        final List<ReceivedRollingpaperResponseDto> actual = receivedRollingpapersResponseDto.getRollingpapers();
+        final List<ReceivedRollingpaperResponseDto> expected = List.of(
+                new ReceivedRollingpaperResponseDto(rollingpaperId1, rollingPaperTitle, teamId, teamRequest.getName()),
+                new ReceivedRollingpaperResponseDto(rollingpaperId2, rollingPaperTitle, teamId, teamRequest.getName())
+        );
+
+        // then
+        assertThat(actual)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
     }
 
     @Test

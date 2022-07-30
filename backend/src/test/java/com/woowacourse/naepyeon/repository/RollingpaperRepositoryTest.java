@@ -17,6 +17,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -93,6 +95,32 @@ class RollingpaperRepositoryTest {
         final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByMemberId(member.getId());
 
         assertThat(rollingpapers).hasSize(1);
+    }
+
+    @Test
+    @DisplayName("롤링페이퍼들을 memberId와 PageRequest로 찾는다.")
+    void findByMemberIdAndPageRequest() {
+        final Rollingpaper rollingPaper1 = createRollingPaper();
+        final Rollingpaper rollingPaper2 = createRollingPaper();
+        final Rollingpaper rollingPaper3 = createRollingPaper();
+        final Rollingpaper rollingPaper4 = createRollingPaper();
+        final Rollingpaper rollingPaper5 = createRollingPaper();
+        final Rollingpaper rollingPaper6 = createRollingPaper();
+        final Rollingpaper rollingPaper7 = createRollingPaper();
+        rollingpaperRepository.save(rollingPaper1);
+        rollingpaperRepository.save(rollingPaper2);
+        rollingpaperRepository.save(rollingPaper3);
+        rollingpaperRepository.save(rollingPaper4);
+        rollingpaperRepository.save(rollingPaper5);
+        rollingpaperRepository.save(rollingPaper6);
+        rollingpaperRepository.save(rollingPaper7);
+
+        final Page<Rollingpaper> actual = rollingpaperRepository.findByMemberId(member.getId(), PageRequest.of(1, 3));
+
+        assertAll(
+                () -> assertThat(actual).contains(rollingPaper4, rollingPaper5, rollingPaper6),
+                () -> assertThat(actual).doesNotContain(rollingPaper1, rollingPaper2, rollingPaper3, rollingPaper7)
+        );
     }
 
     @Test
