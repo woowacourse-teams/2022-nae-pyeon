@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, SetStateAction } from "react";
 import { useMutation } from "react-query";
 import styled from "@emotion/styled";
 import axios from "axios";
@@ -13,6 +13,7 @@ import Pencil from "@/assets/icons/bx-pencil.svg";
 import { CustomError } from "@/types";
 import appClient from "@/api";
 import { useSnackbar } from "@/context/SnackbarContext";
+
 interface RollingpaperMessageProp {
   content: string;
   author: string;
@@ -20,6 +21,8 @@ interface RollingpaperMessageProp {
   authorId: number;
   messageId: number;
   rollingpaperId: number;
+  setEditMessageId: React.Dispatch<SetStateAction<number | null>>;
+  setColor: React.Dispatch<SetStateAction<string>>;
 }
 
 const RollingpaperMessage = ({
@@ -29,6 +32,8 @@ const RollingpaperMessage = ({
   authorId,
   messageId,
   rollingpaperId,
+  setEditMessageId,
+  setColor,
 }: RollingpaperMessageProp) => {
   const { memberId } = useContext(UserContext);
   const { openSnackbar } = useSnackbar();
@@ -53,7 +58,8 @@ const RollingpaperMessage = ({
   );
 
   const handleEditButtonClick = () => {
-    console.log("edit");
+    setEditMessageId(messageId);
+    setColor(color);
   };
 
   const handleDeleteButtonClick = () => {

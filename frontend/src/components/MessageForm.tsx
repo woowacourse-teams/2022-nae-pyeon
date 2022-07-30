@@ -64,11 +64,11 @@ export const MessageForm = ({
       <StyledMessageForm>
         <MessageTextArea
           placeholder="메시지를 입력해보세요!"
-          value={content}
+          content={content}
           onChange={handleTextAreaChange}
           backgroundColor={color}
         />
-        <MessageColorPicker onClickRadio={onClickColor} />
+        <MessageColorPicker onClickRadio={onClickColor} color={color} />
         <IconButtonContainer>
           <MessageSubmitButton onClick={handleSubmitButtonClick} />
           <MessageCancelButton onClick={handleCancelButtonClick} />

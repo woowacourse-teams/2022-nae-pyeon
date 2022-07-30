@@ -23,6 +23,7 @@ interface LetterPaperProp {
 
 const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
   const [writeNewMessage, setWriteNewMessage] = useState(false);
+  const [editMessageId, setEditMessageId] = useState<number | null>(null);
   const [slicedMessageLists, setSlicedMessageLists] = useState<Message[][]>(
     Array.from(Array(4), () => [])
   );
@@ -31,6 +32,27 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
 
   const { rollingpaperId } = useParams();
   const { openSnackbar } = useSnackbar();
+
+  const { mutate: updateMessage } = useMutation(
+    ({ content }: Pick<Message, "content">) => {
+      return appClient
+        .put(`/rollingpapers/${rollingpaperId}/messages/${editMessageId}`, {
+          content,
+        })
+        .then((response) => response.data);
+    },
+    {
+      onSuccess: () => {
+        openSnackbar("메시지 수정 완료");
+      },
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response) {
+          const customError = error.response.data as CustomError;
+          alert(customError.message);
+        }
+      },
+    }
+  );
 
   const { mutate: createMessage } = useMutation(
     ({ content, color }: Pick<Message, "content" | "color">) => {
@@ -76,10 +98,17 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
   };
 
   const submitMessageForm = () => {
-    createMessage({ content, color });
+    if (!writeNewMessage && editMessageId) {
+      updateMessage({ content });
+    }
+    if (writeNewMessage) {
+      createMessage({ content, color });
+    }
+
     setContent("");
     setColor(INIT_COLOR);
     setWriteNewMessage(false);
+    setEditMessageId(0);
   };
 
   const cancelMessageWrite = () => {
@@ -87,6 +116,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
       setContent("");
       setColor(INIT_COLOR);
       setWriteNewMessage(false);
+      setEditMessageId(0);
     }
   };
 
@@ -132,17 +162,34 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
                 onClickColor={setColor}
               />
             )}
-            {messageList.map((message) => (
-              <RollingpaperMessage
-                content={message.content}
-                author={message.from}
-                color={message.color}
-                authorId={message.authorId}
-                rollingpaperId={Number(rollingpaperId)}
-                messageId={message.id}
-                key={message.id}
-              />
-            ))}
+            {messageList.map((message) => {
+              if (!writeNewMessage && editMessageId === message.id) {
+                return (
+                  <MessageForm
+                    key={message.id}
+                    submitMessageForm={submitMessageForm}
+                    cancelMessageWrite={cancelMessageWrite}
+                    content={message.content}
+                    onChange={handleMessageChange}
+                    color={color}
+                    onClickColor={setColor}
+                  />
+                );
+              }
+              return (
+                <RollingpaperMessage
+                  key={message.id}
+                  content={message.content}
+                  author={message.from}
+                  color={message.color}
+                  authorId={message.authorId}
+                  rollingpaperId={Number(rollingpaperId)}
+                  messageId={message.id}
+                  setEditMessageId={setEditMessageId}
+                  setColor={setColor}
+                />
+              );
+            })}
           </StyledMessageList>
         ))}
       </StyledSlicedMessageLists>
