@@ -1,4 +1,5 @@
 import { rest } from "msw";
+import receivedRollinpapersDummy from "../dummy/receivedRollingpapers.json";
 
 const memberHandlers = [
   // 회원 가입 요쳥
@@ -43,6 +44,23 @@ const memberHandlers = [
     }
 
     return res(ctx.status(204));
+  }),
+
+  // 내가 받은 롤링페이퍼 목록 조회
+  rest.get("/api/v1/members/me/rollingpapers/received", (req, res, ctx) => {
+    const page = req.url.searchParams.get("page");
+    const count = req.url.searchParams.get("count");
+
+    const begin = page % 2 === 1 ? 0 : 5;
+    const end = page % 2 === 1 ? 5 : 10;
+
+    const result = {
+      totalCount: 160, // 전체 컨텐츠 개수
+      currentPage: Number(page), // 현재 페이지 번호 - 확인차?
+      rollingpapers: receivedRollinpapersDummy.rollingpapers.slice(begin, end),
+    };
+
+    return res(ctx.json(result));
   }),
 ];
 

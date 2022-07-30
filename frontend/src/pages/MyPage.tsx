@@ -91,6 +91,19 @@ interface UserProfile {
   email: string;
 }
 
+interface ReceivedRollingpaper {
+  id: number;
+  title: string;
+  teamId: number;
+  teamName: string;
+}
+
+interface ResponseReceivedRollingpapers {
+  totalCount: number;
+  currentPage: number;
+  rollingpapers: ReceivedRollingpaper[];
+}
+
 const MyPage = () => {
   const [tab, setTab] = useState<TabMode>(TAB.RECEIVED_PAPER);
   const [receivedCurrentPage, setReceivedCurrentPage] = useState(1);
@@ -105,7 +118,31 @@ const MyPage = () => {
     appClient.get("/members/me").then((response) => response.data)
   );
 
-  if (isLoadingGetUserProfile) {
+  const contentCountPerPage = 5;
+
+  const fetchReceivedRollingpapers = (page = 1) => {
+    const searchParams = new URLSearchParams({
+      page: page.toString(),
+      count: contentCountPerPage.toString(),
+    });
+
+    return appClient
+      .get(`/members/me/rollingpapers/received?${searchParams.toString()}`)
+      .then((response) => response.data);
+  };
+
+  const {
+    isLoading: isLoadingGetReceivedRollingpapers,
+    isError: isErrorGetReceivedRollingpapers,
+    error: getReceivedRollingpapersError,
+    data: responceReceivedRollingpapers,
+  } = useQuery<ResponseReceivedRollingpapers>(
+    ["received-rollingpapers", receivedCurrentPage],
+    () => fetchReceivedRollingpapers(receivedCurrentPage),
+    { keepPreviousData: true }
+  );
+
+  if (isLoadingGetUserProfile || isLoadingGetReceivedRollingpapers) {
     return <div>로딩중</div>;
   }
 
@@ -120,7 +157,23 @@ const MyPage = () => {
     return <div>에러</div>;
   }
 
+  if (isErrorGetReceivedRollingpapers) {
+    if (
+      axios.isAxiosError(getReceivedRollingpapersError) &&
+      getReceivedRollingpapersError.response
+    ) {
+      const customError = getReceivedRollingpapersError.response
+        .data as CustomError;
+      return <div>{customError.message}</div>;
+    }
+    return <div>에러</div>;
+  }
+
   if (!userProfile) {
+    return <div>에러</div>;
+  }
+
+  if (!responceReceivedRollingpapers) {
     return <div>에러</div>;
   }
 
@@ -129,7 +182,7 @@ const MyPage = () => {
       <UserProfile username={userProfile.username} email={userProfile.email} />
       <StyledTabs>
         <MyPageTab
-          number={rollingpapers.length}
+          number={responceReceivedRollingpapers.rollingpapers.length}
           text="받은 롤링페이퍼"
           activate={tab === TAB.RECEIVED_PAPER}
           onClick={() => {
@@ -147,7 +200,7 @@ const MyPage = () => {
       </StyledTabs>
       {tab === TAB.RECEIVED_PAPER ? (
         <MyPagePaginatedRollingpaperList
-          rollingpapers={rollingpapers}
+          rollingpapers={responceReceivedRollingpapers.rollingpapers}
           currentPage={receivedCurrentPage}
           maxPage={10}
           setCurrentPage={setReceivedCurrentPage}
