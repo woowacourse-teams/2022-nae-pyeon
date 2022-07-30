@@ -33,6 +33,17 @@ const memberHandlers = [
 
     return res(ctx.json(result));
   }),
+
+  // 내 정보 수정
+  rest.put("/api/v1/members/me", (req, res, ctx) => {
+    const accessToken = req.headers.headers.authorization.split(" ")[1];
+
+    if (!accessToken) {
+      return res(ctx.status(400));
+    }
+
+    return res(ctx.status(204));
+  }),
 ];
 
 export default memberHandlers;

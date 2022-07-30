@@ -126,7 +126,7 @@ const MyPage = () => {
 
   return (
     <>
-      <UserProfile name={userProfile.username} email={userProfile.email} />
+      <UserProfile username={userProfile.username} email={userProfile.email} />
       <StyledTabs>
         <MyPageTab
           number={rollingpapers.length}
