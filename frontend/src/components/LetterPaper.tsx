@@ -154,8 +154,8 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
           <StyledMessageList key={index}>
             {index === 0 && writeNewMessage && (
               <MessageForm
-                submitMessageForm={submitMessageForm}
-                cancelMessageWrite={cancelMessageWrite}
+                onSubmit={submitMessageForm}
+                onCancel={cancelMessageWrite}
                 content={content}
                 onChange={handleMessageChange}
                 color={color}
@@ -167,8 +167,8 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
                 return (
                   <MessageForm
                     key={message.id}
-                    submitMessageForm={submitMessageForm}
-                    cancelMessageWrite={cancelMessageWrite}
+                    onSubmit={submitMessageForm}
+                    onCancel={cancelMessageWrite}
                     content={message.content}
                     onChange={handleMessageChange}
                     color={color}

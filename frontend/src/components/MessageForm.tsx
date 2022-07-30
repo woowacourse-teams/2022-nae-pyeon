@@ -7,8 +7,8 @@ import CheckIcon from "@/assets/icons/bx-check.svg";
 import TrashIcon from "@/assets/icons/bx-trash.svg";
 
 type MessageFormProps = {
-  submitMessageForm: () => void;
-  cancelMessageWrite: () => void;
+  onSubmit: () => void;
+  onCancel: () => void;
   content: string;
   onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
   color: string;
@@ -34,8 +34,8 @@ const MessageCancelButton = ({ onClick }: ButtonAttributes) => {
 };
 
 export const MessageForm = ({
-  submitMessageForm,
-  cancelMessageWrite,
+  onSubmit,
+  onCancel,
   content,
   onChange,
   color,
@@ -50,14 +50,6 @@ export const MessageForm = ({
     onChange(e);
   };
 
-  const handleSubmitButtonClick: React.MouseEventHandler = () => {
-    submitMessageForm();
-  };
-
-  const handleCancelButtonClick: React.MouseEventHandler = () => {
-    cancelMessageWrite();
-  };
-
   return (
     <>
       <Background />
@@ -70,8 +62,8 @@ export const MessageForm = ({
         />
         <MessageColorPicker onClickRadio={onClickColor} color={color} />
         <IconButtonContainer>
-          <MessageSubmitButton onClick={handleSubmitButtonClick} />
-          <MessageCancelButton onClick={handleCancelButtonClick} />
+          <MessageSubmitButton onClick={onSubmit} />
+          <MessageCancelButton onClick={onCancel} />
         </IconButtonContainer>
       </StyledMessageForm>
     </>
