@@ -196,14 +196,18 @@ const MyPage = () => {
         <MyPagePaginatedRollingpaperList
           rollingpapers={responseReceivedRollingpapers.rollingpapers}
           currentPage={receivedRollingpapersPage}
-          maxPage={10}
+          maxPage={Math.ceil(
+            responseReceivedRollingpapers.totalCount / contentCountPerPage
+          )}
           setCurrentPage={setReceivedRollingpapersPage}
         />
       ) : (
         <MyPagePaginatedMessageList
           messages={responseSentMessages.messages}
           currentPage={sentMessagesCurrentPage}
-          maxPage={10}
+          maxPage={Math.ceil(
+            responseSentMessages.totalCount / contentCountPerPage
+          )}
           setCurrentPage={setSentMessagesCurrentPage}
         />
       )}
