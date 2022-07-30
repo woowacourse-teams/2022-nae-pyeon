@@ -5,4 +5,6 @@ const REGEX = {
   TEAM_NAME: /^[가-힣a-zA-Z\d~!@#$%^&*()+_\-\s]{1,20}$/,
 };
 
-export { REGEX };
+const TOTAL_TEAMS_PAGING_COUNT = 5;
+
+export { REGEX, TOTAL_TEAMS_PAGING_COUNT };

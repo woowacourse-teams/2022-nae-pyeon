@@ -4,12 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { useInfiniteQuery } from "react-query";
 import axios from "axios";
 
+import useIntersect from "@/hooks/useIntersect";
+
 import SearchInput from "@/components/SearchInput";
 import TeamCard from "@/components/TeamCard";
 
 import appClient from "@/api";
 import { CustomError } from "@/types";
-import useIntersect from "@/hooks/useIntersect";
+import { TOTAL_TEAMS_PAGING_COUNT } from "@/constants";
 
 interface Team {
   id: number;
@@ -36,7 +38,9 @@ const TeamSearch = () => {
     (keyword: string) =>
     async ({ pageParam = 1 }) => {
       const data = appClient
-        .get(`teams?keyword=${keyword}&page=${pageParam}&count=5`)
+        .get(
+          `teams?keyword=${keyword}&page=${pageParam}&count=${TOTAL_TEAMS_PAGING_COUNT}`
+        )
         .then((response) => response.data);
       return data;
     };
@@ -52,12 +56,10 @@ const TeamSearch = () => {
     refetch,
   } = useInfiniteQuery(["projects"], fetchTeams(searchKeyword), {
     getNextPageParam: (lastPage) => {
-      let endPage = lastPage.totalCount / 5;
-      if (lastPage.totalCount % 5 !== 0) {
-        endPage += 1;
-      }
-
-      if (lastPage.currentPage < endPage) {
+      if (
+        lastPage.currentPage * TOTAL_TEAMS_PAGING_COUNT <
+        lastPage.totalCount
+      ) {
         return lastPage.currentPage + 1;
       }
     },
