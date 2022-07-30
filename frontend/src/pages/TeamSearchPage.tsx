@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import axios from "axios";
 
 import SearchInput from "@/components/SearchInput";
@@ -9,10 +9,8 @@ import TeamCard from "@/components/TeamCard";
 
 import appClient from "@/api";
 import { CustomError } from "@/types";
+import useIntersect from "@/hooks/useIntersect";
 
-interface TotalTeamListResponse {
-  teams: Team[];
-}
 interface Team {
   id: number;
   name: string;
@@ -24,15 +22,43 @@ interface Team {
 const TeamSearch = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
+  const ref = useIntersect(
+    async (entry, observer) => {
+      observer.unobserve(entry.target);
+      if (hasNextPage && !isFetching) {
+        fetchNextPage();
+      }
+    },
+    { rootMargin: "10px", threshold: 1.0 }
+  );
+
+  const fetchTeams = ({ pageParam = 1 }) => {
+    const data = appClient
+      .get(`teams?keyword=''&page=${pageParam}&count=5`)
+      .then((response) => response.data);
+    return data;
+  };
 
   const {
-    isLoading,
-    isError,
-    error: getTotalTeamsError,
     data: totalTeamResponse,
-  } = useQuery<TotalTeamListResponse>(["total-teams"], () =>
-    appClient.get(`/teams`).then((response) => response.data)
-  );
+    error: getTotalTeamsError,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isError,
+    isLoading,
+  } = useInfiniteQuery(["projects"], fetchTeams, {
+    getNextPageParam: (lastPage) => {
+      let endPage = lastPage.totalCount / 5;
+      if (lastPage.totalCount % 5 !== 0) {
+        endPage += 1;
+      }
+
+      if (lastPage.currentPage < endPage) {
+        return lastPage.currentPage + 1;
+      }
+    },
+  });
 
   const handleSearchClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     // 키워드로 api call 하기
@@ -75,16 +101,19 @@ const TeamSearch = () => {
         />
       </StyledSearch>
       <StyledTeamList>
-        {totalTeamResponse.teams.map((team) => (
-          <TeamCard
-            key={team.id}
-            onClick={() => {
-              handleTeamCardClick(team.id);
-            }}
-          >
-            {team.name}
-          </TeamCard>
-        ))}
+        {totalTeamResponse.pages.map((group, i) =>
+          group.teams.map((team: Team) => (
+            <TeamCard
+              key={team.id}
+              onClick={() => {
+                handleTeamCardClick(team.id);
+              }}
+            >
+              {team.name}
+            </TeamCard>
+          ))
+        )}
+        <div ref={ref} />
       </StyledTeamList>
     </>
   );
