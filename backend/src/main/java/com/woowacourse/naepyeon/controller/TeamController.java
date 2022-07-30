@@ -4,7 +4,6 @@ import com.woowacourse.naepyeon.controller.auth.AuthenticationPrincipal;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
-import com.woowacourse.naepyeon.controller.dto.PageSizeRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;

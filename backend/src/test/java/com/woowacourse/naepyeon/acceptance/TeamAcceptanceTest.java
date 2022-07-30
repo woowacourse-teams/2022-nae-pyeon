@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
-import com.woowacourse.naepyeon.controller.dto.PageSizeRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
