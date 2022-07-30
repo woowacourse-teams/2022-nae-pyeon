@@ -2,7 +2,6 @@ import React, { useRef, useEffect } from "react";
 import styled from "@emotion/styled";
 
 type MessageTextAreaProps = {
-  content: string;
   backgroundColor: string;
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
@@ -11,7 +10,7 @@ type StyledMessageContainerProps = {
 };
 
 export const MessageTextArea = ({
-  content,
+  value,
   onChange,
   children,
   placeholder,
@@ -41,14 +40,14 @@ export const MessageTextArea = ({
     <StyledMessageContainer backgroundColor={backgroundColor}>
       <StyledTextArea
         ref={textareaRef}
-        value={content}
+        value={value}
         onChange={handleTextAreaChange}
         placeholder={placeholder}
         maxLength={500}
       >
         {children}
       </StyledTextArea>
-      <StyledTextLength>{content.length}/500</StyledTextLength>
+      <StyledTextLength>{value?.toString.length}/500</StyledTextLength>
     </StyledMessageContainer>
   );
 };

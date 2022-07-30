@@ -56,7 +56,7 @@ export const MessageForm = ({
       <StyledMessageForm>
         <MessageTextArea
           placeholder="메시지를 입력해보세요!"
-          content={content}
+          value={content}
           onChange={handleTextAreaChange}
           backgroundColor={color}
         />
