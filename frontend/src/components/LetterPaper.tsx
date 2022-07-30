@@ -108,7 +108,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
     setContent("");
     setColor(INIT_COLOR);
     setWriteNewMessage(false);
-    setEditMessageId(0);
+    setEditMessageId(null);
   };
 
   const cancelMessageWrite = () => {
@@ -116,7 +116,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
       setContent("");
       setColor(INIT_COLOR);
       setWriteNewMessage(false);
-      setEditMessageId(0);
+      setEditMessageId(null);
     }
   };
 
