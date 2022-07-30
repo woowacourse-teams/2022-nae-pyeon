@@ -16,6 +16,4 @@ const COLORS = {
   PINK: colors.PINK_300,
 };
 
-const INIT_COLOR = COLORS.YELLOW;
-
-export { REGEX, COLORS, INIT_COLOR };
+export { REGEX, COLORS };

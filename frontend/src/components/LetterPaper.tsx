@@ -14,7 +14,9 @@ import { Message, CustomError } from "@/types";
 import PencilIcon from "@/assets/icons/bx-pencil.svg";
 import { divideArrayByIndexRemainder } from "@/util";
 import { useSnackbar } from "@/context/SnackbarContext";
-import { INIT_COLOR } from "@/constants";
+import { COLORS } from "@/constants";
+
+const INIT_COLOR = COLORS.YELLOW;
 
 interface LetterPaperProp {
   to: string;
