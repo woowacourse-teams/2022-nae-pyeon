@@ -66,8 +66,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
         final Long teamId = 모임_생성(tokenResponseDto);
 
-        final PageSizeRequest pageSizeRequest = new PageSizeRequest(5);
-        final List<Long> joinedTeamIds = 가입한_모임_조회(tokenResponseDto, pageSizeRequest, 1).body()
+        final List<Long> joinedTeamIds = 가입한_모임_조회(tokenResponseDto, 1, 5).body()
                 .as(TeamsResponseDto.class)
                 .getTeams()
                 .stream()
@@ -151,9 +150,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 .getId();
 
         //결과 조회
-        final PageSizeRequest pageSizeRequest = new PageSizeRequest(5);
         final ExtractableResponse<Response> response =
-                키워드로_모든_모임_조회(tokenResponseDto, pageSizeRequest, 1, "");
+                키워드로_모든_모임_조회(tokenResponseDto, "", 1, 5);
 
         final List<TeamResponseDto> actual = response.as(TeamsResponseDto.class)
                 .getTeams();
@@ -200,9 +198,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
 
         모임_가입(tokenResponseDto2, team1Id, new JoinTeamMemberRequest("가입자"));
 
-        final PageSizeRequest pageSizeRequest = new PageSizeRequest(5);
         final List<TeamResponseDto> teams =
-                키워드로_모든_모임_조회(tokenResponseDto2, pageSizeRequest, 1, "woowa")
+                키워드로_모든_모임_조회(tokenResponseDto2, "woowa", 1, 5)
                         .as(TeamsResponseDto.class)
                         .getTeams();
 
@@ -363,8 +360,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
         모임_가입(tokenResponseDto, team1Id, new JoinTeamMemberRequest("닉네임1"));
         모임_가입(tokenResponseDto, team3Id, new JoinTeamMemberRequest("닉네임3"));
 
-        final PageSizeRequest pageSizeRequest = new PageSizeRequest(5);
-        final List<Long> joinedTeamIds = 가입한_모임_조회(tokenResponseDto, pageSizeRequest, 1).body()
+        final List<Long> joinedTeamIds = 가입한_모임_조회(tokenResponseDto, 1, 5).body()
                 .as(TeamsResponseDto.class)
                 .getTeams()
                 .stream()

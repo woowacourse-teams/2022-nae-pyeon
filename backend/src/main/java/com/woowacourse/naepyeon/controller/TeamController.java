@@ -47,9 +47,9 @@ public class TeamController {
     public ResponseEntity<TeamsResponseDto> getJoinedTeams(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @RequestParam("page") final Integer page,
-            @RequestBody final PageSizeRequest pageSizeRequest) {
+            @RequestParam("count") final int count) {
         final int currentPage = page - 1;
-        final Pageable pageRequest = PageRequest.of(currentPage, pageSizeRequest.getSize());
+        final Pageable pageRequest = PageRequest.of(currentPage, count);
         return ResponseEntity.ok(teamService.findByJoinedMemberId(loginMemberRequest.getId(), pageRequest));
     }
 
@@ -57,9 +57,9 @@ public class TeamController {
     public ResponseEntity<TeamsResponseDto> getAllTeamsByKeyword(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @RequestParam("keyword") final String keyword, @RequestParam("page") final Integer page,
-            @RequestBody final PageSizeRequest pageSizeRequest) {
+            @RequestParam("count") final int count) {
         final int currentPage = page - 1;
-        final Pageable pageRequest = PageRequest.of(currentPage, pageSizeRequest.getSize());
+        final Pageable pageRequest = PageRequest.of(currentPage, count);
         return ResponseEntity.ok(
                 teamService.findTeamsByContainingTeamName(keyword, loginMemberRequest.getId(), pageRequest)
         );

@@ -51,14 +51,14 @@ public class AcceptanceFixture {
     }
 
     public static ExtractableResponse<Response> get_search(
-            final TokenResponseDto tokenResponseDto, final String uri, final Object body,
-            final int page, final String keyword) {
+            final TokenResponseDto tokenResponseDto, final String uri,
+            final String keyword, final int page, final int count) {
         return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .auth().oauth2(tokenResponseDto.getAccessToken())
-                .body(body)
                 .queryParam("keyword", keyword)
                 .queryParam("page", page)
+                .queryParam("count", count)
                 .when().get(uri)
                 .then().log().all()
                 .extract();
@@ -149,15 +149,13 @@ public class AcceptanceFixture {
     }
 
     public static ExtractableResponse<Response> 키워드로_모든_모임_조회(
-            final TokenResponseDto tokenResponseDto, final PageSizeRequest pageSizeRequest,
-            final int page, final String keyword) {
-        return get_search(tokenResponseDto, "/api/v1/teams", pageSizeRequest, page, keyword);
+            final TokenResponseDto tokenResponseDto, final String keyword, final int page, final int count) {
+        return get_search(tokenResponseDto, "/api/v1/teams", keyword, page, count);
     }
 
-    public static ExtractableResponse<Response> 가입한_모임_조회(final TokenResponseDto tokenResponseDto,
-                                                          final PageSizeRequest pageSizeRequest,
-                                                          final int page) {
-        return get_search(tokenResponseDto, "/api/v1/teams/me", pageSizeRequest, page, "");
+    public static ExtractableResponse<Response> 가입한_모임_조회(
+            final TokenResponseDto tokenResponseDto, final int page, final int count) {
+        return get_search(tokenResponseDto, "/api/v1/teams/me", "", page, count);
     }
 
     public static ExtractableResponse<Response> 모임에_가입한_회원_목록_조회(final TokenResponseDto tokenResponseDto,
