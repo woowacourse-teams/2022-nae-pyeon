@@ -7,10 +7,10 @@ import WrittenMessageCard from "@/components/WrittenMessageCard";
 interface WrittenMessage {
   id: number;
   rollingpaperId: number;
-  teamId: number;
   rollingpaperTitle: string;
+  teamId: number;
+  teamName: string;
   to: string;
-  team: string;
   content: string;
   color: string;
 }
@@ -31,17 +31,19 @@ const MyPagePaginatedMessageList = ({
   return (
     <>
       <StyledMessageList>
-        {messages.map(({ id, rollingpaperTitle, to, team, content, color }) => (
-          <li key={id}>
-            <WrittenMessageCard
-              rollingpaperTitle={rollingpaperTitle}
-              to={to}
-              team={team}
-              content={content}
-              color={color}
-            />
-          </li>
-        ))}
+        {messages.map(
+          ({ id, rollingpaperTitle, to, teamName, content, color }) => (
+            <li key={id}>
+              <WrittenMessageCard
+                rollingpaperTitle={rollingpaperTitle}
+                to={to}
+                team={teamName}
+                content={content}
+                color={color}
+              />
+            </li>
+          )
+        )}
       </StyledMessageList>
       <StyledPaging>
         <Paging

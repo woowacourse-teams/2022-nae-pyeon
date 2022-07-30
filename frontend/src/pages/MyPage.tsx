@@ -98,16 +98,33 @@ interface ReceivedRollingpaper {
   teamName: string;
 }
 
+interface SentMessage {
+  id: number;
+  rollingpaperId: number;
+  rollingpaperTitle: string;
+  teamId: number;
+  teamName: string;
+  to: string;
+  content: string;
+  color: string;
+}
+
 interface ResponseReceivedRollingpapers {
   totalCount: number;
   currentPage: number;
   rollingpapers: ReceivedRollingpaper[];
 }
 
+interface ResponseSentMessages {
+  totalCount: number;
+  currentPage: number;
+  messages: SentMessage[];
+}
+
 const MyPage = () => {
   const [tab, setTab] = useState<TabMode>(TAB.RECEIVED_PAPER);
-  const [receivedCurrentPage, setReceivedCurrentPage] = useState(1);
-  const [writtenCurrentPage, setWrittenCurrentPage] = useState(1);
+  const [receivedRollingpapersPage, setReceivedRollingpapersPage] = useState(1);
+  const [sentMessagesCurrentPage, setSentMessagesCurrentPage] = useState(1);
 
   const {
     isLoading: isLoadingGetUserProfile,
@@ -131,18 +148,44 @@ const MyPage = () => {
       .then((response) => response.data);
   };
 
+  const fetchSentMessage = (page = 1) => {
+    const searchParams = new URLSearchParams({
+      page: page.toString(),
+      count: contentCountPerPage.toString(),
+    });
+
+    return appClient
+      .get(`/members/me/messages/written?${searchParams.toString()}`)
+      .then((response) => response.data);
+  };
+
   const {
     isLoading: isLoadingGetReceivedRollingpapers,
     isError: isErrorGetReceivedRollingpapers,
     error: getReceivedRollingpapersError,
-    data: responceReceivedRollingpapers,
+    data: responseReceivedRollingpapers,
   } = useQuery<ResponseReceivedRollingpapers>(
-    ["received-rollingpapers", receivedCurrentPage],
-    () => fetchReceivedRollingpapers(receivedCurrentPage),
+    ["received-rollingpapers", receivedRollingpapersPage],
+    () => fetchReceivedRollingpapers(receivedRollingpapersPage),
     { keepPreviousData: true }
   );
 
-  if (isLoadingGetUserProfile || isLoadingGetReceivedRollingpapers) {
+  const {
+    isLoading: isLoadingGetSentMessages,
+    isError: isErrorGetSentMessages,
+    error: getSentMessagesError,
+    data: responseSentMessages,
+  } = useQuery<ResponseSentMessages>(
+    ["sent-messages", sentMessagesCurrentPage],
+    () => fetchSentMessage(sentMessagesCurrentPage),
+    { keepPreviousData: true }
+  );
+
+  if (
+    isLoadingGetUserProfile ||
+    isLoadingGetReceivedRollingpapers ||
+    isLoadingGetSentMessages
+  ) {
     return <div>로딩중</div>;
   }
 
@@ -169,11 +212,26 @@ const MyPage = () => {
     return <div>에러</div>;
   }
 
+  if (isErrorGetSentMessages) {
+    if (
+      axios.isAxiosError(getSentMessagesError) &&
+      getSentMessagesError.response
+    ) {
+      const customError = getSentMessagesError.response.data as CustomError;
+      return <div>{customError.message}</div>;
+    }
+    return <div>에러</div>;
+  }
+
   if (!userProfile) {
     return <div>에러</div>;
   }
 
-  if (!responceReceivedRollingpapers) {
+  if (!responseReceivedRollingpapers) {
+    return <div>에러</div>;
+  }
+
+  if (!responseSentMessages) {
     return <div>에러</div>;
   }
 
@@ -182,7 +240,7 @@ const MyPage = () => {
       <UserProfile username={userProfile.username} email={userProfile.email} />
       <StyledTabs>
         <MyPageTab
-          number={responceReceivedRollingpapers.rollingpapers.length}
+          number={responseReceivedRollingpapers.rollingpapers.length}
           text="받은 롤링페이퍼"
           activate={tab === TAB.RECEIVED_PAPER}
           onClick={() => {
@@ -190,7 +248,7 @@ const MyPage = () => {
           }}
         />
         <MyPageTab
-          number={messages.length}
+          number={responseSentMessages.messages.length}
           text="작성한 메시지"
           activate={tab === TAB.SENT_MESSAGE}
           onClick={() => {
@@ -200,17 +258,17 @@ const MyPage = () => {
       </StyledTabs>
       {tab === TAB.RECEIVED_PAPER ? (
         <MyPagePaginatedRollingpaperList
-          rollingpapers={responceReceivedRollingpapers.rollingpapers}
-          currentPage={receivedCurrentPage}
+          rollingpapers={responseReceivedRollingpapers.rollingpapers}
+          currentPage={receivedRollingpapersPage}
           maxPage={10}
-          setCurrentPage={setReceivedCurrentPage}
+          setCurrentPage={setReceivedRollingpapersPage}
         />
       ) : (
         <MyPagePaginatedMessageList
-          messages={messages}
-          currentPage={writtenCurrentPage}
+          messages={responseSentMessages.messages}
+          currentPage={sentMessagesCurrentPage}
           maxPage={10}
-          setCurrentPage={setWrittenCurrentPage}
+          setCurrentPage={setSentMessagesCurrentPage}
         />
       )}
     </>
