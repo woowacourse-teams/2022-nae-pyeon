@@ -1,5 +1,5 @@
 import React from "react";
-import MessageColorPicker from "@/components/MessageColorPicker";
+import MessageColorPicker from "@/pages/RollingpaperPage/components/MessageColorPicker";
 
 const colors = [
   { id: 1, value: "#C5FF98" },

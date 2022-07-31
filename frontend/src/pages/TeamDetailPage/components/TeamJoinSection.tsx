@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 
-import RollingpaperListItem from "@/components/RollingpaperListItem";
+import RollingpaperListItem from "@/pages/TeamDetailPage/components/RollingpaperListItem";
 import IconButton from "@/components/IconButton";
 import LineButton from "@/components/LineButton";
-import TeamJoinModalForm from "@/components/TeamJoinModalForm";
+import TeamJoinModalForm from "@/pages/TeamDetailPage/components/TeamJoinModalForm";
 
 import PlusIcon from "@/assets/icons/bx-plus.svg";
 

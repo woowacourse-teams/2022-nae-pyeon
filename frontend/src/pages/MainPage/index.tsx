@@ -3,8 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import styled from "@emotion/styled";
 
-import MyTeamCard from "@/components/MyTeamCard";
-import TeamCreateButton from "@/components/TeamCreateButton";
+import MyTeamCard from "@/pages/MainPage/components/MyTeamCard";
+import TeamCreateButton from "@/pages/MainPage/components/TeamCreateButton";
 
 import appClient from "@/api";
 import { CustomError } from "@/types";

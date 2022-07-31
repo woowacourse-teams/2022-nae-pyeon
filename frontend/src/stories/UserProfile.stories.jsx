@@ -1,5 +1,5 @@
 import React from "react";
-import UserProfile from "@/components/UserProfile";
+import UserProfile from "@/pages/MyPage/components/UserProfile";
 
 export default {
   component: UserProfile,

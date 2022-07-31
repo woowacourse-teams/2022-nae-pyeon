@@ -7,7 +7,7 @@ import axios from "axios";
 import useIntersect from "@/hooks/useIntersect";
 
 import SearchInput from "@/components/SearchInput";
-import TeamCard from "@/components/TeamCard";
+import TeamCard from "@/pages/TeamSearchPage/components/TeamCard";
 
 import appClient from "@/api";
 import { CustomError } from "@/types";

@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
-import TeamRollingpaperList from "@/components/TeamRollingpaperList";
+import TeamRollingpaperList from "@/pages/TeamDetailPage/components/TeamRollingpaperList";
 
 export default {
   component: TeamRollingpaperList,

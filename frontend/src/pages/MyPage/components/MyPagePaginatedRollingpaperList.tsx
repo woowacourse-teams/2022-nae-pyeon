@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import styled from "@emotion/styled";
 
-import ReceivedRollingpaperCard from "@/components/ReceivedRollingpaperCard";
+import ReceivedRollingpaperCard from "@/pages/MyPage/components/ReceivedRollingpaperCard";
 import Paging from "@/components/Paging";
 
 interface MyPageRollingpaper {

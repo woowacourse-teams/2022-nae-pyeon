@@ -1,5 +1,5 @@
 import React from "react";
-import MessageForm from "@/components/MessageForm";
+import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 
 export default {
   component: MessageForm,

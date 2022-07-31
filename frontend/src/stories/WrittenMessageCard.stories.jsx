@@ -1,5 +1,5 @@
 import React from "react";
-import WrittenMessageCard from "@/components/WrittenMessageCard";
+import WrittenMessageCard from "@/pages/MyPage/components/WrittenMessageCard";
 
 export default {
   component: WrittenMessageCard,

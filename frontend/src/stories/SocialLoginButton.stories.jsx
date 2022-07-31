@@ -1,5 +1,5 @@
 import React from "react";
-import SocialLoginButton from "@/components/SocialLoginButton";
+import SocialLoginButton from "@/pages/LoginPage/components/SocialLoginButton";
 
 export default {
   component: SocialLoginButton,

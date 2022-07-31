@@ -1,5 +1,5 @@
 import React from "react";
-import MyTeamCard from "@/components/MyTeamCard";
+import MyTeamCard from "@/pages/MainPage/components/MyTeamCard";
 
 export default {
   component: MyTeamCard,

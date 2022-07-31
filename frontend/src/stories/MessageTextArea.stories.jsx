@@ -1,5 +1,5 @@
 import React from "react";
-import MessageTextArea from "@/components/MessageTextArea";
+import MessageTextArea from "@/pages/RollingpaperPage/components/MessageTextArea";
 
 export default {
   component: MessageTextArea,

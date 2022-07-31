@@ -1,5 +1,5 @@
 import React from "react";
-import TeamJoinSection from "@/components/TeamJoinSection";
+import TeamJoinSection from "@/pages/TeamDetailPage/components/TeamJoinSection";
 
 export default {
   component: TeamJoinSection,

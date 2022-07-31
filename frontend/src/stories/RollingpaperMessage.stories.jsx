@@ -1,5 +1,5 @@
 import React from "react";
-import RollingpaperMessage from "@/components/RollingpaperMessage";
+import RollingpaperMessage from "@/pages/RollingpaperPage/components/RollingpaperMessage";
 
 export default {
   component: RollingpaperMessage,

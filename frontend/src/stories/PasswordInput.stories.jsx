@@ -1,5 +1,5 @@
 import React from "react";
-import PasswordInput from "@/components/PasswordInput";
+import PasswordInput from "@/pages/LoginPage/components/PasswordInput";
 
 export default {
   component: PasswordInput,

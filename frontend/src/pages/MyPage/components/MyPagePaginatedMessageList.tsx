@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import styled from "@emotion/styled";
 
 import Paging from "@/components/Paging";
-import WrittenMessageCard from "@/components/WrittenMessageCard";
+import WrittenMessageCard from "@/pages/MyPage/components/WrittenMessageCard";
 
 interface WrittenMessage {
   id: number;

@@ -1,5 +1,5 @@
 import React from "react";
-import LetterPaper from "@/components/LetterPaper";
+import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
 import { BrowserRouter } from "react-router-dom";
 
 export default {

@@ -1,5 +1,5 @@
 import React from "react";
-import TeamCreateButton from "@/components/TeamCreateButton";
+import TeamCreateButton from "@/pages/MainPage/components/TeamCreateButton";
 
 export default {
   component: TeamCreateButton,

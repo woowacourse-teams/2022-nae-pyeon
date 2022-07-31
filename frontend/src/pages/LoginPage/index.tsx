@@ -4,11 +4,11 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import styled from "@emotion/styled";
 
-import Logo from "@/components/Logo";
+import Logo from "@/pages/LoginPage/components/Logo";
 import LabeledInput from "@/components/LabeledInput";
-import PasswordInput from "@/components/PasswordInput";
+import PasswordInput from "@/pages/LoginPage/components/PasswordInput";
 import Button from "@/components/Button";
-import SocialLoginButton from "@/components/SocialLoginButton";
+import SocialLoginButton from "@/pages/LoginPage/components/SocialLoginButton";
 
 import { UserContext } from "@/context/UserContext";
 

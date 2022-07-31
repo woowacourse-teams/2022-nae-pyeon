@@ -3,10 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import styled from "@emotion/styled";
 
-import MyPageTab from "@/components/MyPageTab";
-import UserProfile from "@/components/UserProfile";
-import MyPagePaginatedRollingpaperList from "@/components/MyPagePaginatedRollingpaperList";
-import MyPagePaginatedMessageList from "@/components/MyPagePaginatedMessageList";
+import MyPageTab from "@/pages/MyPage/components/MyPageTab";
+import UserProfile from "@/pages/MyPage/components/UserProfile";
+import MyPagePaginatedRollingpaperList from "@/pages/MyPage/components/MyPagePaginatedRollingpaperList";
+import MyPagePaginatedMessageList from "@/pages/MyPage/components/MyPagePaginatedMessageList";
 
 import appClient from "@/api";
 

@@ -5,8 +5,8 @@ import axios from "axios";
 import styled from "@emotion/styled";
 
 import IconButton from "@components/IconButton";
-import MessageForm from "@/components/MessageForm";
-import RollingpaperMessage from "@components/RollingpaperMessage";
+import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
+import RollingpaperMessage from "@/pages/RollingpaperPage/components/RollingpaperMessage";
 
 import appClient from "@/api";
 import { Message, CustomError } from "@/types";

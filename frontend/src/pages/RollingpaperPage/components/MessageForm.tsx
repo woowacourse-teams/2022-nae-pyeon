@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import styled from "@emotion/styled";
-import MessageTextArea from "@/components/MessageTextArea";
-import MessageColorPicker from "@/components/MessageColorPicker";
+import MessageTextArea from "@/pages/RollingpaperPage/components/MessageTextArea";
+import MessageColorPicker from "@/pages/RollingpaperPage/components/MessageColorPicker";
 
 import CheckIcon from "@/assets/icons/bx-check.svg";
 import TrashIcon from "@/assets/icons/bx-trash.svg";

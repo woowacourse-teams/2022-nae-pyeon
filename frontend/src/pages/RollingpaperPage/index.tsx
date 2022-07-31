@@ -6,7 +6,7 @@ import axios from "axios";
 import appClient from "@/api";
 
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
-import LetterPaper from "@/components/LetterPaper";
+import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
 
 import { Rollingpaper, CustomError } from "@/types";
 

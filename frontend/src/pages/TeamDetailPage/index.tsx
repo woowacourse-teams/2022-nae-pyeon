@@ -6,8 +6,8 @@ import axios from "axios";
 
 import appClient from "@/api";
 
-import TeamRollingpaperList from "@/components/TeamRollingpaperList";
-import TeamJoinSection from "@/components/TeamJoinSection";
+import TeamRollingpaperList from "@/pages/TeamDetailPage/components/TeamRollingpaperList";
+import TeamJoinSection from "@/pages/TeamDetailPage/components/TeamJoinSection";
 
 import { CustomError } from "@/types";
 interface Team {

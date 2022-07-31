@@ -1,5 +1,5 @@
 import React from "react";
-import RollingpaperListItem from "@/components/RollingpaperListItem";
+import RollingpaperListItem from "@/pages/TeamDetailPage/components/RollingpaperListItem";
 
 export default {
   component: RollingpaperListItem,

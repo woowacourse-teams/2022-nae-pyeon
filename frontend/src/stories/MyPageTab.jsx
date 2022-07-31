@@ -1,5 +1,5 @@
 import React from "react";
-import MyPageTab from "@/components/MyPageTab";
+import MyPageTab from "@/pages/MyPage/components/MyPageTab";
 
 export default {
   component: MyPageTab,

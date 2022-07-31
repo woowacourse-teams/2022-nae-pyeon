@@ -1,5 +1,5 @@
 import React from "react";
-import ReceivedRollingpaperCard from "@/components/ReceivedRollingpaperCard";
+import ReceivedRollingpaperCard from "@/pages/MyPage/components/ReceivedRollingpaperCard";
 
 export default {
   component: ReceivedRollingpaperCard,

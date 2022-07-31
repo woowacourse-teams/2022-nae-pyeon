@@ -1,5 +1,5 @@
 import React from "react";
-import TeamJoinModalForm from "@/components/TeamJoinModalForm";
+import TeamJoinModalForm from "@/pages/TeamDetailPage/components/TeamJoinModalForm";
 
 export default {
   component: TeamJoinModalForm,
