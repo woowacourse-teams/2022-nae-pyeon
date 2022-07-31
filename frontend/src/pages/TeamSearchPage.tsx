@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import axios from "axios";
+
+import useIntersect from "@/hooks/useIntersect";
 
 import SearchInput from "@/components/SearchInput";
 import TeamCard from "@/components/TeamCard";
 
 import appClient from "@/api";
 import { CustomError } from "@/types";
+import { TOTAL_TEAMS_PAGING_COUNT } from "@/constants";
 
-interface TotalTeamListResponse {
-  teams: Team[];
-}
 interface Team {
   id: number;
   name: string;
@@ -24,20 +24,50 @@ interface Team {
 const TeamSearch = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
-
-  const {
-    isLoading,
-    isError,
-    error: getTotalTeamsError,
-    data: totalTeamResponse,
-  } = useQuery<TotalTeamListResponse>(["total-teams"], () =>
-    appClient.get(`/teams`).then((response) => response.data)
+  const ref = useIntersect(
+    async (entry, observer) => {
+      observer.unobserve(entry.target);
+      if (hasNextPage && !isFetching) {
+        fetchNextPage();
+      }
+    },
+    { rootMargin: "10px", threshold: 1.0 }
   );
 
+  const fetchTeams =
+    (keyword: string) =>
+    async ({ pageParam = 1 }) => {
+      const data = appClient
+        .get(
+          `teams?keyword=${keyword}&page=${pageParam}&count=${TOTAL_TEAMS_PAGING_COUNT}`
+        )
+        .then((response) => response.data);
+      return data;
+    };
+
+  const {
+    data: totalTeamResponse,
+    error: getTotalTeamsError,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isError,
+    isLoading,
+    refetch,
+  } = useInfiniteQuery(["projects"], fetchTeams(searchKeyword), {
+    getNextPageParam: (lastPage) => {
+      if (
+        lastPage.currentPage * TOTAL_TEAMS_PAGING_COUNT <
+        lastPage.totalCount
+      ) {
+        return lastPage.currentPage + 1;
+      }
+    },
+  });
+
   const handleSearchClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    // 키워드로 api call 하기
     e.preventDefault();
-    console.log(searchKeyword);
+    refetch();
   };
 
   const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = (
@@ -75,16 +105,19 @@ const TeamSearch = () => {
         />
       </StyledSearch>
       <StyledTeamList>
-        {totalTeamResponse.teams.map((team) => (
-          <TeamCard
-            key={team.id}
-            onClick={() => {
-              handleTeamCardClick(team.id);
-            }}
-          >
-            {team.name}
-          </TeamCard>
-        ))}
+        {totalTeamResponse.pages.map((page) =>
+          page.teams.map((team: Team) => (
+            <TeamCard
+              key={team.id}
+              onClick={() => {
+                handleTeamCardClick(team.id);
+              }}
+            >
+              {team.name}
+            </TeamCard>
+          ))
+        )}
+        <div ref={ref} />
       </StyledTeamList>
     </>
   );
