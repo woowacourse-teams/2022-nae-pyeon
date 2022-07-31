@@ -17,10 +17,10 @@ import MainPage from "@/pages/MainPage";
 import LoginPage from "@/pages/LoginPage";
 import TeamSearch from "@/pages/TeamSearchPage";
 import ErrorPage from "@/pages/ErrorPage";
-import KakaoRedirectPage from "./pages/KakaoRedirectPage";
+import KakaoRedirectPage from "@/pages/KakaoRedirectPage";
 
 import RequireLogin from "@/components/RequireLogin";
-import RequireLogout from "./components/RequireLogout";
+import RequireLogout from "@/components/RequireLogout";
 import PageContainer from "@/components/PageContainer";
 import MyPage from "@/pages/MyPage";
 import { UserProvider } from "@/context/UserContext";
