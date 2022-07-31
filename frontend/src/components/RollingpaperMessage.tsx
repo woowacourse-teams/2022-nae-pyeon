@@ -1,5 +1,5 @@
 import React, { useContext, SetStateAction } from "react";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import styled from "@emotion/styled";
 import axios from "axios";
 

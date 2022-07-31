@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery, useMutation } from "react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "@emotion/styled";
