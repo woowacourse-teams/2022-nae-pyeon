@@ -12,7 +12,8 @@ const memberHandlers = [
 
   // 로그인
   rest.post("/api/v1/login", (req, res, ctx) => {
-    const { email, password } = req.body;
+    const { platformType, platformId, email, username, profileImageUrl } =
+      req.body;
 
     const result = { accessToken: "accessToken2", id: 1 };
 
