@@ -107,8 +107,8 @@ const TeamSearch = () => {
         />
       </StyledSearch>
       <StyledTeamList>
-        {totalTeamResponse.pages.map((group) =>
-          group.teams.map((team: Team) => (
+        {totalTeamResponse.pages.map((page) =>
+          page.teams.map((team: Team) => (
             <TeamCard
               key={team.id}
               onClick={() => {
