@@ -6,38 +6,26 @@ import axios from "axios";
 import { UserContext } from "@/context/UserContext";
 
 import appClient from "@/api";
+import { requestKakaoToken, requestKakaoUserInfo } from "@/api/kakaoOauth";
 
-import { KAKAO_OAUTH_URL } from "@/constants";
 import { CustomError } from "@/types";
-
-type UserInfo = {
-  platformId: number;
-  email: string;
-  username: string;
-  profileImageUrl: string;
-};
-
-type RequestLoginBody = UserInfo & {
-  platformType: "KAKAO" | "NAVER" | "GOOGLE";
-};
+import { RequestOauthLoginBody } from "@/types/oauth";
 
 const KakaoRedirectPage = () => {
   const navigate = useNavigate();
-  const searchParams = useLocation().search;
-  const params = new URLSearchParams(searchParams);
+  const { login } = useContext(UserContext);
+  const params = new URLSearchParams(useLocation().search);
   const authorizeCode = params.get("code");
 
-  const { login } = useContext(UserContext);
-
-  const { mutate: requestLogin } = useMutation(
+  const { mutate: requestOauthLogin } = useMutation(
     ({
       platformType,
       platformId,
       email,
       username,
       profileImageUrl,
-    }: RequestLoginBody) => {
-      return appClient
+    }: RequestOauthLoginBody) =>
+      appClient
         .post(`/login`, {
           platformType,
           platformId,
@@ -45,8 +33,7 @@ const KakaoRedirectPage = () => {
           username,
           profileImageUrl,
         })
-        .then((response) => response.data);
-    },
+        .then((response) => response.data),
     {
       onSuccess: (data) => {
         login(data.accessToken, data.id);
@@ -61,51 +48,17 @@ const KakaoRedirectPage = () => {
     }
   );
 
-  const requestKakaoToken = (authorizeCode: string) =>
-    axios
-      .post(
-        KAKAO_OAUTH_URL.TOKEN(authorizeCode),
-        {},
-        {
-          headers: {
-            "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-          },
-        }
-      )
-      .then((response) => {
-        const { access_token } = response.data;
-        return access_token;
-      });
-
-  const requestKakaoUserInfo = (accessToken: string) =>
-    axios
-      .get(KAKAO_OAUTH_URL.USER_INFO, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-        },
-      })
-      .then(({ data }) => {
-        const userInfo: UserInfo = {
-          platformId: data.id,
-          email: data.kakao_account.email,
-          username: data.kakao_account.profile.nickname,
-          profileImageUrl: data.kakao_account.profile.profile_image_url,
-        };
-        return userInfo;
-      });
-
-  const loginWithkakaoOauth = async (authorizeCode: string) => {
-    const accessToken = await requestKakaoToken(authorizeCode);
+  const loginWithkakaoOauth = async () => {
+    const accessToken = await requestKakaoToken(authorizeCode as string);
     const userInfo = await requestKakaoUserInfo(accessToken);
-    requestLogin({
+    requestOauthLogin({
       ...userInfo,
       platformType: "KAKAO",
     });
   };
 
   useEffect(() => {
-    loginWithkakaoOauth(authorizeCode as string);
+    loginWithkakaoOauth();
   }, []);
 
   return <div>KakaoRedirectPage</div>;
