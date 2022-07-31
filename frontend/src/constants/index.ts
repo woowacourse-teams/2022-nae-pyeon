@@ -16,4 +16,6 @@ const COLORS = {
   PINK: colors.PINK_300,
 };
 
-export { REGEX, COLORS };
+const TOTAL_TEAMS_PAGING_COUNT = 5;
+
+export { REGEX, COLORS, TOTAL_TEAMS_PAGING_COUNT };
