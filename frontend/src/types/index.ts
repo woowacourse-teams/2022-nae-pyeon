@@ -3,6 +3,7 @@ export interface Message {
   content: string;
   from: string;
   authorId: number;
+  color: string;
 }
 
 export interface Rollingpaper {

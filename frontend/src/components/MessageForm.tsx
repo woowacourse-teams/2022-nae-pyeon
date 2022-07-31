@@ -1,22 +1,18 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import styled from "@emotion/styled";
-import MessageTextArea from "./MessageTextArea";
-import MessageColorPicker from "./MessageColorPicker";
+import MessageTextArea from "@/components/MessageTextArea";
+import MessageColorPicker from "@/components/MessageColorPicker";
 
 import CheckIcon from "@/assets/icons/bx-check.svg";
 import TrashIcon from "@/assets/icons/bx-trash.svg";
 
-const colors = [
-  { id: 1, value: "#C5FF98" },
-  { id: 2, value: "#FF8181" },
-  { id: 3, value: "#FFF598" },
-  { id: 4, value: "#98DAFF" },
-  { id: 5, value: "#98A2FF" },
-  { id: 6, value: "#FF98D0" },
-];
-
 type MessageFormProps = {
-  hideMessageForm: () => void;
+  onSubmit: () => void;
+  onCancel: () => void;
+  content: string;
+  onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
+  color: string;
+  onClickColor: Dispatch<SetStateAction<string>>;
 };
 
 type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -37,25 +33,21 @@ const MessageCancelButton = ({ onClick }: ButtonAttributes) => {
   );
 };
 
-export const MessageForm = ({ hideMessageForm }: MessageFormProps) => {
-  const [content, setContent] = useState("");
-  const [color, setColor] = useState(colors[0].value);
-
+export const MessageForm = ({
+  onSubmit,
+  onCancel,
+  content,
+  onChange,
+  color,
+  onClickColor,
+}: MessageFormProps) => {
   const handleTextAreaChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
     e
   ) => {
     if (e.target.value.length > 500) {
       return;
     }
-    setContent(e.target.value);
-  };
-
-  const handleSubmitButtonClick: React.MouseEventHandler = () => {
-    hideMessageForm();
-  };
-
-  const handleCancelButtonClick: React.MouseEventHandler = () => {
-    hideMessageForm();
+    onChange(e);
   };
 
   return (
@@ -68,14 +60,10 @@ export const MessageForm = ({ hideMessageForm }: MessageFormProps) => {
           onChange={handleTextAreaChange}
           backgroundColor={color}
         />
-        <MessageColorPicker
-          radios={colors}
-          initialSelectedId={colors[0].id}
-          onClickRadio={setColor}
-        />
+        <MessageColorPicker onClickRadio={onClickColor} color={color} />
         <IconButtonContainer>
-          <MessageSubmitButton onClick={handleSubmitButtonClick} />
-          <MessageCancelButton onClick={handleCancelButtonClick} />
+          <MessageSubmitButton onClick={onSubmit} />
+          <MessageCancelButton onClick={onCancel} />
         </IconButtonContainer>
       </StyledMessageForm>
     </>

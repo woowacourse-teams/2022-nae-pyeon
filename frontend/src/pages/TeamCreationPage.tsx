@@ -12,7 +12,7 @@ import LabeledTextArea from "@/components/LabeledTextArea";
 import Button from "@/components/Button";
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 
-import { REGEX } from "@/constants";
+import { COLORS, REGEX } from "@/constants";
 import { CustomError } from "@/types";
 
 const emojis = [
@@ -24,14 +24,10 @@ const emojis = [
   { id: 6, value: "☕️" },
 ];
 
-const colors = [
-  { id: 1, backgroundColor: "#C5FF98" },
-  { id: 2, backgroundColor: "#FF8181" },
-  { id: 3, backgroundColor: "#FFF598" },
-  { id: 4, backgroundColor: "#98DAFF" },
-  { id: 5, backgroundColor: "#98A2FF" },
-  { id: 6, backgroundColor: "#FF98D0" },
-];
+const colors = Object.keys(COLORS).map((value, index) => ({
+  backgroundColor: value,
+  id: index,
+}));
 
 const TeamCreationPage = () => {
   const [teamName, setTeamName] = useState("");

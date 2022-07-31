@@ -1,16 +1,87 @@
-import React from "react";
+import React, { useContext, SetStateAction } from "react";
+import { useMutation } from "react-query";
 import styled from "@emotion/styled";
+import axios from "axios";
+
+import IconButton from "@/components/IconButton";
+
+import { UserContext } from "@/context/UserContext";
+
+import TrashIcon from "@/assets/icons/bx-trash.svg";
+import Pencil from "@/assets/icons/bx-pencil.svg";
+
+import { CustomError } from "@/types";
+import appClient from "@/api";
+import { useSnackbar } from "@/context/SnackbarContext";
 
 interface RollingpaperMessageProp {
   content: string;
   author: string;
+  color: string;
+  authorId: number;
+  messageId: number;
+  rollingpaperId: number;
+  setEditMessageId: React.Dispatch<SetStateAction<number | null>>;
+  setColor: React.Dispatch<SetStateAction<string>>;
 }
 
-const RollingpaperMessage = ({ content, author }: RollingpaperMessageProp) => {
+const RollingpaperMessage = ({
+  content,
+  author,
+  color,
+  authorId,
+  messageId,
+  rollingpaperId,
+  setEditMessageId,
+  setColor,
+}: RollingpaperMessageProp) => {
+  const { memberId } = useContext(UserContext);
+  const { openSnackbar } = useSnackbar();
+
+  const { mutate: deleteMessage } = useMutation(
+    () => {
+      return appClient
+        .delete(`/rollingpapers/${rollingpaperId}/messages/${messageId}`)
+        .then((response) => response.data);
+    },
+    {
+      onSuccess: () => {
+        openSnackbar("메시지 삭제 완료");
+      },
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response) {
+          const customError = error.response.data as CustomError;
+          alert(customError.message);
+        }
+      },
+    }
+  );
+
+  const handleEditButtonClick = () => {
+    setEditMessageId(messageId);
+    setColor(color);
+  };
+
+  const handleDeleteButtonClick = () => {
+    deleteMessage();
+  };
+
   return (
-    <StyledMessage>
+    <StyledMessage color={color}>
       <StyledMessageContent>{content}</StyledMessageContent>
-      <StyledMessageAuthor>{author}</StyledMessageAuthor>
+      <StyledMessageBottom>
+        {memberId === authorId && (
+          <StyledMessageButton>
+            <IconButton size="small" onClick={handleEditButtonClick}>
+              <Pencil />
+            </IconButton>
+            <IconButton size="small" onClick={handleDeleteButtonClick}>
+              <TrashIcon />
+            </IconButton>
+          </StyledMessageButton>
+        )}
+        <StyledMessageAuthor>{author}</StyledMessageAuthor>
+      </StyledMessageBottom>
     </StyledMessage>
   );
 };
@@ -25,7 +96,7 @@ const StyledMessage = styled.div`
   min-height: 130px;
   padding: 20px 15px 10px;
 
-  background-color: ${({ theme }) => theme.colors.YELLOW_300};
+  background-color: ${(props) => props.color};
 
   @media only screen and (min-width: 600px) {
     width: 180px;
@@ -45,9 +116,26 @@ const StyledMessageContent = styled.div`
   }
 `;
 
-const StyledMessageAuthor = styled.div`
-  align-self: flex-end;
+const StyledMessageBottom = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
+  margin-top: 12px;
+  padding: 4px 0 4px 0;
+`;
+
+const StyledMessageButton = styled.div`
+  display: flex;
+  gap: 4px;
+
+  svg {
+    fill: ${({ theme }) => theme.colors.GRAY_700};
+  }
+`;
+
+const StyledMessageAuthor = styled.div`
+  margin-left: auto;
   font-size: 12px;
   color: ${({ theme }) => theme.colors.GRAY_700};
 `;

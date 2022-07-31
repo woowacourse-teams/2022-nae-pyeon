@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import styled from "@emotion/styled";
 
 type MessageTextAreaProps = {
@@ -30,6 +30,12 @@ export const MessageTextArea = ({
     textarea.style.height = `${textarea.scrollHeight}px`;
   };
 
+  useEffect(() => {
+    const textarea = textareaRef.current as unknown as HTMLTextAreaElement;
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  }, []);
+
   return (
     <StyledMessageContainer backgroundColor={backgroundColor}>
       <StyledTextArea
@@ -41,7 +47,7 @@ export const MessageTextArea = ({
       >
         {children}
       </StyledTextArea>
-      <StyledTextLength>{(value as string).length}/500</StyledTextLength>
+      <StyledTextLength>{value?.toString.length}/500</StyledTextLength>
     </StyledMessageContainer>
   );
 };

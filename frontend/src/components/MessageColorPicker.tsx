@@ -1,49 +1,35 @@
-import React, { useState, SetStateAction } from "react";
+import React, { SetStateAction } from "react";
 import styled from "@emotion/styled";
-
-interface Radio {
-  id: number;
-  value: string;
-}
+import { COLORS } from "@/constants";
 
 interface ColorPickerProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  radios: Radio[];
-  initialSelectedId: number;
   onClickRadio: React.Dispatch<SetStateAction<string>>;
+  color: string;
 }
 
 interface StyledRadioProps {
-  backgroundColor?: string;
+  backgroundColor: string;
 }
 
-const MessageColorPicker = ({
-  radios,
-  initialSelectedId,
-  onClickRadio,
-}: ColorPickerProps) => {
-  const [selectedItemId, setSelectedItemId] = useState<number | null>(
-    initialSelectedId
-  );
-
-  const handleRadioChange = (key: number, value: string) => {
-    setSelectedItemId(key);
+const MessageColorPicker = ({ onClickRadio, color }: ColorPickerProps) => {
+  const handleRadioChange = (value: string) => {
     onClickRadio(value);
   };
 
   return (
     <StyledColorPickerContainer>
-      {radios.map((radio) => {
+      {Object.values(COLORS).map((radio) => {
         return (
-          <label key={radio.id}>
+          <label key={radio}>
             <StyledInput
               type="radio"
-              value={radio.value}
-              checked={selectedItemId === radio.id}
+              value={radio}
+              checked={color === radio}
               onChange={() => {
-                handleRadioChange(radio.id, radio.value);
+                handleRadioChange(radio);
               }}
             />
-            <StyledRadio backgroundColor={radio.value} />
+            <StyledRadio backgroundColor={radio} />
           </label>
         );
       })}
