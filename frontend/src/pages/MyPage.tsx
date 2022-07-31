@@ -63,24 +63,14 @@ const MyPage = () => {
   };
 
   const fetchReceivedRollingpapers = (page = 1, count = 5) => {
-    const searchParams = new URLSearchParams({
-      page: page.toString(),
-      count: count.toString(),
-    });
-
     return appClient
-      .get(`/members/me/rollingpapers/received?${searchParams.toString()}`)
+      .get(`/members/me/rollingpapers/received?page=${page}&count=${count}`)
       .then((response) => response.data);
   };
 
   const fetchSentMessage = (page = 1, count = 5) => {
-    const searchParams = new URLSearchParams({
-      page: page.toString(),
-      count: count.toString(),
-    });
-
     return appClient
-      .get(`/members/me/messages/written?${searchParams.toString()}`)
+      .get(`/members/me/messages/written?page=${page}&count=${count}`)
       .then((response) => response.data);
   };
 
