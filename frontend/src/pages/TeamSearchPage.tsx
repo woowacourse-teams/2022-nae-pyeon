@@ -62,8 +62,6 @@ const TeamSearch = () => {
       ) {
         return lastPage.currentPage + 1;
       }
-
-      return undefined;
     },
   });
 
