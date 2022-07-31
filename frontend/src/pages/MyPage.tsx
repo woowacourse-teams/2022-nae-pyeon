@@ -80,7 +80,7 @@ const MyPage = () => {
     error: getUserProfileError,
     data: userProfile,
   } = useQuery<UserInfo>(["user-profile"], () => fetchUserInfo(), {
-    initialData: INITIAL_DATA.USER_INFO,
+    placeholderData: INITIAL_DATA.USER_INFO,
   });
 
   const {
@@ -97,7 +97,7 @@ const MyPage = () => {
       ),
     {
       keepPreviousData: true,
-      initialData: INITIAL_DATA.RECEIVED_ROLLINGPAPERS,
+      placeholderData: INITIAL_DATA.RECEIVED_ROLLINGPAPERS,
     }
   );
 
@@ -111,7 +111,7 @@ const MyPage = () => {
     () => fetchSentMessage(sentMessagesCurrentPage, contentCountPerPage),
     {
       keepPreviousData: true,
-      initialData: INITIAL_DATA.SENT_MESSAGES,
+      placeholderData: INITIAL_DATA.SENT_MESSAGES,
     }
   );
 
