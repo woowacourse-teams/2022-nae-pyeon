@@ -4,6 +4,7 @@ import axios from "axios";
 import styled from "@emotion/styled";
 
 import { UserContext } from "@/context/UserContext";
+import { useSnackbar } from "@/context/SnackbarContext";
 
 import IconButton from "@/components/IconButton";
 import LineButton from "@/components/LineButton";
@@ -28,6 +29,7 @@ type UserProfileMode = ValueOf<typeof MODE>;
 const UserProfile = ({ username, email }: UserProfileProp) => {
   const [mode, setMode] = useState<UserProfileMode>(MODE.NORMAL);
   const [editName, setEditName] = useState(username);
+  const { openSnackbar } = useSnackbar();
 
   const { logout } = useContext(UserContext);
 
@@ -38,7 +40,7 @@ const UserProfile = ({ username, email }: UserProfileProp) => {
     },
     {
       onSuccess: () => {
-        alert(`username: ${username} 수정 완료`);
+        openSnackbar(`username: ${username} 수정 완료`);
       },
       onError: (error) => {
         if (axios.isAxiosError(error) && error.response) {
