@@ -24,7 +24,7 @@ const emojis = [
   { id: 6, value: "☕️" },
 ];
 
-const colors = Object.keys(COLORS).map((value, index) => ({
+const colors = Object.values(COLORS).map((value, index) => ({
   backgroundColor: value,
   id: index,
 }));
