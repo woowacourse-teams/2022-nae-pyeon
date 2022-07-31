@@ -7,41 +7,43 @@ import WrittenMessageCard from "@/components/WrittenMessageCard";
 interface WrittenMessage {
   id: number;
   rollingpaperId: number;
-  teamId: number;
   rollingpaperTitle: string;
+  teamId: number;
+  teamName: string;
   to: string;
-  team: string;
   content: string;
   color: string;
 }
 
-interface MyPageWrittenMessageListPagingProp {
+interface MyPagePaginatedMessageListProp {
   messages: WrittenMessage[];
   currentPage: number;
   maxPage: number;
   setCurrentPage: Dispatch<SetStateAction<number>>;
 }
 
-const MyPageWrittenMessageListPaging = ({
+const MyPagePaginatedMessageList = ({
   messages,
   currentPage,
   maxPage,
   setCurrentPage,
-}: MyPageWrittenMessageListPagingProp) => {
+}: MyPagePaginatedMessageListProp) => {
   return (
     <>
       <StyledMessageList>
-        {messages.map(({ id, rollingpaperTitle, to, team, content, color }) => (
-          <li key={id}>
-            <WrittenMessageCard
-              rollingpaperTitle={rollingpaperTitle}
-              to={to}
-              team={team}
-              content={content}
-              color={color}
-            />
-          </li>
-        ))}
+        {messages.map(
+          ({ id, rollingpaperTitle, to, teamName, content, color }) => (
+            <li key={id}>
+              <WrittenMessageCard
+                rollingpaperTitle={rollingpaperTitle}
+                to={to}
+                team={teamName}
+                content={content}
+                color={color}
+              />
+            </li>
+          )
+        )}
       </StyledMessageList>
       <StyledPaging>
         <Paging
@@ -68,4 +70,4 @@ const StyledPaging = styled.div`
   justify-content: center;
 `;
 
-export default MyPageWrittenMessageListPaging;
+export default MyPagePaginatedMessageList;

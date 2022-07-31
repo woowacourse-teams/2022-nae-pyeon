@@ -1,36 +1,76 @@
 import React, { useState, useContext } from "react";
+import { useMutation } from "react-query";
+import axios from "axios";
 import styled from "@emotion/styled";
 
-import IconButton from "@/components/IconButton";
+import { UserContext } from "@/context/UserContext";
+import { useSnackbar } from "@/context/SnackbarContext";
 
-import Pencil from "@/assets/icons/bx-pencil.svg";
+import IconButton from "@/components/IconButton";
 import LineButton from "@/components/LineButton";
 import UnderlineInput from "@/components/UnderlineInput";
 
-import { UserContext } from "@/context/UserContext";
 import { REGEX } from "@/constants";
-import { ValueOf } from "@/types";
+import { CustomError, ValueOf } from "@/types";
+import appClient from "@/api";
+import Pencil from "@/assets/icons/bx-pencil.svg";
 
 const MODE = {
   NORMAL: "normal",
   EDIT: "edit",
 } as const;
 interface UserProfileProp {
-  name: string;
+  username: string;
   email: string;
 }
 
 type UserProfileMode = ValueOf<typeof MODE>;
 
-const UserProfile = ({ name, email }: UserProfileProp) => {
+const UserProfile = ({ username, email }: UserProfileProp) => {
   const [mode, setMode] = useState<UserProfileMode>(MODE.NORMAL);
-  const [editName, setEditName] = useState(name);
+  const [editName, setEditName] = useState(username);
+  const { openSnackbar } = useSnackbar();
 
   const { logout } = useContext(UserContext);
 
-  const handleButtonClick = () => {
+  const { mutate: updateUserProfile } = useMutation(
+    async ({ username }: Pick<UserProfileProp, "username">) => {
+      const response = await appClient.put("/members/me", { username });
+      return response.data;
+    },
+    {
+      onSuccess: () => {
+        openSnackbar(`username: ${username} 수정 완료`);
+      },
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response) {
+          const customError = error.response.data as CustomError;
+          alert(customError.message);
+        }
+      },
+    }
+  );
+
+  const handleLogoutButtonClick = () => {
     if (mode === MODE.NORMAL) {
       logout();
+    }
+  };
+
+  const handleEditCancelButtonClick = () => {
+    if (
+      mode === MODE.EDIT &&
+      confirm(`${editName}으로 이름을 변경하시겠습니까?`)
+    ) {
+      setEditName(username);
+      setMode(MODE.NORMAL);
+    }
+  };
+
+  const handleEditSaveButtonClick = () => {
+    if (mode === MODE.EDIT) {
+      updateUserProfile({ username: editName });
+      setMode(MODE.NORMAL);
     }
   };
 
@@ -39,7 +79,7 @@ const UserProfile = ({ name, email }: UserProfileProp) => {
       {mode === MODE.NORMAL ? (
         <>
           <StyledNormal>
-            <StyledName>{name}</StyledName>
+            <StyledName>{username}</StyledName>
             <IconButton
               onClick={() => {
                 setMode(MODE.EDIT);
@@ -49,20 +89,22 @@ const UserProfile = ({ name, email }: UserProfileProp) => {
             </IconButton>
           </StyledNormal>
           <StyledEmail>{email}</StyledEmail>
+          <LineButton onClick={handleLogoutButtonClick}>로그아웃</LineButton>
         </>
       ) : (
-        <StyledEdit>
+        <StyledUserProfileEditForm>
           <UnderlineInput
             value={editName}
             setValue={setEditName}
             pattern={REGEX.USERNAME.source}
             errorMessage="2~20자 사이의 이름을 입력해주세요"
           />
-        </StyledEdit>
+          <StyledEditLineButtonContainer>
+            <LineButton onClick={handleEditCancelButtonClick}>취소</LineButton>
+            <LineButton onClick={handleEditSaveButtonClick}>완료</LineButton>
+          </StyledEditLineButtonContainer>
+        </StyledUserProfileEditForm>
       )}
-      <LineButton onClick={handleButtonClick}>
-        {mode === MODE.NORMAL ? "로그아웃" : "완료"}
-      </LineButton>
     </StyledProfile>
   );
 };
@@ -82,9 +124,9 @@ const StyledNormal = styled.div`
   }
 `;
 
-const StyledEdit = styled.div`
+const StyledUserProfileEditForm = styled.form`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
 
   font-size: 14px;
 
@@ -102,6 +144,11 @@ const StyledName = styled.div`
 const StyledEmail = styled.div`
   color: ${({ theme }) => theme.colors.GRAY_700};
   margin-bottom: 12px;
+`;
+
+const StyledEditLineButtonContainer = styled.div`
+  display: flex;
+  gap: 10px;
 `;
 
 export default UserProfile;
