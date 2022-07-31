@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery, useMutation } from "react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import styled from "@emotion/styled";
 
