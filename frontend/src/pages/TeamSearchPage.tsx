@@ -62,6 +62,8 @@ const TeamSearch = () => {
       ) {
         return lastPage.currentPage + 1;
       }
+
+      return undefined;
     },
   });
 
@@ -105,7 +107,7 @@ const TeamSearch = () => {
         />
       </StyledSearch>
       <StyledTeamList>
-        {totalTeamResponse.pages.map((group, i) =>
+        {totalTeamResponse.pages.map((group) =>
           group.teams.map((team: Team) => (
             <TeamCard
               key={team.id}
