@@ -1,24 +1,21 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-interface ReceivedRollingpaperCardProps {
+interface RollingpaperCardProps {
   title: string;
   teamName: string;
 }
 
-const ReceivedRollingpaperCard = ({
-  title,
-  teamName,
-}: ReceivedRollingpaperCardProps) => {
+const RollingpaperCard = ({ title, teamName }: RollingpaperCardProps) => {
   return (
-    <StyledReceivedRollingpaperCard>
+    <StyledRollingpaperCard>
       <StyledTitle>{title}</StyledTitle>
       <StyledTeamName>{teamName}</StyledTeamName>
-    </StyledReceivedRollingpaperCard>
+    </StyledRollingpaperCard>
   );
 };
 
-const StyledReceivedRollingpaperCard = styled.div`
+const StyledRollingpaperCard = styled.div`
   display: flex;
   justify-content: space-between;
 
@@ -45,4 +42,4 @@ const StyledTeamName = styled.div`
   font-size: 14px;
 `;
 
-export default ReceivedRollingpaperCard;
+export default RollingpaperCard;

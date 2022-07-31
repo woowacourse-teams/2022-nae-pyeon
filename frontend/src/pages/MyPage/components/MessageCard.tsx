@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-interface WrittenMessageCardProp {
+interface MessageCardProp {
   rollingpaperTitle: string;
   to: string;
   team: string;
@@ -9,15 +9,15 @@ interface WrittenMessageCardProp {
   color: string;
 }
 
-type StyledMessageProp = Pick<WrittenMessageCardProp, "color">;
+type StyledMessageProp = Pick<MessageCardProp, "color">;
 
-const WrittenMessageCard = ({
+const MessageCard = ({
   rollingpaperTitle,
   to,
   team,
   content,
   color,
-}: WrittenMessageCardProp) => {
+}: MessageCardProp) => {
   return (
     <StyledMessage color={color}>
       <StyledTitle>{rollingpaperTitle}</StyledTitle>
@@ -69,4 +69,4 @@ const StyledContent = styled.div`
   -webkit-line-clamp: 2;
 `;
 
-export default WrittenMessageCard;
+export default MessageCard;

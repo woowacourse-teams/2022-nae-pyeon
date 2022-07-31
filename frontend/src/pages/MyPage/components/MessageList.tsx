@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import styled from "@emotion/styled";
 
 import Paging from "@/components/Paging";
-import WrittenMessageCard from "@/pages/MyPage/components/WrittenMessageCard";
+import MessageCard from "@/pages/MyPage/components/MessageCard";
 
 interface WrittenMessage {
   id: number;
@@ -15,26 +15,26 @@ interface WrittenMessage {
   color: string;
 }
 
-interface MyPagePaginatedMessageListProp {
+interface MessageListProp {
   messages: WrittenMessage[];
   currentPage: number;
   maxPage: number;
   setCurrentPage: Dispatch<SetStateAction<number>>;
 }
 
-const MyPagePaginatedMessageList = ({
+const MessageList = ({
   messages,
   currentPage,
   maxPage,
   setCurrentPage,
-}: MyPagePaginatedMessageListProp) => {
+}: MessageListProp) => {
   return (
     <>
       <StyledMessageList>
         {messages.map(
           ({ id, rollingpaperTitle, to, teamName, content, color }) => (
             <li key={id}>
-              <WrittenMessageCard
+              <MessageCard
                 rollingpaperTitle={rollingpaperTitle}
                 to={to}
                 team={teamName}
@@ -70,4 +70,4 @@ const StyledPaging = styled.div`
   justify-content: center;
 `;
 
-export default MyPagePaginatedMessageList;
+export default MessageList;

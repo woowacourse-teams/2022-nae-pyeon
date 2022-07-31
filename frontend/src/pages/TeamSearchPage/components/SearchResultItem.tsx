@@ -1,15 +1,18 @@
 import React, { PropsWithChildren } from "react";
 import styled from "@emotion/styled";
 
-interface TeamCardProps {
+interface SearchResultProp {
   onClick: () => void;
 }
 
-const TeamCard = ({ children, onClick }: PropsWithChildren<TeamCardProps>) => {
-  return <StyledCard onClick={onClick}>{children}</StyledCard>;
+const SearchResultItem = ({
+  children,
+  onClick,
+}: PropsWithChildren<SearchResultProp>) => {
+  return <StyledItem onClick={onClick}>{children}</StyledItem>;
 };
 
-const StyledCard = styled.li`
+const StyledItem = styled.li`
   display: flex;
   align-items: center;
 
@@ -30,4 +33,4 @@ const StyledCard = styled.li`
   }
 `;
 
-export default TeamCard;
+export default SearchResultItem;

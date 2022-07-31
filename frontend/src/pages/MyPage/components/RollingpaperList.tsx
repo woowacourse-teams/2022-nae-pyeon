@@ -1,35 +1,35 @@
 import React, { Dispatch, SetStateAction } from "react";
 import styled from "@emotion/styled";
 
-import ReceivedRollingpaperCard from "@/pages/MyPage/components/ReceivedRollingpaperCard";
+import RollingpaperCard from "@/pages/MyPage/components/RollingpaperCard";
 import Paging from "@/components/Paging";
 
-interface MyPageRollingpaper {
+interface ReceivedRollingpaper {
   id: number;
   title: string;
   teamId: number;
   teamName: string;
 }
 
-interface MyPagePaginatedRollingpaperList {
-  rollingpapers: MyPageRollingpaper[];
+interface RollingpaperList {
+  rollingpapers: ReceivedRollingpaper[];
   currentPage: number;
   maxPage: number;
   setCurrentPage: Dispatch<SetStateAction<number>>;
 }
 
-const MyPagePaginatedRollingpaperList = ({
+const RollingpaperList = ({
   rollingpapers,
   currentPage,
   maxPage,
   setCurrentPage,
-}: MyPagePaginatedRollingpaperList) => {
+}: RollingpaperList) => {
   return (
     <>
       <StyledRollingpaperList>
         {rollingpapers.map(({ title, teamName, id }) => (
           <li key={id}>
-            <ReceivedRollingpaperCard title={title} teamName={teamName} />
+            <RollingpaperCard title={title} teamName={teamName} />
           </li>
         ))}
       </StyledRollingpaperList>
@@ -58,4 +58,4 @@ const StyledPaging = styled.div`
   justify-content: center;
 `;
 
-export default MyPagePaginatedRollingpaperList;
+export default RollingpaperList;

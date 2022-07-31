@@ -5,8 +5,8 @@ import styled from "@emotion/styled";
 
 import MyPageTab from "@/pages/MyPage/components/MyPageTab";
 import UserProfile from "@/pages/MyPage/components/UserProfile";
-import MyPagePaginatedRollingpaperList from "@/pages/MyPage/components/MyPagePaginatedRollingpaperList";
-import MyPagePaginatedMessageList from "@/pages/MyPage/components/MyPagePaginatedMessageList";
+import RollingpaperList from "@/pages/MyPage/components/RollingpaperList";
+import MessageList from "@/pages/MyPage/components/MessageList";
 
 import appClient from "@/api";
 
@@ -183,7 +183,7 @@ const MyPage = () => {
         />
       </StyledTabs>
       {tab === TAB.RECEIVED_PAPER ? (
-        <MyPagePaginatedRollingpaperList
+        <RollingpaperList
           rollingpapers={responseReceivedRollingpapers.rollingpapers}
           currentPage={receivedRollingpapersPage}
           maxPage={Math.ceil(
@@ -192,7 +192,7 @@ const MyPage = () => {
           setCurrentPage={setReceivedRollingpapersPage}
         />
       ) : (
-        <MyPagePaginatedMessageList
+        <MessageList
           messages={responseSentMessages.messages}
           currentPage={sentMessagesCurrentPage}
           maxPage={Math.ceil(

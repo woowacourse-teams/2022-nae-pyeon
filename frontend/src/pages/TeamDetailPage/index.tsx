@@ -6,7 +6,7 @@ import axios from "axios";
 
 import appClient from "@/api";
 
-import TeamRollingpaperList from "@/pages/TeamDetailPage/components/TeamRollingpaperList";
+import RollingpaperList from "@/pages/TeamDetailPage/components/RollingpaperList";
 import TeamJoinSection from "@/pages/TeamDetailPage/components/TeamJoinSection";
 
 import { CustomError } from "@/types";
@@ -55,7 +55,7 @@ const TeamDetailPage = () => {
         description={teamDetail.description}
         color={teamDetail.color}
       />
-      {teamDetail.joined ? <TeamRollingpaperList /> : <TeamJoinSection />}
+      {teamDetail.joined ? <RollingpaperList /> : <TeamJoinSection />}
     </StyledMain>
   );
 };

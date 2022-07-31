@@ -18,11 +18,11 @@ interface Rollingpaper {
   to: string;
 }
 
-interface TeamRollingpaperListResponse {
+interface RollingpaperListResponse {
   rollingpapers: Omit<Rollingpaper, "messages">[];
 }
 
-const TeamRollingpaperList = () => {
+const RollingpaperList = () => {
   const navigate = useNavigate();
   const { teamId } = useParams();
 
@@ -31,7 +31,7 @@ const TeamRollingpaperList = () => {
     isError: isErrorGetTeamRollingpaperList,
     error: getTeamRollingpaperListError,
     data: teamRollinpaperListResponse,
-  } = useQuery<TeamRollingpaperListResponse>(["rollingpaperList"], () =>
+  } = useQuery<RollingpaperListResponse>(["rollingpaperList"], () =>
     appClient.get(`/teams/${teamId}/rollingpapers`).then((response) => {
       return response.data;
     })
@@ -108,4 +108,4 @@ const StyledRollingpaperList = styled.ul`
   gap: 24px;
 `;
 
-export default TeamRollingpaperList;
+export default RollingpaperList;

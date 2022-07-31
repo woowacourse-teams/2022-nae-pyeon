@@ -7,7 +7,7 @@ import axios from "axios";
 import useIntersect from "@/hooks/useIntersect";
 
 import SearchInput from "@/components/SearchInput";
-import TeamCard from "@/pages/TeamSearchPage/components/TeamCard";
+import SearchResultItem from "@/pages/TeamSearchPage/components/SearchResultItem";
 
 import appClient from "@/api";
 import { CustomError } from "@/types";
@@ -76,7 +76,7 @@ const TeamSearch = () => {
     setSearchKeyword(e.target.value);
   };
 
-  const handleTeamCardClick = (id: number) => {
+  const handleSearchResultItemClick = (id: number) => {
     navigate(`/team/${id}`);
   };
 
@@ -107,14 +107,14 @@ const TeamSearch = () => {
       <StyledTeamList>
         {totalTeamResponse.pages.map((page) =>
           page.teams.map((team: Team) => (
-            <TeamCard
+            <SearchResultItem
               key={team.id}
               onClick={() => {
-                handleTeamCardClick(team.id);
+                handleSearchResultItemClick(team.id);
               }}
             >
               {team.name}
-            </TeamCard>
+            </SearchResultItem>
           ))
         )}
         <div ref={ref} />

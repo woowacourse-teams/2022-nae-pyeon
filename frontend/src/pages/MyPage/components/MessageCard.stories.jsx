@@ -1,12 +1,12 @@
 import React from "react";
-import WrittenMessageCard from "@/pages/MyPage/components/WrittenMessageCard";
+import MessageCard from "@/pages/MyPage/components/MessageCard";
 
 export default {
-  component: WrittenMessageCard,
-  title: "WrittenMessageCard",
+  component: MessageCard,
+  title: "MessageCard",
 };
 
-const Template = (args) => <WrittenMessageCard {...args}></WrittenMessageCard>;
+const Template = (args) => <MessageCard {...args}></MessageCard>;
 
 export const Default = Template.bind({});
 Default.args = {
