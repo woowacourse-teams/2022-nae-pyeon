@@ -11,15 +11,15 @@ import HeaderLayoutPage from "@/pages/HeaderLayoutPage";
 import RollingpaperPage from "@/pages/RollingpaperPage";
 import RollingpaperCreationPage from "@/pages/RollingpaperCreationPage";
 import TeamDetailPage from "@/pages/TeamDetailPage";
-import SignUpPage from "@/pages/SignUpPage";
 import TeamCreationPage from "@/pages/TeamCreationPage";
 import MainPage from "@/pages/MainPage";
 import LoginPage from "@/pages/LoginPage";
 import TeamSearch from "@/pages/TeamSearchPage";
 import ErrorPage from "@/pages/ErrorPage";
+import KakaoRedirectPage from "@/pages/KakaoRedirectPage";
 
 import RequireLogin from "@/components/RequireLogin";
-import RequireLogout from "./components/RequireLogout";
+import RequireLogout from "@/components/RequireLogout";
 import PageContainer from "@/components/PageContainer";
 import MyPage from "@/pages/MyPage";
 import { UserProvider } from "@/context/UserContext";
@@ -75,14 +75,6 @@ const App = () => {
                 <Route path="*" element={<ErrorPage />} />
               </Route>
               <Route
-                path="signup"
-                element={
-                  <RequireLogout>
-                    <SignUpPage />
-                  </RequireLogout>
-                }
-              />
-              <Route
                 path="login"
                 element={
                   <RequireLogout>
@@ -114,6 +106,7 @@ const App = () => {
                   </RequireLogin>
                 }
               />
+              <Route path="oauth/kakao" element={<KakaoRedirectPage />} />
             </Routes>
             {isOpened && <Snackbar />}
           </UserProvider>

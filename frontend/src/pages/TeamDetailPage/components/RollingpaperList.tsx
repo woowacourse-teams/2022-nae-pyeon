@@ -31,7 +31,7 @@ const RollingpaperList = () => {
     isError: isErrorGetTeamRollingpaperList,
     error: getTeamRollingpaperListError,
     data: teamRollinpaperListResponse,
-  } = useQuery<RollingpaperListResponse>(["rollingpaperList"], () =>
+  } = useQuery<RollingpaperListResponse>(["rollingpaperList", teamId], () =>
     appClient.get(`/teams/${teamId}/rollingpapers`).then((response) => {
       return response.data;
     })

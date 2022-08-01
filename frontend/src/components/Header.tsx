@@ -12,8 +12,8 @@ const Header = () => {
   const { logout } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleLogoutClick = () => {
-    logout();
+  const handleMyPageClick = () => {
+    navigate("/mypage");
   };
 
   const handleSearchClick = () => {
@@ -29,7 +29,7 @@ const Header = () => {
         <IconButton onClick={handleSearchClick} size="medium">
           <SearchIcon />
         </IconButton>
-        <IconButton onClick={handleLogoutClick} size="medium">
+        <IconButton onClick={handleMyPageClick} size="medium">
           <UserIcon />
         </IconButton>
       </StyledNav>

@@ -32,7 +32,7 @@ const RollingpaperCreationPage = () => {
     isLoading,
     isError,
     data: teamMemberResponse,
-  } = useQuery<TeamMemberResponse>(["team-member"], () =>
+  } = useQuery<TeamMemberResponse>(["team-member", teamId], () =>
     appClient.get(`/teams/${teamId}/members`).then((response) => response.data)
   );
 

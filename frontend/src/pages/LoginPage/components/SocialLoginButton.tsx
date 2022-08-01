@@ -1,13 +1,13 @@
-import React from "react";
+import React, { HTMLAttributes } from "react";
 import styled from "@emotion/styled";
 
 import kakao from "@/assets/images/kakao.png";
 
-const SocialLoginButton = () => {
+const SocialLoginButton = ({ onClick }: HTMLAttributes<HTMLButtonElement>) => {
   return (
-    <StyledSocialLoginButton>
+    <StyledSocialLoginButton onClick={onClick}>
       <img src={kakao} />
-      카카오 계정으로 로그인
+      카카오로 시작하기
     </StyledSocialLoginButton>
   );
 };
