@@ -59,6 +59,7 @@ const TeamJoinSection = () => {
       </StyledRollingpaperList>
       {isOpenJoinForm && (
         <TeamJoinModalForm
+          mode="join"
           onClickCloseButton={handleJoinFormCloseButtonClick}
         />
       )}
