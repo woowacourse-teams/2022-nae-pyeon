@@ -11,7 +11,6 @@ import HeaderLayoutPage from "@/pages/HeaderLayoutPage";
 import RollingpaperPage from "@/pages/RollingpaperPage";
 import RollingpaperCreationPage from "@/pages/RollingpaperCreationPage";
 import TeamDetailPage from "@/pages/TeamDetailPage";
-import SignUpPage from "@/pages/SignUpPage";
 import TeamCreationPage from "@/pages/TeamCreationPage";
 import MainPage from "@/pages/MainPage";
 import LoginPage from "@/pages/LoginPage";
@@ -75,14 +74,6 @@ const App = () => {
                 />
                 <Route path="*" element={<ErrorPage />} />
               </Route>
-              <Route
-                path="signup"
-                element={
-                  <RequireLogout>
-                    <SignUpPage />
-                  </RequireLogout>
-                }
-              />
               <Route
                 path="login"
                 element={
