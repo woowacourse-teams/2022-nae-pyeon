@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
+import { keyframes } from "@emotion/react";
 
 import IconButton from "./IconButton";
 
@@ -20,6 +21,11 @@ const MoreDropdown = ({ optionList }: MoreDropdownProp) => {
     setIsOpened((prev) => !prev);
   };
 
+  const handleOptionClick = (callback: () => void) => {
+    setIsOpened(false);
+    callback();
+  };
+
   return (
     <StyledMoreDropdown>
       <IconButton size="small" onClick={handleButtonClick}>
@@ -29,7 +35,9 @@ const MoreDropdown = ({ optionList }: MoreDropdownProp) => {
         <StyledDropdown>
           {optionList.map(({ option, callback }, index) => (
             <React.Fragment key={option}>
-              <StyledOption onClick={callback}>{option}</StyledOption>
+              <StyledOption onClick={() => handleOptionClick(callback)}>
+                {option}
+              </StyledOption>
               {index < optionList.length - 1 && <hr />}
             </React.Fragment>
           ))}
@@ -46,6 +54,18 @@ const StyledMoreDropdown = styled.div`
   align-items: flex-end;
 `;
 
+const fadeInDown = keyframes`
+  from {
+    opacity: 0;
+    margin-top: -10px;
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+`;
+
 const StyledDropdown = styled.ul`
   position: absolute;
   top: 24px;
@@ -59,6 +79,8 @@ const StyledDropdown = styled.ul`
   background-color: ${({ theme }) => theme.colors.WHITE};
   box-shadow: 0 4px 4px rgba(89, 87, 87, 0.25);
   border-radius: 8px;
+
+  animation: ${fadeInDown} 0.5s;
 
   hr {
     border: 0.5px solid ${({ theme }) => theme.colors.GRAY_400};
