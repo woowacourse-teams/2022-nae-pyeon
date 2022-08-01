@@ -1,7 +1,7 @@
 const setCookie = (name: string, value: string) => {
   document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(
     value
-  )}; max-age=3600 `;
+  )}; max-age=3600; path=/ `;
 };
 
 const getCookie = (name: string) => {
