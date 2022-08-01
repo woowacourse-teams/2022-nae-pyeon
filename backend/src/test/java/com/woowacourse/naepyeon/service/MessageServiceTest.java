@@ -15,11 +15,15 @@ import com.woowacourse.naepyeon.repository.RollingpaperRepository;
 import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
+import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
+import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -33,6 +37,7 @@ class MessageServiceTest {
             "#123456");
     private final Member member = new Member("member", "m@hello.com", "abc@@1234");
     private final Member author = new Member("author", "au@hello.com", "abc@@1234");
+    private final Member otherAuthor = new Member("author2", "aut@hello.com", "abc@@1234");
     private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", team, member);
     private final TeamParticipation teamParticipation = new TeamParticipation(team, author, "테스트닉네임");
 
@@ -53,6 +58,7 @@ class MessageServiceTest {
         teamRepository.save(team);
         memberRepository.save(member);
         memberRepository.save(author);
+        memberRepository.save(otherAuthor);
         rollingpaperRepository.save(rollingpaper);
         teamParticipationRepository.save(teamParticipation);
     }
@@ -69,6 +75,50 @@ class MessageServiceTest {
 
         assertThat(messageResponse).extracting("content", "from", "authorId")
                 .containsExactly(messageRequest.getContent(), "테스트닉네임", author.getId());
+    }
+
+    @Test
+    @DisplayName("내가 작성한 메시지 목록을 조회한다.")
+    void findWrittenMessages() {
+        final MessageRequest messageRequest = createMessageRequest();
+        final Long messageId = messageService.saveMessage(
+                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
+        );
+        messageService.saveMessage(
+                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), otherAuthor.getId()
+        );
+        final Long messageId2 = messageService.saveMessage(
+                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
+        );
+
+        final WrittenMessagesResponseDto writtenMessagesResponseDto =
+                messageService.findWrittenMessages(author.getId(), PageRequest.of(0, 5));
+        final List<WrittenMessageResponseDto> actual = writtenMessagesResponseDto.getMessages();
+        final List<WrittenMessageResponseDto> expected = List.of(
+                new WrittenMessageResponseDto(
+                        messageId,
+                        rollingpaper.getId(),
+                        rollingpaper.getTitle(),
+                        team.getId(),
+                        team.getName(),
+                        "테스트닉네임",
+                        messageRequest.getContent(),
+                        messageRequest.getColor()
+                ),
+                new WrittenMessageResponseDto(
+                        messageId2,
+                        rollingpaper.getId(),
+                        rollingpaper.getTitle(),
+                        team.getId(),
+                        team.getName(),
+                        "테스트닉네임",
+                        messageRequest.getContent(),
+                        messageRequest.getColor()
+                )
+        );
+        assertThat(actual)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
     }
 
     @Test

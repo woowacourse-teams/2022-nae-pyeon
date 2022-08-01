@@ -8,6 +8,8 @@ import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Message;
 import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.domain.TeamParticipation;
+import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -16,6 +18,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -35,6 +39,9 @@ class MessageRepositoryTest {
 
     @Autowired
     private MessageRepository messageRepository;
+
+    @Autowired
+    private TeamParticipationRepository teamParticipationRepository;
 
     @Autowired
     private EntityManager em;
@@ -90,6 +97,31 @@ class MessageRepositoryTest {
         assertThat(findMessages.size()).isEqualTo(2);
     }
 
+    @Test
+    @DisplayName("본인이 작성한 메시지들을 찾는다.")
+    void findAllByMemberIdAndPageRequest() {
+        final TeamParticipation teamParticipation1 = new TeamParticipation(team, member, "멤버");
+        teamParticipationRepository.save(teamParticipation1);
+        final TeamParticipation teamParticipation2 = new TeamParticipation(team, author, "작성자");
+        teamParticipationRepository.save(teamParticipation2);
+
+        final Message message1 = createMessage();
+        messageRepository.save(message1);
+        final Message message2 = createMessage();
+        messageRepository.save(message2);
+        final Message message3 = createMessage();
+        messageRepository.save(message3);
+        final Message message4 = createMessage();
+        messageRepository.save(message4);
+        final Message message5 = createMessage();
+        messageRepository.save(message5);
+
+        final Page<WrittenMessageResponseDto> writtenMessageResponseDtos =
+                messageRepository.findAllByAuthorId(author.getId(), PageRequest.of(1, 2));
+        final List<WrittenMessageResponseDto> actual = writtenMessageResponseDtos.getContent();
+
+        assertThat(actual).hasSize(2);
+    }
 
     @Test
     @DisplayName("본인이 작성한 메시지 내용과 색상을 변경한다.")

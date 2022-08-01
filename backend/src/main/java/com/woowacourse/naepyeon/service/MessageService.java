@@ -13,9 +13,13 @@ import com.woowacourse.naepyeon.repository.MessageRepository;
 import com.woowacourse.naepyeon.repository.RollingpaperRepository;
 import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
+import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
+import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +57,17 @@ public class MessageService {
                     );
                 })
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Transactional(readOnly = true)
+    public WrittenMessagesResponseDto findWrittenMessages(final Long loginMemberId, final Pageable pageRequest) {
+        final Page<WrittenMessageResponseDto> writtenMessages =
+                messageRepository.findAllByAuthorId(loginMemberId, pageRequest);
+        return new WrittenMessagesResponseDto(
+                writtenMessages.getTotalElements(),
+                writtenMessages.getNumber(),
+                writtenMessages.getContent()
+        );
     }
 
     private String findMessageWriterNickname(final Long teamId, final Message message) {
