@@ -27,7 +27,7 @@ const TeamDetailPage = () => {
     isError: isErrorTeamDetail,
     error: TeamDetailError,
     data: teamDetail,
-  } = useQuery<Team>(["team"], () =>
+  } = useQuery<Team>(["team", teamId], () =>
     appClient.get(`/teams/${teamId}`).then((response) => response.data)
   );
 
