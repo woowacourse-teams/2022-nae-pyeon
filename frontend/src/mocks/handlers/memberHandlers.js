@@ -3,13 +3,6 @@ import receivedRollinpapersDummy from "../dummy/receivedRollingpapers.json";
 import sentMessagesDummy from "../dummy/sentMessages.json";
 
 const memberHandlers = [
-  // 회원 가입 요쳥
-  rest.post("/api/v1/members", (req, res, ctx) => {
-    const { username, email, password } = req.body;
-
-    return res(ctx.status(201));
-  }),
-
   // 로그인
   rest.post("/api/v1/login", (req, res, ctx) => {
     const { platformType, platformId, email, username, profileImageUrl } =
