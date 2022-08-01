@@ -12,6 +12,7 @@ import AutoCompleteInput from "@/components/AutoCompleteInput";
 import Button from "@/components/Button";
 
 import { Rollingpaper, CustomError } from "@/types";
+import { REGEX } from "@/constants";
 
 interface TeamMemberResponse {
   members: TeamMember[];
@@ -69,16 +70,18 @@ const RollingpaperCreationPage = () => {
   ) => {
     e.preventDefault();
 
-    const member = teamMemberResponse?.members.find(
-      (member) => member.nickname === rollingpaperTo
-    );
-
-    if (!member) {
-      alert("올바른 롤링페이퍼 대상을 선택해주세요.");
-      return;
+    if (!REGEX.ROLLINGPAPER_NAME.test(rollingpaperTitle)) {
+      return alert("롤링페이퍼 이름은 1~20자여야 합니다.");
     }
 
-    postRollingpaper({ title: rollingpaperTitle, addresseeId: member.id });
+    const receiver = teamMemberResponse?.members.find(
+      (member) => member.nickname === rollingpaperTo
+    );
+    if (!receiver) {
+      return alert("올바른 롤링페이퍼 대상을 선택해주세요.");
+    }
+
+    postRollingpaper({ title: rollingpaperTitle, addresseeId: receiver.id });
   };
 
   if (isLoading) {
@@ -96,6 +99,7 @@ const RollingpaperCreationPage = () => {
           labelText="롤링페이퍼 이름"
           value={rollingpaperTitle}
           setValue={setRollingpaperTitle}
+          pattern={REGEX.ROLLINGPAPER_NAME.source}
         />
         <AutoCompleteInput
           labelText="롤링페이퍼 대상"
