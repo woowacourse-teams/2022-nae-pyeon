@@ -82,7 +82,7 @@ const RollingpaperList = () => {
 };
 
 const StyledRollingpaperListContainer = styled.div`
-  width: 80%;
+  width: 90%;
 `;
 
 const StyledRollingpaperListHead = styled.div`

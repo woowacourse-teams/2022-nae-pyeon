@@ -60,9 +60,9 @@ const TeamDescriptionBox = ({
 };
 
 const StyledTeamDescriptionContainer = styled.div<StyledTeamDescriptionContainerProps>`
-  width: 80%;
+  width: 90%;
 
-  padding: 28px 16px;
+  padding: 20px 16px;
   border-radius: 8px;
   background-color: ${({ color }) => `${color}AB`};
 
