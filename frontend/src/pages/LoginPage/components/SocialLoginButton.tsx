@@ -7,7 +7,7 @@ const SocialLoginButton = ({ onClick }: HTMLAttributes<HTMLButtonElement>) => {
   return (
     <StyledSocialLoginButton onClick={onClick}>
       <img src={kakao} />
-      카카오 계정으로 로그인
+      카카오로 시작하기
     </StyledSocialLoginButton>
   );
 };
