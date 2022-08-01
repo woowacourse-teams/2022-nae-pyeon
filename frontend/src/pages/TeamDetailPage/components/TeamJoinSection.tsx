@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import RollingpaperListItem from "@/pages/TeamDetailPage/components/RollingpaperListItem";
 import IconButton from "@/components/IconButton";
 import LineButton from "@/components/LineButton";
-import TeamJoinModalForm from "@/pages/TeamDetailPage/components/TeamJoinModalForm";
+import TeamNicknameModalForm from "@/pages/TeamDetailPage/components/TeamNicknameModalForm";
 
 import PlusIcon from "@/assets/icons/bx-plus.svg";
 
@@ -58,7 +58,7 @@ const TeamJoinSection = () => {
         ))}
       </StyledRollingpaperList>
       {isOpenJoinForm && (
-        <TeamJoinModalForm
+        <TeamNicknameModalForm
           mode="join"
           onClickCloseButton={handleJoinFormCloseButtonClick}
         />

@@ -27,7 +27,7 @@ const MODE = {
   EDIT: "edit",
 } as const;
 
-const TeamJoinModalForm = ({
+const TeamNicknameModalForm = ({
   onClickCloseButton,
   mode,
 }: TeamJoinModalFormProp) => {
@@ -126,4 +126,4 @@ const StyledJoinForm = styled.form`
   }
 `;
 
-export default TeamJoinModalForm;
+export default TeamNicknameModalForm;

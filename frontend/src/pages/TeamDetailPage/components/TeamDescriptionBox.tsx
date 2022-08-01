@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 
 import MoreDropdown from "@/components/MoreDropdown";
 
-import TeamJoinModalForm from "@/pages/TeamDetailPage/components/TeamJoinModalForm";
+import TeamNicknameModalForm from "@/pages/TeamDetailPage/components/TeamNicknameModalForm";
 
 interface TeamDescriptionBoxProps {
   name: string;
@@ -50,7 +50,7 @@ const TeamDescriptionBox = ({
       </StyledHeader>
       <p>{description}</p>
       {isNicknameEditOpen && (
-        <TeamJoinModalForm
+        <TeamNicknameModalForm
           mode="edit"
           onClickCloseButton={() => setIsNicknameEditOpen(false)}
         />
