@@ -1,6 +1,7 @@
 package com.woowacourse.naepyeon.repository;
 
 import com.woowacourse.naepyeon.domain.Member;
+import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +31,11 @@ public class JpaMemberRepository implements MemberRepository {
     @Override
     public void delete(final Long memberId) {
         memberJpaDao.deleteById(memberId);
+    }
+
+    @Override
+    public Optional<Long> findMemberIdByPlatformAndPlatformId(final Platform platform, final Long platformId) {
+        return memberJpaDao.findByPlatformAndPlatformId(platform, platformId)
+                .map(Member::getId);
     }
 }

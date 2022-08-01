@@ -3,6 +3,7 @@ package com.woowacourse.naepyeon.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.exception.InvalidLoginException;
 import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
@@ -25,36 +26,4 @@ class AuthServiceTest {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    @Test
-    @DisplayName("이메일 비밀번호가 일치하는 경우 로그인에 성공한다.")
-    void successLogin() {
-        // given
-        final Long memberId = memberService.save("zero", "email@email.com", "password123!");
-
-        // when
-        final String accessToken = authService.createToken(new TokenRequestDto("email@email.com", "password123!"))
-                .getAccessToken();
-
-        // then
-        final String payload = jwtTokenProvider.getPayload(accessToken);
-        assertThat(String.valueOf(memberId)).isEqualTo(payload);
-    }
-
-    @Test
-    @DisplayName("이메일이 일치하지 않는 경우 로그인에 실패한다.")
-    void failEmailLogin() {
-        assertThatThrownBy(() -> authService.createToken(new TokenRequestDto("email@email.com", "password123!")))
-                .isInstanceOf(InvalidLoginException.class);
-    }
-
-    @Test
-    @DisplayName("비밀번호가 일치하지 않는 경우 로그인에 실패한다.")
-    void failPasswordLogin() {
-        // given
-        memberService.save("zero", "email@email.com", "password123!");
-
-        // when then
-        assertThatThrownBy(() -> authService.createToken(new TokenRequestDto("email@email.com", "password1234")))
-                .isInstanceOf(InvalidLoginException.class);
-    }
 }

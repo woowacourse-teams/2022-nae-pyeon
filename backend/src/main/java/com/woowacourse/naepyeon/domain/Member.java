@@ -1,14 +1,14 @@
 package com.woowacourse.naepyeon.domain;
 
-import com.woowacourse.naepyeon.exception.ExceedMemberPasswordLengthException;
 import com.woowacourse.naepyeon.exception.ExceedMemberUsernameLengthException;
 import com.woowacourse.naepyeon.exception.InvalidMemberEmailException;
-import com.woowacourse.naepyeon.exception.InvalidMemberPasswordException;
 import com.woowacourse.naepyeon.exception.InvalidMemberUsernameException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,13 +25,9 @@ public class Member extends BaseEntity {
 
     public static final int MIN_USERNAME_LENGTH = 2;
     public static final int MAX_USERNAME_LENGTH = 20;
-    public static final int MIN_PASSWORD_LENGTH = 8;
-    public static final int MAX_PASSWORD_LENGTH = 20;
 
     private static final Pattern USER_PATTERN = Pattern.compile("^[가-힣a-zA-Z0-9]+$");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$");
-    private static final Pattern PASSWORD_PATTERN =
-            Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d~!@#$%^&*()+|=]*$");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,14 +40,19 @@ public class Member extends BaseEntity {
     @Column(name = "email", length = 255, nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", length = 255, nullable = false)
-    private String password;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "platform")
+    private Platform platform;
 
-    public Member(final String username, final String email, final String password) {
-        validateMember(username, email, password);
+    @Column(name = "platform_id")
+    private Long platformId;
+
+    public Member(final String username, final String email, final Platform platform, final Long platformId) {
+        validateMember(username, email);
         this.username = username;
         this.email = email;
-        this.password = password;
+        this.platform = platform;
+        this.platformId = platformId;
     }
 
     public void changeUsername(final String username) {
@@ -59,19 +60,9 @@ public class Member extends BaseEntity {
         this.username = username;
     }
 
-    public void changePassword(final String newPassword) {
-        validatePassword(newPassword);
-        this.password = newPassword;
-    }
-
-    public boolean checkPassword(final String password) {
-        return this.password.equals(password);
-    }
-
-    private void validateMember(final String username, final String email, final String password) {
+    private void validateMember(final String username, final String email) {
         validateUsername(username);
         validateEmail(email);
-        validatePassword(password);
     }
 
     private void validateUsername(final String username) {
@@ -96,24 +87,6 @@ public class Member extends BaseEntity {
         final Matcher matcher = EMAIL_PATTERN.matcher(email);
         if (!matcher.matches()) {
             throw new InvalidMemberEmailException(email);
-        }
-    }
-
-    private void validatePassword(final String password) {
-        validatePasswordSize(password);
-        validatePasswordRegex(password);
-    }
-
-    private void validatePasswordSize(final String password) {
-        if (password.length() < MIN_PASSWORD_LENGTH || password.length() > MAX_PASSWORD_LENGTH) {
-            throw new ExceedMemberPasswordLengthException(password);
-        }
-    }
-
-    private void validatePasswordRegex(final String password) {
-        final Matcher matcher = PASSWORD_PATTERN.matcher(password);
-        if (!matcher.matches()) {
-            throw new InvalidMemberPasswordException(password);
         }
     }
 

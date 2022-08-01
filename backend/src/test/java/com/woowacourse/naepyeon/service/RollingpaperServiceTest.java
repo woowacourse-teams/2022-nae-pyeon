@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
+import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.exception.NotFoundRollingpaperException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamMemberException;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
@@ -41,9 +42,9 @@ class RollingpaperServiceTest {
 
     @BeforeEach
     void setUp() {
-        memberId = memberService.save("member", "m@hello.com", "abc@@1234");
-        member2Id = memberService.save("writer", "w@hello.com", "abc@@1234");
-        member3Id = memberService.save("anonymous", "a@hello.com", "abc@@1234");
+        memberId = memberService.save("member", "m@hello.com", "KAKAO", 500000L);
+        member2Id = memberService.save("writer", "w@hello.com", "KAKAO", 500001L);
+        member3Id = memberService.save("anonymous", "a@hello.com", "KAKAO", 500002L);
         teamId = teamService.save(teamRequest, memberId);
         teamService.joinMember(teamId, member2Id, "안뇽안뇽");
     }

@@ -2,7 +2,6 @@ package com.woowacourse.naepyeon.controller;
 
 import com.woowacourse.naepyeon.controller.auth.AuthenticationPrincipal;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
-import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
 import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
@@ -24,14 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
-
-    @PostMapping
-    public ResponseEntity<Void> createMember(
-            @RequestBody @Valid final MemberRegisterRequest memberRegisterRequest) {
-        memberService.save(memberRegisterRequest.getUsername(), memberRegisterRequest.getEmail(),
-                memberRegisterRequest.getPassword());
-        return ResponseEntity.created(URI.create("/api/v1/members/me")).build();
-    }
 
     @GetMapping("/me")
     public ResponseEntity<MemberResponseDto> findMember(

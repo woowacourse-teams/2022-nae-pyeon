@@ -18,8 +18,8 @@ class MessageTest {
                 "testEmoji",
                 "#123456"
         );
-        final Member member = new Member("member", "m@hello.com", "abc@@2345");
-        final Member author = new Member("author", "a@hello.com", "abc@@2345");
+        final Member member = new Member("member", "m@hello.com", Platform.KAKAO, 500000L);
+        final Member author = new Member("author", "a@hello.com", Platform.KAKAO, 500000L);
         final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", team, member);
         final Message message = new Message("헬로우", "green", author, rollingpaper);
         final String expected = "낫 헬로우";
@@ -38,8 +38,8 @@ class MessageTest {
                 "testEmoji",
                 "#123456"
         );
-        final Member member = new Member("member", "m@hello.com", "abc@@1234");
-        final Member author = new Member("author", "a@hello.com", "abc@@1234");
+        final Member member = new Member("member", "m@hello.com", Platform.KAKAO, 500000L);
+        final Member author = new Member("author", "a@hello.com", Platform.KAKAO, 500000L);
         final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", team, member);
         assertThatThrownBy(() -> new Message("a".repeat(501), "green", author, rollingpaper))
                 .isInstanceOf(ExceedMessageContentLengthException.class);
@@ -54,8 +54,8 @@ class MessageTest {
                 "testEmoji",
                 "#123456"
         );
-        final Member member = new Member("member", "m@hello.com", "abc@@2345");
-        final Member author = new Member("author", "a@hello.com", "abc@@2345");
+        final Member member = new Member("member", "m@hello.com", Platform.KAKAO, 500000L);
+        final Member author = new Member("author", "a@hello.com", Platform.KAKAO, 500000L);
         final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", team, member);
         final Message message = new Message("헬로우", "green", author, rollingpaper);
         final String expected = "red";

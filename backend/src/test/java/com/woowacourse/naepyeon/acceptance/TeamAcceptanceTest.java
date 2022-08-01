@@ -1,6 +1,7 @@
 package com.woowacourse.naepyeon.acceptance;
 
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.가입한_모임_조회;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.로그인_응답;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모든_모임_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입_정보_조회;
@@ -17,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
-import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
+import com.woowacourse.naepyeon.controller.dto.TokenRequest;
 import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
@@ -40,9 +41,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @DisplayName("모임 추가")
     void addTeam() {
         //모임 생성
-        final MemberRegisterRequest member =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final TeamRequest teamRequest = new TeamRequest(
                 "woowacourse",
                 "테스트 모임입니다.",
@@ -60,9 +64,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @DisplayName("모임을 생성시 생성한 유저가 자동으로 모임에 가입된다.")
     void createTeamAndParticipateTeam() {
         //모임 생성
-        final MemberRegisterRequest member =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final Long teamId = 모임_생성(tokenResponseDto);
 
         final List<Long> joinedTeamIds = 가입한_모임_조회(tokenResponseDto).body()
@@ -78,10 +85,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("모임을 생성하고 조회한다.")
     void addTeamAndGet() {
-        //모임 생성
-        final MemberRegisterRequest member =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final String teamName = "woowacourse";
         final String teamDescription = "테스트 모임입니다.";
         final String teamEmoji = "testEmoji";
@@ -106,9 +115,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("존재하지 않는 id로 모임 조회를 하려 하는 경우 예외를 발생시킨다.")
     void findByIdWithNotExistId() {
-        final MemberRegisterRequest member =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final ExtractableResponse<Response> response = 모임_단건_조회(tokenResponseDto, 10000L);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
@@ -117,10 +129,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("모임을 중복해서 생성하는 경우 예외를 발생시킨다.")
     void addTeamDuplicate() {
-        //모임 생성
-        final MemberRegisterRequest member =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final TeamRequest teamRequest = new TeamRequest(
                 "woowacourse",
                 "테스트 모임입니다.",
@@ -138,10 +152,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("모든 팀을 조회한다.")
     void getAllTeams() {
-        //모임 생성
-        final MemberRegisterRequest member =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email1@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final TeamRequest teamRequest1 = new TeamRequest(
                 "woowacourse1",
                 "테스트 모임입니다.",
@@ -175,13 +191,18 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("모든 모임 조회시 내가 가입한 모임의 joined컬럼이 true로, 가입하지 않은 모임은 false로 나온다.")
     void checkJoinedColumn() {
-        //모임 생성
-        final MemberRegisterRequest member1 =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
-        final MemberRegisterRequest member2 =
-                new MemberRegisterRequest("seungpang2", "email2@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto1 = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest2 =
+                new TokenRequest("KAKAO", 500001L, "email1@email.com", "알렉스1", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto2 = 로그인_응답(tokenRequest2)
+                .as(TokenResponseDto.class);
         final String teamName1 = "woowacourse1";
         final TeamRequest teamRequest1 = new TeamRequest(
                 teamName1,
@@ -226,13 +247,18 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("팀에 가입한 회원 목록을 조회한다.")
     void findJoinedMembers() {
-        //모임 생성
-        final MemberRegisterRequest member1 =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
-        final MemberRegisterRequest member2 =
-                new MemberRegisterRequest("seungpang2", "email2@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto1 = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest2 =
+                new TokenRequest("KAKAO", 500001L, "email1@email.com", "알렉스1", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto2 = 로그인_응답(tokenRequest2)
+                .as(TokenResponseDto.class);
         final String teamName1 = "woowacourse1";
         final String masterNickname = "나는야모임장";
         final TeamRequest teamRequest1 = new TeamRequest(
@@ -262,10 +288,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("모임 이름 수정")
     void updateTeam() {
-        // 모임 생성
-        final MemberRegisterRequest member =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final Long teamId = 모임_생성(tokenResponseDto);
 
         // 모임 이름 수정
@@ -301,13 +329,18 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @DisplayName("모임에 회원을 가입시킨다.")
     void joinMember() {
         //모임 생성
-        final MemberRegisterRequest owner =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto ownerTokenResponseDto = 회원가입_후_로그인(owner);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto ownerTokenResponseDto = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final Long teamId = 모임_생성(ownerTokenResponseDto);
-        final MemberRegisterRequest member =
-                new MemberRegisterRequest("alex", "alex@alex.com", "12345678aA!");
-        final TokenResponseDto memberTokenResponseDto = 회원가입_후_로그인(member);
+        final TokenRequest tokenRequest2 =
+                new TokenRequest("KAKAO", 500001L, "email1@email.com", "알렉스1", "이미지경로");
+
+        final TokenResponseDto memberTokenResponseDto = 로그인_응답(tokenRequest2)
+                .as(TokenResponseDto.class);
 
         final ExtractableResponse<Response> response =
                 모임_가입(memberTokenResponseDto, teamId, new JoinTeamMemberRequest("모임닉네임"));
@@ -318,10 +351,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("모임에 이미 가입된 회원을 가입시키려 하는 경우 예외를 발생시킨다.")
     void joinMemberDuplicate() {
-        //모임 생성
-        final MemberRegisterRequest member =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final Long teamId = 모임_생성(tokenResponseDto);
 
         final ExtractableResponse<Response> response =
@@ -334,9 +369,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @DisplayName("회원이 가입한 모임을 조회한다.")
     void getJoinedTeams() {
         //모임 생성
-        final MemberRegisterRequest member =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final TeamRequest teamRequest1 = new TeamRequest(
                 "woowacourse1",
                 "테스트 모임입니다.",
@@ -380,9 +418,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @DisplayName("모임 이름을 수정할 때, 20자를 초과하는 이름으로 수정하는 경우 예외를 발생시킨다.")
     void changeTeamNameWithExceedLength() {
         //모임 생성
-        final MemberRegisterRequest member =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final Long teamId = 모임_생성(tokenResponseDto);
 
         // 모임 이름 수정
@@ -402,9 +443,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @DisplayName("존재하지 않는 모임을 삭제하려는 경우 예외를 발생시킨다.")
     void deleteNotExistTeam() {
         //모임 생성
-        final MemberRegisterRequest member =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final Long teamId = 모임_생성(tokenResponseDto);
 
         //모임 삭제
@@ -417,9 +461,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @DisplayName("모임에서의 내 정보를 조회한다.")
     void findMyInfoInTeam() {
         final String expected = "나는야모임장";
-        final MemberRegisterRequest member =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final Long teamId = 모임_생성(tokenResponseDto);
 
         final String actual = 모임_가입_정보_조회(tokenResponseDto, teamId)
@@ -432,9 +479,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @DisplayName("모임의 닉네임을 수정한다.")
     void updateNickname() {
         final String expected = "나모임장안해";
-        final MemberRegisterRequest member =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final Long teamId = 모임_생성(tokenResponseDto);
 
         final UpdateTeamParticipantRequest updateTeamParticipantRequest = new UpdateTeamParticipantRequest(expected);
@@ -449,19 +499,25 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("이미 팀에 존재하는 닉네임으로 수정할 경우 예외를 발생시킨다.")
     void updateDuplicatedNickname() {
-        final MemberRegisterRequest member =
-                new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto = 회원가입_후_로그인(member);
-        final Long teamId = 모임_생성(tokenResponseDto);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
 
-        final MemberRegisterRequest member2 =
-                new MemberRegisterRequest("kth990303", "kth990303@email.com", "12345678aA!");
-        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member);
+        final TokenResponseDto tokenResponseDto1 = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
+        final Long teamId = 모임_생성(tokenResponseDto1);
+
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest2 =
+                new TokenRequest("KAKAO", 500001L, "email1@email.com", "알렉스1", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto2 = 로그인_응답(tokenRequest2)
+                .as(TokenResponseDto.class);
         final JoinTeamMemberRequest request = new JoinTeamMemberRequest("애플");
         모임_가입(tokenResponseDto2, teamId, request);
 
         final UpdateTeamParticipantRequest updateTeamParticipantRequest = new UpdateTeamParticipantRequest("나는야모임장");
-        final ExtractableResponse<Response> response = 모임_내_닉네임_변경(tokenResponseDto, teamId,
+        final ExtractableResponse<Response> response = 모임_내_닉네임_변경(tokenResponseDto2, teamId,
                 updateTeamParticipantRequest);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }

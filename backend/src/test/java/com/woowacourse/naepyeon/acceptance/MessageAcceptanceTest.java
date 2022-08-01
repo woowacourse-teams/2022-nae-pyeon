@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.acceptance;
 
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.로그인_응답;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.롤링페이퍼_특정_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_삭제;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_수정;
@@ -14,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
-import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageUpdateContentRequest;
 import com.woowacourse.naepyeon.controller.dto.RollingpaperCreateRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
+import com.woowacourse.naepyeon.controller.dto.TokenRequest;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperResponseDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
@@ -33,19 +34,26 @@ class MessageAcceptanceTest extends AcceptanceTest {
     private final TeamRequest teamRequest = new TeamRequest(
             "woowacourse", "테스트 모임입니다.", "testEmoji", "#123456", "마스터다"
     );
-    private final MemberRegisterRequest member1 =
-            new MemberRegisterRequest("seungpang", "email@email.com", "12345678aA!");
-    private final MemberRegisterRequest member2 =
-            new MemberRegisterRequest("yxxnghwan", "yxxnghwan@email.com", "12345678aA!");
 
     @Test
     @DisplayName("특정 롤링페이퍼에서 메시지를 작성한다.")
     void createMessageToRollingpaper() {
-        final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto1 = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
                 .getId();
 
-        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
+        //회원 추가 및 토큰2
+        final TokenRequest tokenRequest2 =
+                new TokenRequest("KAKAO", 500001L, "email2@email.com", "알렉스2", "이미지경로2");
+
+        final TokenResponseDto tokenResponseDto2 = 로그인_응답(tokenRequest2)
+                .as(TokenResponseDto.class);
+
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("알렉스당"));
 
         final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이알렉스", 2L);
@@ -54,7 +62,7 @@ class MessageAcceptanceTest extends AcceptanceTest {
                 .getId();
 
         final ExtractableResponse<Response> response = 메시지_작성(tokenResponseDto1, rollingpaperId,
-                new MessageRequest("환영해 알렉스!!!", "green"));
+                new MessageRequest("환영해 알렉스!!!🤗", "green"));
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
     }
@@ -62,11 +70,21 @@ class MessageAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("특정 롤링페이퍼 내에서 동일한 사람이 동일한 메시지를 여러 개 생성할 수 있다.")
     void createMessagesToRollingpaperWithSameMember() {
-        final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto1 = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
                 .getId();
 
-        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
+        //회원 추가 및 토큰2
+        final TokenRequest tokenRequest2 =
+                new TokenRequest("KAKAO", 500001L, "email2@email.com", "알렉스2", "이미지경로2");
+
+        final TokenResponseDto tokenResponseDto2 = 로그인_응답(tokenRequest2)
+                .as(TokenResponseDto.class);
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("알렉스당"));
 
         final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이알렉스", 2L);
@@ -87,11 +105,21 @@ class MessageAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("작성한 메시지의 내용과 색상을 수정한다.")
     void updateMessageContent() {
-        final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto1 = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
                 .getId();
 
-        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
+        //회원 추가 및 토큰2
+        final TokenRequest tokenRequest2 =
+                new TokenRequest("KAKAO", 500001L, "email2@email.com", "알렉스2", "이미지경로2");
+
+        final TokenResponseDto tokenResponseDto2 = 로그인_응답(tokenRequest2)
+                .as(TokenResponseDto.class);
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("알렉스당"));
 
         final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이알렉스", 2L);
@@ -122,11 +150,21 @@ class MessageAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("작성한 메시지를 수정할 때 500자를 초과할 경우 예외 발생")
     void updateMessageContentWithExceedContentLength() {
-        final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto1 = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
                 .getId();
 
-        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
+        //회원 추가 및 토큰2
+        final TokenRequest tokenRequest2 =
+                new TokenRequest("KAKAO", 500001L, "email2@email.com", "알렉스2", "이미지경로2");
+
+        final TokenResponseDto tokenResponseDto2 = 로그인_응답(tokenRequest2)
+                .as(TokenResponseDto.class);
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("알렉스당"));
 
         final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이알렉스", 2L);
@@ -147,11 +185,21 @@ class MessageAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("롤링페이퍼에 본인이 작성하지 않은 메시지를 수정할 경우 예외 발생")
     void updateMessageFromOthersMessage() {
-        final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto1 = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
                 .getId();
 
-        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
+        //회원 추가 및 토큰2
+        final TokenRequest tokenRequest2 =
+                new TokenRequest("KAKAO", 500001L, "email2@email.com", "알렉스2", "이미지경로2");
+
+        final TokenResponseDto tokenResponseDto2 = 로그인_응답(tokenRequest2)
+                .as(TokenResponseDto.class);
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("알렉스당"));
 
         final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이알렉스", 2L);
@@ -172,7 +220,12 @@ class MessageAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("존재하지 않는 롤링페이퍼에 메시지를 작성할 경우 예외 발생")
     void createMessageWithNRollingpaperNotExist() {
-        final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto1 = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class);
 
         final Long invalidMessageId = 9999L;
@@ -185,11 +238,21 @@ class MessageAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("롤링페이퍼에 본인이 작성한 메시지를 삭제한다.")
     void deleteMessage() {
-        final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto1 = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
                 .getId();
 
-        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
+        //회원 추가 및 토큰2
+        final TokenRequest tokenRequest2 =
+                new TokenRequest("KAKAO", 500001L, "email2@email.com", "알렉스2", "이미지경로2");
+
+        final TokenResponseDto tokenResponseDto2 = 로그인_응답(tokenRequest2)
+                .as(TokenResponseDto.class);
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("알렉스당"));
 
         final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이알렉스", 2L);
@@ -209,11 +272,21 @@ class MessageAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("롤링페이퍼에서 존재하지 않는 메시지를 삭제할 경우 예외 발생")
     void deleteMessageWithRollingpaperNotExist() {
-        final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto1 = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
                 .getId();
 
-        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
+        //회원 추가 및 토큰2
+        final TokenRequest tokenRequest2 =
+                new TokenRequest("KAKAO", 500001L, "email2@email.com", "알렉스2", "이미지경로2");
+
+        final TokenResponseDto tokenResponseDto2 = 로그인_응답(tokenRequest2)
+                .as(TokenResponseDto.class);
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("알렉스당"));
 
         final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이알렉스", 2L);
@@ -232,11 +305,21 @@ class MessageAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("롤링페이퍼에 본인이 작성하지 않은 메시지를 삭제할 경우 예외 발생")
     void deleteMessageFromOthersMessage() {
-        final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto1 = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
                 .getId();
 
-        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
+        //회원 추가 및 토큰2
+        final TokenRequest tokenRequest2 =
+                new TokenRequest("KAKAO", 500001L, "email2@email.com", "알렉스2", "이미지경로2");
+
+        final TokenResponseDto tokenResponseDto2 = 로그인_응답(tokenRequest2)
+                .as(TokenResponseDto.class);
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("알렉스당"));
 
         final RollingpaperCreateRequest rollingpaperCreateRequest = new RollingpaperCreateRequest("하이알렉스", 2L);
@@ -257,11 +340,21 @@ class MessageAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("롤링페이퍼에 작성된 메시지를 상세 조회한다.")
     void findDetailMessageWithRollingpaper() {
-        final TokenResponseDto tokenResponseDto1 = 회원가입_후_로그인(member1);
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+
+        final TokenResponseDto tokenResponseDto1 = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
         final Long teamId = 모임_추가(tokenResponseDto1, teamRequest).as(CreateResponse.class)
                 .getId();
 
-        final TokenResponseDto tokenResponseDto2 = 회원가입_후_로그인(member2);
+        //회원 추가 및 토큰2
+        final TokenRequest tokenRequest2 =
+                new TokenRequest("KAKAO", 500001L, "email2@email.com", "알렉스2", "이미지경로2");
+
+        final TokenResponseDto tokenResponseDto2 = 로그인_응답(tokenRequest2)
+                .as(TokenResponseDto.class);
         final String nickname = "알렉스당";
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest(nickname));
 
