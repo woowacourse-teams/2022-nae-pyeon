@@ -96,13 +96,13 @@ const RollingpaperCreationPage = () => {
       <PageTitleWithBackButton>롤링페이퍼 만들기</PageTitleWithBackButton>
       <StyledForm onSubmit={handleRollingpaperFormSubmit}>
         <LabeledInput
-          labelText="롤링페이퍼 이름"
+          labelText="롤링페이퍼 제목"
           value={rollingpaperTitle}
           setValue={setRollingpaperTitle}
           pattern={REGEX.ROLLINGPAPER_NAME.source}
         />
         <AutoCompleteInput
-          labelText="롤링페이퍼 대상"
+          labelText="받는 사람"
           value={rollingpaperTo}
           setValue={setRollingpaperTo}
           searchKeywordList={teamMemberResponse.members.map(
