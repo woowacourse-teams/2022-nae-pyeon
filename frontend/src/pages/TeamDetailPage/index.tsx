@@ -10,6 +10,7 @@ import RollingpaperList from "@/pages/TeamDetailPage/components/RollingpaperList
 import TeamJoinSection from "@/pages/TeamDetailPage/components/TeamJoinSection";
 
 import { CustomError } from "@/types";
+import MoreDropdown from "@/components/MoreDropdown";
 interface Team {
   id: number;
   name: string;
@@ -54,6 +55,7 @@ const TeamDetailPage = () => {
         name={teamDetail.name}
         description={teamDetail.description}
         color={teamDetail.color}
+        joined={teamDetail.joined}
       />
       {teamDetail.joined ? <RollingpaperList /> : <TeamJoinSection />}
     </StyledMain>
@@ -65,6 +67,7 @@ interface TeamDescriptionBoxProps {
   description: string;
   emoji: string;
   color: string;
+  joined: boolean;
 }
 
 type StyledTeamDescriptionContainerProps = Pick<
@@ -72,15 +75,35 @@ type StyledTeamDescriptionContainerProps = Pick<
   "color"
 >;
 
+const teamMoreOption = [
+  {
+    option: "초대하기",
+    callback: () => {
+      console.log("초대하기");
+    },
+  },
+  {
+    option: "모임 프로필 설정",
+    callback: () => {
+      console.log("모임 프로필 설정");
+    },
+  },
+];
+
 const TeamDescriptionBox = ({
   name,
   description,
   emoji,
   color,
+  joined,
 }: TeamDescriptionBoxProps) => {
   return (
     <StyledTeamDescriptionContainer color={color}>
-      <h3>{`${emoji} ${name}`}</h3>
+      <StyledHeader>
+        <h3>{`${emoji} ${name}`}</h3>
+        {joined && <MoreDropdown optionList={teamMoreOption} />}
+      </StyledHeader>
+
       <p>{description}</p>
     </StyledTeamDescriptionContainer>
   );
@@ -107,6 +130,12 @@ const StyledTeamDescriptionContainer = styled.div<StyledTeamDescriptionContainer
     font-size: 32px;
     margin-bottom: 10px;
   }
+`;
+
+const StyledHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
 `;
 
 export default TeamDetailPage;
