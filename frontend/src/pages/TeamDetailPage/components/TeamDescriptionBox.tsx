@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 
 import MoreDropdown from "@/components/MoreDropdown";
-import TeamJoinModalForm from "./TeamJoinModalForm";
+
+import TeamJoinModalForm from "@/pages/TeamDetailPage/components/TeamJoinModalForm";
 
 interface TeamDescriptionBoxProps {
   name: string;

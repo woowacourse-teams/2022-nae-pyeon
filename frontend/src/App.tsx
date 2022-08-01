@@ -26,7 +26,7 @@ import { UserProvider } from "@/context/UserContext";
 import { useSnackbar } from "@/context/SnackbarContext";
 import Snackbar from "@/components/Snackbar";
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 const App = () => {
   const { isOpened } = useSnackbar();

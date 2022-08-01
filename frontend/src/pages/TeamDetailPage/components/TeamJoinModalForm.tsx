@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import styled from "@emotion/styled";
 
+import { queryClient } from "@/App";
 import appClient from "@/api";
 
 import LineButton from "@/components/LineButton";
@@ -13,7 +14,7 @@ import { REGEX } from "@/constants";
 import { useSnackbar } from "@/context/SnackbarContext";
 
 interface TeamJoinModalFormProp {
-  onClickCloseButton: React.MouseEventHandler<HTMLButtonElement>;
+  onClickCloseButton: () => void;
   mode: string;
 }
 
@@ -30,7 +31,6 @@ const TeamJoinModalForm = ({
   onClickCloseButton,
   mode,
 }: TeamJoinModalFormProp) => {
-  const navigate = useNavigate();
   const { openSnackbar } = useSnackbar();
   const { teamId } = useParams();
   const [nickname, setNickname] = useState("");
@@ -42,7 +42,10 @@ const TeamJoinModalForm = ({
     },
     {
       onSuccess: () => {
+        onClickCloseButton();
         openSnackbar("모임 가입 완료");
+        queryClient.refetchQueries(["team"]);
+        queryClient.refetchQueries(["rollingpaperList"]);
       },
       onError: (error) => {
         console.log(error);
@@ -57,7 +60,10 @@ const TeamJoinModalForm = ({
     },
     {
       onSuccess: () => {
+        onClickCloseButton();
         openSnackbar("닉네임 수정 완료");
+        queryClient.refetchQueries(["team"]);
+        queryClient.refetchQueries(["rollingpaperList"]);
       },
       onError: (error) => {
         console.log(error);
@@ -85,7 +91,7 @@ const TeamJoinModalForm = ({
     };
 
   return (
-    <Modal onClickCloseButton={onClickCloseButton}>
+    <Modal onClickCloseButton={() => onClickCloseButton}>
       <StyledJoinForm onSubmit={handleTeamJoinSubmit(mode)}>
         <p>모임에서 사용할 닉네임을 입력해주세요. (2 ~ 20자)</p>
         <UnderlineInput
