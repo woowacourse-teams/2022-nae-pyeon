@@ -18,7 +18,7 @@ const RollingpaperPage = () => {
     isError,
     error: rollingpaperError,
     data: rollingpaper,
-  } = useQuery<Rollingpaper>(["rollingpaper"], () =>
+  } = useQuery<Rollingpaper>(["rollingpaper", teamId, rollingpaperId], () =>
     appClient
       .get(`/teams/${teamId}/rollingpapers/${rollingpaperId}`)
       .then((response) => response.data)
