@@ -65,18 +65,31 @@ const RollingpaperCreationPage = () => {
     }
   );
 
+  const findReceiverWithNickName = (nickName: string) => {
+    return teamMemberResponse?.members.find(
+      (member) => member.nickname === nickName
+    );
+  };
+
+  const isValidRollingpaperTitle = (title: string) => {
+    return REGEX.ROLLINGPAPER_TITLE.test(title);
+  };
+
+  const isValidReceiverNickName = (nickName: string) => {
+    const receiver = findReceiverWithNickName(nickName);
+    return !!receiver;
+  };
+
   const handleRollingpaperFormSubmit = (
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
 
-    if (!REGEX.ROLLINGPAPER_NAME.test(rollingpaperTitle)) {
-      return alert("롤링페이퍼 이름은 1~20자여야 합니다.");
+    if (!isValidRollingpaperTitle(rollingpaperTitle)) {
+      return alert("롤링페이퍼 제목은 1~20자여야 합니다.");
     }
 
-    const receiver = teamMemberResponse?.members.find(
-      (member) => member.nickname === rollingpaperTo
-    );
+    const receiver = findReceiverWithNickName(rollingpaperTo);
     if (!receiver) {
       return alert("올바른 롤링페이퍼 대상을 선택해주세요.");
     }
@@ -99,7 +112,7 @@ const RollingpaperCreationPage = () => {
           labelText="롤링페이퍼 제목"
           value={rollingpaperTitle}
           setValue={setRollingpaperTitle}
-          pattern={REGEX.ROLLINGPAPER_NAME.source}
+          pattern={REGEX.ROLLINGPAPER_TITLE.source}
         />
         <AutoCompleteInput
           labelText="받는 사람"
@@ -109,7 +122,15 @@ const RollingpaperCreationPage = () => {
             (member) => member.nickname
           )}
         />
-        <Button type="submit">완료</Button>
+        <Button
+          type="submit"
+          disabled={
+            !isValidRollingpaperTitle(rollingpaperTitle) ||
+            !isValidReceiverNickName(rollingpaperTo)
+          }
+        >
+          완료
+        </Button>
       </StyledForm>
     </>
   );
