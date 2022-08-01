@@ -42,19 +42,26 @@ const KakaoRedirectPage = () => {
       onError: (error) => {
         if (axios.isAxiosError(error) && error.response) {
           const customError = error.response.data as CustomError;
-          alert(customError.message);
+          console.error(customError.message);
         }
       },
     }
   );
 
   const loginWithkakaoOauth = async () => {
-    const accessToken = await requestKakaoToken(authorizeCode as string);
-    const userInfo = await requestKakaoUserInfo(accessToken);
-    requestOauthLogin({
-      ...userInfo,
-      platformType: "KAKAO",
-    });
+    try {
+      const accessToken = await requestKakaoToken(authorizeCode as string);
+      const userInfo = await requestKakaoUserInfo(accessToken);
+
+      requestOauthLogin({
+        ...userInfo,
+        platformType: "KAKAO",
+      } as RequestOauthLoginBody);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
   };
 
   useEffect(() => {
