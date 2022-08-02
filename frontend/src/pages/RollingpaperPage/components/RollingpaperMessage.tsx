@@ -40,7 +40,7 @@ const RollingpaperMessage = ({
 }: RollingpaperMessageProp) => {
   const { memberId } = useContext(UserContext);
   const { openSnackbar } = useSnackbar();
-  const { teamId, rollingpaperId } = useParams();
+  const { rollingpaperId } = useParams();
 
   const { mutate: deleteMessage } = useMutation(
     () => {
@@ -50,7 +50,7 @@ const RollingpaperMessage = ({
     },
     {
       onSuccess: () => {
-        queryClient.refetchQueries(["rollingpaper", teamId, rollingpaperId]);
+        queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
         openSnackbar("메시지 삭제 완료");
       },
       onError: (error) => {

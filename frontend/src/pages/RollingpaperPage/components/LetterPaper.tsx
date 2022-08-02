@@ -38,7 +38,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
   const [content, setContent] = useState("");
   const [color, setColor] = useState(INIT_COLOR);
 
-  const { teamId, rollingpaperId } = useParams();
+  const { rollingpaperId } = useParams();
   const { openSnackbar } = useSnackbar();
 
   const { mutate: updateMessage } = useMutation(
@@ -51,7 +51,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
     },
     {
       onSuccess: () => {
-        queryClient.refetchQueries(["rollingpaper", teamId, rollingpaperId]);
+        queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
         openSnackbar("메시지 수정 완료");
       },
       onError: (error) => {
@@ -74,7 +74,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
     },
     {
       onSuccess: () => {
-        queryClient.refetchQueries(["rollingpaper", teamId, rollingpaperId]);
+        queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
         openSnackbar("메시지 작성 완료");
       },
       onError: (error) => {
