@@ -5,35 +5,23 @@ import axios from "axios";
 
 import { UserContext } from "@/context/UserContext";
 
-import { appClient } from "@/api";
-import { requestKakaoToken, requestKakaoUserInfo } from "@/api/kakaoOauth";
+import { postKakaoOauth } from "@/api/kakaoOauth";
 
 import { CustomError } from "@/types";
-import { RequestOauthLoginBody } from "@/types/oauth";
+import { RequestKakaoOauthBody } from "@/types/oauth";
 
 const KakaoRedirectPage = () => {
   const navigate = useNavigate();
   const { login } = useContext(UserContext);
   const params = new URLSearchParams(useLocation().search);
-  const authorizeCode = params.get("code");
+  const authorizationCode = params.get("code");
 
-  const { mutate: requestOauthLogin } = useMutation(
-    ({
-      platformType,
-      platformId,
-      email,
-      username,
-      profileImageUrl,
-    }: RequestOauthLoginBody) =>
-      appClient
-        .post(`/login`, {
-          platformType,
-          platformId,
-          email,
-          username,
-          profileImageUrl,
-        })
-        .then((response) => response.data),
+  const { mutate: kakaoOauthLogin } = useMutation(
+    ({ authorizationCode, redirectUri }: RequestKakaoOauthBody) =>
+      postKakaoOauth({
+        authorizationCode,
+        redirectUri,
+      }),
     {
       onSuccess: (data) => {
         login(data.accessToken, data.id);
@@ -48,24 +36,16 @@ const KakaoRedirectPage = () => {
     }
   );
 
-  const loginWithkakaoOauth = async () => {
-    try {
-      const accessToken = await requestKakaoToken(authorizeCode as string);
-      const userInfo = await requestKakaoUserInfo(accessToken);
-
-      requestOauthLogin({
-        ...userInfo,
-        platformType: "KAKAO",
-      } as RequestOauthLoginBody);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
-    }
-  };
-
   useEffect(() => {
-    loginWithkakaoOauth();
+    const redirectUri = process.env.KAKAO_REDIRECT_URL;
+    if (!authorizationCode || !redirectUri) {
+      return;
+    }
+
+    kakaoOauthLogin({
+      authorizationCode,
+      redirectUri,
+    });
   }, []);
 
   return <div>KakaoRedirectPage</div>;
