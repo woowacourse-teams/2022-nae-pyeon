@@ -4,8 +4,9 @@ import { useParams } from "react-router-dom";
 import styled from "@emotion/styled";
 import axios from "axios";
 
-import appClient from "@/api";
+import { appClient } from "@/api";
 
+import TeamDescriptionBox from "@/pages/TeamDetailPage/components/TeamDescriptionBox";
 import RollingpaperList from "@/pages/TeamDetailPage/components/RollingpaperList";
 import TeamJoinSection from "@/pages/TeamDetailPage/components/TeamJoinSection";
 
@@ -54,35 +55,10 @@ const TeamDetailPage = () => {
         name={teamDetail.name}
         description={teamDetail.description}
         color={teamDetail.color}
+        joined={teamDetail.joined}
       />
       {teamDetail.joined ? <RollingpaperList /> : <TeamJoinSection />}
     </StyledMain>
-  );
-};
-
-interface TeamDescriptionBoxProps {
-  name: string;
-  description: string;
-  emoji: string;
-  color: string;
-}
-
-type StyledTeamDescriptionContainerProps = Pick<
-  TeamDescriptionBoxProps,
-  "color"
->;
-
-const TeamDescriptionBox = ({
-  name,
-  description,
-  emoji,
-  color,
-}: TeamDescriptionBoxProps) => {
-  return (
-    <StyledTeamDescriptionContainer color={color}>
-      <h3>{`${emoji} ${name}`}</h3>
-      <p>{description}</p>
-    </StyledTeamDescriptionContainer>
   );
 };
 
@@ -94,19 +70,6 @@ const StyledMain = styled.main`
   gap: 40px;
 
   padding: 28px 0;
-`;
-
-const StyledTeamDescriptionContainer = styled.div<StyledTeamDescriptionContainerProps>`
-  width: 80%;
-
-  padding: 28px 16px;
-  border-radius: 8px;
-  background-color: ${({ color }) => `${color}AB`};
-
-  h3 {
-    font-size: 32px;
-    margin-bottom: 10px;
-  }
 `;
 
 export default TeamDetailPage;

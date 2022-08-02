@@ -11,7 +11,7 @@ import TrashIcon from "@/assets/icons/bx-trash.svg";
 import Pencil from "@/assets/icons/bx-pencil.svg";
 
 import { CustomError } from "@/types";
-import appClient from "@/api";
+import { appClient } from "@/api";
 import { useSnackbar } from "@/context/SnackbarContext";
 
 interface RollingpaperMessageProp {
