@@ -1,14 +1,14 @@
 import React from "react";
-import MoreDropdown from "@/components/MoreDropdown";
+import Dropdown from "@/components/Dropdown";
 
 export default {
-  component: MoreDropdown,
-  title: "MoreDropdown",
+  component: Dropdown,
+  title: "Dropdown",
 };
 
-const Template = (args) => <MoreDropdown {...args}></MoreDropdown>;
+const Template = (args) => <Dropdown {...args}></Dropdown>;
 
-const teamMoreOption = [
+const teamOption = [
   {
     option: "초대하기",
     callback: () => {
@@ -25,5 +25,5 @@ const teamMoreOption = [
 
 export const Default = Template.bind({});
 Default.args = {
-  optionList: teamMoreOption,
+  optionList: teamOption,
 };

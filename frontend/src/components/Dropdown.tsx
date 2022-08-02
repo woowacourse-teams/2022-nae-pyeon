@@ -6,12 +6,12 @@ interface optionList {
   option: string;
   callback: () => void;
 }
-interface MoreDropdownProp {
+interface DropdownProp {
   DropdownButton: React.ReactNode;
   optionList: optionList[];
 }
 
-const MoreDropdown = ({ DropdownButton, optionList }: MoreDropdownProp) => {
+const Dropdown = ({ DropdownButton, optionList }: DropdownProp) => {
   const [isOpened, setIsOpened] = useState(false);
 
   const handleButtonClick = () => {
@@ -88,4 +88,4 @@ const StyledOption = styled.li`
   cursor: pointer;
 `;
 
-export default MoreDropdown;
+export default Dropdown;
