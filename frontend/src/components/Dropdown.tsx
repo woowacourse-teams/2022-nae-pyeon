@@ -2,19 +2,16 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 
-import IconButton from "./IconButton";
-
-import MeatballIcon from "@/assets/icons/bx-dots-horizontal-rounded.svg";
-
 interface optionList {
   option: string;
   callback: () => void;
 }
 interface MoreDropdownProp {
+  DropdownButton: React.ReactNode;
   optionList: optionList[];
 }
 
-const MoreDropdown = ({ optionList }: MoreDropdownProp) => {
+const MoreDropdown = ({ DropdownButton, optionList }: MoreDropdownProp) => {
   const [isOpened, setIsOpened] = useState(false);
 
   const handleButtonClick = () => {
@@ -27,12 +24,10 @@ const MoreDropdown = ({ optionList }: MoreDropdownProp) => {
   };
 
   return (
-    <StyledMoreDropdown>
-      <IconButton size="small" onClick={handleButtonClick}>
-        <MeatballIcon />
-      </IconButton>
+    <StyledDropdown>
+      <button onClick={handleButtonClick}>{DropdownButton}</button>
       {isOpened && (
-        <StyledDropdown>
+        <StyledDropdownList>
           {optionList.map(({ option, callback }, index) => (
             <React.Fragment key={option}>
               <StyledOption onClick={() => handleOptionClick(callback)}>
@@ -41,13 +36,13 @@ const MoreDropdown = ({ optionList }: MoreDropdownProp) => {
               {index < optionList.length - 1 && <hr />}
             </React.Fragment>
           ))}
-        </StyledDropdown>
+        </StyledDropdownList>
       )}
-    </StyledMoreDropdown>
+    </StyledDropdown>
   );
 };
 
-const StyledMoreDropdown = styled.div`
+const StyledDropdown = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -66,7 +61,7 @@ const fadeInDown = keyframes`
   }
 `;
 
-const StyledDropdown = styled.ul`
+const StyledDropdownList = styled.ul`
   position: absolute;
   top: 24px;
   width: 120px;

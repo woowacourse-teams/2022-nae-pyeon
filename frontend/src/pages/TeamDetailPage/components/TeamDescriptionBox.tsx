@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 
-import MoreDropdown from "@/components/MoreDropdown";
+import Dropdown from "@/components/Dropdown";
 
 import TeamNicknameModalForm from "@/pages/TeamDetailPage/components/TeamNicknameModalForm";
 
+import MeatballIcon from "@/assets/icons/bx-dots-horizontal-rounded.svg";
 interface TeamDescriptionBoxProps {
   name: string;
   description: string;
@@ -46,7 +47,12 @@ const TeamDescriptionBox = ({
     <StyledTeamDescriptionContainer color={color}>
       <StyledHeader>
         <h3>{`${emoji} ${name}`}</h3>
-        {joined && <MoreDropdown optionList={teamMoreOption} />}
+        {joined && (
+          <Dropdown
+            DropdownButton={<MeatballIcon />}
+            optionList={teamMoreOption}
+          />
+        )}
       </StyledHeader>
       <p>{description}</p>
       {isNicknameEditOpen && (
