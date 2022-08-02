@@ -35,7 +35,7 @@ const UserProvider = ({ children }: PropsWithChildren) => {
     ["memberId"],
     () =>
       appClient
-        .get("/api/v1/members/me", {
+        .get("/members/me", {
           headers: {
             Authorization: `Bearer ${accessTokenCookie || ""}`,
           },
