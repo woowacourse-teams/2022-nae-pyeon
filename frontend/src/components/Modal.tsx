@@ -47,6 +47,8 @@ const StyledDimmer = styled.div`
 
   background-color: ${({ theme }) => `${theme.colors.GRAY_700}66`};
   backdrop-filter: blur(1px);
+
+  z-index: 99;
 `;
 
 const StyledModalContainer = styled.div`
@@ -62,6 +64,8 @@ const StyledModalContainer = styled.div`
   border-radius: 8px;
   background: #ffffff;
   box-shadow: 0px 4px 4px 2px rgba(147, 147, 147, 0.25);
+
+  z-index: 99;
 `;
 
 const StyledCloseButtonWrapper = styled.div`
