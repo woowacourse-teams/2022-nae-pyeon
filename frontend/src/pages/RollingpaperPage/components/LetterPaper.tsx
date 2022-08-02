@@ -8,7 +8,7 @@ import IconButton from "@components/IconButton";
 import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 import RollingpaperMessage from "@/pages/RollingpaperPage/components/RollingpaperMessage";
 
-import { appClient } from "@/api";
+import { appClient, queryClient } from "@/api";
 import { Message, CustomError } from "@/types";
 
 import PencilIcon from "@/assets/icons/bx-pencil.svg";
@@ -38,7 +38,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
   const [content, setContent] = useState("");
   const [color, setColor] = useState(INIT_COLOR);
 
-  const { rollingpaperId } = useParams();
+  const { teamId, rollingpaperId } = useParams();
   const { openSnackbar } = useSnackbar();
 
   const { mutate: updateMessage } = useMutation(
@@ -51,6 +51,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
     },
     {
       onSuccess: () => {
+        queryClient.refetchQueries(["rollingpaper", teamId, rollingpaperId]);
         openSnackbar("메시지 수정 완료");
       },
       onError: (error) => {
@@ -73,6 +74,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
     },
     {
       onSuccess: () => {
+        queryClient.refetchQueries(["rollingpaper", teamId, rollingpaperId]);
         openSnackbar("메시지 작성 완료");
       },
       onError: (error) => {
