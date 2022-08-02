@@ -14,6 +14,12 @@ import { CustomError } from "@/types";
 import { appClient } from "@/api";
 import { useSnackbar } from "@/context/SnackbarContext";
 
+interface EditMessageProp {
+  messageId: number;
+  color: string;
+  content: string;
+}
+
 interface RollingpaperMessageProp {
   content: string;
   author: string;
@@ -21,8 +27,7 @@ interface RollingpaperMessageProp {
   authorId: number;
   messageId: number;
   rollingpaperId: number;
-  setEditMessageId: React.Dispatch<SetStateAction<number | null>>;
-  setColor: React.Dispatch<SetStateAction<string>>;
+  onClickEdit: ({ messageId, color, content }: EditMessageProp) => void;
 }
 
 const RollingpaperMessage = ({
@@ -32,8 +37,7 @@ const RollingpaperMessage = ({
   authorId,
   messageId,
   rollingpaperId,
-  setEditMessageId,
-  setColor,
+  onClickEdit,
 }: RollingpaperMessageProp) => {
   const { memberId } = useContext(UserContext);
   const { openSnackbar } = useSnackbar();
@@ -58,8 +62,7 @@ const RollingpaperMessage = ({
   );
 
   const handleEditButtonClick = () => {
-    setEditMessageId(messageId);
-    setColor(color);
+    onClickEdit({ messageId, color, content });
   };
 
   const handleDeleteButtonClick = () => {
