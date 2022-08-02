@@ -12,6 +12,7 @@ import AutoCompleteInput from "@/components/AutoCompleteInput";
 import Button from "@/components/Button";
 
 import { Rollingpaper, CustomError } from "@/types";
+import { REGEX } from "@/constants";
 
 interface TeamMemberResponse {
   members: TeamMember[];
@@ -64,21 +65,36 @@ const RollingpaperCreationPage = () => {
     }
   );
 
+  const findReceiverWithNickName = (nickName: string) => {
+    return teamMemberResponse?.members.find(
+      (member) => member.nickname === nickName
+    );
+  };
+
+  const isValidRollingpaperTitle = (title: string) => {
+    return REGEX.ROLLINGPAPER_TITLE.test(title);
+  };
+
+  const isValidReceiverNickName = (nickName: string) => {
+    const receiver = findReceiverWithNickName(nickName);
+    return !!receiver;
+  };
+
   const handleRollingpaperFormSubmit = (
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
 
-    const member = teamMemberResponse?.members.find(
-      (member) => member.nickname === rollingpaperTo
-    );
-
-    if (!member) {
-      alert("올바른 롤링페이퍼 대상을 선택해주세요.");
-      return;
+    if (!isValidRollingpaperTitle(rollingpaperTitle)) {
+      return alert("롤링페이퍼 제목은 1~20자여야 합니다.");
     }
 
-    postRollingpaper({ title: rollingpaperTitle, addresseeId: member.id });
+    const receiver = findReceiverWithNickName(rollingpaperTo);
+    if (!receiver) {
+      return alert("받는 사람은 모임원 중 한 명이어야 합니다.");
+    }
+
+    postRollingpaper({ title: rollingpaperTitle, addresseeId: receiver.id });
   };
 
   if (isLoading) {
@@ -93,19 +109,28 @@ const RollingpaperCreationPage = () => {
       <PageTitleWithBackButton>롤링페이퍼 만들기</PageTitleWithBackButton>
       <StyledForm onSubmit={handleRollingpaperFormSubmit}>
         <LabeledInput
-          labelText="롤링페이퍼 이름"
+          labelText="롤링페이퍼 제목"
           value={rollingpaperTitle}
           setValue={setRollingpaperTitle}
+          pattern={REGEX.ROLLINGPAPER_TITLE.source}
         />
         <AutoCompleteInput
-          labelText="롤링페이퍼 대상"
+          labelText="받는 사람"
           value={rollingpaperTo}
           setValue={setRollingpaperTo}
           searchKeywordList={teamMemberResponse.members.map(
             (member) => member.nickname
           )}
         />
-        <Button type="submit">완료</Button>
+        <Button
+          type="submit"
+          disabled={
+            !isValidRollingpaperTitle(rollingpaperTitle) ||
+            !isValidReceiverNickName(rollingpaperTo)
+          }
+        >
+          완료
+        </Button>
       </StyledForm>
     </>
   );
