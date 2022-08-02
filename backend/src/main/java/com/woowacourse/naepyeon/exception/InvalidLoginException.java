@@ -4,10 +4,14 @@ import org.springframework.http.HttpStatus;
 
 public final class InvalidLoginException extends NaePyeonException {
 
-    public InvalidLoginException(final String email) {
+    public InvalidLoginException(final String platformType, final Long platformId) {
         super(
-                String.format("이메일 정규식에 위반되는 이메일입니다. email = {%s}", email),
-                "이메일 또는 비밀번호가 일치하지 않습니다.",
+                String.format(
+                        "존재하지 않는 유저의 토큰입니다. 다시 로그인해주세요. platformType = {%s}, platformId = {%d}",
+                        platformType,
+                        platformId
+                ),
+                "존재하지 않는 유저의 토큰입니다. 다시 로그인해주세요.",
                 HttpStatus.UNAUTHORIZED,
                 "3010"
         );

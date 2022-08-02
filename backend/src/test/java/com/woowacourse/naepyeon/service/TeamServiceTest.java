@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.domain.Member;
+import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.exception.DuplicateNicknameException;
@@ -32,8 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class TeamServiceTest {
 
-    private final Member member = new Member("내편이", "naePyeon@test.com", "testtest123");
-    private final Member member2 = new Member("알렉스형", "alex@test.com", "testtest123");
+    private final Member member = new Member("내편이", "naePyeon@test.com", Platform.KAKAO, "1");
+    private final Member member2 = new Member("알렉스형", "alex@test.com", Platform.KAKAO, "2");
     private final Team team1 = new Team("wooteco1", "테스트 모임입니다.", "testEmoji", "#123456");
     private final Team team2 = new Team("wooteco2", "테스트 모임입니다.", "testEmoji", "#123456");
     private final Team team3 = new Team("wooteco3", "테스트 모임입니다.", "testEmoji", "#123456");

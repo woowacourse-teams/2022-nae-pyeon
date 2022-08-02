@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.domain.Member;
+import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
@@ -31,8 +32,8 @@ class MessageServiceTest {
             "테스트 모임입니다.",
             "testEmoji",
             "#123456");
-    private final Member member = new Member("member", "m@hello.com", "abc@@1234");
-    private final Member author = new Member("author", "au@hello.com", "abc@@1234");
+    private final Member author = new Member("author", "au@hello.com", Platform.KAKAO, "1");
+    private final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "2");
     private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", team, member);
     private final TeamParticipation teamParticipation = new TeamParticipation(team, author, "테스트닉네임");
 
