@@ -17,7 +17,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public Long save(final String username, final String email, final String platformType, final Long platformId) {
+    public Long save(final String username, final String email, final String platformType, final String platformId) {
         memberRepository.findByEmail(email)
                 .ifPresent(param -> {
                     throw new DuplicateMemberEmailException();

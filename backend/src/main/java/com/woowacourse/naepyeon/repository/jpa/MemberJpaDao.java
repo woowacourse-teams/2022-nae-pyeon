@@ -9,5 +9,5 @@ public interface MemberJpaDao extends JpaRepository<Member, Long> {
 
     Optional<Member> findByEmail(final String email);
 
-    Optional<Member> findByPlatformAndPlatformId(final Platform platform, final Long platformId);
+    Optional<Member> findByPlatformAndPlatformId(final Platform platform, final String platformId);
 }

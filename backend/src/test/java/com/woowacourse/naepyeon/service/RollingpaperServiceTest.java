@@ -41,9 +41,9 @@ class RollingpaperServiceTest {
 
     @BeforeEach
     void setUp() {
-        memberId = memberService.save("member", "m@hello.com", "KAKAO", 500000L);
-        member2Id = memberService.save("writer", "w@hello.com", "KAKAO", 500001L);
-        member3Id = memberService.save("anonymous", "a@hello.com", "KAKAO", 500002L);
+        memberId = memberService.save("member", "m@hello.com", "KAKAO", "1");
+        member2Id = memberService.save("writer", "w@hello.com", "KAKAO", "2");
+        member3Id = memberService.save("anonymous", "a@hello.com", "KAKAO", "3");
         teamId = teamService.save(teamRequest, memberId);
         teamService.joinMember(teamId, member2Id, "안뇽안뇽");
     }

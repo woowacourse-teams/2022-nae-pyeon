@@ -46,8 +46,8 @@ class MessageRepositoryTest {
             "testEmoji",
             "#123456"
     );
-    private final Member member = new Member("member", "email1@email.com", Platform.KAKAO, 500000L);
-    private final Member author = new Member("author", "email2@email.com", Platform.KAKAO, 500001L);
+    private final Member member = new Member("member", "email1@email.com", Platform.KAKAO, "1");
+    private final Member author = new Member("author", "email2@email.com", Platform.KAKAO, "2");
     private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", team, member);
 
     @BeforeEach

@@ -34,7 +34,7 @@ public class JpaMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Optional<Long> findMemberIdByPlatformAndPlatformId(final Platform platform, final Long platformId) {
+    public Optional<Long> findMemberIdByPlatformAndPlatformId(final Platform platform, final String platformId) {
         return memberJpaDao.findByPlatformAndPlatformId(platform, platformId)
                 .map(Member::getId);
     }

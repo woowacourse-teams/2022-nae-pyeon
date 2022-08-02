@@ -35,11 +35,11 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
             "woowacourse", "테스트 모임입니다.", "testEmoji", "#123456", "나는야모임장"
     );
     private final TokenRequest member1 =
-            new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스1", "이미지경로");
+            new TokenRequest("KAKAO", "1", "email@email.com", "알렉스1", "이미지경로");
     private final TokenRequest member2 =
-            new TokenRequest("KAKAO", 500001L, "email1@email.com", "알렉스2", "이미지경로");
+            new TokenRequest("KAKAO", "2", "email1@email.com", "알렉스2", "이미지경로");
     private final TokenRequest member3 =
-            new TokenRequest("KAKAO", 500002L, "email2@email.com", "알렉스3", "이미지경로");
+            new TokenRequest("KAKAO", "3", "email2@email.com", "알렉스3", "이미지경로");
 
     @Test
     @DisplayName("특정 회원에게 롤링페이퍼를 생성하고 조회한다.")

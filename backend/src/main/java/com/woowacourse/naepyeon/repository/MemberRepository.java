@@ -14,5 +14,5 @@ public interface MemberRepository {
 
     void delete(final Long memberId);
 
-    Optional<Long> findMemberIdByPlatformAndPlatformId(final Platform platform, final Long platformId);
+    Optional<Long> findMemberIdByPlatformAndPlatformId(final Platform platform, final String platformId);
 }

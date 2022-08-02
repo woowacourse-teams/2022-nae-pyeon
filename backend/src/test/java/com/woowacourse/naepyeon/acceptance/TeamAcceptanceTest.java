@@ -42,7 +42,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
         //모임 생성
         //회원 추가 및 토큰
         final TokenRequest tokenRequest1 =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
                 .as(TokenResponseDto.class);
@@ -65,7 +65,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
         //모임 생성
         //회원 추가 및 토큰
         final TokenRequest tokenRequest1 =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
                 .as(TokenResponseDto.class);
@@ -86,7 +86,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
     void addTeamAndGet() {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest1 =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
                 .as(TokenResponseDto.class);
@@ -116,7 +116,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
     void findByIdWithNotExistId() {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest1 =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
                 .as(TokenResponseDto.class);
@@ -130,7 +130,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
     void addTeamDuplicate() {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest1 =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
                 .as(TokenResponseDto.class);
@@ -153,7 +153,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
     void getAllTeams() {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest1 =
-                new TokenRequest("KAKAO", 500000L, "email1@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email1@email.com", "알렉스", "이미지경로");
 
         final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
                 .as(TokenResponseDto.class);
@@ -192,13 +192,13 @@ class TeamAcceptanceTest extends AcceptanceTest {
     void checkJoinedColumn() {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest1 =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         final TokenResponseDto tokenResponseDto1 = 로그인_응답(tokenRequest1)
                 .as(TokenResponseDto.class);
         //회원 추가 및 토큰
         final TokenRequest tokenRequest2 =
-                new TokenRequest("KAKAO", 500001L, "email1@email.com", "알렉스1", "이미지경로");
+                new TokenRequest("KAKAO", "2", "email1@email.com", "알렉스1", "이미지경로");
 
         final TokenResponseDto tokenResponseDto2 = 로그인_응답(tokenRequest2)
                 .as(TokenResponseDto.class);
@@ -248,13 +248,13 @@ class TeamAcceptanceTest extends AcceptanceTest {
     void findJoinedMembers() {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest1 =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         final TokenResponseDto tokenResponseDto1 = 로그인_응답(tokenRequest1)
                 .as(TokenResponseDto.class);
         //회원 추가 및 토큰
         final TokenRequest tokenRequest2 =
-                new TokenRequest("KAKAO", 500001L, "email1@email.com", "알렉스1", "이미지경로");
+                new TokenRequest("KAKAO", "2", "email1@email.com", "알렉스1", "이미지경로");
 
         final TokenResponseDto tokenResponseDto2 = 로그인_응답(tokenRequest2)
                 .as(TokenResponseDto.class);
@@ -289,7 +289,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
     void updateTeam() {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest1 =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
                 .as(TokenResponseDto.class);
@@ -330,13 +330,13 @@ class TeamAcceptanceTest extends AcceptanceTest {
         //모임 생성
         //회원 추가 및 토큰
         final TokenRequest tokenRequest1 =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         final TokenResponseDto ownerTokenResponseDto = 로그인_응답(tokenRequest1)
                 .as(TokenResponseDto.class);
         final Long teamId = 모임_생성(ownerTokenResponseDto);
         final TokenRequest tokenRequest2 =
-                new TokenRequest("KAKAO", 500001L, "email1@email.com", "알렉스1", "이미지경로");
+                new TokenRequest("KAKAO", "2", "email1@email.com", "알렉스1", "이미지경로");
 
         final TokenResponseDto memberTokenResponseDto = 로그인_응답(tokenRequest2)
                 .as(TokenResponseDto.class);
@@ -352,7 +352,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
     void joinMemberDuplicate() {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest1 =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
                 .as(TokenResponseDto.class);
@@ -370,7 +370,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
         //모임 생성
         //회원 추가 및 토큰
         final TokenRequest tokenRequest1 =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
                 .as(TokenResponseDto.class);
@@ -419,7 +419,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
         //모임 생성
         //회원 추가 및 토큰
         final TokenRequest tokenRequest1 =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
                 .as(TokenResponseDto.class);
@@ -444,7 +444,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
         //모임 생성
         //회원 추가 및 토큰
         final TokenRequest tokenRequest1 =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
                 .as(TokenResponseDto.class);
@@ -462,7 +462,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final String expected = "나는야모임장";
         //회원 추가 및 토큰
         final TokenRequest tokenRequest1 =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
                 .as(TokenResponseDto.class);
@@ -480,7 +480,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final String expected = "나모임장안해";
         //회원 추가 및 토큰
         final TokenRequest tokenRequest1 =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         final TokenResponseDto tokenResponseDto = 로그인_응답(tokenRequest1)
                 .as(TokenResponseDto.class);
@@ -500,7 +500,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
     void updateDuplicatedNickname() {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest1 =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         final TokenResponseDto tokenResponseDto1 = 로그인_응답(tokenRequest1)
                 .as(TokenResponseDto.class);
@@ -508,7 +508,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
 
         //회원 추가 및 토큰
         final TokenRequest tokenRequest2 =
-                new TokenRequest("KAKAO", 500001L, "email1@email.com", "알렉스1", "이미지경로");
+                new TokenRequest("KAKAO", "2", "email1@email.com", "알렉스1", "이미지경로");
 
         final TokenResponseDto tokenResponseDto2 = 로그인_응답(tokenRequest2)
                 .as(TokenResponseDto.class);

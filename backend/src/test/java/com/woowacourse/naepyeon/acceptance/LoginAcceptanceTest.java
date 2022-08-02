@@ -18,7 +18,7 @@ public class LoginAcceptanceTest extends AcceptanceTest {
     void loginSuccess() {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         final TokenResponseDto token = 로그인_응답(tokenRequest)
                 .as(TokenResponseDto.class);

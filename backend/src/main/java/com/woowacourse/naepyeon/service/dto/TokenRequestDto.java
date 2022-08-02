@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class TokenRequestDto {
 
     private String platformType;
-    private Long platformId;
+    private String platformId;
     private String email;
     private String username;
     private String profileImageUrl;

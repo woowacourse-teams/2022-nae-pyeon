@@ -33,8 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class TeamServiceTest {
 
-    private final Member member = new Member("내편이", "naePyeon@test.com", Platform.KAKAO, 500000L);
-    private final Member member2 = new Member("알렉스형", "alex@test.com", Platform.KAKAO, 500001L);
+    private final Member member = new Member("내편이", "naePyeon@test.com", Platform.KAKAO, "1");
+    private final Member member2 = new Member("알렉스형", "alex@test.com", Platform.KAKAO, "2");
     private final Team team1 = new Team("wooteco1", "테스트 모임입니다.", "testEmoji", "#123456");
     private final Team team2 = new Team("wooteco2", "테스트 모임입니다.", "testEmoji", "#123456");
     private final Team team3 = new Team("wooteco3", "테스트 모임입니다.", "testEmoji", "#123456");

@@ -27,7 +27,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
     void addMember() {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
         final ExtractableResponse<Response> response = 로그인_응답(tokenRequest);
 
         //회원추가 검증 및 회원검증
@@ -40,7 +40,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
     void failSignUpEmail(final String failEmail) {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest =
-                new TokenRequest("KAKAO", 500000L, failEmail, "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", failEmail, "알렉스", "이미지경로");
         final ExtractableResponse<Response> response = 로그인_응답(tokenRequest);
         final ErrorResponse error = response.as(ErrorResponse.class);
 
@@ -63,7 +63,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
     void loginInvalidId() {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         //없는 회원 조회
         final TokenResponseDto token = 로그인_응답(tokenRequest)
@@ -80,7 +80,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
     void updateMember() {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         //없는 회원 조회
         final TokenResponseDto token = 로그인_응답(tokenRequest)
@@ -111,7 +111,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
     void deleteMember() {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         //없는 회원 조회
         final TokenResponseDto token = 로그인_응답(tokenRequest)
@@ -139,7 +139,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
     void failDeleteMember() {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
         //없는 회원 조회
         final TokenResponseDto token = 로그인_응답(tokenRequest)

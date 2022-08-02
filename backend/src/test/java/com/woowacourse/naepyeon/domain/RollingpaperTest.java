@@ -18,7 +18,7 @@ class RollingpaperTest {
                 "testEmoji",
                 "#123456"
         );
-        final Member member = new Member("member", "m@hello.com", Platform.KAKAO, 500000L);
+        final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
         final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", team, member);
         final String expected = "kth990303";
 
@@ -36,7 +36,7 @@ class RollingpaperTest {
                 "testEmoji",
                 "#123456"
         );
-        final Member member = new Member("member", "m@hello.com", Platform.KAKAO, 500000L);
+        final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
         final Rollingpaper rollingpaper = new Rollingpaper("seungpang", team, member);
 
         final String invalidTitle = "seungapng, happy new year, good luck";
@@ -54,7 +54,7 @@ class RollingpaperTest {
                 "testEmoji",
                 "#123456"
         );
-        final Member member = new Member("member", "m@hello.com", Platform.KAKAO, 500000L);
+        final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
 
         assertThatThrownBy(() -> new Rollingpaper("seungpang seungpang seungpang", team, member))
                 .isInstanceOf(ExceedRollingpaperNameLengthException.class);

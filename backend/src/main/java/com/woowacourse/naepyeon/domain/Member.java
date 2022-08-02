@@ -43,9 +43,9 @@ public class Member extends BaseEntity {
     private Platform platform;
 
     @Column(name = "platform_id")
-    private Long platformId;
+    private String platformId;
 
-    public Member(final String username, final String email, final Platform platform, final Long platformId) {
+    public Member(final String username, final String email, final Platform platform, final String platformId) {
         validateMember(username, email);
         this.username = username;
         this.email = email;

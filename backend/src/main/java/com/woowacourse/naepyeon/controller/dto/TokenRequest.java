@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class TokenRequest {
 
     private String platformType;
-    private Long platformId;
+    private String platformId;
     @NotBlank(message = "3001:이메일은 공백일 수 없습니다.")
     private String email;
     @NotBlank(message = "3004:유저네임은 공백일 수 없습니다.")

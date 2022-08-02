@@ -44,7 +44,7 @@ class RollingpaperRepositoryTest {
             "testEmoji",
             "#123456"
     );
-    private final Member member = new Member("member", "m@hello.com", Platform.KAKAO, 500000L);
+    private final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
 
     @BeforeEach
     void setUp() {

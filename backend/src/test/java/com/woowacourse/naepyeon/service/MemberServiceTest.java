@@ -22,7 +22,7 @@ class MemberServiceTest {
     @DisplayName("회원을 id값으로 찾는다.")
     void findById() {
         // given
-        final Long memberId = memberService.save("seungpang", "email@email.com", "KAKAO", 500000L);
+        final Long memberId = memberService.save("seungpang", "email@email.com", "KAKAO", "1");
 
         // when
         final MemberResponseDto findMember = memberService.findById(memberId);
@@ -37,7 +37,7 @@ class MemberServiceTest {
     @DisplayName("회원의 유저네임을 수정한다.")
     void update() {
         // given
-        final Long memberId = memberService.save("seungpang", "email@email.com", "KAKAO", 500000L);
+        final Long memberId = memberService.save("seungpang", "email@email.com", "KAKAO", "2");
 
         // when
         memberService.updateUsername(memberId, "zero");
@@ -52,7 +52,7 @@ class MemberServiceTest {
     @DisplayName("회원을 id값을 통해 제거한다.")
     void delete() {
         // given
-        final Long memberId = memberService.save("seungpang", "email@email.com", "KAKAO", 500000L);
+        final Long memberId = memberService.save("seungpang", "email@email.com", "KAKAO", "3");
 
         // when
         memberService.delete(memberId);
