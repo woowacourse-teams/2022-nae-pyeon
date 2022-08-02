@@ -30,8 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class TeamService {
 
-    private static final int PAGE_ONE_BASE_INDEX = 1;
-
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
     private final TeamParticipationRepository teamParticipationRepository;
@@ -90,7 +88,7 @@ public class TeamService {
 
         return new TeamsResponseDto(
                 teams.getTotalElements(),
-                teams.getNumber() + PAGE_ONE_BASE_INDEX,
+                teams.getNumber(),
                 teamResponseDtos
         );
     }
@@ -114,7 +112,7 @@ public class TeamService {
 
         return new TeamsResponseDto(
                 teams.getTotalElements(),
-                teams.getNumber() + PAGE_ONE_BASE_INDEX,
+                teams.getNumber(),
                 teamResponseDtos
         );
     }

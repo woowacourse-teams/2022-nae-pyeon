@@ -33,8 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/teams")
 public class TeamController {
 
-    private static final int PAGE_ONE_BASE_INDEX = 1;
-
     private final TeamService teamService;
 
     @GetMapping("/{teamId}")
@@ -49,8 +47,7 @@ public class TeamController {
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @RequestParam("page") final Integer page,
             @RequestParam("count") final int count) {
-        final int currentPage = page - PAGE_ONE_BASE_INDEX;
-        final Pageable pageRequest = PageRequest.of(currentPage, count);
+        final Pageable pageRequest = PageRequest.of(page, count);
         return ResponseEntity.ok(teamService.findByJoinedMemberId(loginMemberRequest.getId(), pageRequest));
     }
 
@@ -59,8 +56,7 @@ public class TeamController {
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @RequestParam("keyword") final String keyword, @RequestParam("page") final Integer page,
             @RequestParam("count") final int count) {
-        final int currentPage = page - PAGE_ONE_BASE_INDEX;
-        final Pageable pageRequest = PageRequest.of(currentPage, count);
+        final Pageable pageRequest = PageRequest.of(page, count);
         return ResponseEntity.ok(
                 teamService.findTeamsByContainingTeamName(keyword, loginMemberRequest.getId(), pageRequest)
         );
