@@ -44,7 +44,10 @@ const RollingpaperPage = () => {
     <>
       <PageTitleWithBackButton>{rollingpaper.title}</PageTitleWithBackButton>
       <main>
-        <LetterPaper to={rollingpaper.to} messageList={rollingpaper.messages} />
+        <LetterPaper
+          to={rollingpaper.to}
+          messageList={[...rollingpaper.messages].reverse()}
+        />
       </main>
     </>
   );
