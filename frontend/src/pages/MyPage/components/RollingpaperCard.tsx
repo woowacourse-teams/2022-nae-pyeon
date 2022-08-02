@@ -1,14 +1,22 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import { ReceivedRollingpaper } from "@/types";
 
-const RollingpaperCard = ({ title, teamName }: ReceivedRollingpaper) => {
+const RollingpaperCard = ({
+  id,
+  title,
+  teamId,
+  teamName,
+}: ReceivedRollingpaper) => {
   return (
-    <StyledRollingpaperCard>
-      <StyledTitle>{title}</StyledTitle>
-      <StyledTeamName>{teamName}</StyledTeamName>
-    </StyledRollingpaperCard>
+    <Link to={`/team/${teamId}/rollingpaper/${id}`}>
+      <StyledRollingpaperCard>
+        <StyledTitle>{title}</StyledTitle>
+        <StyledTeamName>{teamName}</StyledTeamName>
+      </StyledRollingpaperCard>
+    </Link>
   );
 };
 

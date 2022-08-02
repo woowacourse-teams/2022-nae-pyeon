@@ -2,25 +2,30 @@ import React from "react";
 import styled from "@emotion/styled";
 
 import { SentMessage } from "@/types";
+import { Link } from "react-router-dom";
 
 type StyledMessageProp = Pick<SentMessage, "color">;
 
 const MessageCard = ({
+  rollingpaperId,
   rollingpaperTitle,
   to,
+  teamId,
   teamName,
   content,
   color,
 }: SentMessage) => {
   return (
-    <StyledMessage color={color}>
-      <StyledTitle>{rollingpaperTitle}</StyledTitle>
-      <StyledTo>
-        To. <span>{to}</span>
-        <span>({teamName})</span>
-      </StyledTo>
-      <StyledContent>{content}</StyledContent>
-    </StyledMessage>
+    <Link to={`/team/${teamId}/rollingpaper/${rollingpaperId}`}>
+      <StyledMessage color={color}>
+        <StyledTitle>{rollingpaperTitle}</StyledTitle>
+        <StyledTo>
+          To. <span>{to}</span>
+          <span>({teamName})</span>
+        </StyledTo>
+        <StyledContent>{content}</StyledContent>
+      </StyledMessage>
+    </Link>
   );
 };
 
