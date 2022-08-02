@@ -16,6 +16,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -117,9 +119,13 @@ class TeamParticipationRepositoryTest {
         teamParticipationRepository.save(teamParticipation1);
         teamParticipationRepository.save(teamParticipation2);
 
-        final List<Team> joinedTeams = teamParticipationRepository.findTeamsByMemberId(member1.getId());
+        final Page<Team> joinedTeams =
+                teamParticipationRepository.findTeamsByMemberIdAndPageRequest(member1.getId(), PageRequest.of(0, 1));
 
-        assertThat(joinedTeams).contains(team1, team3);
+        assertAll(
+                () -> assertThat(joinedTeams).contains(team1),
+                () -> assertThat(joinedTeams).doesNotContain(team2, team3)
+        );
     }
 
     @Test
