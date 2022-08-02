@@ -67,7 +67,7 @@ const StyledDropdownList = styled.ul`
   width: 120px;
   padding: 8px;
 
-  z-index: 99;
+  z-index: 2;
 
   text-align: center;
 
