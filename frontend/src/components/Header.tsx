@@ -40,7 +40,7 @@ const Header = () => {
 const StyledHeader = styled.header`
   position: sticky;
   top: 0px;
-  z-index: 999;
+  z-index: 9;
 
   display: flex;
   align-items: center;
