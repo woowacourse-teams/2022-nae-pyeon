@@ -1,13 +1,17 @@
 import React from "react";
+import { MemoryRouter } from "react-router-dom";
+
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 
 export default {
   component: PageTitleWithBackButton,
-  title: "PageTitleWithBackButton",
+  title: "components/common/PageTitleWithBackButton",
 };
 
 const Template = (args) => (
-  <PageTitleWithBackButton {...args}></PageTitleWithBackButton>
+  <MemoryRouter>
+    <PageTitleWithBackButton {...args}></PageTitleWithBackButton>
+  </MemoryRouter>
 );
 
 export const Default = Template.bind({});

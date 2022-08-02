@@ -12,7 +12,7 @@ const colors = [
 
 export default {
   component: MessageColorPicker,
-  title: "MessageColorPicker",
+  title: "components/RollingpaperPage/MessageColorPicker",
 };
 
 const Template = (args) => <MessageColorPicker {...args}></MessageColorPicker>;

@@ -3,7 +3,7 @@ import LineButton from "@/components/LineButton";
 
 export default {
   component: LineButton,
-  title: "LineButton",
+  title: "components/common/LineButton",
 };
 
 const Template = (args) => <LineButton {...args}></LineButton>;

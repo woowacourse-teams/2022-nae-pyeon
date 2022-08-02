@@ -3,7 +3,7 @@ import PageTitle from "@/components/PageTitle";
 
 export default {
   component: PageTitle,
-  title: "PageTitle",
+  title: "components/common/PageTitle",
 };
 
 const Template = (args) => <PageTitle {...args}></PageTitle>;

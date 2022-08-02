@@ -4,8 +4,10 @@ import com.woowacourse.naepyeon.controller.auth.AuthenticationPrincipal;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
 import com.woowacourse.naepyeon.service.MemberService;
+import com.woowacourse.naepyeon.service.RollingpaperService;
 import com.woowacourse.naepyeon.service.MessageService;
 import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
+import com.woowacourse.naepyeon.service.dto.ReceivedRollingpapersResponseDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
+    private final RollingpaperService rollingpaperService;
     private final MessageService messageService;
 
     @GetMapping("/me")
@@ -31,6 +34,17 @@ public class MemberController {
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest) {
         final MemberResponseDto memberResponseDto = memberService.findById(loginMemberRequest.getId());
         return ResponseEntity.ok().body(memberResponseDto);
+    }
+
+    @GetMapping("/me/rollingpapers/received")
+    public ResponseEntity<ReceivedRollingpapersResponseDto> findReceivedRollingpapers(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @RequestParam("page") final Integer page,
+            @RequestParam("count") final int count
+    ) {
+        return ResponseEntity.ok(
+                rollingpaperService.findReceivedRollingpapers(loginMemberRequest.getId(), page, count)
+        );
     }
 
     @GetMapping("/me/messages/written")

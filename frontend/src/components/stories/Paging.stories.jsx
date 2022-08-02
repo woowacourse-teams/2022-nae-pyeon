@@ -3,7 +3,7 @@ import Paging from "@/components/Paging";
 
 export default {
   component: Paging,
-  title: "Paging",
+  title: "components/common/Paging",
 };
 
 const Template = (args) => <Paging {...args}></Paging>;
