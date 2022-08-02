@@ -34,7 +34,7 @@ const UserProvider = ({ children }: PropsWithChildren) => {
   useQuery<UserInfo>(
     ["memberId"],
     () =>
-      axios
+      appClient
         .get("/api/v1/members/me", {
           headers: {
             Authorization: `Bearer ${accessTokenCookie || ""}`,
