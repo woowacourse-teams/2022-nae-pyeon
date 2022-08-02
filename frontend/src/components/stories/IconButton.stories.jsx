@@ -5,7 +5,7 @@ import PencilIcon from "@/assets/icons/bx-pencil.svg";
 
 export default {
   component: IconButton,
-  title: "IconButton",
+  title: "components/common/IconButton",
 };
 
 const Template = (args) => <IconButton {...args}></IconButton>;

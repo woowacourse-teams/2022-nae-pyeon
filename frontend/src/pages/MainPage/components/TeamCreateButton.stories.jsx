@@ -1,12 +1,18 @@
 import React from "react";
+import { MemoryRouter } from "react-router-dom";
+
 import TeamCreateButton from "@/pages/MainPage/components/TeamCreateButton";
 
 export default {
   component: TeamCreateButton,
-  title: "TeamCreateButton",
+  title: "components/MainPage/TeamCreateButton",
 };
 
-const Template = (args) => <TeamCreateButton {...args}></TeamCreateButton>;
+const Template = (args) => (
+  <MemoryRouter>
+    <TeamCreateButton {...args}></TeamCreateButton>
+  </MemoryRouter>
+);
 
 export const Default = Template.bind({});
 Default.args = {};

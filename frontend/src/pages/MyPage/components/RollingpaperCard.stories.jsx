@@ -3,7 +3,7 @@ import RollingpaperCard from "@/pages/MyPage/components/RollingpaperCard";
 
 export default {
   component: RollingpaperCard,
-  title: "RollingpaperCard",
+  title: "components/MyPage/RollingpaperCard",
 };
 
 const Template = (args) => <RollingpaperCard {...args}></RollingpaperCard>;

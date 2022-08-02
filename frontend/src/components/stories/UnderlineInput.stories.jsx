@@ -3,7 +3,7 @@ import UnderlineInput from "@/components/UnderlineInput";
 
 export default {
   component: UnderlineInput,
-  title: "UnderlineInput",
+  title: "components/common/UnderlineInput",
 };
 
 const Template = (args) => <UnderlineInput {...args}></UnderlineInput>;

@@ -3,7 +3,7 @@ import UserProfile from "@/pages/MyPage/components/UserProfile";
 
 export default {
   component: UserProfile,
-  title: "UserProfile",
+  title: "components/MyPage/UserProfile",
 };
 
 const Template = (args) => <UserProfile {...args}></UserProfile>;

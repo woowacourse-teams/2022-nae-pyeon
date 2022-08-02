@@ -3,7 +3,7 @@ import RollingpaperMessage from "@/pages/RollingpaperPage/components/Rollingpape
 
 export default {
   component: RollingpaperMessage,
-  title: "RollingpaperMessage",
+  title: "components/RollingpaperPage/RollingpaperMessage",
 };
 
 const Template = (args) => (
@@ -13,6 +13,7 @@ const Template = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   content:
-    "소피아생일축하해✨🚀소피아생일축하해✨🚀소피아생일축하해✨🚀소피아생일축하해✨🚀소피아생일축하해✨🚀소피아생일축하해✨🚀해",
+    "이국 위에도 것은 애기 별 헤일 된 봅니다. 같이 보고, 없이 언덕 된 하나의 하나에 까닭입니다.",
   author: "도리",
+  color: "#FFF598",
 };

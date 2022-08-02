@@ -3,7 +3,7 @@ import PasswordInput from "@/pages/LoginPage/components/PasswordInput";
 
 export default {
   component: PasswordInput,
-  title: "PasswordInput",
+  title: "components/LoginPage/PasswordInput",
 };
 
 const Template = (args) => <PasswordInput {...args}></PasswordInput>;

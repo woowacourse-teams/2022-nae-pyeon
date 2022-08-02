@@ -3,7 +3,7 @@ import LabeledTextArea from "@/components/LabeledTextArea";
 
 export default {
   component: LabeledTextArea,
-  title: "LabeledTextArea",
+  title: "components/common/LabeledTextArea",
 };
 
 const Template = (args) => <LabeledTextArea {...args}></LabeledTextArea>;

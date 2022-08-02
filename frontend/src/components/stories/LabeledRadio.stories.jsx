@@ -3,7 +3,7 @@ import LabeledRadio from "@/components/LabeledRadio";
 
 export default {
   component: LabeledRadio,
-  title: "LabeledRadio",
+  title: "components/common/LabeledRadio",
 };
 
 const Template = (args) => <LabeledRadio {...args}></LabeledRadio>;
