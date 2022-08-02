@@ -23,6 +23,12 @@ interface LetterPaperProp {
   messageList: Message[];
 }
 
+interface EditMessageProp {
+  messageId: number;
+  color: string;
+  content: string;
+}
+
 const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
   const [writeNewMessage, setWriteNewMessage] = useState(false);
   const [editMessageId, setEditMessageId] = useState<number | null>(null);
@@ -99,6 +105,16 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
     setSlicedMessageLists(newSlicedMessageList);
   };
 
+  const handleEditMessageClick = ({
+    messageId,
+    color,
+    content,
+  }: EditMessageProp) => {
+    setEditMessageId(messageId);
+    setColor(color);
+    setContent(content);
+  };
+
   const submitMessageForm = () => {
     if (!writeNewMessage && editMessageId) {
       updateMessage({ content });
@@ -171,7 +187,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
                     key={message.id}
                     onSubmit={submitMessageForm}
                     onCancel={cancelMessageWrite}
-                    content={message.content}
+                    content={content}
                     onChange={handleMessageChange}
                     color={color}
                     onClickColor={setColor}
@@ -187,8 +203,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
                   authorId={message.authorId}
                   rollingpaperId={Number(rollingpaperId)}
                   messageId={message.id}
-                  setEditMessageId={setEditMessageId}
-                  setColor={setColor}
+                  onClickEdit={handleEditMessageClick}
                 />
               );
             })}
