@@ -29,7 +29,7 @@ const Paging = ({ currentPage, maxPage, setCurrentPage }: PagingProp) => {
   };
 
   const handlePlusClick = () => {
-    if (currentPage >= maxPage) {
+    if (currentPage + 1 >= maxPage) {
       return;
     }
     setCurrentPage((prev) => prev + 1);
@@ -52,15 +52,15 @@ const Paging = ({ currentPage, maxPage, setCurrentPage }: PagingProp) => {
             </StyledPage>
           ))}
         </StyledPageButtons>
-      ) : currentPage > maxPage - 2 ? (
+      ) : currentPage > maxPage - 3 ? (
         <StyledPageButtons>
           {[...Array(5).keys()].reverse().map((num) => (
             <StyledPage
-              isCurrent={currentPage === maxPage - num}
+              isCurrent={currentPage === maxPage - num - 1}
               key={num}
-              onClick={() => handleNumberClick(maxPage - num)}
+              onClick={() => handleNumberClick(maxPage - num - 1)}
             >
-              {maxPage - num + 1}
+              {maxPage - num}
             </StyledPage>
           ))}
         </StyledPageButtons>
