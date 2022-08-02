@@ -44,8 +44,8 @@ const TeamNicknameModalForm = ({
       onSuccess: () => {
         onClickCloseButton();
         openSnackbar("모임 가입 완료");
-        queryClient.refetchQueries(["team"]);
-        queryClient.refetchQueries(["rollingpaperList"]);
+        queryClient.refetchQueries(["team", teamId]);
+        queryClient.refetchQueries(["rollingpaperList", teamId]);
       },
       onError: (error) => {
         console.log(error);
@@ -62,8 +62,8 @@ const TeamNicknameModalForm = ({
       onSuccess: () => {
         onClickCloseButton();
         openSnackbar("닉네임 수정 완료");
-        queryClient.refetchQueries(["team"]);
-        queryClient.refetchQueries(["rollingpaperList"]);
+        queryClient.refetchQueries(["team", teamId]);
+        queryClient.refetchQueries(["rollingpaperList", teamId]);
       },
       onError: (error) => {
         console.log(error);
