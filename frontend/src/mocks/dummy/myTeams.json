@@ -127,6 +127,30 @@
       "emoji": "😎",
       "color": "#98DAFF",
       "joined": true
+    },
+    {
+      "id": 17,
+      "name": "우테코 4기",
+      "description": "우테코 4기 설명입니다",
+      "emoji": "😎",
+      "color": "#C5FF98",
+      "joined": true
+    },
+    {
+      "id": 18,
+      "name": "우테코 4기",
+      "description": "우테코 4기 설명입니다",
+      "emoji": "😎",
+      "color": "#FFF598",
+      "joined": true
+    },
+    {
+      "id": 19,
+      "name": "우테코 4기",
+      "description": "우테코 4기 설명입니다",
+      "emoji": "😎",
+      "color": "#98DAFF",
+      "joined": true
     }
   ]
 }

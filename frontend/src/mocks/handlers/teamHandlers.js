@@ -21,9 +21,13 @@ const teamHandlers = [
   // 내가 가입한 모임 조회
   rest.get("/api/v1/teams/me", (req, res, ctx) => {
     const accessToken = req.headers.headers.authorization;
+    const page = +req.url.searchParams.get("page");
+    const count = +req.url.searchParams.get("count");
 
     const result = {
-      teams: myTeams,
+      totalCount: myTeams.length,
+      currentPage: Number(page),
+      teams: myTeams.slice((page - 1) * count, (page - 1) * count + count),
     };
 
     return res(ctx.json(result));
