@@ -8,7 +8,7 @@ import IconButton from "@components/IconButton";
 import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 import RollingpaperMessage from "@/pages/RollingpaperPage/components/RollingpaperMessage";
 
-import appClient from "@/api";
+import { appClient } from "@/api";
 import { Message, CustomError } from "@/types";
 
 import PencilIcon from "@/assets/icons/bx-pencil.svg";

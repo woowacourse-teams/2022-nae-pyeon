@@ -7,7 +7,7 @@ import styled from "@emotion/styled";
 import IconButton from "@/components/IconButton";
 import RollingpaperListItem from "@/pages/TeamDetailPage/components/RollingpaperListItem";
 
-import appClient from "@/api";
+import { appClient } from "@/api";
 import { CustomError } from "@/types";
 
 import PlusIcon from "@/assets/icons/bx-plus.svg";

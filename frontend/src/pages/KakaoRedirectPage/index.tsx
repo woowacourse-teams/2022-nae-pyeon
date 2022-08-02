@@ -5,7 +5,7 @@ import axios from "axios";
 
 import { UserContext } from "@/context/UserContext";
 
-import appClient from "@/api";
+import { appClient } from "@/api";
 import { requestKakaoToken, requestKakaoUserInfo } from "@/api/kakaoOauth";
 
 import { CustomError } from "@/types";

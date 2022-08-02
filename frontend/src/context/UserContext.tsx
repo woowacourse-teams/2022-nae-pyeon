@@ -4,7 +4,7 @@ import axios from "axios";
 
 import { deleteCookie, getCookie, setCookie } from "@/util/cookie";
 
-import appClient from "@/api";
+import { appClient } from "@/api";
 
 const COOKIE_KEY = {
   ACCESS_TOKEN: "accessToken",

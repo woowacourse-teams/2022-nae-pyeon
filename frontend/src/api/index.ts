@@ -6,6 +6,6 @@ const appClient = axios.create({
   timeout: 3000,
 });
 
-export const queryClient = new QueryClient();
+const queryClient = new QueryClient();
 
-export default appClient;
+export { appClient, queryClient };

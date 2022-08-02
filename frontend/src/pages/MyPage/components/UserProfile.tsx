@@ -12,7 +12,7 @@ import UnderlineInput from "@/components/UnderlineInput";
 
 import { REGEX } from "@/constants";
 import { CustomError, ValueOf } from "@/types";
-import appClient from "@/api";
+import { appClient } from "@/api";
 import Pencil from "@/assets/icons/bx-pencil.svg";
 
 const MODE = {

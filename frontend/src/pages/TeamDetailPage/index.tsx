@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import styled from "@emotion/styled";
 import axios from "axios";
 
-import appClient from "@/api";
+import { appClient } from "@/api";
 
 import TeamDescriptionBox from "@/pages/TeamDetailPage/components/TeamDescriptionBox";
 import RollingpaperList from "@/pages/TeamDetailPage/components/RollingpaperList";

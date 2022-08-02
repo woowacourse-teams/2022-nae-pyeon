@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import styled from "@emotion/styled";
 
-import appClient from "@/api";
+import { appClient } from "@/api";
 
 import LabeledInput from "@/components/LabeledInput";
 import LabeledRadio from "@/components/LabeledRadio";

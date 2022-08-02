@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import styled from "@emotion/styled";
 
-import appClient, { queryClient } from "@/api";
+import { appClient, queryClient } from "@/api";
 
 import LineButton from "@/components/LineButton";
 import Modal from "@/components/Modal";
