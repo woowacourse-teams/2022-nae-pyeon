@@ -1,10 +1,8 @@
 import { useState, createContext, PropsWithChildren } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-
-import { deleteCookie, getCookie, setCookie } from "@/util/cookie";
 
 import { appClient } from "@/api";
+import { deleteCookie, getCookie, setCookie } from "@/util/cookie";
 
 const COOKIE_KEY = {
   ACCESS_TOKEN: "accessToken",
