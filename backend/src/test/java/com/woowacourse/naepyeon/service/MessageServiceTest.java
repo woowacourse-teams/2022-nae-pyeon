@@ -24,7 +24,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -36,11 +35,13 @@ class MessageServiceTest {
             "테스트 모임입니다.",
             "testEmoji",
             "#123456");
-    private final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "2");
-    private final Member author = new Member("author", "au@hello.com", Platform.KAKAO, "1");
+    private final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
+    private final Member author = new Member("author", "au@hello.com", Platform.KAKAO, "2");
     private final Member otherAuthor = new Member("author2", "aut@hello.com", Platform.KAKAO, "3");
     private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", team, member);
-    private final TeamParticipation teamParticipation = new TeamParticipation(team, author, "테스트닉네임");
+    private final TeamParticipation teamParticipation1 = new TeamParticipation(team, member, "일케이");
+    private final TeamParticipation teamParticipation2 = new TeamParticipation(team, author, "이케이");
+    private final TeamParticipation teamParticipation3 = new TeamParticipation(team, otherAuthor, "삼케이");
 
     @Autowired
     private MessageService messageService;
@@ -61,7 +62,9 @@ class MessageServiceTest {
         memberRepository.save(author);
         memberRepository.save(otherAuthor);
         rollingpaperRepository.save(rollingpaper);
-        teamParticipationRepository.save(teamParticipation);
+        teamParticipationRepository.save(teamParticipation1);
+        teamParticipationRepository.save(teamParticipation2);
+        teamParticipationRepository.save(teamParticipation3);
     }
 
     @Test
@@ -75,7 +78,7 @@ class MessageServiceTest {
         final MessageResponseDto messageResponse = messageService.findMessage(messageId, rollingpaper.getId());
 
         assertThat(messageResponse).extracting("content", "from", "authorId")
-                .containsExactly(messageRequest.getContent(), "테스트닉네임", author.getId());
+                .containsExactly(messageRequest.getContent(), "이케이", author.getId());
     }
 
     @Test
@@ -93,7 +96,7 @@ class MessageServiceTest {
         );
 
         final WrittenMessagesResponseDto writtenMessagesResponseDto =
-                messageService.findWrittenMessages(author.getId(), 0, 5);
+                messageService.findWrittenMessages(author.getId(), 0, 10);
         final List<WrittenMessageResponseDto> actual = writtenMessagesResponseDto.getMessages();
         final List<WrittenMessageResponseDto> expected = List.of(
                 new WrittenMessageResponseDto(
@@ -102,7 +105,7 @@ class MessageServiceTest {
                         rollingpaper.getTitle(),
                         team.getId(),
                         team.getName(),
-                        "테스트닉네임",
+                        "일케이",
                         messageRequest.getContent(),
                         messageRequest.getColor()
                 ),
@@ -112,7 +115,7 @@ class MessageServiceTest {
                         rollingpaper.getTitle(),
                         team.getId(),
                         team.getName(),
-                        "테스트닉네임",
+                        "일케이",
                         messageRequest.getContent(),
                         messageRequest.getColor()
                 )
@@ -135,8 +138,8 @@ class MessageServiceTest {
         messageService.updateMessage(messageId, expectedContent, expectedColor, author.getId());
 
         final MessageResponseDto actual = messageService.findMessage(messageId, rollingpaper.getId());
-        final MessageResponseDto expected = new MessageResponseDto(messageId, expectedContent, expectedColor,
-                "테스트닉네임", author.getId());
+        final MessageResponseDto expected =
+                new MessageResponseDto(messageId, expectedContent, expectedColor, "이케이", author.getId());
         assertThat(actual)
                 .usingRecursiveComparison()
                 .isEqualTo(expected);

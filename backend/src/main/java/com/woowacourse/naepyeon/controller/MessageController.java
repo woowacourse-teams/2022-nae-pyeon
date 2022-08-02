@@ -31,9 +31,9 @@ public class MessageController {
     public ResponseEntity<CreateResponse> createMessage(@AuthenticationPrincipal LoginMemberRequest loginMemberRequest,
                                                         @RequestBody @Valid final MessageRequest messageRequest,
                                                         @PathVariable final Long rollingpaperId) {
-        final Long messageId =
-                messageService.saveMessage(messageRequest.getContent(), messageRequest.getColor(), rollingpaperId,
-                        loginMemberRequest.getId());
+        final Long messageId = messageService.saveMessage(
+                messageRequest.getContent(), messageRequest.getColor(), rollingpaperId, loginMemberRequest.getId()
+        );
         return ResponseEntity.created(
                 URI.create("/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId)
         ).body(new CreateResponse(messageId));

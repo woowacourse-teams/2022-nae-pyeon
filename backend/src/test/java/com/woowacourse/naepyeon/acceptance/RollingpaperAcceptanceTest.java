@@ -1,6 +1,5 @@
 package com.woowacourse.naepyeon.acceptance;
 
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.나의_롤링페이퍼_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.로그인_응답;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.롤링페이퍼_제목_수정;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.롤링페이퍼_특정_조회;
@@ -9,6 +8,7 @@ import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_모�
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_추가;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_롤링페이퍼_생성;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원가입_후_로그인;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원의_롤링페이퍼_조회;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
@@ -59,7 +59,7 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
                 .getId();
 
         // then: yxxnghwan이 받은 롤링페이퍼 조회
-        final List<Long> actual = 나의_롤링페이퍼_조회(tokenResponseDto2, teamId).as(RollingpapersResponseDto.class)
+        final List<Long> actual = 회원의_롤링페이퍼_조회(tokenResponseDto2, teamId).as(RollingpapersResponseDto.class)
                 .getRollingpapers()
                 .stream()
                 .map(RollingpaperPreviewResponseDto::getId)
@@ -91,7 +91,7 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
                 .getId();
 
         // then: yxxnghwan이 받은 롤링페이퍼 조회
-        final List<Long> actual = 나의_롤링페이퍼_조회(tokenResponseDto2, teamId).as(RollingpapersResponseDto.class)
+        final List<Long> actual = 회원의_롤링페이퍼_조회(tokenResponseDto2, teamId).as(RollingpapersResponseDto.class)
                 .getRollingpapers()
                 .stream()
                 .map(RollingpaperPreviewResponseDto::getId)

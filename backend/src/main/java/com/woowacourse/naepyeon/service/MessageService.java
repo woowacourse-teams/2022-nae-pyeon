@@ -61,8 +61,8 @@ public class MessageService {
     }
 
     @Transactional(readOnly = true)
-    public WrittenMessagesResponseDto findWrittenMessages(final Long loginMemberId, final Integer page,
-                                                          final int count) {
+    public WrittenMessagesResponseDto findWrittenMessages(
+            final Long loginMemberId, final Integer page, final int count) {
         final Pageable pageRequest = PageRequest.of(page, count);
         final Page<WrittenMessageResponseDto> writtenMessages =
                 messageRepository.findAllByAuthorId(loginMemberId, pageRequest);
