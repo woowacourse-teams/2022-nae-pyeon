@@ -22,14 +22,14 @@ const Paging = ({ currentPage, maxPage, setCurrentPage }: PagingProp) => {
   };
 
   const handleMinusClick = () => {
-    if (currentPage <= 1) {
+    if (currentPage <= 0) {
       return;
     }
     setCurrentPage((prev) => prev - 1);
   };
 
   const handlePlusClick = () => {
-    if (currentPage >= maxPage) {
+    if (currentPage + 1 >= maxPage) {
       return;
     }
     setCurrentPage((prev) => prev + 1);
@@ -44,21 +44,21 @@ const Paging = ({ currentPage, maxPage, setCurrentPage }: PagingProp) => {
         <StyledPageButtons>
           {[...Array(maxPage > 5 ? 5 : maxPage).keys()].map((num) => (
             <StyledPage
-              isCurrent={currentPage === num + 1}
+              isCurrent={currentPage === num}
               key={num}
-              onClick={() => handleNumberClick(num + 1)}
+              onClick={() => handleNumberClick(num)}
             >
               {num + 1}
             </StyledPage>
           ))}
         </StyledPageButtons>
-      ) : currentPage > maxPage - 2 ? (
+      ) : currentPage > maxPage - 3 ? (
         <StyledPageButtons>
           {[...Array(5).keys()].reverse().map((num) => (
             <StyledPage
-              isCurrent={currentPage === maxPage - num}
+              isCurrent={currentPage === maxPage - num - 1}
               key={num}
-              onClick={() => handleNumberClick(maxPage - num)}
+              onClick={() => handleNumberClick(maxPage - num - 1)}
             >
               {maxPage - num}
             </StyledPage>
@@ -72,7 +72,7 @@ const Paging = ({ currentPage, maxPage, setCurrentPage }: PagingProp) => {
               key={num}
               onClick={() => handleNumberClick(currentPage - (2 - num))}
             >
-              {currentPage - (2 - num)}
+              {currentPage - (2 - num) + 1}
             </StyledPage>
           ))}
         </StyledPageButtons>

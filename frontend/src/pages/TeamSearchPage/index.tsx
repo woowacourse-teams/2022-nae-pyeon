@@ -36,7 +36,7 @@ const TeamSearch = () => {
 
   const fetchTeams =
     (keyword: string) =>
-    async ({ pageParam = 1 }) => {
+    async ({ pageParam = 0 }) => {
       const data = appClient
         .get(
           `teams?keyword=${keyword}&page=${pageParam}&count=${TOTAL_TEAMS_PAGING_COUNT}`

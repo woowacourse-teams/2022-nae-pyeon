@@ -55,20 +55,20 @@ const INITIAL_DATA = {
 
 const MyPage = () => {
   const [tab, setTab] = useState<TabMode>(TAB.RECEIVED_PAPER);
-  const [receivedRollingpapersPage, setReceivedRollingpapersPage] = useState(1);
-  const [sentMessagesCurrentPage, setSentMessagesCurrentPage] = useState(1);
+  const [receivedRollingpapersPage, setReceivedRollingpapersPage] = useState(0);
+  const [sentMessagesCurrentPage, setSentMessagesCurrentPage] = useState(0);
 
   const fetchUserInfo = () => {
     return appClient.get("/members/me").then((response) => response.data);
   };
 
-  const fetchReceivedRollingpapers = (page = 1, count = 5) => {
+  const fetchReceivedRollingpapers = (page = 0, count = 5) => {
     return appClient
       .get(`/members/me/rollingpapers/received?page=${page}&count=${count}`)
       .then((response) => response.data);
   };
 
-  const fetchSentMessage = (page = 1, count = 5) => {
+  const fetchSentMessage = (page = 0, count = 5) => {
     return appClient
       .get(`/members/me/messages/written?page=${page}&count=${count}`)
       .then((response) => response.data);
@@ -166,7 +166,7 @@ const MyPage = () => {
       <UserProfile username={userProfile.username} email={userProfile.email} />
       <StyledTabs>
         <MyPageTab
-          number={responseReceivedRollingpapers.rollingpapers.length}
+          number={responseReceivedRollingpapers.totalCount}
           text="받은 롤링페이퍼"
           activate={tab === TAB.RECEIVED_PAPER}
           onClick={() => {
@@ -174,7 +174,7 @@ const MyPage = () => {
           }}
         />
         <MyPageTab
-          number={responseSentMessages.messages.length}
+          number={responseSentMessages.totalCount}
           text="작성한 메시지"
           activate={tab === TAB.SENT_MESSAGE}
           onClick={() => {
