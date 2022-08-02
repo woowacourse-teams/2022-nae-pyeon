@@ -61,6 +61,7 @@ const TeamDescriptionBox = ({
 
 const StyledTeamDescriptionContainer = styled.div<StyledTeamDescriptionContainerProps>`
   width: 90%;
+  min-height: 150px;
 
   padding: 20px 16px;
   border-radius: 8px;

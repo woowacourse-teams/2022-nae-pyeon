@@ -80,7 +80,7 @@ const StyledDropdown = styled.ul`
   box-shadow: 0 4px 4px rgba(89, 87, 87, 0.25);
   border-radius: 8px;
 
-  animation: ${fadeInDown} 0.5s;
+  animation: ${fadeInDown} 0.3s;
 
   hr {
     border: 0.5px solid ${({ theme }) => theme.colors.GRAY_400};
