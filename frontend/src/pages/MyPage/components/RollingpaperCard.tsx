@@ -1,12 +1,9 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-interface RollingpaperCardProps {
-  title: string;
-  teamName: string;
-}
+import { ReceivedRollingpaper } from "@/types";
 
-const RollingpaperCard = ({ title, teamName }: RollingpaperCardProps) => {
+const RollingpaperCard = ({ title, teamName }: ReceivedRollingpaper) => {
   return (
     <StyledRollingpaperCard>
       <StyledTitle>{title}</StyledTitle>

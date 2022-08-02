@@ -1,29 +1,23 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-interface MessageCardProp {
-  rollingpaperTitle: string;
-  to: string;
-  team: string;
-  content: string;
-  color: string;
-}
+import { SentMessage } from "@/types";
 
-type StyledMessageProp = Pick<MessageCardProp, "color">;
+type StyledMessageProp = Pick<SentMessage, "color">;
 
 const MessageCard = ({
   rollingpaperTitle,
   to,
-  team,
+  teamName,
   content,
   color,
-}: MessageCardProp) => {
+}: SentMessage) => {
   return (
     <StyledMessage color={color}>
       <StyledTitle>{rollingpaperTitle}</StyledTitle>
       <StyledTo>
         To. <span>{to}</span>
-        <span>({team})</span>
+        <span>({teamName})</span>
       </StyledTo>
       <StyledContent>{content}</StyledContent>
     </StyledMessage>
