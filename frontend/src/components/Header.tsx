@@ -12,8 +12,8 @@ const Header = () => {
   const { logout } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleLogoutClick = () => {
-    logout();
+  const handleMyPageClick = () => {
+    navigate("/mypage");
   };
 
   const handleSearchClick = () => {
@@ -29,7 +29,7 @@ const Header = () => {
         <IconButton onClick={handleSearchClick} size="medium">
           <SearchIcon />
         </IconButton>
-        <IconButton onClick={handleLogoutClick} size="medium">
+        <IconButton onClick={handleMyPageClick} size="medium">
           <UserIcon />
         </IconButton>
       </StyledNav>
@@ -38,6 +38,10 @@ const Header = () => {
 };
 
 const StyledHeader = styled.header`
+  position: sticky;
+  top: 0px;
+  z-index: 999;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -46,7 +50,7 @@ const StyledHeader = styled.header`
 
   width: 100%;
   height: 70px;
-  background-color: white;
+  background-color: ${({ theme }) => `${theme.colors.WHITE}e8`};
 
   img {
     width: 30px;

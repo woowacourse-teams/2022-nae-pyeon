@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.domain.Member;
+import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
@@ -45,7 +46,7 @@ class RollingpaperRepositoryTest {
             "testEmoji",
             "#123456"
     );
-    private final Member member = new Member("member", "m@hello.com", "abc@@1234");
+    private final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
 
     @BeforeEach
     void setUp() {

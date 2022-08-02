@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Global, ThemeProvider } from "@emotion/react";
 import { Routes, Route } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import reset from "@/styles/reset";
 import font from "@/styles/font";
@@ -10,19 +10,16 @@ import theme from "@/styles/theme";
 import HeaderLayoutPage from "@/pages/HeaderLayoutPage";
 import RollingpaperPage from "@/pages/RollingpaperPage";
 import RollingpaperCreationPage from "@/pages/RollingpaperCreationPage";
-import MessageWritePage from "@/pages/MessageWritePage";
-import MessageEditPage from "@/pages/MessageEditPage";
-import MessageDetailPage from "@/pages/MessageDetailPage";
 import TeamDetailPage from "@/pages/TeamDetailPage";
-import SignUpPage from "@/pages/SignUpPage";
 import TeamCreationPage from "@/pages/TeamCreationPage";
 import MainPage from "@/pages/MainPage";
 import LoginPage from "@/pages/LoginPage";
 import TeamSearch from "@/pages/TeamSearchPage";
 import ErrorPage from "@/pages/ErrorPage";
+import KakaoRedirectPage from "@/pages/KakaoRedirectPage";
 
 import RequireLogin from "@/components/RequireLogin";
-import RequireLogout from "./components/RequireLogout";
+import RequireLogout from "@/components/RequireLogout";
 import PageContainer from "@/components/PageContainer";
 import MyPage from "@/pages/MyPage";
 import { UserProvider } from "@/context/UserContext";
@@ -78,14 +75,6 @@ const App = () => {
                 <Route path="*" element={<ErrorPage />} />
               </Route>
               <Route
-                path="signup"
-                element={
-                  <RequireLogout>
-                    <SignUpPage />
-                  </RequireLogout>
-                }
-              />
-              <Route
                 path="login"
                 element={
                   <RequireLogout>
@@ -117,30 +106,7 @@ const App = () => {
                   </RequireLogin>
                 }
               />
-              <Route
-                path="team/:teamId/rollingpaper/:rollingpaperId/message/new"
-                element={
-                  <RequireLogin>
-                    <MessageWritePage />
-                  </RequireLogin>
-                }
-              />
-              <Route
-                path="team/:teamId/rollingpaper/:rollingpaperId/message/:messageId"
-                element={
-                  <RequireLogin>
-                    <MessageDetailPage />
-                  </RequireLogin>
-                }
-              />
-              <Route
-                path="team/:teamId/rollingpaper/:rollingpaperId/message/:messageId/edit"
-                element={
-                  <RequireLogin>
-                    <MessageEditPage />
-                  </RequireLogin>
-                }
-              />
+              <Route path="oauth/kakao" element={<KakaoRedirectPage />} />
             </Routes>
             {isOpened && <Snackbar />}
           </UserProvider>
