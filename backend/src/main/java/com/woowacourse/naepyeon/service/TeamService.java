@@ -30,6 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class TeamService {
 
+    private static final int PAGE_ONE_BASE_INDEX = 1;
+
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
     private final TeamParticipationRepository teamParticipationRepository;
@@ -86,7 +88,11 @@ public class TeamService {
                 .map(team -> TeamResponseDto.of(team, joinedTeams.contains(team)))
                 .collect(Collectors.toList());
 
-        return new TeamsResponseDto(teams.getTotalElements(), teams.getNumber(), teamResponseDtos);
+        return new TeamsResponseDto(
+                teams.getTotalElements(),
+                teams.getNumber() + PAGE_ONE_BASE_INDEX,
+                teamResponseDtos
+        );
     }
 
     public AllTeamsResponseDto findAll(final Long memberId) {
@@ -106,7 +112,11 @@ public class TeamService {
                 .map(team -> TeamResponseDto.of(team, true))
                 .collect(Collectors.toList());
 
-        return new TeamsResponseDto(teams.getTotalElements(), teams.getNumber(), teamResponseDtos);
+        return new TeamsResponseDto(
+                teams.getTotalElements(),
+                teams.getNumber() + PAGE_ONE_BASE_INDEX,
+                teamResponseDtos
+        );
     }
 
     public JoinedMembersResponseDto findJoinedMembers(final Long teamId) {
