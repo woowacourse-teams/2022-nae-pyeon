@@ -4,7 +4,7 @@ import { keyframes } from "@emotion/react";
 
 import IconButton from "./IconButton";
 
-import DotsIcon from "@/assets/icons/bx-dots-horizontal-rounded.svg";
+import MeatballIcon from "@/assets/icons/bx-dots-horizontal-rounded.svg";
 
 interface optionList {
   option: string;
@@ -29,7 +29,7 @@ const MoreDropdown = ({ optionList }: MoreDropdownProp) => {
   return (
     <StyledMoreDropdown>
       <IconButton size="small" onClick={handleButtonClick}>
-        <DotsIcon />
+        <MeatballIcon />
       </IconButton>
       {isOpened && (
         <StyledDropdown>
