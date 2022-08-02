@@ -4,7 +4,6 @@ import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.로그인_�
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_삭제;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_유저네임_수정;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_조회;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원가입_후_로그인;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -105,26 +104,6 @@ class MemberAcceptanceTest extends AcceptanceTest {
 
         //회원정보 수정 실패
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
-    }
-
-    @ParameterizedTest
-    @DisplayName("회원수정 시, 회원이름이 2 ~ 20자 및 한글, 영어, 숫자가 아닌 경우 예외가 발생한다.")
-    @ValueSource(strings = {"0", "012345678901234567891", "+특수문자+"})
-    void failUpdateUsername(String failUsername) {
-        //회원 추가 및 토큰
-        final TokenRequest tokenRequest =
-                new TokenRequest("KAKAO", 500000L, "email@email.com", "알렉스", "이미지경로");
-
-        //없는 회원 조회
-        final TokenResponseDto token = 로그인_응답(tokenRequest)
-                .as(TokenResponseDto.class);
-
-        //회원정보 수정
-        final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest(failUsername);
-        final ExtractableResponse<Response> response = 회원_유저네임_수정(token, memberUpdateRequest);
-
-        //회원정보 수정 실패
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test

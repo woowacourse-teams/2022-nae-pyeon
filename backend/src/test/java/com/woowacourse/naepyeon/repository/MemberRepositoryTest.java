@@ -36,7 +36,8 @@ class MemberRepositoryTest {
         // then
         assertThat(findMember)
                 .extracting("id", "username", "email", "platform", "platformId")
-                .containsExactly(memberId, "seungpang", "email@email.com", member.getPlatform(), member.getPlatformId());
+                .containsExactly(memberId, "seungpang", "email@email.com", member.getPlatform(),
+                        member.getPlatformId());
     }
 
     @Test

@@ -77,7 +77,7 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
                 .getId();
 
         final TokenResponseDto tokenResponseDto2 = 로그인_응답(member2)
-                .as(TokenResponseDto.class);;
+                .as(TokenResponseDto.class);
         모임_가입(tokenResponseDto2, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
 
         // when: seungpang이 yxxnghwan에게 롤링페이퍼 2개 작성

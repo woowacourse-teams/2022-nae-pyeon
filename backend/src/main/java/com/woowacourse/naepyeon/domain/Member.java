@@ -2,7 +2,6 @@ package com.woowacourse.naepyeon.domain;
 
 import com.woowacourse.naepyeon.exception.ExceedMemberUsernameLengthException;
 import com.woowacourse.naepyeon.exception.InvalidMemberEmailException;
-import com.woowacourse.naepyeon.exception.InvalidMemberUsernameException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.persistence.Column;
@@ -23,10 +22,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
 
-    public static final int MIN_USERNAME_LENGTH = 2;
-    public static final int MAX_USERNAME_LENGTH = 20;
+    public static final int MIN_USERNAME_LENGTH = 1;
+    public static final int MAX_USERNAME_LENGTH = 64;
 
-    private static final Pattern USER_PATTERN = Pattern.compile("^[가-힣a-zA-Z0-9]+$");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$");
 
     @Id
@@ -67,19 +65,11 @@ public class Member extends BaseEntity {
 
     private void validateUsername(final String username) {
         validateUsernameSize(username);
-        validateUsernameRegex(username);
     }
 
     private void validateUsernameSize(final String username) {
         if (MIN_USERNAME_LENGTH > username.length() || MAX_USERNAME_LENGTH < username.length()) {
             throw new ExceedMemberUsernameLengthException(username);
-        }
-    }
-
-    private void validateUsernameRegex(final String username) {
-        final Matcher matcher = USER_PATTERN.matcher(username);
-        if (!matcher.matches()) {
-            throw new InvalidMemberUsernameException(username);
         }
     }
 

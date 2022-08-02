@@ -4,5 +4,4 @@ public enum Platform {
     KAKAO,
     NAVER,
     GOOGLE
-    ;
 }
