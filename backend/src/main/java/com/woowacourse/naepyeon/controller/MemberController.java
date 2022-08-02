@@ -52,8 +52,7 @@ public class MemberController {
             @RequestParam("page") final Integer page,
             @RequestParam("count") final int count
     ) {
-        final int currentPage = page - 1;
-        final Pageable pageRequest = PageRequest.of(currentPage, count);
+        final Pageable pageRequest = PageRequest.of(page, count);
         return ResponseEntity.ok(
                 messageService.findWrittenMessages(loginMemberRequest.getId(), pageRequest)
         );
