@@ -91,7 +91,7 @@ const RollingpaperCreationPage = () => {
 
     const receiver = findReceiverWithNickName(rollingpaperTo);
     if (!receiver) {
-      return alert("올바른 롤링페이퍼 대상을 선택해주세요.");
+      return alert("받는 사람은 모임원 중 한 명이어야 합니다.");
     }
 
     postRollingpaper({ title: rollingpaperTitle, addresseeId: receiver.id });
