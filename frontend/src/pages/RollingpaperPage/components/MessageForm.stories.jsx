@@ -9,4 +9,6 @@ export default {
 const Template = (args) => <MessageForm {...args}></MessageForm>;
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = {
+  color: "#FFF598",
+};

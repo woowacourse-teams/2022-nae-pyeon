@@ -12,4 +12,5 @@ export const Default = Template.bind({});
 Default.args = {
   value: "테스트",
   placeholder: "메시지를 입력해보세요!",
+  backgroundColor: "#FFF598",
 };
