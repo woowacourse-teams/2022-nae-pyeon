@@ -1,6 +1,12 @@
 package com.woowacourse.naepyeon.acceptance;
 
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.나의_롤링페이퍼_조회;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.나의_메시지_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.로그인_응답;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_작성;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_생성;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_롤링페이퍼_생성;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_삭제;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_유저네임_수정;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_조회;
@@ -8,12 +14,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.controller.dto.ErrorResponse;
+import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
+import com.woowacourse.naepyeon.controller.dto.MessageRequest;
+import com.woowacourse.naepyeon.controller.dto.RollingpaperCreateRequest;
 import com.woowacourse.naepyeon.controller.dto.TokenRequest;
 import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
+import com.woowacourse.naepyeon.service.dto.ReceivedRollingpaperResponseDto;
+import com.woowacourse.naepyeon.service.dto.ReceivedRollingpapersResponseDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
+import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
+import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -65,7 +79,6 @@ class MemberAcceptanceTest extends AcceptanceTest {
         final TokenRequest tokenRequest =
                 new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
 
-        //없는 회원 조회
         final TokenResponseDto token = 로그인_응답(tokenRequest)
                 .as(TokenResponseDto.class);
         회원_삭제(token);
@@ -76,13 +89,90 @@ class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    @DisplayName("내가 받은 롤링페이퍼 목록을 조회한다.")
+    void findReceivedRollingpapers() {
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
+        final TokenResponseDto token1 = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
+
+        final TokenRequest tokenRequest2 =
+                new TokenRequest("KAKAO", "2", "kth990303@email.com", "케이", "이미지경로");
+        final TokenResponseDto token2 = 로그인_응답(tokenRequest2)
+                .as(TokenResponseDto.class);
+
+        // 모임 생성 및 가입시키기
+        final Long teamId = 모임_생성(token1);
+        모임_가입(token2, teamId, new JoinTeamMemberRequest("알고리즘이좋아요"));
+
+        회원_롤링페이퍼_생성(token2, teamId, new RollingpaperCreateRequest("알렉스가좋아요", token1.getId()));
+        회원_롤링페이퍼_생성(token2, teamId, new RollingpaperCreateRequest("영환이형도좋아요", token1.getId()));
+
+        //나의 롤링페이퍼 조회
+        final ReceivedRollingpapersResponseDto receivedRollingpapersResponseDto = 나의_롤링페이퍼_조회(token1, 0, 5)
+                .as(ReceivedRollingpapersResponseDto.class);
+        final List<ReceivedRollingpaperResponseDto> actual = receivedRollingpapersResponseDto.getRollingpapers();
+        final List<ReceivedRollingpaperResponseDto> expected = List.of(
+                new ReceivedRollingpaperResponseDto(1L, "알렉스가좋아요", teamId, "woowacourse-4th"),
+                new ReceivedRollingpaperResponseDto(2L, "영환이형도좋아요", teamId, "woowacourse-4th")
+        );
+
+        assertThat(actual)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("내가 작성한 메시지 목록을 조회한다.")
+    void findWrittenMessages() {
+        //회원 추가 및 토큰
+        final TokenRequest tokenRequest1 =
+                new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
+        final TokenResponseDto token1 = 로그인_응답(tokenRequest1)
+                .as(TokenResponseDto.class);
+
+        final TokenRequest tokenRequest2 =
+                new TokenRequest("KAKAO", "2", "kth990303@email.com", "케이", "이미지경로");
+        final TokenResponseDto token2 = 로그인_응답(tokenRequest2)
+                .as(TokenResponseDto.class);
+
+        // 모임 생성 및 가입시키기
+        final Long teamId = 모임_생성(token1);
+        모임_가입(token2, teamId, new JoinTeamMemberRequest("알고리즘이좋아요"));
+
+        회원_롤링페이퍼_생성(token2, teamId, new RollingpaperCreateRequest("알렉스가좋아요", token1.getId()));
+        회원_롤링페이퍼_생성(token2, teamId, new RollingpaperCreateRequest("영환이형도좋아요", token1.getId()));
+
+        메시지_작성(token2, 1L, new MessageRequest("좋아", "green"));
+        메시지_작성(token2, 1L, new MessageRequest("ㅋㅋ", "red"));
+        메시지_작성(token2, 2L, new MessageRequest("테스트", "yellow"));
+
+        //내가 작성한 메시지를 2개만 조회
+        final WrittenMessagesResponseDto writtenMessagesResponseDto = 나의_메시지_조회(token2, 0, 2)
+                .as(WrittenMessagesResponseDto.class);
+        final List<WrittenMessageResponseDto> actual = writtenMessagesResponseDto.getMessages();
+        final List<WrittenMessageResponseDto> expected = List.of(
+                new WrittenMessageResponseDto(
+                        1L, 1L, "알렉스가좋아요", teamId, "woowacourse-4th", "나는야모임장",
+                        "좋아", "green"),
+                new WrittenMessageResponseDto(
+                        2L, 1L, "알렉스가좋아요", teamId, "woowacourse-4th", "나는야모임장",
+                        "ㅋㅋ", "red")
+        );
+
+        assertThat(actual)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
+
+    }
+
+    @Test
     @DisplayName("회원정보를 수정할 수 있다.")
     void updateMember() {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest =
                 new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
-
-        //없는 회원 조회
         final TokenResponseDto token = 로그인_응답(tokenRequest)
                 .as(TokenResponseDto.class);
 
@@ -112,8 +202,6 @@ class MemberAcceptanceTest extends AcceptanceTest {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest =
                 new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
-
-        //없는 회원 조회
         final TokenResponseDto token = 로그인_응답(tokenRequest)
                 .as(TokenResponseDto.class);
 
@@ -140,8 +228,6 @@ class MemberAcceptanceTest extends AcceptanceTest {
         //회원 추가 및 토큰
         final TokenRequest tokenRequest =
                 new TokenRequest("KAKAO", "1", "email@email.com", "알렉스", "이미지경로");
-
-        //없는 회원 조회
         final TokenResponseDto token = 로그인_응답(tokenRequest)
                 .as(TokenResponseDto.class);
         회원_삭제(token);
