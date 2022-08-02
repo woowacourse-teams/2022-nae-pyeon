@@ -9,7 +9,7 @@ import useIntersect from "@/hooks/useIntersect";
 import SearchInput from "@/components/SearchInput";
 import SearchResultItem from "@/pages/TeamSearchPage/components/SearchResultItem";
 
-import appClient from "@/api";
+import { appClient } from "@/api";
 import { CustomError } from "@/types";
 import { TOTAL_TEAMS_PAGING_COUNT } from "@/constants";
 
@@ -36,7 +36,7 @@ const TeamSearch = () => {
 
   const fetchTeams =
     (keyword: string) =>
-    async ({ pageParam = 1 }) => {
+    async ({ pageParam = 0 }) => {
       const data = appClient
         .get(
           `teams?keyword=${keyword}&page=${pageParam}&count=${TOTAL_TEAMS_PAGING_COUNT}`
