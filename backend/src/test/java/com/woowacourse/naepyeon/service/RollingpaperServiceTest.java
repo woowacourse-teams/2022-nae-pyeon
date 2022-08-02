@@ -18,7 +18,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -166,7 +165,7 @@ class RollingpaperServiceTest {
 
         // when
         final ReceivedRollingpapersResponseDto receivedRollingpapersResponseDto =
-                rollingpaperService.findReceivedRollingpapers(memberId, PageRequest.of(0, 2));
+                rollingpaperService.findReceivedRollingpapers(memberId, 0, 2);
         final List<ReceivedRollingpaperResponseDto> actual = receivedRollingpapersResponseDto.getRollingpapers();
         final List<ReceivedRollingpaperResponseDto> expected = List.of(
                 new ReceivedRollingpaperResponseDto(rollingpaperId1, rollingPaperTitle, teamId, teamRequest.getName()),

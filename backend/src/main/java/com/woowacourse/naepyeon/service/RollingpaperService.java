@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,7 +102,8 @@ public class RollingpaperService {
 
     @Transactional(readOnly = true)
     public ReceivedRollingpapersResponseDto findReceivedRollingpapers(
-            final Long loginMemberId, final Pageable pageRequest) {
+            final Long loginMemberId, final Integer page, final int count) {
+        final Pageable pageRequest = PageRequest.of(page, count);
         final Page<Rollingpaper> rollingpapers = rollingpaperRepository.findByMemberId(loginMemberId, pageRequest);
         final List<ReceivedRollingpaperResponseDto> receivedRollingpaperResponseDtos = rollingpapers.stream()
                 .map(it -> ReceivedRollingpaperResponseDto.of(it.getId(), it.getTitle(), it.getTeam()))
