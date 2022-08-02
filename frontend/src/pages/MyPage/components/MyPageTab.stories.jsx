@@ -3,7 +3,7 @@ import MyPageTab from "@/pages/MyPage/components/MyPageTab";
 
 export default {
   component: MyPageTab,
-  title: "MyPageTab",
+  title: "components/MyPage/MyPageTab",
 };
 
 const Template = (args) => <MyPageTab {...args}></MyPageTab>;

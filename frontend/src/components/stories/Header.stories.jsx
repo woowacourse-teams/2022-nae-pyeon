@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 
 export default {
   component: Header,
-  title: "Header",
+  title: "components/common/Header",
 };
 
 const Template = (args) => (

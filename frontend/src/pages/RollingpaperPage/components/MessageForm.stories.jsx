@@ -3,7 +3,7 @@ import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 
 export default {
   component: MessageForm,
-  title: "MessageForm",
+  title: "components/RollingpaperPage/MessageForm",
 };
 
 const Template = (args) => <MessageForm {...args}></MessageForm>;

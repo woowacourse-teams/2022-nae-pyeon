@@ -3,7 +3,7 @@ import LabeledInput from "@/components/LabeledInput";
 
 export default {
   component: LabeledInput,
-  title: "LabeledInput",
+  title: "components/common/LabeledInput",
 };
 
 const Template = (args) => <LabeledInput {...args}></LabeledInput>;

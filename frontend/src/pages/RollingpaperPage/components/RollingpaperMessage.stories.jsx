@@ -3,7 +3,7 @@ import RollingpaperMessage from "@/pages/RollingpaperPage/components/Rollingpape
 
 export default {
   component: RollingpaperMessage,
-  title: "RollingpaperMessage",
+  title: "components/RollingpaperPage/RollingpaperMessage",
 };
 
 const Template = (args) => (

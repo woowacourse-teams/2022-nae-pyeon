@@ -4,7 +4,7 @@ import RollingpaperList from "@/pages/TeamDetailPage/components/RollingpaperList
 
 export default {
   component: RollingpaperList,
-  title: "RollingpaperList",
+  title: "components/TeamDetailPage/RollingpaperList",
 };
 
 const dummyRollingpapers = [

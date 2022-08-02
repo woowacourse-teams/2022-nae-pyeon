@@ -3,7 +3,7 @@ import AutoCompleteInput from "@/components/AutoCompleteInput";
 
 export default {
   component: AutoCompleteInput,
-  title: "AutoCompleteInput",
+  title: "components/common/AutoCompleteInput",
 };
 
 const Template = (args) => <AutoCompleteInput {...args}></AutoCompleteInput>;

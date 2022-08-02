@@ -5,7 +5,7 @@ import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 
 export default {
   component: PageTitleWithBackButton,
-  title: "PageTitleWithBackButton",
+  title: "components/common/PageTitleWithBackButton",
 };
 
 const Template = (args) => (

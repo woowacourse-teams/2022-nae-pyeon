@@ -3,7 +3,7 @@ import Button from "@/components/Button";
 
 export default {
   component: Button,
-  title: "Button",
+  title: "components/common/Button",
 };
 
 const Template = (args) => <Button {...args}></Button>;

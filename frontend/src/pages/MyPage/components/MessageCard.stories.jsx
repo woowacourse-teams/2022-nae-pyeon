@@ -3,7 +3,7 @@ import MessageCard from "@/pages/MyPage/components/MessageCard";
 
 export default {
   component: MessageCard,
-  title: "MessageCard",
+  title: "components/MyPage/MessageCard",
 };
 
 const Template = (args) => <MessageCard {...args}></MessageCard>;
