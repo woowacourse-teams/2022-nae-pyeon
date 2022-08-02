@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/members")
 public class MemberController {
 
-    private static final int PAGE_ONE_BASE_INDEX = 1;
     private final MemberService memberService;
     private final RollingpaperService rollingpaperService;
 
@@ -53,8 +52,7 @@ public class MemberController {
             @RequestParam("page") final Integer page,
             @RequestParam("count") final int count
     ) {
-        final int currentPage = page - PAGE_ONE_BASE_INDEX;
-        final Pageable pageRequest = PageRequest.of(currentPage, count);
+        final Pageable pageRequest = PageRequest.of(page, count);
         return ResponseEntity.ok(
                 rollingpaperService.findReceivedRollingpapers(loginMemberRequest.getId(), pageRequest)
         );

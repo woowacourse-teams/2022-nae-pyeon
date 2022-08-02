@@ -30,8 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class RollingpaperService {
 
-    private static final int PAGE_ONE_INDEX_BASE = 1;
-
     private final RollingpaperRepository rollingpaperRepository;
     private final MessageService messageService;
     private final TeamRepository teamRepository;
@@ -110,7 +108,7 @@ public class RollingpaperService {
                 .collect(Collectors.toUnmodifiableList());
         return new ReceivedRollingpapersResponseDto(
                 rollingpapers.getTotalElements(),
-                rollingpapers.getNumber() + PAGE_ONE_INDEX_BASE,
+                rollingpapers.getNumber(),
                 receivedRollingpaperResponseDtos
         );
     }
