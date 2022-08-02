@@ -1,0 +1,1 @@
+ALTER TABLE message ADD COLUMN color varchar(255) DEFAULT '#fff598';

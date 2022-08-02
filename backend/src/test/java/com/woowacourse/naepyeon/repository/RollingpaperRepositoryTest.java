@@ -1,9 +1,11 @@
 package com.woowacourse.naepyeon.repository;
 
+import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.domain.Member;
+import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
@@ -42,7 +44,7 @@ class RollingpaperRepositoryTest {
             "testEmoji",
             "#123456"
     );
-    private final Member member = new Member("member", "m@hello.com", "abc@@1234");
+    private final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
 
     @BeforeEach
     void setUp() {
@@ -133,10 +135,11 @@ class RollingpaperRepositoryTest {
 
     @Test
     @DisplayName("롤링페이퍼를 수정할 때 수정일자가 올바르게 나온다.")
-    void updateMemberWhen() {
+    void updateMemberWhen() throws InterruptedException {
         final Rollingpaper rollingpaper = createRollingPaper();
         final Long rollingpaperId = rollingpaperRepository.save(rollingpaper);
 
+        sleep(1);
         rollingpaper.changeTitle("updateupdate");
         em.flush();
 

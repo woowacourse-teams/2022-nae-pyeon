@@ -1,10 +1,12 @@
 package com.woowacourse.naepyeon.repository;
 
+import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.domain.Member;
+import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.exception.DuplicateTeamPaticipateException;
@@ -36,8 +38,8 @@ class TeamParticipationRepositoryTest {
     @Autowired
     private EntityManager em;
 
-    private final Member member1 = new Member("내편이1", "naePyeon1@test.com", "testtest123");
-    private final Member member2 = new Member("내편이2", "naePyeon2@test.com", "testtest123");
+    private final Member member1 = new Member("내편이1", "naePyeon1@test.com", Platform.KAKAO, "1");
+    private final Member member2 = new Member("내편이2", "naePyeon2@test.com", Platform.KAKAO, "2");
     private final Team team1 = new Team("wooteco1", "테스트 모임입니다.", "testEmoji", "#123456");
     private final Team team2 = new Team("wooteco2", "테스트 모임입니다.", "testEmoji", "#123456");
     private final Team team3 = new Team("wooteco3", "테스트 모임입니다.", "testEmoji", "#123456");
@@ -185,11 +187,12 @@ class TeamParticipationRepositoryTest {
 
     @Test
     @DisplayName("회원이 특정 팀의 닉네임을 변경한다.")
-    void updateNickname() {
+    void updateNickname() throws InterruptedException {
         final String expected = "닉네임2";
         final TeamParticipation teamParticipation = new TeamParticipation(team1, member1, "닉네임1");
         final Long teamParticipationId = teamParticipationRepository.save(teamParticipation);
 
+        sleep(1);
         teamParticipationRepository.updateNickname(expected, member1.getId(), team1.getId());
         em.flush();
 

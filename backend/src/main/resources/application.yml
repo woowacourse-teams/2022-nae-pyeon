@@ -2,11 +2,8 @@ spring:
   h2:
     console:
       enabled: true
-  profiles:
-    active: local
   datasource:
-    #    url: jdbc:h2:tc가p://localhost/~/naepyeon
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:testdb;MODE=MYSQL
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -16,14 +13,16 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-        #        show_sql: true
         format_sql: true
         default_batch_fetch_size: 1000 #최적화 옵션
+        dialect: org.hibernate.dialect.MySQL5Dialect
     open-in-view: false
+  flyway:
+    enabled: false
+    baseline-on-migrate: true
 
 logging.level:
   org.hibernate.SQL: debug
-#  org.hibernate.type: trace
 
 security:
   jwt:

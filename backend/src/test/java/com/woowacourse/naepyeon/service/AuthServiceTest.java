@@ -1,11 +1,14 @@
 package com.woowacourse.naepyeon.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import com.woowacourse.naepyeon.exception.InvalidLoginException;
+import com.woowacourse.naepyeon.domain.Platform;
+import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
+import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,35 +29,28 @@ class AuthServiceTest {
     private JwtTokenProvider jwtTokenProvider;
 
     @Test
-    @DisplayName("이메일 비밀번호가 일치하는 경우 로그인에 성공한다.")
-    void successLogin() {
-        // given
-        final Long memberId = memberService.save("zero", "email@email.com", "password123!");
+    @DisplayName("사용자 정보를 받아 토큰을 만들어 반환한다.")
+    void createToken() {
+        final TokenRequestDto tokenRequestDto =
+                new TokenRequestDto(Platform.KAKAO.name(), "1", "email@email.com", "alex", "url");
 
-        // when
-        final String accessToken = authService.createToken(new TokenRequestDto("email@email.com", "password123!"))
-                .getAccessToken();
+        final TokenResponseDto tokenResponseDto = authService.createToken(tokenRequestDto);
 
-        // then
-        final String payload = jwtTokenProvider.getPayload(accessToken);
-        assertThat(String.valueOf(memberId)).isEqualTo(payload);
+        assertThatCode(() -> jwtTokenProvider.validateAbleToken(tokenResponseDto.getAccessToken()))
+                .doesNotThrowAnyException();
     }
 
     @Test
-    @DisplayName("이메일이 일치하지 않는 경우 로그인에 실패한다.")
-    void failEmailLogin() {
-        assertThatThrownBy(() -> authService.createToken(new TokenRequestDto("email@email.com", "password123!")))
-                .isInstanceOf(InvalidLoginException.class);
-    }
+    @DisplayName("사용자 정보가 DB에 없는 경우 DB에 사용자 정보를 추가하고 토큰을 반환한다.")
+    void createTokenWithNotExistMember() {
+        final TokenRequestDto tokenRequestDto =
+                new TokenRequestDto(Platform.KAKAO.name(), "1", "email@email.com", "alex", "url");
+        final TokenResponseDto tokenResponseDto = authService.createToken(tokenRequestDto);
 
-    @Test
-    @DisplayName("비밀번호가 일치하지 않는 경우 로그인에 실패한다.")
-    void failPasswordLogin() {
-        // given
-        memberService.save("zero", "email@email.com", "password123!");
+        final Long memberId = tokenResponseDto.getId();
+        final MemberResponseDto memberResponse = memberService.findById(memberId);
 
-        // when then
-        assertThatThrownBy(() -> authService.createToken(new TokenRequestDto("email@email.com", "password1234")))
-                .isInstanceOf(InvalidLoginException.class);
+        assertThat(memberResponse).extracting("id", "username", "email")
+                .containsExactly(memberId, tokenRequestDto.getUsername(), tokenRequestDto.getEmail());
     }
 }

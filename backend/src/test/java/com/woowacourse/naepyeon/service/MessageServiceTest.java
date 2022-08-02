@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.domain.Member;
+import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
@@ -31,8 +32,8 @@ class MessageServiceTest {
             "테스트 모임입니다.",
             "testEmoji",
             "#123456");
-    private final Member member = new Member("member", "m@hello.com", "abc@@1234");
-    private final Member author = new Member("author", "au@hello.com", "abc@@1234");
+    private final Member author = new Member("author", "au@hello.com", Platform.KAKAO, "1");
+    private final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "2");
     private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", team, member);
     private final TeamParticipation teamParticipation = new TeamParticipation(team, author, "테스트닉네임");
 
@@ -62,12 +63,9 @@ class MessageServiceTest {
     void saveMessageAndFind() {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(),
-                author.getId(),
-                rollingpaper.getId()
+                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
         );
 
-        final Team team = rollingpaper.getTeam();
         final MessageResponseDto messageResponse = messageService.findMessage(messageId, rollingpaper.getId());
 
         assertThat(messageResponse).extracting("content", "from", "authorId")
@@ -75,20 +73,23 @@ class MessageServiceTest {
     }
 
     @Test
-    @DisplayName("메시지의 내용을 수정한다.")
+    @DisplayName("메시지 내용과 색상을 수정한다.")
     void updateContent() {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(),
-                author.getId(),
-                rollingpaper.getId()
+                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
         );
-        final String expected = "안녕하지 못합니다.";
+        final String expectedContent = "안녕하지 못합니다.";
+        final String expectedColor = "red";
 
-        messageService.updateContent(messageId, expected, author.getId());
+        messageService.updateMessage(messageId, expectedContent, expectedColor, author.getId());
 
-        final MessageResponseDto messageResponse = messageService.findMessage(messageId, rollingpaper.getId());
-        assertThat(messageResponse.getContent()).isEqualTo(expected);
+        final MessageResponseDto actual = messageService.findMessage(messageId, rollingpaper.getId());
+        final MessageResponseDto expected = new MessageResponseDto(messageId, expectedContent, expectedColor,
+                "테스트닉네임", author.getId());
+        assertThat(actual)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -96,13 +97,11 @@ class MessageServiceTest {
     void updateContentWithNotAuthor() {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(),
-                author.getId(),
-                rollingpaper.getId()
+                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
         );
         final String expected = "안녕하지 못합니다.";
 
-        assertThatThrownBy(() -> messageService.updateContent(messageId, expected, 9999L))
+        assertThatThrownBy(() -> messageService.updateMessage(messageId, expected, "green", 9999L))
                 .isInstanceOf(NotAuthorException.class);
     }
 
@@ -111,9 +110,7 @@ class MessageServiceTest {
     void deleteMessage() {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(),
-                author.getId(),
-                rollingpaper.getId()
+                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
         );
 
         messageService.deleteMessage(messageId, author.getId());
@@ -127,9 +124,7 @@ class MessageServiceTest {
     void deleteMessageWithNotAuthor() {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(),
-                author.getId(),
-                rollingpaper.getId()
+                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
         );
 
         assertThatThrownBy(() -> messageService.deleteMessage(messageId, 9999L))
@@ -137,6 +132,6 @@ class MessageServiceTest {
     }
 
     private MessageRequest createMessageRequest() {
-        return new MessageRequest("안녕하세요");
+        return new MessageRequest("안녕하세요", "green");
     }
 }

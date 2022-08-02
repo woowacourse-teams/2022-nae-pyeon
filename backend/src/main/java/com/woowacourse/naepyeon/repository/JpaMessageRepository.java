@@ -31,10 +31,11 @@ public class JpaMessageRepository implements MessageRepository {
     }
 
     @Override
-    public void update(final Long id, final String newContent) {
+    public void update(final Long id, final String newColor, final String newContent) {
         final Message message = findById(id)
                 .orElseThrow(() -> new NotFoundMessageException(id));
         message.changeContent(newContent);
+        message.changeColor(newColor);
     }
 
     @Override
