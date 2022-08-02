@@ -203,7 +203,6 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
                   author={message.from}
                   color={message.color}
                   authorId={message.authorId}
-                  rollingpaperId={Number(rollingpaperId)}
                   messageId={message.id}
                   onClickEdit={handleEditMessageClick}
                 />
