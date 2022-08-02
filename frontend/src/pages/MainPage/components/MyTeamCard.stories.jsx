@@ -1,4 +1,6 @@
 import React from "react";
+import { MemoryRouter } from "react-router-dom";
+
 import MyTeamCard from "@/pages/MainPage/components/MyTeamCard";
 
 export default {
@@ -6,7 +8,11 @@ export default {
   title: "MyTeamCard",
 };
 
-const Template = (args) => <MyTeamCard {...args}></MyTeamCard>;
+const Template = (args) => (
+  <MemoryRouter>
+    <MyTeamCard {...args}></MyTeamCard>
+  </MemoryRouter>
+);
 
 export const Default = Template.bind({});
 Default.args = {
