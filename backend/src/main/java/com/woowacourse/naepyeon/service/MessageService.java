@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +61,9 @@ public class MessageService {
     }
 
     @Transactional(readOnly = true)
-    public WrittenMessagesResponseDto findWrittenMessages(final Long loginMemberId, final Pageable pageRequest) {
+    public WrittenMessagesResponseDto findWrittenMessages(final Long loginMemberId, final Integer page,
+                                                          final int count) {
+        final Pageable pageRequest = PageRequest.of(page, count);
         final Page<WrittenMessageResponseDto> writtenMessages =
                 messageRepository.findAllByAuthorId(loginMemberId, pageRequest);
         return new WrittenMessagesResponseDto(

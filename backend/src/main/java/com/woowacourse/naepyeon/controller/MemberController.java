@@ -11,8 +11,6 @@ import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
 import java.net.URI;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,9 +50,8 @@ public class MemberController {
             @RequestParam("page") final Integer page,
             @RequestParam("count") final int count
     ) {
-        final Pageable pageRequest = PageRequest.of(page, count);
         return ResponseEntity.ok(
-                messageService.findWrittenMessages(loginMemberRequest.getId(), pageRequest)
+                messageService.findWrittenMessages(loginMemberRequest.getId(), page, count)
         );
     }
 

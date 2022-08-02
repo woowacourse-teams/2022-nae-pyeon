@@ -92,7 +92,7 @@ class MessageServiceTest {
         );
 
         final WrittenMessagesResponseDto writtenMessagesResponseDto =
-                messageService.findWrittenMessages(author.getId(), PageRequest.of(0, 5));
+                messageService.findWrittenMessages(author.getId(), 0, 5);
         final List<WrittenMessageResponseDto> actual = writtenMessagesResponseDto.getMessages();
         final List<WrittenMessageResponseDto> expected = List.of(
                 new WrittenMessageResponseDto(
