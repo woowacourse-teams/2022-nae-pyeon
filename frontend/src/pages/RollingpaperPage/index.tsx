@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-import appClient from "@/api";
+import { appClient } from "@/api";
 
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";

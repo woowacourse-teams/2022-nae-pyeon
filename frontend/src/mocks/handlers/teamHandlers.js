@@ -66,6 +66,11 @@ const teamHandlers = [
     return res(ctx.status(204));
   }),
 
+  // 모임 닉네임 수정
+  rest.put("/api/v1/teams/:teamId/me", (req, res, ctx) => {
+    return res(ctx.status(204));
+  }),
+
   // 모임에 속한 회원 리스트
   rest.get("/api/v1/teams/:teamId/members", (req, res, ctx) => {
     const result = {

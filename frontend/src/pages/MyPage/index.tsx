@@ -8,7 +8,7 @@ import UserProfile from "@/pages/MyPage/components/UserProfile";
 import RollingpaperList from "@/pages/MyPage/components/RollingpaperList";
 import MessageList from "@/pages/MyPage/components/MessageList";
 
-import appClient from "@/api";
+import { appClient } from "@/api";
 
 import {
   ReceivedRollingpaper,

@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "@emotion/styled";
 import axios from "axios";
 
-import appClient from "@/api";
+import { appClient } from "@/api";
 
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LabeledInput from "@/components/LabeledInput";

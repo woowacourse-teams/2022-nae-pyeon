@@ -1,4 +1,5 @@
 import React, { PropsWithChildren } from "react";
+import ReactDom from "react-dom";
 import styled from "@emotion/styled";
 import IconButton from "./IconButton";
 
@@ -12,7 +13,7 @@ const Modal = ({
   children,
   onClickCloseButton,
 }: PropsWithChildren<ModalProps>) => {
-  return (
+  return ReactDom.createPortal(
     <>
       <StyledDimmer onClick={onClickCloseButton} />
       <StyledModalContainer>
@@ -21,7 +22,8 @@ const Modal = ({
         </StyledCloseButtonWrapper>
         {children}
       </StyledModalContainer>
-    </>
+    </>,
+    document.getElementById("modal__root")!
   );
 };
 
@@ -65,7 +67,7 @@ const StyledModalContainer = styled.div`
 const StyledCloseButtonWrapper = styled.div`
   position: absolute;
   top: 0;
-  left: 0;
+  right: 0;
 
   padding: 10px;
 `;
