@@ -27,7 +27,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -99,7 +98,7 @@ class TeamServiceTest {
         );
         final Long teamId = teamService.save(teamRequest, member.getId());
 
-        final List<Long> joinedTeamIds = teamService.findByJoinedMemberId(member.getId(), PageRequest.of(0, 5))
+        final List<Long> joinedTeamIds = teamService.findByJoinedMemberId(member.getId(), 0, 5)
                 .getTeams()
                 .stream()
                 .map(TeamResponseDto::getId)
@@ -192,7 +191,7 @@ class TeamServiceTest {
     @DisplayName("이름에 특정 키워드가 포함된 모임들을 조회한다.")
     void findTeamsByContainingTeamName() {
         final List<TeamResponseDto> actual =
-                teamService.findTeamsByContainingTeamName("wooteco1", member.getId(), PageRequest.of(0, 5))
+                teamService.findTeamsByContainingTeamName("wooteco1", member.getId(), 0, 5)
                         .getTeams();
         final List<TeamResponseDto> expected = List.of(TeamResponseDto.of(team1, false));
         assertThat(actual)
@@ -220,7 +219,7 @@ class TeamServiceTest {
         teamParticipationRepository.save(teamParticipation1);
         teamParticipationRepository.save(teamParticipation2);
 
-        final TeamsResponseDto teams = teamService.findByJoinedMemberId(member.getId(), PageRequest.of(0, 5));
+        final TeamsResponseDto teams = teamService.findByJoinedMemberId(member.getId(), 0, 5);
         final List<String> teamNames = teams.getTeams()
                 .stream()
                 .map(TeamResponseDto::getName)

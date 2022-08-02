@@ -15,8 +15,6 @@ import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.net.URI;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,8 +45,7 @@ public class TeamController {
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @RequestParam("page") final Integer page,
             @RequestParam("count") final int count) {
-        final Pageable pageRequest = PageRequest.of(page, count);
-        return ResponseEntity.ok(teamService.findByJoinedMemberId(loginMemberRequest.getId(), pageRequest));
+        return ResponseEntity.ok(teamService.findByJoinedMemberId(loginMemberRequest.getId(), page, count));
     }
 
     @GetMapping
@@ -56,9 +53,8 @@ public class TeamController {
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @RequestParam("keyword") final String keyword, @RequestParam("page") final Integer page,
             @RequestParam("count") final int count) {
-        final Pageable pageRequest = PageRequest.of(page, count);
         return ResponseEntity.ok(
-                teamService.findTeamsByContainingTeamName(keyword, loginMemberRequest.getId(), pageRequest)
+                teamService.findTeamsByContainingTeamName(keyword, loginMemberRequest.getId(), page, count)
         );
     }
 

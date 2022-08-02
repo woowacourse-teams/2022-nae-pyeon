@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,7 +79,8 @@ public class TeamService {
     }
 
     public TeamsResponseDto findTeamsByContainingTeamName(final String keyword, final Long memberId,
-                                                          final Pageable pageRequest) {
+                                                          final Integer page, final int count) {
+        final Pageable pageRequest = PageRequest.of(page, count);
         final Page<Team> teams = teamRepository.findTeamsByContainingTeamName(keyword, pageRequest);
         final List<Team> joinedTeams = teamParticipationRepository.findTeamsByMemberId(memberId);
 
@@ -104,7 +106,8 @@ public class TeamService {
         return new AllTeamsResponseDto(teamResponseDtos);
     }
 
-    public TeamsResponseDto findByJoinedMemberId(final Long memberId, final Pageable pageRequest) {
+    public TeamsResponseDto findByJoinedMemberId(final Long memberId, final Integer page, final int count) {
+        final Pageable pageRequest = PageRequest.of(page, count);
         final Page<Team> teams = teamParticipationRepository.findTeamsByMemberIdAndPageRequest(memberId, pageRequest);
         final List<TeamResponseDto> teamResponseDtos = teams.stream()
                 .map(team -> TeamResponseDto.of(team, true))
