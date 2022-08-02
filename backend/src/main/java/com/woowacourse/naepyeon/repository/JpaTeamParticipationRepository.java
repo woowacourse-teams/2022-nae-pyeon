@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -49,6 +51,11 @@ public class JpaTeamParticipationRepository implements TeamParticipationReposito
     @Override
     public List<Team> findTeamsByMemberId(final Long memberId) {
         return teamParticipationJpaDao.findTeamsByMemberId(memberId);
+    }
+
+    @Override
+    public Page<Team> findTeamsByMemberIdAndPageRequest(final Long memberId, final Pageable pageRequest) {
+        return teamParticipationJpaDao.findTeamsByMemberIdAndPageRequest(memberId, pageRequest);
     }
 
     @Override

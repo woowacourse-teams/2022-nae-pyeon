@@ -18,7 +18,7 @@ class TeamParticipationTest {
                 "testEmoji",
                 "#123456"
         );
-        final Member member = new Member("제로", "email@email.com", "zero1234");
+        final Member member = new Member("제로", "email@email.com", Platform.KAKAO, "1");
         final TeamParticipation teamParticipation = new TeamParticipation(team, member, "닉네임ㅋㅋ");
 
         final String expected = "바뀌는닉네임ㅋㅋ";
@@ -36,7 +36,7 @@ class TeamParticipationTest {
                 "testEmoji",
                 "#123456"
         );
-        final Member member = new Member("제로", "email@email.com", "zero1234");
+        final Member member = new Member("제로", "email@email.com", Platform.KAKAO, "1");
         final TeamParticipation teamParticipation = new TeamParticipation(team, member, "닉네임ㅋㅋ");
 
         assertThatThrownBy(() -> teamParticipation.changeNickname("asdsaddasdasddasdasdasdasdasdsadasdaasdasd"))

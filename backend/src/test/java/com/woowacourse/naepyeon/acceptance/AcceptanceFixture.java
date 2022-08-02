@@ -2,7 +2,6 @@ package com.woowacourse.naepyeon.acceptance;
 
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
-import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageUpdateContentRequest;
@@ -49,6 +48,20 @@ public class AcceptanceFixture {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> get_search(
+            final TokenResponseDto tokenResponseDto, final String uri,
+            final String keyword, final int page, final int count) {
+        return RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .auth().oauth2(tokenResponseDto.getAccessToken())
+                .queryParam("keyword", keyword)
+                .queryParam("page", page)
+                .queryParam("count", count)
+                .when().get(uri)
+                .then().log().all()
+                .extract();
+    }
+
     public static ExtractableResponse<Response> put(final TokenResponseDto tokenResponseDto, final Object body,
                                                     final String uri) {
         return RestAssured.given().log().all()
@@ -69,9 +82,8 @@ public class AcceptanceFixture {
                 .extract();
     }
 
-    public static TokenResponseDto 회원가입_후_로그인(final MemberRegisterRequest member) {
-        회원_추가(member);
-        return 로그인_응답(new TokenRequest(member.getEmail(), member.getPassword()))
+    public static TokenResponseDto 회원가입_후_로그인(final TokenRequest tokenRequest) {
+        return 로그인_응답(tokenRequest)
                 .as(TokenResponseDto.class);
     }
 
@@ -85,10 +97,6 @@ public class AcceptanceFixture {
         );
         return 모임_추가(tokenResponseDto, teamRequest).as(CreateResponse.class)
                 .getId();
-    }
-
-    public static ExtractableResponse<Response> 회원_추가(final MemberRegisterRequest member) {
-        return member_post(member, "/api/v1/members");
     }
 
     public static ExtractableResponse<Response> 회원_조회(final TokenResponseDto tokenResponseDto) {
@@ -133,12 +141,14 @@ public class AcceptanceFixture {
         return get(tokenResponseDto, "/api/v1/teams/" + teamId);
     }
 
-    public static ExtractableResponse<Response> 모든_모임_조회(final TokenResponseDto tokenResponseDto) {
-        return get(tokenResponseDto, "/api/v1/teams");
+    public static ExtractableResponse<Response> 키워드로_모든_모임_조회(
+            final TokenResponseDto tokenResponseDto, final String keyword, final int page, final int count) {
+        return get_search(tokenResponseDto, "/api/v1/teams", keyword, page, count);
     }
 
-    public static ExtractableResponse<Response> 가입한_모임_조회(final TokenResponseDto tokenResponseDto) {
-        return get(tokenResponseDto, "/api/v1/teams/me");
+    public static ExtractableResponse<Response> 가입한_모임_조회(
+            final TokenResponseDto tokenResponseDto, final int page, final int count) {
+        return get_search(tokenResponseDto, "/api/v1/teams/me", "", page, count);
     }
 
     public static ExtractableResponse<Response> 모임에_가입한_회원_목록_조회(final TokenResponseDto tokenResponseDto,

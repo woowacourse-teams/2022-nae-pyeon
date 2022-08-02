@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.domain.Member;
+import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.exception.DuplicateNicknameException;
@@ -15,6 +16,7 @@ import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
+import com.woowacourse.naepyeon.service.dto.AllTeamsResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
@@ -32,8 +34,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class TeamServiceTest {
 
-    private final Member member = new Member("내편이", "naePyeon@test.com", "testtest123");
-    private final Member member2 = new Member("알렉스형", "alex@test.com", "testtest123");
+    private final Member member = new Member("내편이", "naePyeon@test.com", Platform.KAKAO, "1");
+    private final Member member2 = new Member("알렉스형", "alex@test.com", Platform.KAKAO, "2");
     private final Team team1 = new Team("wooteco1", "테스트 모임입니다.", "testEmoji", "#123456");
     private final Team team2 = new Team("wooteco2", "테스트 모임입니다.", "testEmoji", "#123456");
     private final Team team3 = new Team("wooteco3", "테스트 모임입니다.", "testEmoji", "#123456");
@@ -97,7 +99,7 @@ class TeamServiceTest {
         );
         final Long teamId = teamService.save(teamRequest, member.getId());
 
-        final List<Long> joinedTeamIds = teamService.findByJoinedMemberId(member.getId())
+        final List<Long> joinedTeamIds = teamService.findByJoinedMemberId(member.getId(), 0, 5)
                 .getTeams()
                 .stream()
                 .map(TeamResponseDto::getId)
@@ -187,9 +189,21 @@ class TeamServiceTest {
     }
 
     @Test
+    @DisplayName("이름에 특정 키워드가 포함된 모임들을 조회한다.")
+    void findTeamsByContainingTeamName() {
+        final List<TeamResponseDto> actual =
+                teamService.findTeamsByContainingTeamName("wooteco1", member.getId(), 0, 5)
+                        .getTeams();
+        final List<TeamResponseDto> expected = List.of(TeamResponseDto.of(team1, false));
+        assertThat(actual)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    @Test
     @DisplayName("모든 모임을 조회한다.")
     void findAll() {
-        final TeamsResponseDto teams = teamService.findAll(member.getId());
+        final AllTeamsResponseDto teams = teamService.findAll(member.getId());
         final List<String> teamNames = teams.getTeams()
                 .stream()
                 .map(TeamResponseDto::getName)
@@ -206,7 +220,7 @@ class TeamServiceTest {
         teamParticipationRepository.save(teamParticipation1);
         teamParticipationRepository.save(teamParticipation2);
 
-        final TeamsResponseDto teams = teamService.findByJoinedMemberId(member.getId());
+        final TeamsResponseDto teams = teamService.findByJoinedMemberId(member.getId(), 0, 5);
         final List<String> teamNames = teams.getTeams()
                 .stream()
                 .map(TeamResponseDto::getName)

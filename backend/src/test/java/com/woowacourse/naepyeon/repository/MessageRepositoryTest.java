@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Message;
+import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
@@ -26,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class MessageRepositoryTest {
 
-    private static final String content = "안녕하세요";
+    private static final String content = "안녕하세요😁";
 
     @Autowired
     private TeamRepository teamRepository;
@@ -52,8 +53,8 @@ class MessageRepositoryTest {
             "testEmoji",
             "#123456"
     );
-    private final Member member = new Member("member", "email1@email.com", "password123");
-    private final Member author = new Member("author", "email2@email.com", "password123");
+    private final Member member = new Member("member", "email1@email.com", Platform.KAKAO, "1");
+    private final Member author = new Member("author", "email2@email.com", Platform.KAKAO, "2");
     private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", team, member);
 
     @BeforeEach
