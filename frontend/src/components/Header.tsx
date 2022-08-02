@@ -38,6 +38,10 @@ const Header = () => {
 };
 
 const StyledHeader = styled.header`
+  position: sticky;
+  top: 0px;
+  z-index: 999;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -46,7 +50,7 @@ const StyledHeader = styled.header`
 
   width: 100%;
   height: 70px;
-  background-color: white;
+  background-color: ${({ theme }) => `${theme.colors.WHITE}e8`};
 
   img {
     width: 30px;
