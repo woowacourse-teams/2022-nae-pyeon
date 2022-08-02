@@ -39,10 +39,10 @@ public class Member extends BaseEntity {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "platform")
+    @Column(name = "platform", nullable = false)
     private Platform platform;
 
-    @Column(name = "platform_id")
+    @Column(name = "platform_id", nullable = false)
     private String platformId;
 
     public Member(final String username, final String email, final Platform platform, final String platformId) {
