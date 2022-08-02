@@ -3,6 +3,8 @@ package com.woowacourse.naepyeon.repository;
 import com.woowacourse.naepyeon.domain.Team;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface TeamRepository {
 
@@ -10,7 +12,9 @@ public interface TeamRepository {
 
     Optional<Team> findById(final Long teamId);
 
-    void delete(final Long teamId);
+    Page<Team> findTeamsByContainingTeamName(final String keyword, final Pageable pageRequest);
 
     List<Team> findAll();
+
+    void delete(final Long teamId);
 }

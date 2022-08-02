@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class TeamsResponseDto {
+public class AllTeamsResponseDto {
 
-    private Long totalCount;
-    private int currentPage;
     private List<TeamResponseDto> teams;
 }

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -41,14 +42,20 @@ public class TeamController {
 
     @GetMapping("/me")
     public ResponseEntity<TeamsResponseDto> getJoinedTeams(
-            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest) {
-        return ResponseEntity.ok(teamService.findByJoinedMemberId(loginMemberRequest.getId()));
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @RequestParam("page") final Integer page,
+            @RequestParam("count") final int count) {
+        return ResponseEntity.ok(teamService.findByJoinedMemberId(loginMemberRequest.getId(), page, count));
     }
 
     @GetMapping
-    public ResponseEntity<TeamsResponseDto> getAllTeams(
-            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest) {
-        return ResponseEntity.ok(teamService.findAll(loginMemberRequest.getId()));
+    public ResponseEntity<TeamsResponseDto> getAllTeamsByKeyword(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @RequestParam("keyword") final String keyword, @RequestParam("page") final Integer page,
+            @RequestParam("count") final int count) {
+        return ResponseEntity.ok(
+                teamService.findTeamsByContainingTeamName(keyword, loginMemberRequest.getId(), page, count)
+        );
     }
 
     @GetMapping("/{teamId}/members")

@@ -16,6 +16,7 @@ import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
+import com.woowacourse.naepyeon.service.dto.AllTeamsResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
@@ -98,7 +99,7 @@ class TeamServiceTest {
         );
         final Long teamId = teamService.save(teamRequest, member.getId());
 
-        final List<Long> joinedTeamIds = teamService.findByJoinedMemberId(member.getId())
+        final List<Long> joinedTeamIds = teamService.findByJoinedMemberId(member.getId(), 0, 5)
                 .getTeams()
                 .stream()
                 .map(TeamResponseDto::getId)
@@ -188,9 +189,21 @@ class TeamServiceTest {
     }
 
     @Test
+    @DisplayName("이름에 특정 키워드가 포함된 모임들을 조회한다.")
+    void findTeamsByContainingTeamName() {
+        final List<TeamResponseDto> actual =
+                teamService.findTeamsByContainingTeamName("wooteco1", member.getId(), 0, 5)
+                        .getTeams();
+        final List<TeamResponseDto> expected = List.of(TeamResponseDto.of(team1, false));
+        assertThat(actual)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    @Test
     @DisplayName("모든 모임을 조회한다.")
     void findAll() {
-        final TeamsResponseDto teams = teamService.findAll(member.getId());
+        final AllTeamsResponseDto teams = teamService.findAll(member.getId());
         final List<String> teamNames = teams.getTeams()
                 .stream()
                 .map(TeamResponseDto::getName)
@@ -207,7 +220,7 @@ class TeamServiceTest {
         teamParticipationRepository.save(teamParticipation1);
         teamParticipationRepository.save(teamParticipation2);
 
-        final TeamsResponseDto teams = teamService.findByJoinedMemberId(member.getId());
+        final TeamsResponseDto teams = teamService.findByJoinedMemberId(member.getId(), 0, 5);
         final List<String> teamNames = teams.getTeams()
                 .stream()
                 .map(TeamResponseDto::getName)
