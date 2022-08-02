@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 import styled from "@emotion/styled";
 
@@ -8,10 +8,9 @@ import TeamCreateButton from "@/pages/MainPage/components/TeamCreateButton";
 
 import { appClient } from "@/api";
 import { CustomError } from "@/types";
+import useIntersect from "@/hooks/useIntersect";
 
-interface MyTeamListResponse {
-  teams: Team[];
-}
+const TEAM_PAGING_COUNT = 10;
 
 interface Team {
   id: number;
@@ -22,14 +21,38 @@ interface Team {
 }
 
 const MainPage = () => {
-  const {
-    isLoading,
-    isError,
-    error: getMyTeamListError,
-    data: myTeamListResponse,
-  } = useQuery<MyTeamListResponse>(["my-teams"], () =>
-    appClient.get(`/teams/me`).then((response) => response.data)
+  const ref = useIntersect(
+    async (entry, observer) => {
+      observer.unobserve(entry.target);
+      if (hasNextPage && !isFetching) {
+        fetchNextPage();
+      }
+    },
+    { rootMargin: "10px", threshold: 1.0 }
   );
+
+  const fetchMyTeams = async ({ pageParam = 1 }) => {
+    const data = appClient
+      .get(`teams/me?page=${pageParam}&count=${TEAM_PAGING_COUNT}`)
+      .then((response) => response.data);
+    return data;
+  };
+
+  const {
+    data: myTeamListResponse,
+    error: getMyTeamListError,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isError,
+    isLoading,
+  } = useInfiniteQuery(["projects"], fetchMyTeams, {
+    getNextPageParam: (lastPage) => {
+      if (lastPage.currentPage * TEAM_PAGING_COUNT < lastPage.totalCount) {
+        return lastPage.currentPage + 1;
+      }
+    },
+  });
 
   if (isLoading) {
     return <div>로딩 중</div>;
@@ -50,8 +73,8 @@ const MainPage = () => {
   return (
     <StyleMain>
       <StyledCardList>
-        {myTeamListResponse.teams.map(
-          ({ id, name, description, emoji, color }) => (
+        {myTeamListResponse.pages.map((page) =>
+          page.teams.map(({ id, name, description, emoji, color }: Team) => (
             <MyTeamCard
               key={id}
               id={id}
@@ -60,8 +83,9 @@ const MainPage = () => {
               emoji={emoji}
               color={color}
             />
-          )
+          ))
         )}
+        <div ref={ref} />
       </StyledCardList>
       <TeamCreateButton />
     </StyleMain>
