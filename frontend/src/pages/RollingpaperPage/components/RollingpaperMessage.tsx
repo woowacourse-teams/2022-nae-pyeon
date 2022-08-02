@@ -1,4 +1,4 @@
-import React, { useContext, SetStateAction } from "react";
+import React, { useContext } from "react";
 import { useMutation } from "@tanstack/react-query";
 import styled from "@emotion/styled";
 import axios from "axios";
@@ -11,8 +11,9 @@ import TrashIcon from "@/assets/icons/bx-trash.svg";
 import Pencil from "@/assets/icons/bx-pencil.svg";
 
 import { CustomError } from "@/types";
-import { appClient } from "@/api";
+import { appClient, queryClient } from "@/api";
 import { useSnackbar } from "@/context/SnackbarContext";
+import { useParams } from "react-router-dom";
 
 interface EditMessageProp {
   messageId: number;
@@ -26,7 +27,6 @@ interface RollingpaperMessageProp {
   color: string;
   authorId: number;
   messageId: number;
-  rollingpaperId: number;
   onClickEdit: ({ messageId, color, content }: EditMessageProp) => void;
 }
 
@@ -36,11 +36,11 @@ const RollingpaperMessage = ({
   color,
   authorId,
   messageId,
-  rollingpaperId,
   onClickEdit,
 }: RollingpaperMessageProp) => {
   const { memberId } = useContext(UserContext);
   const { openSnackbar } = useSnackbar();
+  const { rollingpaperId } = useParams();
 
   const { mutate: deleteMessage } = useMutation(
     () => {
@@ -50,6 +50,7 @@ const RollingpaperMessage = ({
     },
     {
       onSuccess: () => {
+        queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
         openSnackbar("메시지 삭제 완료");
       },
       onError: (error) => {
