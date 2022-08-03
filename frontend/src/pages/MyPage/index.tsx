@@ -206,7 +206,7 @@ const StyledList = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  height: 480px;
+  height: 530px;
 `;
 
 export default MyPage;
