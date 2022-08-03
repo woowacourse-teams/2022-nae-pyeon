@@ -6,7 +6,7 @@ import styled from "@emotion/styled";
 import MyTeamCard from "@/pages/MainPage/components/MyTeamCard";
 import TeamCreateButton from "@/pages/MainPage/components/TeamCreateButton";
 
-import { appClient } from "@/api";
+import { getMyTeams } from "@/api/team";
 import { CustomError } from "@/types";
 import useIntersect from "@/hooks/useIntersect";
 
@@ -31,13 +31,6 @@ const MainPage = () => {
     { rootMargin: "10px", threshold: 1.0 }
   );
 
-  const getMyTeams = async ({ pageParam = 1 }) => {
-    const data = appClient
-      .get(`teams/me?page=${pageParam}&count=${TEAM_PAGING_COUNT}`)
-      .then((response) => response.data);
-    return data;
-  };
-
   const {
     data: myTeamListResponse,
     error: getMyTeamListError,
@@ -46,7 +39,7 @@ const MainPage = () => {
     isFetching,
     isError,
     isLoading,
-  } = useInfiniteQuery(["projects"], getMyTeams, {
+  } = useInfiniteQuery(["projects"], getMyTeams(TEAM_PAGING_COUNT), {
     getNextPageParam: (lastPage) => {
       if (lastPage.currentPage * TEAM_PAGING_COUNT < lastPage.totalCount) {
         return lastPage.currentPage + 1;
