@@ -42,10 +42,11 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
   const { openSnackbar } = useSnackbar();
 
   const { mutate: updateMessage } = useMutation(
-    ({ content }: Pick<Message, "content">) => {
+    ({ content, color }: Pick<Message, "content" | "color">) => {
       return appClient
         .put(`/rollingpapers/${rollingpaperId}/messages/${editMessageId}`, {
           content,
+          color,
         })
         .then((response) => response.data);
     },
@@ -119,7 +120,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
 
   const submitMessageForm = () => {
     if (!writeNewMessage && editMessageId) {
-      updateMessage({ content });
+      updateMessage({ content, color });
     }
     if (writeNewMessage) {
       createMessage({ content, color });
