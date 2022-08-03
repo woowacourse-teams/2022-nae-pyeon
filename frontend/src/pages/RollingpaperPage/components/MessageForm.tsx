@@ -4,7 +4,7 @@ import MessageTextArea from "@/pages/RollingpaperPage/components/MessageTextArea
 import MessageColorPicker from "@/pages/RollingpaperPage/components/MessageColorPicker";
 
 import CheckIcon from "@/assets/icons/bx-check.svg";
-import TrashIcon from "@/assets/icons/bx-trash.svg";
+import XIcon from "@/assets/icons/bx-x.svg";
 
 type MessageFormProps = {
   onSubmit: () => void;
@@ -28,7 +28,7 @@ const MessageSubmitButton = ({ onClick }: ButtonAttributes) => {
 const MessageCancelButton = ({ onClick }: ButtonAttributes) => {
   return (
     <CircleButton type="button" onClick={onClick}>
-      <TrashIcon />
+      <XIcon />
     </CircleButton>
   );
 };
