@@ -1,17 +1,15 @@
 package com.woowacourse.naepyeon.support.oauth.kakao;
 
 import com.woowacourse.naepyeon.domain.Platform;
+import com.woowacourse.naepyeon.exception.KakaoException;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.support.oauth.kakao.dto.AccessTokenResponse;
 import com.woowacourse.naepyeon.support.oauth.kakao.dto.KakaoUserResponse;
-import java.net.URI;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 @Component
 public class KakaoPlatformUserProvider {
@@ -44,16 +42,18 @@ public class KakaoPlatformUserProvider {
     }
 
     public PlatformUserDto getPlatformUser(final String authorizationCode, final String redirectUri) {
-        final AccessTokenResponse accessTokenResponse = requestAccessToken(authorizationCode, redirectUri);
-
-        final KakaoUserResponse kakaoUserResponse = requestPlatformUser(accessTokenResponse.getAccess_token());
-
-        return new PlatformUserDto(
-                kakaoUserResponse.getNickname(),
-                kakaoUserResponse.getEmail(),
-                Platform.KAKAO.name(),
-                kakaoUserResponse.getId()
-        );
+        try {
+            final AccessTokenResponse accessTokenResponse = requestAccessToken(authorizationCode, redirectUri);
+            final KakaoUserResponse kakaoUserResponse = requestPlatformUser(accessTokenResponse.getAccess_token());
+            return new PlatformUserDto(
+                    kakaoUserResponse.getNickname(),
+                    kakaoUserResponse.getEmail(),
+                    Platform.KAKAO.name(),
+                    String.valueOf(kakaoUserResponse.getId())
+            );
+        } catch (final Exception e) {
+            throw new KakaoException(e);
+        }
     }
 
     private AccessTokenResponse requestAccessToken(final String authorizationCode, final String redirectUri) {
@@ -67,14 +67,18 @@ public class KakaoPlatformUserProvider {
                         .build()
                 ).header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", authorizationCode))
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .retrieve().bodyToMono(AccessTokenResponse.class)
+                .retrieve()
+                .bodyToMono(AccessTokenResponse.class)
                 .block();
     }
 
     private KakaoUserResponse requestPlatformUser(final String accessToken) {
         return resourceWebClient.post()
-                .uri(URI.create(USER_INFO_URI))
-                .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken))
+                .uri(uriBuilder -> uriBuilder.path(USER_INFO_URI)
+                        .queryParam("secure_resource", "true")
+                        .queryParam("property_keys", "[\"kakao_account.profile\",\"kakao_account.email\"]")
+                        .build()
+                ).header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken))
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .retrieve()
                 .bodyToMono(KakaoUserResponse.class)
