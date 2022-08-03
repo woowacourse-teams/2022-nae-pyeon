@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 
 import MyTeamCard from "@/pages/MainPage/components/MyTeamCard";
 import TeamCreateButton from "@/pages/MainPage/components/TeamCreateButton";
+import EmptyMyTeamList from "@/pages/MainPage/components/EmptyMyTeamList";
 
 import { getMyTeams } from "@/api/team";
 import { CustomError } from "@/types";
@@ -63,8 +64,16 @@ const MainPage = () => {
     return <div>에러</div>;
   }
 
+  if (myTeamListResponse.teams.length === 0) {
+    return (
+      <StyledEmptyMain>
+        <EmptyMyTeamList />
+      </StyledEmptyMain>
+    );
+  }
+
   return (
-    <StyleMain>
+    <StyledMain>
       <StyledCardList>
         {myTeamListResponse.pages.map((page) =>
           page.teams.map(({ id, name, description, emoji, color }: Team) => (
@@ -81,11 +90,29 @@ const MainPage = () => {
         <div ref={ref} />
       </StyledCardList>
       <TeamCreateButton />
-    </StyleMain>
+    </StyledMain>
   );
 };
 
-const StyleMain = styled.div`
+const StyledEmptyMain = styled.main`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  height: calc(100vh - 150px);
+
+  button {
+    width: 152px;
+  }
+  svg {
+    font-size: 300px;
+  }
+`;
+
+const StyledMain = styled.div`
   button {
     position: sticky;
     bottom: 30px;
