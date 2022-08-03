@@ -5,13 +5,14 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 import useIntersect from "@/hooks/useIntersect";
+import { getTeamSearchResult } from "@/api/team";
 
 import SearchInput from "@/components/SearchInput";
 import SearchResultItem from "@/pages/TeamSearchPage/components/SearchResultItem";
 
-import { appClient } from "@/api";
-import { CustomError } from "@/types";
 import { TOTAL_TEAMS_PAGING_COUNT } from "@/constants";
+
+import { CustomError } from "@/types";
 
 interface Team {
   id: number;
@@ -34,17 +35,6 @@ const TeamSearch = () => {
     { rootMargin: "10px", threshold: 1.0 }
   );
 
-  const getTeams =
-    (keyword: string) =>
-    async ({ pageParam = 0 }) => {
-      const data = appClient
-        .get(
-          `teams?keyword=${keyword}&page=${pageParam}&count=${TOTAL_TEAMS_PAGING_COUNT}`
-        )
-        .then((response) => response.data);
-      return data;
-    };
-
   const {
     data: totalTeamResponse,
     error: getTotalTeamsError,
@@ -54,16 +44,23 @@ const TeamSearch = () => {
     isError,
     isLoading,
     refetch,
-  } = useInfiniteQuery(["projects"], getTeams(searchKeyword), {
-    getNextPageParam: (lastPage) => {
-      if (
-        lastPage.currentPage * TOTAL_TEAMS_PAGING_COUNT <
-        lastPage.totalCount
-      ) {
-        return lastPage.currentPage + 1;
-      }
-    },
-  });
+  } = useInfiniteQuery(
+    ["projects"],
+    getTeamSearchResult({
+      keyword: searchKeyword,
+      count: TOTAL_TEAMS_PAGING_COUNT,
+    }),
+    {
+      getNextPageParam: (lastPage) => {
+        if (
+          lastPage.currentPage * TOTAL_TEAMS_PAGING_COUNT <
+          lastPage.totalCount
+        ) {
+          return lastPage.currentPage + 1;
+        }
+      },
+    }
+  );
 
   const handleSearchClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
