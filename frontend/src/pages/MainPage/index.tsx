@@ -13,6 +13,11 @@ import useIntersect from "@/hooks/useIntersect";
 
 const TEAM_PAGING_COUNT = 10;
 
+interface MyTeamListResponse {
+  teams: Team[];
+  currentPage: number;
+  totalCount: number;
+}
 interface Team {
   id: number;
   name: string;
@@ -40,13 +45,17 @@ const MainPage = () => {
     isFetching,
     isError,
     isLoading,
-  } = useInfiniteQuery(["my-teams"], getMyTeams(TEAM_PAGING_COUNT), {
-    getNextPageParam: (lastPage) => {
-      if (lastPage.currentPage * TEAM_PAGING_COUNT < lastPage.totalCount) {
-        return lastPage.currentPage + 1;
-      }
-    },
-  });
+  } = useInfiniteQuery<MyTeamListResponse>(
+    ["my-teams"],
+    getMyTeams(TEAM_PAGING_COUNT),
+    {
+      getNextPageParam: (lastPage) => {
+        if (lastPage.currentPage * TEAM_PAGING_COUNT < lastPage.totalCount) {
+          return lastPage.currentPage + 1;
+        }
+      },
+    }
+  );
 
   if (isLoading) {
     return <div>로딩 중</div>;
@@ -64,7 +73,7 @@ const MainPage = () => {
     return <div>에러</div>;
   }
 
-  if (myTeamListResponse.teams.length === 0) {
+  if (myTeamListResponse.pages[0].teams.length === 0) {
     return (
       <StyledEmptyMain>
         <EmptyMyTeamList />
