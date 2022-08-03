@@ -39,20 +39,6 @@ interface ResponseSentMessages {
 
 const contentCountPerPage = 5;
 
-const INITIAL_DATA = {
-  USER_INFO: { id: -1, username: "", email: "" },
-  RECEIVED_ROLLINGPAPERS: {
-    totalCount: -1,
-    currentPage: -1,
-    rollingpapers: [],
-  },
-  SENT_MESSAGES: {
-    totalCount: -1,
-    currentPage: -1,
-    messages: [],
-  },
-};
-
 const MyPage = () => {
   const [tab, setTab] = useState<TabMode>(TAB.RECEIVED_PAPER);
   const [receivedRollingpapersPage, setReceivedRollingpapersPage] = useState(0);
@@ -79,9 +65,7 @@ const MyPage = () => {
     isError: isErrorGetUserProfile,
     error: getUserProfileError,
     data: userProfile,
-  } = useQuery<UserInfo>(["user-profile"], () => fetchUserInfo(), {
-    placeholderData: INITIAL_DATA.USER_INFO,
-  });
+  } = useQuery<UserInfo>(["user-profile"], () => fetchUserInfo());
 
   const {
     isLoading: isLoadingGetReceivedRollingpapers,
@@ -97,7 +81,6 @@ const MyPage = () => {
       ),
     {
       keepPreviousData: true,
-      placeholderData: INITIAL_DATA.RECEIVED_ROLLINGPAPERS,
     }
   );
 
@@ -111,7 +94,6 @@ const MyPage = () => {
     () => fetchSentMessage(sentMessagesCurrentPage, contentCountPerPage),
     {
       keepPreviousData: true,
-      placeholderData: INITIAL_DATA.SENT_MESSAGES,
     }
   );
 
