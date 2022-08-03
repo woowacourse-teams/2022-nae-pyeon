@@ -34,7 +34,7 @@ const TeamSearch = () => {
     { rootMargin: "10px", threshold: 1.0 }
   );
 
-  const fetchTeams =
+  const getTeams =
     (keyword: string) =>
     async ({ pageParam = 0 }) => {
       const data = appClient
@@ -54,7 +54,7 @@ const TeamSearch = () => {
     isError,
     isLoading,
     refetch,
-  } = useInfiniteQuery(["projects"], fetchTeams(searchKeyword), {
+  } = useInfiniteQuery(["projects"], getTeams(searchKeyword), {
     getNextPageParam: (lastPage) => {
       if (
         lastPage.currentPage * TOTAL_TEAMS_PAGING_COUNT <
