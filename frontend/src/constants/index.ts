@@ -19,6 +19,12 @@ const COLORS = {
 
 const TOTAL_TEAMS_PAGING_COUNT = 5;
 
+const SOCIAL_LOGIN_PLATFORM = {
+  KAKAO: "KAKAO",
+  NAVER: "NAVER",
+  GOOGLE: "GOOGLE",
+} as const;
+
 const KAKAO_OAUTH_URL = {
   AUTHORIZE_CODE: `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.KAKAO_REST_API_KEY}&redirect_uri=${process.env.KAKAO_REDIRECT_URL}&response_type=code`,
   TOKEN: (authorize_code: string) =>
@@ -27,4 +33,10 @@ const KAKAO_OAUTH_URL = {
     'https://kapi.kakao.com/v2/user/me?secure_resource=true&property_keys=["kakao_account.profile","kakao_account.email"]',
 };
 
-export { REGEX, COLORS, TOTAL_TEAMS_PAGING_COUNT, KAKAO_OAUTH_URL };
+export {
+  REGEX,
+  COLORS,
+  TOTAL_TEAMS_PAGING_COUNT,
+  SOCIAL_LOGIN_PLATFORM,
+  KAKAO_OAUTH_URL,
+};

@@ -1,16 +1,32 @@
 import React from "react";
 import styled from "@emotion/styled";
 
+import { useSnackbar } from "@/context/SnackbarContext";
+
 import Logo from "@/pages/LoginPage/components/Logo";
 import SocialLoginButton from "@/pages/LoginPage/components/SocialLoginButton";
 
-import { KAKAO_OAUTH_URL } from "@/constants";
+import { KAKAO_OAUTH_URL, SOCIAL_LOGIN_PLATFORM } from "@/constants";
 
 const LoginPage = () => {
+  const { openSnackbar } = useSnackbar();
+
   const handleKakaoLoginButtonClick: React.MouseEventHandler<
     HTMLButtonElement
   > = () => {
     location.href = KAKAO_OAUTH_URL.AUTHORIZE_CODE;
+  };
+
+  const handleNaverLoginButtonClick: React.MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
+    openSnackbar("준비 중! 🤗");
+  };
+
+  const handleGoogleLoginButtonClick: React.MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
+    openSnackbar("준비 중! 🤗");
   };
 
   return (
@@ -20,7 +36,18 @@ const LoginPage = () => {
         <div>내 마음을 편지로</div>
       </StyledTitle>
       <StyledSocialLoginButtonContainer>
-        <SocialLoginButton onClick={handleKakaoLoginButtonClick} />
+        <SocialLoginButton
+          platform={SOCIAL_LOGIN_PLATFORM.KAKAO}
+          onClick={handleKakaoLoginButtonClick}
+        />
+        <SocialLoginButton
+          platform={SOCIAL_LOGIN_PLATFORM.NAVER}
+          onClick={handleNaverLoginButtonClick}
+        />
+        <SocialLoginButton
+          platform={SOCIAL_LOGIN_PLATFORM.GOOGLE}
+          onClick={handleGoogleLoginButtonClick}
+        />
       </StyledSocialLoginButtonContainer>
     </StyledMain>
   );
