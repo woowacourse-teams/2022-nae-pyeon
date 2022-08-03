@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 
 import { ReceivedRollingpaper } from "@/types";
 
-const RollingpaperCard = ({
+const RollingpaperListItem = ({
   id,
   title,
   teamId,
@@ -13,16 +13,16 @@ const RollingpaperCard = ({
   return (
     <li>
       <Link to={`/team/${teamId}/rollingpaper/${id}`}>
-        <StyledRollingpaperCard>
+        <StyledRollingpaperListItem>
           <StyledTitle>{title}</StyledTitle>
           <StyledTeamName>{teamName}</StyledTeamName>
-        </StyledRollingpaperCard>
+        </StyledRollingpaperListItem>
       </Link>
     </li>
   );
 };
 
-const StyledRollingpaperCard = styled.div`
+const StyledRollingpaperListItem = styled.div`
   display: flex;
   justify-content: space-between;
 
@@ -49,4 +49,4 @@ const StyledTeamName = styled.div`
   font-size: 14px;
 `;
 
-export default RollingpaperCard;
+export default RollingpaperListItem;

@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import styled from "@emotion/styled";
 
-import RollingpaperCard from "@/pages/MyPage/components/RollingpaperCard";
+import RollingpaperListItem from "@/pages/MyPage/components/RollingpaperListItem";
 import Paging from "@/components/Paging";
 
 import { ReceivedRollingpaper } from "@/types";
@@ -23,7 +23,7 @@ const RollingpaperList = ({
     <>
       <StyledRollingpaperList>
         {rollingpapers.map((rollingpaper) => (
-          <RollingpaperCard {...rollingpaper} />
+          <RollingpaperListItem {...rollingpaper} />
         ))}
       </StyledRollingpaperList>
       <StyledPaging>

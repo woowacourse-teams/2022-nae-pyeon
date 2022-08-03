@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 type StyledMessageProp = Pick<SentMessage, "color">;
 
-const MessageCard = ({
+const MessageListItem = ({
   rollingpaperId,
   rollingpaperTitle,
   to,
@@ -70,4 +70,4 @@ const StyledContent = styled.div`
   -webkit-line-clamp: 2;
 `;
 
-export default MessageCard;
+export default MessageListItem;

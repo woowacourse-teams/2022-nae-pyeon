@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import styled from "@emotion/styled";
 
-import MessageCard from "@/pages/MyPage/components/MessageCard";
+import MessageListItem from "@/pages/MyPage/components/MessageListItem";
 import Paging from "@/components/Paging";
 
 import { SentMessage } from "@/types";
@@ -23,7 +23,7 @@ const MessageList = ({
     <>
       <StyledMessageList>
         {messages.map((message) => (
-          <MessageCard {...message} />
+          <MessageListItem {...message} />
         ))}
       </StyledMessageList>
       <StyledPaging>
