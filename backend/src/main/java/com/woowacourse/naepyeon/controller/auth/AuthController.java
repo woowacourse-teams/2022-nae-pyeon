@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/login")
+@RequestMapping("/api/v1/oauth")
 public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping
-    public ResponseEntity<TokenResponseDto> login(@RequestBody @Valid final TokenRequest tokenRequest) {
-        final TokenResponseDto tokenResponseDto = authService.createToken(tokenRequest.toServiceRequest());
+    @PostMapping("/kakao")
+    public ResponseEntity<TokenResponseDto> kakaoLogin(@RequestBody @Valid final TokenRequest tokenRequest) {
+        final TokenResponseDto tokenResponseDto = authService.createTokenWithKakaoOauth(tokenRequest.toServiceRequest());
         return ResponseEntity.ok(tokenResponseDto);
     }
 }
