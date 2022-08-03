@@ -16,16 +16,18 @@ const MessageCard = ({
   color,
 }: SentMessage) => {
   return (
-    <Link to={`/team/${teamId}/rollingpaper/${rollingpaperId}`}>
-      <StyledMessage color={color}>
-        <StyledTitle>{rollingpaperTitle}</StyledTitle>
-        <StyledTo>
-          To. <span>{to}</span>
-          <span>({teamName})</span>
-        </StyledTo>
-        <StyledContent>{content}</StyledContent>
-      </StyledMessage>
-    </Link>
+    <li>
+      <Link to={`/team/${teamId}/rollingpaper/${rollingpaperId}`}>
+        <StyledMessage color={color}>
+          <StyledTitle>{rollingpaperTitle}</StyledTitle>
+          <StyledTo>
+            To. <span>{to}</span>
+            <span>({teamName})</span>
+          </StyledTo>
+          <StyledContent>{content}</StyledContent>
+        </StyledMessage>
+      </Link>
+    </li>
   );
 };
 

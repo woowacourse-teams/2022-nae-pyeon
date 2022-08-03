@@ -23,9 +23,7 @@ const MessageList = ({
     <>
       <StyledMessageList>
         {messages.map((message) => (
-          <li key={message.id}>
-            <MessageCard {...message} />
-          </li>
+          <MessageCard {...message} />
         ))}
       </StyledMessageList>
       <StyledPaging>

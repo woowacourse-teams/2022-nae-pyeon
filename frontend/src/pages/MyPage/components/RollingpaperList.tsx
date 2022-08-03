@@ -23,9 +23,7 @@ const RollingpaperList = ({
     <>
       <StyledRollingpaperList>
         {rollingpapers.map((rollingpaper) => (
-          <li key={rollingpaper.id}>
-            <RollingpaperCard {...rollingpaper} />
-          </li>
+          <RollingpaperCard {...rollingpaper} />
         ))}
       </StyledRollingpaperList>
       <StyledPaging>

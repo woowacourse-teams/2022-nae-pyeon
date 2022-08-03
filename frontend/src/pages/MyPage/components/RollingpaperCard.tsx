@@ -11,12 +11,14 @@ const RollingpaperCard = ({
   teamName,
 }: ReceivedRollingpaper) => {
   return (
-    <Link to={`/team/${teamId}/rollingpaper/${id}`}>
-      <StyledRollingpaperCard>
-        <StyledTitle>{title}</StyledTitle>
-        <StyledTeamName>{teamName}</StyledTeamName>
-      </StyledRollingpaperCard>
-    </Link>
+    <li>
+      <Link to={`/team/${teamId}/rollingpaper/${id}`}>
+        <StyledRollingpaperCard>
+          <StyledTitle>{title}</StyledTitle>
+          <StyledTeamName>{teamName}</StyledTeamName>
+        </StyledRollingpaperCard>
+      </Link>
+    </li>
   );
 };
 
