@@ -1,13 +1,34 @@
 import React, { HTMLAttributes } from "react";
 import styled from "@emotion/styled";
 
-import KakaoLogo from "@/assets/images/logo-kakao.png";
+import { ValueOf } from "@/types";
+import { SOCIAL_LOGIN_PLATFORM } from "@/constants";
 
-const SocialLoginButton = ({ onClick }: HTMLAttributes<HTMLButtonElement>) => {
+import GoogleLogo from "@/assets/images/logo-google.png";
+import KakaoLogo from "@/assets/images/logo-kakao.png";
+import NaverLogo from "@/assets/images/logo-naver.png";
+
+const LOGO_ICON = {
+  GOOGLE: GoogleLogo,
+  KAKAO: KakaoLogo,
+  NAVER: NaverLogo,
+};
+
+const BUTTON_TEXT = {
+  GOOGLE: "구글로 시작하기",
+  KAKAO: "카카오로 시작하기",
+  NAVER: "네이버로 시작하기",
+};
+
+type SocialLoginButtonProps = HTMLAttributes<HTMLButtonElement> & {
+  platform: ValueOf<typeof SOCIAL_LOGIN_PLATFORM>;
+};
+
+const SocialLoginButton = ({ onClick, platform }: SocialLoginButtonProps) => {
   return (
     <StyledSocialLoginButton onClick={onClick}>
-      <img src={KakaoLogo} />
-      카카오로 시작하기
+      <img src={LOGO_ICON[platform]} />
+      {BUTTON_TEXT[platform]}
     </StyledSocialLoginButton>
   );
 };
