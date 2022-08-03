@@ -1,32 +1,33 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-interface MessageCardProp {
-  rollingpaperTitle: string;
-  to: string;
-  team: string;
-  content: string;
-  color: string;
-}
+import { SentMessage } from "@/types";
+import { Link } from "react-router-dom";
 
-type StyledMessageProp = Pick<MessageCardProp, "color">;
+type StyledMessageProp = Pick<SentMessage, "color">;
 
-const MessageCard = ({
+const MessageListItem = ({
+  rollingpaperId,
   rollingpaperTitle,
   to,
-  team,
+  teamId,
+  teamName,
   content,
   color,
-}: MessageCardProp) => {
+}: SentMessage) => {
   return (
-    <StyledMessage color={color}>
-      <StyledTitle>{rollingpaperTitle}</StyledTitle>
-      <StyledTo>
-        To. <span>{to}</span>
-        <span>({team})</span>
-      </StyledTo>
-      <StyledContent>{content}</StyledContent>
-    </StyledMessage>
+    <li>
+      <Link to={`/team/${teamId}/rollingpaper/${rollingpaperId}`}>
+        <StyledMessage color={color}>
+          <StyledTitle>{rollingpaperTitle}</StyledTitle>
+          <StyledTo>
+            To. <span>{to}</span>
+            <span>({teamName})</span>
+          </StyledTo>
+          <StyledContent>{content}</StyledContent>
+        </StyledMessage>
+      </Link>
+    </li>
   );
 };
 
@@ -69,4 +70,4 @@ const StyledContent = styled.div`
   -webkit-line-clamp: 2;
 `;
 
-export default MessageCard;
+export default MessageListItem;

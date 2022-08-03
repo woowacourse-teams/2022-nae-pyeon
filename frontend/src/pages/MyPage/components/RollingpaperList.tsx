@@ -1,15 +1,10 @@
 import React, { Dispatch, SetStateAction } from "react";
 import styled from "@emotion/styled";
 
-import RollingpaperCard from "@/pages/MyPage/components/RollingpaperCard";
+import RollingpaperListItem from "@/pages/MyPage/components/RollingpaperListItem";
 import Paging from "@/components/Paging";
 
-interface ReceivedRollingpaper {
-  id: number;
-  title: string;
-  teamId: number;
-  teamName: string;
-}
+import { ReceivedRollingpaper } from "@/types";
 
 interface RollingpaperList {
   rollingpapers: ReceivedRollingpaper[];
@@ -27,10 +22,8 @@ const RollingpaperList = ({
   return (
     <>
       <StyledRollingpaperList>
-        {rollingpapers.map(({ title, teamName, id }) => (
-          <li key={id}>
-            <RollingpaperCard title={title} teamName={teamName} />
-          </li>
+        {rollingpapers.map((rollingpaper) => (
+          <RollingpaperListItem {...rollingpaper} />
         ))}
       </StyledRollingpaperList>
       <StyledPaging>

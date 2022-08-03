@@ -1,22 +1,13 @@
 import React, { Dispatch, SetStateAction } from "react";
 import styled from "@emotion/styled";
 
+import MessageListItem from "@/pages/MyPage/components/MessageListItem";
 import Paging from "@/components/Paging";
-import MessageCard from "@/pages/MyPage/components/MessageCard";
 
-interface WrittenMessage {
-  id: number;
-  rollingpaperId: number;
-  rollingpaperTitle: string;
-  teamId: number;
-  teamName: string;
-  to: string;
-  content: string;
-  color: string;
-}
+import { SentMessage } from "@/types";
 
 interface MessageListProp {
-  messages: WrittenMessage[];
+  messages: SentMessage[];
   currentPage: number;
   maxPage: number;
   setCurrentPage: Dispatch<SetStateAction<number>>;
@@ -31,19 +22,9 @@ const MessageList = ({
   return (
     <>
       <StyledMessageList>
-        {messages.map(
-          ({ id, rollingpaperTitle, to, teamName, content, color }) => (
-            <li key={id}>
-              <MessageCard
-                rollingpaperTitle={rollingpaperTitle}
-                to={to}
-                team={teamName}
-                content={content}
-                color={color}
-              />
-            </li>
-          )
-        )}
+        {messages.map((message) => (
+          <MessageListItem {...message} />
+        ))}
       </StyledMessageList>
       <StyledPaging>
         <Paging
