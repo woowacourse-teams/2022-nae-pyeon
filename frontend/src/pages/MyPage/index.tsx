@@ -8,7 +8,11 @@ import UserProfile from "@/pages/MyPage/components/UserProfile";
 import RollingpaperList from "@/pages/MyPage/components/RollingpaperList";
 import MessageList from "@/pages/MyPage/components/MessageList";
 
-import { appClient } from "@/api";
+import {
+  getMyUserInfo,
+  getMyReceivedRollingpapers,
+  getMySentMessage,
+} from "@/api/member";
 
 import {
   ReceivedRollingpaper,
@@ -45,28 +49,12 @@ const MyPage = () => {
   const [receivedRollingpapersPage, setReceivedRollingpapersPage] = useState(0);
   const [sentMessagesCurrentPage, setSentMessagesCurrentPage] = useState(0);
 
-  const fetchUserInfo = () => {
-    return appClient.get("/members/me").then((response) => response.data);
-  };
-
-  const fetchReceivedRollingpapers = (page = 0, count = 5) => {
-    return appClient
-      .get(`/members/me/rollingpapers/received?page=${page}&count=${count}`)
-      .then((response) => response.data);
-  };
-
-  const fetchSentMessage = (page = 0, count = 5) => {
-    return appClient
-      .get(`/members/me/messages/written?page=${page}&count=${count}`)
-      .then((response) => response.data);
-  };
-
   const {
     isLoading: isLoadingGetUserProfile,
     isError: isErrorGetUserProfile,
     error: getUserProfileError,
     data: userProfile,
-  } = useQuery<UserInfo>(["user-profile"], () => fetchUserInfo());
+  } = useQuery<UserInfo>(["user-profile"], () => getMyUserInfo());
 
   const {
     isLoading: isLoadingGetReceivedRollingpapers,
@@ -76,7 +64,7 @@ const MyPage = () => {
   } = useQuery<ResponseReceivedRollingpapers>(
     ["received-rollingpapers", receivedRollingpapersPage],
     () =>
-      fetchReceivedRollingpapers(
+      getMyReceivedRollingpapers(
         receivedRollingpapersPage,
         receivedRollingpaperCount
       ),
@@ -92,7 +80,7 @@ const MyPage = () => {
     data: responseSentMessages,
   } = useQuery<ResponseSentMessages>(
     ["sent-messages", sentMessagesCurrentPage],
-    () => fetchSentMessage(sentMessagesCurrentPage, sentMessageCount),
+    () => getMySentMessage(sentMessagesCurrentPage, sentMessageCount),
     {
       keepPreviousData: true,
     }
