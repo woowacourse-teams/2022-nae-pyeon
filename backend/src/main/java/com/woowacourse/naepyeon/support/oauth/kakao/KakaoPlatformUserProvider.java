@@ -1,7 +1,8 @@
 package com.woowacourse.naepyeon.support.oauth.kakao;
 
 import com.woowacourse.naepyeon.domain.Platform;
-import com.woowacourse.naepyeon.exception.KakaoException;
+import com.woowacourse.naepyeon.exception.KakaoAuthorizationException;
+import com.woowacourse.naepyeon.exception.KakaoResourceException;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.support.oauth.kakao.dto.AccessTokenResponse;
 import com.woowacourse.naepyeon.support.oauth.kakao.dto.KakaoUserResponse;
@@ -42,46 +43,50 @@ public class KakaoPlatformUserProvider {
     }
 
     public PlatformUserDto getPlatformUser(final String authorizationCode, final String redirectUri) {
-        try {
-            final AccessTokenResponse accessTokenResponse = requestAccessToken(authorizationCode, redirectUri);
-            final KakaoUserResponse kakaoUserResponse = requestPlatformUser(accessTokenResponse.getAccess_token());
-            return new PlatformUserDto(
-                    kakaoUserResponse.getNickname(),
-                    kakaoUserResponse.getEmail(),
-                    Platform.KAKAO.name(),
-                    String.valueOf(kakaoUserResponse.getId())
-            );
-        } catch (final Exception e) {
-            throw new KakaoException(e);
-        }
+        final AccessTokenResponse accessTokenResponse = requestAccessToken(authorizationCode, redirectUri);
+        final KakaoUserResponse kakaoUserResponse = requestPlatformUser(accessTokenResponse.getAccess_token());
+        return new PlatformUserDto(
+                kakaoUserResponse.getNickname(),
+                kakaoUserResponse.getEmail(),
+                Platform.KAKAO.name(),
+                String.valueOf(kakaoUserResponse.getId())
+        );
     }
 
     private AccessTokenResponse requestAccessToken(final String authorizationCode, final String redirectUri) {
-        return authorizationWebClient.post()
-                .uri(uriBuilder -> uriBuilder.path(ACCESS_TOKEN_URI)
-                        .queryParam("grant_type", "authorization_code")
-                        .queryParam("client_id", kakaoClientId)
-                        .queryParam("redirect_uri", redirectUri)
-                        .queryParam("code", authorizationCode)
-                        .queryParam("client_secret", kakaoClientSecret)
-                        .build()
-                ).header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", authorizationCode))
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .retrieve()
-                .bodyToMono(AccessTokenResponse.class)
-                .block();
+        try {
+            return authorizationWebClient.post()
+                    .uri(uriBuilder -> uriBuilder.path(ACCESS_TOKEN_URI)
+                            .queryParam("grant_type", "authorization_code")
+                            .queryParam("client_id", kakaoClientId)
+                            .queryParam("redirect_uri", redirectUri)
+                            .queryParam("code", authorizationCode)
+                            .queryParam("client_secret", kakaoClientSecret)
+                            .build()
+                    ).header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", authorizationCode))
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .retrieve()
+                    .bodyToMono(AccessTokenResponse.class)
+                    .block();
+        } catch (final RuntimeException e) {
+            throw new KakaoAuthorizationException(e);
+        }
     }
 
     private KakaoUserResponse requestPlatformUser(final String accessToken) {
-        return resourceWebClient.post()
-                .uri(uriBuilder -> uriBuilder.path(USER_INFO_URI)
-                        .queryParam("secure_resource", "true")
-                        .queryParam("property_keys", "[\"kakao_account.profile\",\"kakao_account.email\"]")
-                        .build()
-                ).header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken))
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .retrieve()
-                .bodyToMono(KakaoUserResponse.class)
-                .block();
+        try {
+            return resourceWebClient.post()
+                    .uri(uriBuilder -> uriBuilder.path(USER_INFO_URI)
+                            .queryParam("secure_resource", "true")
+                            .queryParam("property_keys", "[\"kakao_account.profile\",\"kakao_account.email\"]")
+                            .build()
+                    ).header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken))
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .retrieve()
+                    .bodyToMono(KakaoUserResponse.class)
+                    .block();
+        } catch (final RuntimeException e) {
+            throw new KakaoResourceException(e, accessToken);
+        }
     }
 }
