@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 
 import MyTeamCard from "@/pages/MainPage/components/MyTeamCard";
 import TeamCreateButton from "@/pages/MainPage/components/TeamCreateButton";
-import EmptyState from "@/pages/MainPage/components/EmptyState";
+import EmptyMyTeamList from "@/pages/MainPage/components/EmptyMyTeamList";
 
 import { appClient } from "@/api";
 import { CustomError } from "@/types";
@@ -51,7 +51,7 @@ const MainPage = () => {
   if (myTeamListResponse.teams.length === 0) {
     return (
       <StyledEmptyMain>
-        <EmptyState />
+        <EmptyMyTeamList />
       </StyledEmptyMain>
     );
   }
