@@ -5,13 +5,10 @@ import styled from "@emotion/styled";
 
 import MyTeamCard from "@/pages/MainPage/components/MyTeamCard";
 import TeamCreateButton from "@/pages/MainPage/components/TeamCreateButton";
-
-import EmptyStateImg from "@/assets/images/empty_state.svg";
+import EmptyState from "@/pages/MainPage/components/EmptyState";
 
 import { appClient } from "@/api";
 import { CustomError } from "@/types";
-import LineButton from "@/components/LineButton";
-import { useNavigate } from "react-router-dom";
 
 interface MyTeamListResponse {
   teams: Team[];
@@ -26,7 +23,6 @@ interface Team {
 }
 
 const MainPage = () => {
-  const navigate = useNavigate();
   const {
     isLoading,
     isError,
@@ -35,10 +31,6 @@ const MainPage = () => {
   } = useQuery<MyTeamListResponse>(["my-teams"], () =>
     appClient.get(`/teams/me`).then((response) => response.data)
   );
-
-  const handleFirstJoinButtonClick = () => {
-    navigate("/search");
-  };
 
   if (isLoading) {
     return <div>로딩 중</div>;
@@ -58,15 +50,9 @@ const MainPage = () => {
 
   if (myTeamListResponse.teams.length === 0) {
     return (
-      <StyledFirstTeam>
-        <EmptyStateImg />
-        <LineButton onClick={handleFirstJoinButtonClick}>
-          참가할 모임 찾기
-        </LineButton>
-        <LineButton onClick={handleFirstJoinButtonClick}>
-          새 모임 만들기
-        </LineButton>
-      </StyledFirstTeam>
+      <StyledEmptyMain>
+        <EmptyState />
+      </StyledEmptyMain>
     );
   }
 
@@ -91,7 +77,7 @@ const MainPage = () => {
   );
 };
 
-const StyledFirstTeam = styled.div`
+const StyledEmptyMain = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
