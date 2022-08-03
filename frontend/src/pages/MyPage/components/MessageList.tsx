@@ -40,6 +40,7 @@ const MessageList = ({
 const StyledMessageList = styled.ul`
   display: flex;
   flex-direction: column;
+  height: 400px;
 
   margin-top: 16px;
   gap: 8px;
