@@ -37,6 +37,18 @@ export interface SentMessage {
   color: string;
 }
 
+export interface ResponseReceivedRollingpapers {
+  totalCount: number;
+  currentPage: number;
+  rollingpapers: ReceivedRollingpaper[];
+}
+
+export interface ResponseSentMessages {
+  totalCount: number;
+  currentPage: number;
+  messages: SentMessage[];
+}
+
 export type CustomError = {
   errorCode: number;
   message: string;

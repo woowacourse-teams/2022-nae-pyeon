@@ -1,36 +1,48 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import styled from "@emotion/styled";
+
+import { getMyReceivedRollingpapers } from "@/api/member";
 
 import RollingpaperListItem from "@/pages/MyPage/components/RollingpaperListItem";
 import Paging from "@/components/Paging";
 
-import { ReceivedRollingpaper } from "@/types";
+import { MYPAGE_ROLLINGPAPER_ITEM_COUNT_PER_PAGE } from "@/constants";
 
-interface RollingpaperList {
-  rollingpapers: ReceivedRollingpaper[];
-  currentPage: number;
-  maxPage: number;
-  setCurrentPage: Dispatch<SetStateAction<number>>;
-}
+import { ResponseReceivedRollingpapers } from "@/types";
 
-const RollingpaperList = ({
-  rollingpapers,
-  currentPage,
-  maxPage,
-  setCurrentPage,
-}: RollingpaperList) => {
+const RollingpaperList = () => {
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const { isLoading, isError, error, data } =
+    useQuery<ResponseReceivedRollingpapers>(
+      ["received-rollingpapers", pageNumber],
+      () =>
+        getMyReceivedRollingpapers(
+          pageNumber,
+          MYPAGE_ROLLINGPAPER_ITEM_COUNT_PER_PAGE
+        ),
+      { keepPreviousData: true }
+    );
+
+  if (isError || !data) {
+    return <div>에러</div>;
+  }
+
   return (
     <>
       <StyledRollingpaperList>
-        {rollingpapers.map((rollingpaper) => (
+        {data.rollingpapers.map((rollingpaper) => (
           <RollingpaperListItem {...rollingpaper} />
         ))}
       </StyledRollingpaperList>
       <StyledPaging>
         <Paging
-          currentPage={currentPage}
-          maxPage={maxPage}
-          setCurrentPage={setCurrentPage}
+          maxPage={Math.ceil(
+            data.totalCount / MYPAGE_ROLLINGPAPER_ITEM_COUNT_PER_PAGE
+          )}
+          currentPage={pageNumber}
+          setCurrentPage={setPageNumber}
         />
       </StyledPaging>
     </>

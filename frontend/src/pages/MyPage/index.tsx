@@ -15,9 +15,14 @@ import {
 } from "@/api/member";
 
 import {
-  ReceivedRollingpaper,
+  MYPAGE_ROLLINGPAPER_ITEM_COUNT_PER_PAGE,
+  MYPAGE_MESSAGE_ITEM_COUNT_PER_PAGE,
+} from "@/constants";
+
+import {
   UserInfo,
-  SentMessage,
+  ResponseSentMessages,
+  ResponseReceivedRollingpapers,
   CustomError,
   ValueOf,
 } from "@/types";
@@ -29,25 +34,8 @@ const TAB = {
   SENT_MESSAGE: "sent_message",
 } as const;
 
-interface ResponseReceivedRollingpapers {
-  totalCount: number;
-  currentPage: number;
-  rollingpapers: ReceivedRollingpaper[];
-}
-
-interface ResponseSentMessages {
-  totalCount: number;
-  currentPage: number;
-  messages: SentMessage[];
-}
-
-const receivedRollingpaperCount = 5;
-const sentMessageCount = 5;
-
 const MyPage = () => {
   const [tab, setTab] = useState<TabMode>(TAB.RECEIVED_PAPER);
-  const [receivedRollingpapersPage, setReceivedRollingpapersPage] = useState(0);
-  const [sentMessagesCurrentPage, setSentMessagesCurrentPage] = useState(0);
 
   const {
     isLoading: isLoadingGetUserProfile,
@@ -62,15 +50,10 @@ const MyPage = () => {
     error: getReceivedRollingpapersError,
     data: responseReceivedRollingpapers,
   } = useQuery<ResponseReceivedRollingpapers>(
-    ["received-rollingpapers", receivedRollingpapersPage],
+    ["received-rollingpapers", 0],
     () =>
-      getMyReceivedRollingpapers(
-        receivedRollingpapersPage,
-        receivedRollingpaperCount
-      ),
-    {
-      keepPreviousData: true,
-    }
+      getMyReceivedRollingpapers(0, MYPAGE_ROLLINGPAPER_ITEM_COUNT_PER_PAGE),
+    { keepPreviousData: true }
   );
 
   const {
@@ -79,11 +62,9 @@ const MyPage = () => {
     error: getSentMessagesError,
     data: responseSentMessages,
   } = useQuery<ResponseSentMessages>(
-    ["sent-messages", sentMessagesCurrentPage],
-    () => getMySentMessage(sentMessagesCurrentPage, sentMessageCount),
-    {
-      keepPreviousData: true,
-    }
+    ["sent-messages", 0],
+    () => getMySentMessage(0, MYPAGE_MESSAGE_ITEM_COUNT_PER_PAGE),
+    { keepPreviousData: true }
   );
 
   if (
@@ -153,28 +134,7 @@ const MyPage = () => {
           }}
         />
       </StyledTabs>
-      <StyledList>
-        {tab === TAB.RECEIVED_PAPER ? (
-          <RollingpaperList
-            rollingpapers={responseReceivedRollingpapers.rollingpapers}
-            currentPage={receivedRollingpapersPage}
-            maxPage={Math.ceil(
-              responseReceivedRollingpapers.totalCount /
-                receivedRollingpaperCount
-            )}
-            setCurrentPage={setReceivedRollingpapersPage}
-          />
-        ) : (
-          <MessageList
-            messages={responseSentMessages.messages}
-            currentPage={sentMessagesCurrentPage}
-            maxPage={Math.ceil(
-              responseSentMessages.totalCount / sentMessageCount
-            )}
-            setCurrentPage={setSentMessagesCurrentPage}
-          />
-        )}
-      </StyledList>
+      {tab === TAB.RECEIVED_PAPER ? <RollingpaperList /> : <MessageList />}
     </>
   );
 };
