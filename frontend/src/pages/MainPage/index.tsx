@@ -39,7 +39,7 @@ const MainPage = () => {
     isFetching,
     isError,
     isLoading,
-  } = useInfiniteQuery(["projects"], getMyTeams(TEAM_PAGING_COUNT), {
+  } = useInfiniteQuery(["my-teams"], getMyTeams(TEAM_PAGING_COUNT), {
     getNextPageParam: (lastPage) => {
       if (lastPage.currentPage * TEAM_PAGING_COUNT < lastPage.totalCount) {
         return lastPage.currentPage + 1;
