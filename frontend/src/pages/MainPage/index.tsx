@@ -31,7 +31,7 @@ const MainPage = () => {
     { rootMargin: "10px", threshold: 1.0 }
   );
 
-  const fetchMyTeams = async ({ pageParam = 1 }) => {
+  const getMyTeams = async ({ pageParam = 1 }) => {
     const data = appClient
       .get(`teams/me?page=${pageParam}&count=${TEAM_PAGING_COUNT}`)
       .then((response) => response.data);
@@ -46,7 +46,7 @@ const MainPage = () => {
     isFetching,
     isError,
     isLoading,
-  } = useInfiniteQuery(["projects"], fetchMyTeams, {
+  } = useInfiniteQuery(["projects"], getMyTeams, {
     getNextPageParam: (lastPage) => {
       if (lastPage.currentPage * TEAM_PAGING_COUNT < lastPage.totalCount) {
         return lastPage.currentPage + 1;
