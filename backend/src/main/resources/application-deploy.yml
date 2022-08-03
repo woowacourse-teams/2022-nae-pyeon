@@ -31,3 +31,8 @@ logging:
         org:
           hibernate:
             SQL: info
+
+kakao:
+  admin-key: ${KAKAO_ADMIN_KEY}
+  client-id: ${KAKAO_CLIENT_ID}
+  client-secret: ${KAKAO_CLIENT_SECRET}
