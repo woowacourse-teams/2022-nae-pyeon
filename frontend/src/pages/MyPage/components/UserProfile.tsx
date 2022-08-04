@@ -41,7 +41,7 @@ const UserProfile = ({ username, email }: UserProfileProp) => {
     {
       onSuccess: () => {
         queryClient.refetchQueries(["user-profile"]);
-        openSnackbar(`이름 수정 완료`);
+        openSnackbar("이름 수정 완료");
       },
       onError: (error) => {
         if (axios.isAxiosError(error) && error.response) {
