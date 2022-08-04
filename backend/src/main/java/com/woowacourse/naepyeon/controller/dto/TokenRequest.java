@@ -1,7 +1,6 @@
 package com.woowacourse.naepyeon.controller.dto;
 
 import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
-import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,16 +11,10 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TokenRequest {
 
-    private String platformType;
-    private String platformId;
-    @NotBlank(message = "3001:이메일은 공백일 수 없습니다.")
-    private String email;
-    @NotBlank(message = "3004:유저네임은 공백일 수 없습니다.")
-    private String username;
-    private String profileImageUrl;
-
+    private String authorizationCode;
+    private String redirectUri;
 
     public TokenRequestDto toServiceRequest() {
-        return new TokenRequestDto(platformType, platformId, email, username, profileImageUrl);
+        return new TokenRequestDto(authorizationCode, redirectUri);
     }
 }

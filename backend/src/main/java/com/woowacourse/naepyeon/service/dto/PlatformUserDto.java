@@ -5,11 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Getter
-public class TokenRequestDto {
+public class PlatformUserDto {
 
-    private String authorizationCode;
-    private String redirectUri;
+    private String username;
+    private String email;
+    private String platform;
+    private String platformId;
 }
