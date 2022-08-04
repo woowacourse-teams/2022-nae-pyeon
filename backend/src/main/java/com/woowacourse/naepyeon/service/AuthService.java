@@ -21,7 +21,6 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final KakaoPlatformUserProvider kakaoPlatformUserProvider;
 
-
     public TokenResponseDto createTokenWithKakaoOauth(final TokenRequestDto tokenRequestDto) {
         final PlatformUserDto platformUser = kakaoPlatformUserProvider.getPlatformUser(
                 tokenRequestDto.getAuthorizationCode(),

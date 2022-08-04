@@ -1,7 +1,6 @@
 package com.woowacourse.naepyeon.controller.dto;
 
 import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
-import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

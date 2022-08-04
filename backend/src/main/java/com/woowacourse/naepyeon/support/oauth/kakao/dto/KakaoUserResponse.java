@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 public class KakaoUserResponse {
 
     private Long id;
-
     private KakaoAccount kakao_account;
 
     public String getNickname() {
