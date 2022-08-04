@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 
 type MessageTextAreaProps = {
   backgroundColor: string;
+  value: string;
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 type StyledMessageContainerProps = {
