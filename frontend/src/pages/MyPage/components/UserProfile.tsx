@@ -12,7 +12,7 @@ import UnderlineInput from "@/components/UnderlineInput";
 
 import { REGEX } from "@/constants";
 import { CustomError, ValueOf } from "@/types";
-import { appClient } from "@/api";
+import { appClient, queryClient } from "@/api";
 import Pencil from "@/assets/icons/bx-pencil.svg";
 
 const MODE = {
@@ -40,7 +40,8 @@ const UserProfile = ({ username, email }: UserProfileProp) => {
     },
     {
       onSuccess: () => {
-        openSnackbar(`username: ${username} 수정 완료`);
+        queryClient.refetchQueries(["user-profile"]);
+        openSnackbar(`이름 수정 완료`);
       },
       onError: (error) => {
         if (axios.isAxiosError(error) && error.response) {
