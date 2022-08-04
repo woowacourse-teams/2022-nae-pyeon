@@ -76,7 +76,7 @@ const TeamNicknameModalForm = ({
       e.preventDefault();
 
       if (!REGEX.TEAM_NICKNAME.test(nickname)) {
-        alert("1 ~20자 사이의 닉네임을 입력해주세요");
+        alert("1 ~ 20자 사이의 닉네임을 입력해주세요");
         return;
       }
 
@@ -97,7 +97,7 @@ const TeamNicknameModalForm = ({
           value={nickname}
           setValue={setNickname}
           pattern={REGEX.TEAM_NICKNAME.source}
-          errorMessage="1~20자 사이의 닉네임을 입력해주세요"
+          errorMessage="1 ~ 20자 사이의 닉네임을 입력해주세요"
         />
         {mode === MODE.JOIN && (
           <LineButton type="submit">모임 가입하기</LineButton>

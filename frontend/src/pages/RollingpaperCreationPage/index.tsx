@@ -86,7 +86,7 @@ const RollingpaperCreationPage = () => {
     e.preventDefault();
 
     if (!isValidRollingpaperTitle(rollingpaperTitle)) {
-      return alert("롤링페이퍼 제목은 1~20자여야 합니다.");
+      return alert("롤링페이퍼 제목은 1 ~ 20자여야 합니다.");
     }
 
     const receiver = findReceiverWithNickName(rollingpaperTo);
