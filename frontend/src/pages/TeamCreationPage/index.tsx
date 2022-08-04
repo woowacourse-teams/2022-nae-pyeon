@@ -72,7 +72,7 @@ const TeamCreationPage = () => {
     if (!teamDescription) {
       return alert("모임 설명을 입력해주세요");
     }
-    if (!REGEX.USERNAME.test(nickname)) {
+    if (!REGEX.TEAM_NICKNAME.test(nickname)) {
       return alert("올바르지 않은 닉네임 형식입니다");
     }
     if (!emoji) {
@@ -128,7 +128,7 @@ const TeamCreationPage = () => {
             !(
               REGEX.TEAM_NAME.test(nickname) &&
               teamDescription &&
-              REGEX.USERNAME.test(nickname) &&
+              REGEX.TEAM_NICKNAME.test(nickname) &&
               emoji &&
               color
             )

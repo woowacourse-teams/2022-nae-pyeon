@@ -75,7 +75,7 @@ const TeamNicknameModalForm = ({
     (e) => {
       e.preventDefault();
 
-      if (!REGEX.USERNAME.test(nickname)) {
+      if (!REGEX.TEAM_NICKNAME.test(nickname)) {
         alert("닉네임은 한글, 영어, 숫자만 가능합니다.");
         return;
       }
@@ -96,7 +96,7 @@ const TeamNicknameModalForm = ({
         <UnderlineInput
           value={nickname}
           setValue={setNickname}
-          pattern={REGEX.USERNAME.source}
+          pattern={REGEX.TEAM_NICKNAME.source}
           errorMessage="한글, 영어, 숫자 / 2 ~ 20자"
         />
         {mode === MODE.JOIN && (
