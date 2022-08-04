@@ -59,7 +59,7 @@ const UserProfile = ({ username, email }: UserProfileProp) => {
   };
 
   const handleEditCancelButtonClick = () => {
-    if (confirm("이름 변경을 취소하시겠습니까?")) {
+    if (confirm("수정을 취소하시겠습니까?")) {
       setMode(MODE.NORMAL);
     }
   };
