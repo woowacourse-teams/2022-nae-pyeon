@@ -1,22 +1,31 @@
 == 모임
 
-=== 모임 단건 조회(/api/v1/teams/{teamId})
+=== 모임 단건 조회
 operation::team-controller-test/get-team[snippets='http-request,http-response']
 
-=== 참여중인 모임들 조회(/api/v1/teams/me)
+=== 참여중인 모임들 조회
 operation::team-controller-test/get-joined-teams[snippets='http-request,http-response']
 
-=== 모든 모임 조회(/api/v1/teams)
+=== 모든 모임 조회
 operation::team-controller-test/get-all-teams[snippets='http-request,http-response']
 
-=== 모임에 참여중인 회원정보(/api/v1/teams/{teamId}/members)
+=== 키워드에 맞는 모든 모임 조회
+operation::team-controller-test/get-all-teams-by-keyword[snippets='http-request,http-response']
+
+=== 모임에 참여중인 회원정보
 operation::team-controller-test/get-joined-members[snippets='http-request,http-response']
 
-=== 모임 생성(/api/v1/teams)
+=== 모임 생성
 operation::team-controller-test/create-team/[snippets='http-request,http-response']
 
-=== 모임 정보 수정(/api/v1/teams/{teamId})
+=== 모임 정보 수정
 operation::team-controller-test/update-team[snippets='http-request,http-response']
 
-=== 모임에 회원 참가(/api/v1/teams/{teamId})
+=== 모임에 회원 참가
 operation::team-controller-test/join-member[snippets='http-request,http-response']
+
+=== 모임에 내 정보 조회
+operation::team-controller-test/get-my-info-in-team[snippets='http-request,http-response']
+
+=== 모임에서 내 정보 수정
+operation::team-controller-test/update-my-info[snippets='http-request,http-response']
