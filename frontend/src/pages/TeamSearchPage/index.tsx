@@ -45,7 +45,7 @@ const TeamSearch = () => {
     isLoading,
     refetch,
   } = useInfiniteQuery(
-    ["team-search", searchKeyword],
+    ["team-search"],
     getTeamSearchResult({
       keyword: searchKeyword,
       count: TOTAL_TEAMS_PAGING_COUNT,
