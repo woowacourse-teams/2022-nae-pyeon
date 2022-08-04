@@ -94,7 +94,7 @@ const UserProfile = ({ username, email }: UserProfileProp) => {
             value={editName}
             setValue={setEditName}
             pattern={REGEX.USERNAME.source}
-            errorMessage="2~20자 사이의 이름을 입력해주세요"
+            errorMessage="1~64자 사이의 이름을 입력해주세요"
           />
           <StyledEditLineButtonContainer>
             <LineButton onClick={handleEditCancelButtonClick}>취소</LineButton>
