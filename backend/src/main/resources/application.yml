@@ -21,9 +21,6 @@ spring:
     enabled: false
     baseline-on-migrate: true
 
-logging.level:
-  org.hibernate.SQL: debug
-
 security:
   jwt:
     token:
@@ -34,3 +31,6 @@ kakao:
   admin-key: ${KAKAO_ADMIN_KEY}
   client-id: ${KAKAO_CLIENT_ID}
   client-secret: ${KAKAO_CLIENT_SECRET}
+
+logging:
+  config: classpath:log4j2.yml

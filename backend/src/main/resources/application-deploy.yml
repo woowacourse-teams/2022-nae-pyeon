@@ -26,13 +26,10 @@ security:
       expire-length: ${JWT_EXPIRE_LENGTH}
       secret-key: ${JWT_SECRET_KEY}
 
-logging:
-    level:
-        org:
-          hibernate:
-            SQL: info
-
 kakao:
   admin-key: ${KAKAO_ADMIN_KEY}
   client-id: ${KAKAO_CLIENT_ID}
   client-secret: ${KAKAO_CLIENT_SECRET}
+
+logging:
+  config: classpath:log4j2-develop.yml
