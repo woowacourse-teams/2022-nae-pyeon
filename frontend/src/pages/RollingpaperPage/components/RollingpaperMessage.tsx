@@ -67,7 +67,9 @@ const RollingpaperMessage = ({
   };
 
   const handleDeleteButtonClick = () => {
-    deleteMessage();
+    if (confirm("메시지를 삭제하시겠습니까?")) {
+      deleteMessage();
+    }
   };
 
   return (
