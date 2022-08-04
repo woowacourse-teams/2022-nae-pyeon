@@ -8,12 +8,21 @@ import UserProfile from "@/pages/MyPage/components/UserProfile";
 import RollingpaperList from "@/pages/MyPage/components/RollingpaperList";
 import MessageList from "@/pages/MyPage/components/MessageList";
 
-import { appClient } from "@/api";
+import {
+  getMyUserInfo,
+  getMyReceivedRollingpapers,
+  getMySentMessage,
+} from "@/api/member";
 
 import {
-  ReceivedRollingpaper,
+  MYPAGE_ROLLINGPAPER_PAGING_COUNT,
+  MYPAGE_MESSAGE_PAGING_COUNT,
+} from "@/constants";
+
+import {
   UserInfo,
-  SentMessage,
+  ResponseSentMessages,
+  ResponseReceivedRollingpapers,
   CustomError,
   ValueOf,
 } from "@/types";
@@ -25,48 +34,15 @@ const TAB = {
   SENT_MESSAGE: "sent_message",
 } as const;
 
-interface ResponseReceivedRollingpapers {
-  totalCount: number;
-  currentPage: number;
-  rollingpapers: ReceivedRollingpaper[];
-}
-
-interface ResponseSentMessages {
-  totalCount: number;
-  currentPage: number;
-  messages: SentMessage[];
-}
-
-const receivedRollingpaperCount = 5;
-const sentMessageCount = 5;
-
 const MyPage = () => {
   const [tab, setTab] = useState<TabMode>(TAB.RECEIVED_PAPER);
-  const [receivedRollingpapersPage, setReceivedRollingpapersPage] = useState(0);
-  const [sentMessagesCurrentPage, setSentMessagesCurrentPage] = useState(0);
-
-  const fetchUserInfo = () => {
-    return appClient.get("/members/me").then((response) => response.data);
-  };
-
-  const fetchReceivedRollingpapers = (page = 0, count = 5) => {
-    return appClient
-      .get(`/members/me/rollingpapers/received?page=${page}&count=${count}`)
-      .then((response) => response.data);
-  };
-
-  const fetchSentMessage = (page = 0, count = 5) => {
-    return appClient
-      .get(`/members/me/messages/written?page=${page}&count=${count}`)
-      .then((response) => response.data);
-  };
 
   const {
     isLoading: isLoadingGetUserProfile,
     isError: isErrorGetUserProfile,
     error: getUserProfileError,
     data: userProfile,
-  } = useQuery<UserInfo>(["user-profile"], () => fetchUserInfo());
+  } = useQuery<UserInfo>(["user-profile"], () => getMyUserInfo());
 
   const {
     isLoading: isLoadingGetReceivedRollingpapers,
@@ -74,15 +50,9 @@ const MyPage = () => {
     error: getReceivedRollingpapersError,
     data: responseReceivedRollingpapers,
   } = useQuery<ResponseReceivedRollingpapers>(
-    ["received-rollingpapers", receivedRollingpapersPage],
-    () =>
-      fetchReceivedRollingpapers(
-        receivedRollingpapersPage,
-        receivedRollingpaperCount
-      ),
-    {
-      keepPreviousData: true,
-    }
+    ["received-rollingpapers", 0],
+    () => getMyReceivedRollingpapers(0, MYPAGE_ROLLINGPAPER_PAGING_COUNT),
+    { keepPreviousData: true }
   );
 
   const {
@@ -91,11 +61,9 @@ const MyPage = () => {
     error: getSentMessagesError,
     data: responseSentMessages,
   } = useQuery<ResponseSentMessages>(
-    ["sent-messages", sentMessagesCurrentPage],
-    () => fetchSentMessage(sentMessagesCurrentPage, sentMessageCount),
-    {
-      keepPreviousData: true,
-    }
+    ["sent-messages", 0],
+    () => getMySentMessage(0, MYPAGE_MESSAGE_PAGING_COUNT),
+    { keepPreviousData: true }
   );
 
   if (
@@ -165,28 +133,9 @@ const MyPage = () => {
           }}
         />
       </StyledTabs>
-      <StyledList>
-        {tab === TAB.RECEIVED_PAPER ? (
-          <RollingpaperList
-            rollingpapers={responseReceivedRollingpapers.rollingpapers}
-            currentPage={receivedRollingpapersPage}
-            maxPage={Math.ceil(
-              responseReceivedRollingpapers.totalCount /
-                receivedRollingpaperCount
-            )}
-            setCurrentPage={setReceivedRollingpapersPage}
-          />
-        ) : (
-          <MessageList
-            messages={responseSentMessages.messages}
-            currentPage={sentMessagesCurrentPage}
-            maxPage={Math.ceil(
-              responseSentMessages.totalCount / sentMessageCount
-            )}
-            setCurrentPage={setSentMessagesCurrentPage}
-          />
-        )}
-      </StyledList>
+      <StyledListWrapper>
+        {tab === TAB.RECEIVED_PAPER ? <RollingpaperList /> : <MessageList />}
+      </StyledListWrapper>
     </>
   );
 };
@@ -201,7 +150,7 @@ const StyledTabs = styled.div`
   gap: 20px;
 `;
 
-const StyledList = styled.div`
+const StyledListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;

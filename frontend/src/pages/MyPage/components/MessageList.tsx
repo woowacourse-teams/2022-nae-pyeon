@@ -1,36 +1,41 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import styled from "@emotion/styled";
+
+import { getMySentMessage } from "@/api/member";
 
 import MessageListItem from "@/pages/MyPage/components/MessageListItem";
 import Paging from "@/components/Paging";
 
-import { SentMessage } from "@/types";
+import { MYPAGE_MESSAGE_PAGING_COUNT } from "@/constants";
 
-interface MessageListProp {
-  messages: SentMessage[];
-  currentPage: number;
-  maxPage: number;
-  setCurrentPage: Dispatch<SetStateAction<number>>;
-}
+import { ResponseSentMessages } from "@/types";
 
-const MessageList = ({
-  messages,
-  currentPage,
-  maxPage,
-  setCurrentPage,
-}: MessageListProp) => {
+const MessageList = () => {
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const { isLoading, isError, error, data } = useQuery<ResponseSentMessages>(
+    ["sent-messages", pageNumber],
+    () => getMySentMessage(pageNumber, MYPAGE_MESSAGE_PAGING_COUNT),
+    { keepPreviousData: true }
+  );
+
+  if (isError || !data) {
+    return <div>에러</div>;
+  }
+
   return (
     <>
       <StyledMessageList>
-        {messages.map((message) => (
+        {data.messages.map((message) => (
           <MessageListItem {...message} />
         ))}
       </StyledMessageList>
       <StyledPaging>
         <Paging
-          currentPage={currentPage}
-          maxPage={maxPage}
-          setCurrentPage={setCurrentPage}
+          maxPage={Math.ceil(data.totalCount / MYPAGE_MESSAGE_PAGING_COUNT)}
+          currentPage={pageNumber}
+          setCurrentPage={setPageNumber}
         />
       </StyledPaging>
     </>
