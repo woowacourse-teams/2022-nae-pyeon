@@ -58,11 +58,7 @@ const UserProfile = ({ username, email }: UserProfileProp) => {
   };
 
   const handleEditCancelButtonClick = () => {
-    if (
-      mode === MODE.EDIT &&
-      confirm(`${editName}으로 이름을 변경하시겠습니까?`)
-    ) {
-      setEditName(username);
+    if (confirm("이름 변경을 취소하시겠습니까?")) {
       setMode(MODE.NORMAL);
     }
   };
