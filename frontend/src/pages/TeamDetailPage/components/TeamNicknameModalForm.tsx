@@ -76,7 +76,7 @@ const TeamNicknameModalForm = ({
       e.preventDefault();
 
       if (!REGEX.TEAM_NICKNAME.test(nickname)) {
-        alert("닉네임은 한글, 영어, 숫자만 가능합니다.");
+        alert("1~20자 사이의 값을 입력해주세요");
         return;
       }
 
