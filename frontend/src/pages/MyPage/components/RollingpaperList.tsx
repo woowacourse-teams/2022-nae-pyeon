@@ -7,7 +7,7 @@ import { getMyReceivedRollingpapers } from "@/api/member";
 import RollingpaperListItem from "@/pages/MyPage/components/RollingpaperListItem";
 import Paging from "@/components/Paging";
 
-import { MYPAGE_ROLLINGPAPER_ITEM_COUNT_PER_PAGE } from "@/constants";
+import { MYPAGE_ROLLINGPAPER_PAGING_COUNT } from "@/constants";
 
 import { ResponseReceivedRollingpapers } from "@/types";
 
@@ -20,7 +20,7 @@ const RollingpaperList = () => {
       () =>
         getMyReceivedRollingpapers(
           pageNumber,
-          MYPAGE_ROLLINGPAPER_ITEM_COUNT_PER_PAGE
+          MYPAGE_ROLLINGPAPER_PAGING_COUNT
         ),
       { keepPreviousData: true }
     );
@@ -39,7 +39,7 @@ const RollingpaperList = () => {
       <StyledPaging>
         <Paging
           maxPage={Math.ceil(
-            data.totalCount / MYPAGE_ROLLINGPAPER_ITEM_COUNT_PER_PAGE
+            data.totalCount / MYPAGE_ROLLINGPAPER_PAGING_COUNT
           )}
           currentPage={pageNumber}
           setCurrentPage={setPageNumber}

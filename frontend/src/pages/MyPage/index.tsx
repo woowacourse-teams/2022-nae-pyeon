@@ -15,8 +15,8 @@ import {
 } from "@/api/member";
 
 import {
-  MYPAGE_ROLLINGPAPER_ITEM_COUNT_PER_PAGE,
-  MYPAGE_MESSAGE_ITEM_COUNT_PER_PAGE,
+  MYPAGE_ROLLINGPAPER_PAGING_COUNT,
+  MYPAGE_MESSAGE_PAGING_COUNT,
 } from "@/constants";
 
 import {
@@ -51,8 +51,7 @@ const MyPage = () => {
     data: responseReceivedRollingpapers,
   } = useQuery<ResponseReceivedRollingpapers>(
     ["received-rollingpapers", 0],
-    () =>
-      getMyReceivedRollingpapers(0, MYPAGE_ROLLINGPAPER_ITEM_COUNT_PER_PAGE),
+    () => getMyReceivedRollingpapers(0, MYPAGE_ROLLINGPAPER_PAGING_COUNT),
     { keepPreviousData: true }
   );
 
@@ -63,7 +62,7 @@ const MyPage = () => {
     data: responseSentMessages,
   } = useQuery<ResponseSentMessages>(
     ["sent-messages", 0],
-    () => getMySentMessage(0, MYPAGE_MESSAGE_ITEM_COUNT_PER_PAGE),
+    () => getMySentMessage(0, MYPAGE_MESSAGE_PAGING_COUNT),
     { keepPreviousData: true }
   );
 

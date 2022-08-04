@@ -7,7 +7,7 @@ import { getMySentMessage } from "@/api/member";
 import MessageListItem from "@/pages/MyPage/components/MessageListItem";
 import Paging from "@/components/Paging";
 
-import { MYPAGE_MESSAGE_ITEM_COUNT_PER_PAGE } from "@/constants";
+import { MYPAGE_MESSAGE_PAGING_COUNT } from "@/constants";
 
 import { ResponseSentMessages } from "@/types";
 
@@ -16,7 +16,7 @@ const MessageList = () => {
 
   const { isLoading, isError, error, data } = useQuery<ResponseSentMessages>(
     ["sent-messages", pageNumber],
-    () => getMySentMessage(pageNumber, MYPAGE_MESSAGE_ITEM_COUNT_PER_PAGE),
+    () => getMySentMessage(pageNumber, MYPAGE_MESSAGE_PAGING_COUNT),
     { keepPreviousData: true }
   );
 
@@ -33,9 +33,7 @@ const MessageList = () => {
       </StyledMessageList>
       <StyledPaging>
         <Paging
-          maxPage={Math.ceil(
-            data.totalCount / MYPAGE_MESSAGE_ITEM_COUNT_PER_PAGE
-          )}
+          maxPage={Math.ceil(data.totalCount / MYPAGE_MESSAGE_PAGING_COUNT)}
           currentPage={pageNumber}
           setCurrentPage={setPageNumber}
         />
