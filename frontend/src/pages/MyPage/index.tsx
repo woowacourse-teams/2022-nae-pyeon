@@ -133,9 +133,8 @@ const MyPage = () => {
           }}
         />
       </StyledTabs>
-      <StyledListWrapper>
-        {tab === TAB.RECEIVED_PAPER ? <RollingpaperList /> : <MessageList />}
-      </StyledListWrapper>
+
+      {tab === TAB.RECEIVED_PAPER ? <RollingpaperList /> : <MessageList />}
     </>
   );
 };

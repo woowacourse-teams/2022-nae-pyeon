@@ -1,7 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "@emotion/styled";
 
-import EmptyStateImg from "@/assets/images/empty_state.svg";
+import EmptyStateImg from "@/assets/images/empty-state.svg";
 import LineButton from "@/components/LineButton";
 
 const EmptyState = () => {
@@ -18,6 +19,7 @@ const EmptyState = () => {
   return (
     <>
       <EmptyStateImg />
+      <StyledMessage>아직 참여한 모임이 없어요!</StyledMessage>
       <LineButton onClick={handleJoinTeamButtonClick}>
         참가할 모임 찾기
       </LineButton>
@@ -27,5 +29,13 @@ const EmptyState = () => {
     </>
   );
 };
+
+const StyledMessage = styled.div`
+  font-size: 24px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.GRAY_400};
+
+  margin-bottom: 20px;
+`;
 
 export default EmptyState;
