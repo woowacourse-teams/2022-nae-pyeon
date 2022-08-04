@@ -134,7 +134,9 @@ const MyPage = () => {
           }}
         />
       </StyledTabs>
-      {tab === TAB.RECEIVED_PAPER ? <RollingpaperList /> : <MessageList />}
+      <StyledListWrapper>
+        {tab === TAB.RECEIVED_PAPER ? <RollingpaperList /> : <MessageList />}
+      </StyledListWrapper>
     </>
   );
 };
@@ -149,7 +151,7 @@ const StyledTabs = styled.div`
   gap: 20px;
 `;
 
-const StyledList = styled.div`
+const StyledListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
