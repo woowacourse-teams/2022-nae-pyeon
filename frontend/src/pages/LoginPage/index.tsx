@@ -66,8 +66,6 @@ const StyledTitle = styled.div`
   flex-direction: column;
   align-items: center;
 
-  padding: 15% 0;
-
   color: ${({ theme }) => theme.colors.SKY_BLUE_300};
 
   @media only screen and (min-width: 960px) {
@@ -79,8 +77,6 @@ const StyledSocialLoginButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  padding: 10% 0;
   gap: 20px;
 
   button {
