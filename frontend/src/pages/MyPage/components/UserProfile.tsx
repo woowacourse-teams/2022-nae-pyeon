@@ -40,7 +40,7 @@ const UserProfile = ({ username, email }: UserProfileProp) => {
     },
     {
       onSuccess: () => {
-        openSnackbar(`username: ${username} 수정 완료`);
+        openSnackbar("이름 수정 완료");
       },
       onError: (error) => {
         if (axios.isAxiosError(error) && error.response) {
@@ -58,11 +58,7 @@ const UserProfile = ({ username, email }: UserProfileProp) => {
   };
 
   const handleEditCancelButtonClick = () => {
-    if (
-      mode === MODE.EDIT &&
-      confirm(`${editName}으로 이름을 변경하시겠습니까?`)
-    ) {
-      setEditName(username);
+    if (confirm("수정을 취소하시겠습니까?")) {
       setMode(MODE.NORMAL);
     }
   };
