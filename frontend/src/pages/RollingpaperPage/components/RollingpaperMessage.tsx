@@ -125,7 +125,7 @@ const StyledMessageContent = styled.div`
 const StyledMessageBottom = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
 
   margin-top: 12px;
   padding: 4px 0 4px 0;
@@ -142,8 +142,14 @@ const StyledMessageButton = styled.div`
 
 const StyledMessageAuthor = styled.div`
   margin-left: auto;
+  width: 50px;
+  text-align: right;
   font-size: 12px;
   color: ${({ theme }) => theme.colors.GRAY_700};
+
+  @media only screen and (min-width: 600px) {
+    width: 90px;
+  }
 `;
 
 export default RollingpaperMessage;
