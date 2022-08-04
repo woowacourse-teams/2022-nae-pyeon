@@ -37,7 +37,8 @@ interface ResponseSentMessages {
   messages: SentMessage[];
 }
 
-const contentCountPerPage = 5;
+const receivedRollingpaperCount = 5;
+const sentMessageCount = 5;
 
 const MyPage = () => {
   const [tab, setTab] = useState<TabMode>(TAB.RECEIVED_PAPER);
@@ -77,7 +78,7 @@ const MyPage = () => {
     () =>
       fetchReceivedRollingpapers(
         receivedRollingpapersPage,
-        contentCountPerPage
+        receivedRollingpaperCount
       ),
     {
       keepPreviousData: true,
@@ -91,7 +92,7 @@ const MyPage = () => {
     data: responseSentMessages,
   } = useQuery<ResponseSentMessages>(
     ["sent-messages", sentMessagesCurrentPage],
-    () => fetchSentMessage(sentMessagesCurrentPage, contentCountPerPage),
+    () => fetchSentMessage(sentMessagesCurrentPage, sentMessageCount),
     {
       keepPreviousData: true,
     }
@@ -164,25 +165,28 @@ const MyPage = () => {
           }}
         />
       </StyledTabs>
-      {tab === TAB.RECEIVED_PAPER ? (
-        <RollingpaperList
-          rollingpapers={responseReceivedRollingpapers.rollingpapers}
-          currentPage={receivedRollingpapersPage}
-          maxPage={Math.ceil(
-            responseReceivedRollingpapers.totalCount / contentCountPerPage
-          )}
-          setCurrentPage={setReceivedRollingpapersPage}
-        />
-      ) : (
-        <MessageList
-          messages={responseSentMessages.messages}
-          currentPage={sentMessagesCurrentPage}
-          maxPage={Math.ceil(
-            responseSentMessages.totalCount / contentCountPerPage
-          )}
-          setCurrentPage={setSentMessagesCurrentPage}
-        />
-      )}
+      <StyledList>
+        {tab === TAB.RECEIVED_PAPER ? (
+          <RollingpaperList
+            rollingpapers={responseReceivedRollingpapers.rollingpapers}
+            currentPage={receivedRollingpapersPage}
+            maxPage={Math.ceil(
+              responseReceivedRollingpapers.totalCount /
+                receivedRollingpaperCount
+            )}
+            setCurrentPage={setReceivedRollingpapersPage}
+          />
+        ) : (
+          <MessageList
+            messages={responseSentMessages.messages}
+            currentPage={sentMessagesCurrentPage}
+            maxPage={Math.ceil(
+              responseSentMessages.totalCount / sentMessageCount
+            )}
+            setCurrentPage={setSentMessagesCurrentPage}
+          />
+        )}
+      </StyledList>
     </>
   );
 };
@@ -195,6 +199,14 @@ const StyledTabs = styled.div`
 
   padding: 12px;
   gap: 20px;
+`;
+
+const StyledList = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  height: 600px;
 `;
 
 export default MyPage;

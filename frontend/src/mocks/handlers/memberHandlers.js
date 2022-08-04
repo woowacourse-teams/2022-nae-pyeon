@@ -61,7 +61,7 @@ const memberHandlers = [
     const result = {
       totalCount: 160,
       currentPage: Number(page),
-      rollingpapers: receivedRollinpapersDummy.rollingpapers.slice(begin, end),
+      rollingpapers: receivedRollinpapersDummy.rollingpapers.slice(0, 5),
     };
 
     return res(ctx.json(result));
@@ -78,7 +78,7 @@ const memberHandlers = [
     const result = {
       totalCount: 160,
       currentPage: Number(page),
-      messages: sentMessagesDummy.messages.slice(begin, end),
+      messages: sentMessagesDummy.messages.slice(0, 5),
     };
 
     return res(ctx.json(result));

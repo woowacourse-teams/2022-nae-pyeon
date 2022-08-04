@@ -1,12 +1,12 @@
 import React from "react";
-import MessageCard from "@/pages/MyPage/components/MessageCard";
+import MessageListItem from "@/pages/MyPage/components/MessageListItem";
 
 export default {
-  component: MessageCard,
-  title: "components/MyPage/MessageCard",
+  component: MessageListItem,
+  title: "components/MyPage/MessageListItem",
 };
 
-const Template = (args) => <MessageCard {...args}></MessageCard>;
+const Template = (args) => <MessageListItem {...args}></MessageListItem>;
 
 export const Default = Template.bind({});
 Default.args = {
