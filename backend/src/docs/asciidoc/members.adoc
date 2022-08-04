@@ -1,0 +1,16 @@
+== 유저
+
+=== 내 정보 조회
+operation::member-controller-test/find-member[snippets='http-request,http-response']
+
+=== 내가 받은 롤링페이퍼 목록
+operation::member-controller-test/find-received-rollingpapers[snippets='http-request,http-response']
+
+=== 내가 작성한 메시지 목록
+operation::member-controller-test/find-written-messages[snippets='http-request,http-response']
+
+=== 내 정보 수정
+operation::member-controller-test/update-member[snippets='http-request,http-response']
+
+=== 회원탈퇴
+operation::member-controller-test/delete-member[snippets='http-request,http-response']

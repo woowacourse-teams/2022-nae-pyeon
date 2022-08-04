@@ -117,7 +117,7 @@ const StyledEmptyMain = styled.main`
     width: 152px;
   }
   svg {
-    font-size: 300px;
+    font-size: 200px;
   }
 `;
 
