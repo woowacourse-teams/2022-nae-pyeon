@@ -11,7 +11,7 @@ public final class KakaoResourceException extends NaePyeonException {
                         accessToken,
                         e.getMessage()
                 ),
-                "authorizationCode, redirectUri를 제대로 전달하고 있는지 확인하세요. 제대로 전달중이라면 서버 개발자에게 문의바랍니다.",
+                "카카오 로그인에 실패했습니다. 관리자에게 문의하세요.",
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 "3015"
         );

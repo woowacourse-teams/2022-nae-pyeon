@@ -1,8 +1,5 @@
 package com.woowacourse.naepyeon.service;
 
-import com.woowacourse.naepyeon.domain.Member;
-import com.woowacourse.naepyeon.domain.Platform;
-import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
@@ -17,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class AuthService {
 
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
     private final KakaoPlatformUserProvider kakaoPlatformUserProvider;
 
@@ -33,16 +30,18 @@ public class AuthService {
     }
 
     private Long createOrFindMemberId(final PlatformUserDto platformUser) {
-        return memberRepository.findMemberIdByPlatformAndPlatformId(
-                Platform.valueOf(platformUser.getPlatform()),
+        return memberService.findMemberIdByPlatformAndPlatformId(
+                platformUser.getPlatform(),
                 platformUser.getPlatformId()
-        ).orElseGet(() -> memberRepository.save(
-                new Member(
-                        platformUser.getUsername(),
-                        platformUser.getEmail(),
-                        Platform.valueOf(platformUser.getPlatform()),
-                        platformUser.getPlatformId()
-                )
-        ));
+        ).orElseGet(() -> saveMember(platformUser));
+    }
+
+    private Long saveMember(final PlatformUserDto platformUser) {
+        return memberService.save(
+                platformUser.getUsername(),
+                platformUser.getEmail(),
+                platformUser.getPlatform(),
+                platformUser.getPlatformId()
+        );
     }
 }

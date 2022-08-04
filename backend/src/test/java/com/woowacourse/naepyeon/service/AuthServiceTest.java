@@ -34,11 +34,14 @@ class AuthServiceTest {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private MemberService memberService;
+
     private AuthService authService;
 
     @BeforeEach
     void setUp() {
-        authService = new AuthService(memberRepository, jwtTokenProvider, kakaoPlatformUserProvider);
+        authService = new AuthService(memberService, jwtTokenProvider, kakaoPlatformUserProvider);
     }
 
     @Test

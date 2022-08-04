@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.service.AuthService;
+import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
@@ -31,6 +32,8 @@ public class AcceptanceTest {
     protected MemberRepository memberRepository;
     @Autowired
     protected JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    protected MemberService memberService;
     protected AuthService authService;
     @LocalServerPort
     int port;
@@ -43,7 +46,7 @@ public class AcceptanceTest {
     @BeforeEach
     public void setUp() {
         RestAssured.port = port;
-        authService = new AuthService(memberRepository, jwtTokenProvider, kakaoPlatformUserProvider);
+        authService = new AuthService(memberService, jwtTokenProvider, kakaoPlatformUserProvider);
 
         final String alexName = "alex";
         when(kakaoPlatformUserProvider.getPlatformUser(anyString(), anyString()))

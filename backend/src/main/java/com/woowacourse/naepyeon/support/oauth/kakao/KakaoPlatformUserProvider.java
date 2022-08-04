@@ -63,8 +63,7 @@ public class KakaoPlatformUserProvider {
                             .queryParam("code", authorizationCode)
                             .queryParam("client_secret", kakaoClientSecret)
                             .build()
-                    ).header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", authorizationCode))
-                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    ).contentType(MediaType.APPLICATION_FORM_URLENCODED)
                     .retrieve()
                     .bodyToMono(AccessTokenResponse.class)
                     .block();
