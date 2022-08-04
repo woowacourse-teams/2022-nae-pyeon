@@ -97,7 +97,7 @@ const TeamNicknameModalForm = ({
           value={nickname}
           setValue={setNickname}
           pattern={REGEX.TEAM_NICKNAME.source}
-          errorMessage="한글, 영어, 숫자 / 2 ~ 20자"
+          errorMessage="1~20자 사이의 값을 입력해주세요"
         />
         {mode === MODE.JOIN && (
           <LineButton type="submit">모임 가입하기</LineButton>
