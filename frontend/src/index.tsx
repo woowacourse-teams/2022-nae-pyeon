@@ -5,7 +5,13 @@ import { BrowserRouter } from "react-router-dom";
 import { SnackbarProvider } from "@/context/SnackbarContext";
 import App from "./App";
 
-if (process.env.NODE_ENV === "development") {
+declare global {
+  interface Window {
+    Cypress: string;
+  }
+}
+
+if (process.env.NODE_ENV === "development" && !window.Cypress) {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { worker } = require("./mocks/browser");
   worker.start();

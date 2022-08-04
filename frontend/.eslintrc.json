@@ -3,7 +3,8 @@
     "eslint:recommended",
     "plugin:import/recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier"
+    "prettier",
+    "plugin:cypress/recommended"
   ],
   "ignorePatterns": ["*.js"],
   "env": {
