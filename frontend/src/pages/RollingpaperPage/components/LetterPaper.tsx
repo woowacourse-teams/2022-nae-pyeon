@@ -164,7 +164,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
     <StyledLetterPaper>
       <StyledLetterPaperTop>
         <StyledTo>To. {to}</StyledTo>
-        {!writeNewMessage && (
+        {!writeNewMessage && !editMessageId && (
           <IconButton size="small" onClick={handleMessageWriteButtonClick}>
             <PencilIcon />
           </IconButton>
