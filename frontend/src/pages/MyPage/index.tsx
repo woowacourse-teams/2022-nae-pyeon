@@ -37,8 +37,8 @@ interface ResponseSentMessages {
   messages: SentMessage[];
 }
 
-const receivedRollingpaperCount = 4;
-const sentMessageCount = 3;
+const receivedRollingpaperCount = 5;
+const sentMessageCount = 5;
 
 const MyPage = () => {
   const [tab, setTab] = useState<TabMode>(TAB.RECEIVED_PAPER);
@@ -206,7 +206,7 @@ const StyledList = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  height: 530px;
+  height: 600px;
 `;
 
 export default MyPage;

@@ -25,12 +25,14 @@ const RollingpaperListItem = ({
 const StyledRollingpaperListItem = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 
   width: 100%;
   border: 2px solid ${({ theme }) => theme.colors.SKY_BLUE_300};
   border-radius: 8px;
 
-  padding: 30px 20px;
+  height: 90px;
+  padding: 10px 16px;
   gap: 8px;
 
   cursor: pointer;

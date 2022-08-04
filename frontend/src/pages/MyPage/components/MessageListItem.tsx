@@ -37,11 +37,11 @@ const StyledMessage = styled.div<StyledMessageProp>`
 
   gap: 4px;
 
-  padding: 16px;
+  padding: 10px 16px;
   background-color: ${(props) => `${props.color}AB`};
 
   border-radius: 4px;
-  height: 125px;
+  height: 90px;
 
   cursor: pointer;
 
@@ -67,7 +67,7 @@ const StyledContent = styled.div`
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
 `;
 
 export default MessageListItem;
