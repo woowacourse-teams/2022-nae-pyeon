@@ -1,0 +1,16 @@
+== 롤링페이퍼
+
+=== 롤링페이퍼 생성(/api/v1/teams/{teamId}/rollingpapers)
+operation::rollingpaper-controller-test/create-rollingpaper[snippets='http-request,http-response']
+
+=== 롤링페이퍼 단건 조회(/api/v1/teams/{temaId}/rollingpapers/{rollingpaperId})
+operation::rollingpaper-controller-test/find-rollingpaper-by-id[snippets='http-request,http-response']
+
+=== 모임 내 롤링페이퍼 조회(/api/v1/teams/{teamId}/rollingpapers)
+operation::rollingpaper-controller-test/find-rollingpapers-by-team-id[snippets='http-request,http-response']
+
+=== 모임에서 받은 내 롤링페이퍼들 조회(/api/v1/teams/{teamId}/rollingpapers/me)
+operation::rollingpaper-controller-test/find-rollingpapers-by-member-id[snippets='http-request,http-response']
+
+=== 롤링페이퍼 수정(/api/v1/teams/{teamId}/rollingpapers/{rollingpaperId})
+operation::rollingpaper-controller-test/update-rollingpaper[snippets='http-request,http-response']

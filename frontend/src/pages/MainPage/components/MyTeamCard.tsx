@@ -36,13 +36,13 @@ const StyledMyTeamCard = styled.div<StyledMyTeamCardProps>`
   display: flex;
   flex-direction: column;
 
-  width: 160px;
-  height: 210px;
+  width: 140px;
+  height: 190px;
 
-  padding: 20px 14px;
-  border-radius: 8px;
+  padding: 18px 14px;
 
   background-color: ${(props) => `${props.color}AB`};
+  border-radius: 8px;
 
   transition-duration: 0.3s;
 
@@ -51,6 +51,13 @@ const StyledMyTeamCard = styled.div<StyledMyTeamCardProps>`
   &:hover {
     transform: scale(1.02);
     transition: transform 0.3s ease;
+  }
+
+  @media only screen and (min-width: 400px) {
+    width: 160px;
+    height: 210px;
+
+    padding: 20px 14px;
   }
 
   @media only screen and (min-width: 600px) {
