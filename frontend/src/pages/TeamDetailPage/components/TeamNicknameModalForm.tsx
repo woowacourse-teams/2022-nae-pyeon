@@ -92,7 +92,7 @@ const TeamNicknameModalForm = ({
   return (
     <Modal onClickCloseButton={onClickCloseButton}>
       <StyledJoinForm onSubmit={handleTeamJoinSubmit(mode)}>
-        <p>모임에서 사용할 닉네임을 입력해주세요. (2 ~ 20자)</p>
+        <p>모임에서 사용할 닉네임을 입력해주세요. (1 ~ 20자)</p>
         <UnderlineInput
           value={nickname}
           setValue={setNickname}
