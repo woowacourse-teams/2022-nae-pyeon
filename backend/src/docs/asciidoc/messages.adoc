@@ -1,0 +1,13 @@
+== 메시지
+
+=== 메시지 생성(/api/v1/rollingpapers/{rollingpaperId}/messages)
+operation::message-controller-test/create-message[snippets='http-request,http-response']
+
+=== 메시지 상세 조회(/api/v1/rollingpapers/{rollingpaperId}/messages/{messageId})
+operation::message-controller-test/find-message[snippets='http-request,http-response']
+
+=== 메시지 수정(/api/v1/rollingpapers/{rollingpaperId}/messages/{messageId})
+operation::message-controller-test/update-message-content[snippets='http-request,http-response']
+
+=== 메시지 삭제(/api/v1/rollingpapers/{rollingpaperId}/messages/{messageId})
+operation::message-controller-test/delete-message[snippets='http-request,http-response']

@@ -1,0 +1,11 @@
+== 유저
+
+=== 회원가입(/api/v1/members)
+operation::member-controller-test/create-member[snippets='http-request,http-response']
+
+=== 내 정보 조회(/api/v1/members/me)
+operation::member-controller-test/find-member[snippets='http-request,http-response']
+=== 내 정보 수정(/api/v1/members/me)
+operation::member-controller-test/update-member[snippets='http-request,http-response']
+=== 회원탈퇴(/api/v1/members/me)
+operation::member-controller-test/delete-member[snippets='http-request,http-response']
