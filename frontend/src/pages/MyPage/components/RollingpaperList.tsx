@@ -37,7 +37,7 @@ const RollingpaperList = () => {
   return (
     <>
       <StyledRollingpaperList>
-        {data.rollingpapers.map((rollingpaper) => (
+        {[...data.rollingpapers].reverse().map((rollingpaper) => (
           <RollingpaperListItem {...rollingpaper} />
         ))}
       </StyledRollingpaperList>

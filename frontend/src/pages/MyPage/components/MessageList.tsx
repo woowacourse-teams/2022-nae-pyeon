@@ -32,7 +32,7 @@ const MessageList = () => {
   return (
     <>
       <StyledMessageList>
-        {data.messages.map((message) => (
+        {[...data.messages].reverse().map((message) => (
           <MessageListItem {...message} />
         ))}
       </StyledMessageList>
