@@ -7,7 +7,7 @@ import { getMyReceivedRollingpapers } from "@/api/member";
 import RollingpaperListItem from "@/pages/MyPage/components/RollingpaperListItem";
 import Paging from "@/components/Paging";
 
-import EmptyStateImg from "@/assets/images/empty_state.svg";
+import EmptyStateImg from "@/assets/images/empty-state.svg";
 import { MYPAGE_ROLLINGPAPER_PAGING_COUNT } from "@/constants";
 
 import { ResponseReceivedRollingpapers } from "@/types";

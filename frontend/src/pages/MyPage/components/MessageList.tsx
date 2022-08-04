@@ -7,7 +7,7 @@ import { getMySentMessage } from "@/api/member";
 import MessageListItem from "@/pages/MyPage/components/MessageListItem";
 import Paging from "@/components/Paging";
 
-import EmptyStateImg from "@/assets/images/empty_state.svg";
+import EmptyStateImg from "@/assets/images/empty-state.svg";
 import { MYPAGE_MESSAGE_PAGING_COUNT } from "@/constants";
 
 import { ResponseSentMessages } from "@/types";

@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
-import EmptyStateImg from "@/assets/images/empty_state.svg";
+import EmptyStateImg from "@/assets/images/empty-state.svg";
 import LineButton from "@/components/LineButton";
 
 const EmptyState = () => {
