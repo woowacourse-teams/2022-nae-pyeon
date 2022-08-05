@@ -1,0 +1,13 @@
+== 메시지
+
+=== 메시지 생성
+operation::message-controller-test/create-message[snippets='http-request,http-response']
+
+=== 메시지 상세 조회
+operation::message-controller-test/find-message[snippets='http-request,http-response']
+
+=== 메시지 수정
+operation::message-controller-test/update-message[snippets='http-request,http-response']
+
+=== 메시지 삭제
+operation::message-controller-test/delete-message[snippets='http-request,http-response']

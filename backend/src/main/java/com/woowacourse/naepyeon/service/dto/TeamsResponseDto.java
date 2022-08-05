@@ -11,5 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TeamsResponseDto {
 
+    private Long totalCount;
+    private int currentPage;
     private List<TeamResponseDto> teams;
 }

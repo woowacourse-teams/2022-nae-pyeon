@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TokenRequestDto {
 
-    private String email;
-    private String password;
+    private String authorizationCode;
+    private String redirectUri;
 }

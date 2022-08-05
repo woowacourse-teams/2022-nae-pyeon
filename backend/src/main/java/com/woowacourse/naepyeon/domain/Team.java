@@ -6,14 +6,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Table(name = "team")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Team {
+public class Team extends BaseEntity {
 
     public static final int MAX_TEAMNAME_LENGTH = 20;
 
@@ -25,13 +27,13 @@ public class Team {
     @Column(name = "team_name", length = 20, nullable = false, unique = true)
     private String name;
 
-    @Column(length = 100, nullable = false)
+    @Column(name = "description", length = 100, nullable = false)
     private String description;
 
-    @Column(nullable = false)
+    @Column(name = "emoji", nullable = false)
     private String emoji;
 
-    @Column(length = 15, nullable = false)
+    @Column(name = "color", length = 15, nullable = false)
     private String color;
 
     public Team(final String name, final String description, final String emoji, final String color) {

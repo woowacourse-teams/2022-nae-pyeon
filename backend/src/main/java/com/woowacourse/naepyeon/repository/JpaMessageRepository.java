@@ -3,9 +3,12 @@ package com.woowacourse.naepyeon.repository;
 import com.woowacourse.naepyeon.domain.Message;
 import com.woowacourse.naepyeon.exception.NotFoundMessageException;
 import com.woowacourse.naepyeon.repository.jpa.MessageJpaDao;
+import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -31,10 +34,16 @@ public class JpaMessageRepository implements MessageRepository {
     }
 
     @Override
-    public void update(final Long id, final String newContent) {
+    public Page<WrittenMessageResponseDto> findAllByAuthorId(final Long authorId, final Pageable pageRequest) {
+        return messageJpaDao.findAllByAuthorId(authorId, pageRequest);
+    }
+
+    @Override
+    public void update(final Long id, final String newColor, final String newContent) {
         final Message message = findById(id)
                 .orElseThrow(() -> new NotFoundMessageException(id));
         message.changeContent(newContent);
+        message.changeColor(newColor);
     }
 
     @Override

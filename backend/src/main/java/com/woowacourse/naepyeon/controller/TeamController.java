@@ -5,9 +5,11 @@ import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
+import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
 import com.woowacourse.naepyeon.service.TeamService;
 import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
+import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.net.URI;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -39,14 +42,20 @@ public class TeamController {
 
     @GetMapping("/me")
     public ResponseEntity<TeamsResponseDto> getJoinedTeams(
-            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest) {
-        return ResponseEntity.ok(teamService.findByJoinedMemberId(loginMemberRequest.getId()));
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @RequestParam("page") final Integer page,
+            @RequestParam("count") final int count) {
+        return ResponseEntity.ok(teamService.findByJoinedMemberId(loginMemberRequest.getId(), page, count));
     }
 
     @GetMapping
-    public ResponseEntity<TeamsResponseDto> getAllTeams(
-            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest) {
-        return ResponseEntity.ok(teamService.findAll(loginMemberRequest.getId()));
+    public ResponseEntity<TeamsResponseDto> getAllTeamsByKeyword(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @RequestParam("keyword") final String keyword, @RequestParam("page") final Integer page,
+            @RequestParam("count") final int count) {
+        return ResponseEntity.ok(
+                teamService.findTeamsByContainingTeamName(keyword, loginMemberRequest.getId(), page, count)
+        );
     }
 
     @GetMapping("/{teamId}/members")
@@ -94,6 +103,23 @@ public class TeamController {
                                            @PathVariable final Long teamId,
                                            @RequestBody final JoinTeamMemberRequest joinTeamMemberRequest) {
         teamService.joinMember(teamId, loginMemberRequest.getId(), joinTeamMemberRequest.getNickname());
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{teamId}/me")
+    public ResponseEntity<TeamMemberResponseDto> getMyInfoInTeam(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @PathVariable final Long teamId) {
+        final TeamMemberResponseDto responseDto = teamService.findMyInfoInTeam(teamId, loginMemberRequest.getId());
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @PutMapping("/{teamId}/me")
+    public ResponseEntity<Void> updateMyInfo(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @PathVariable final Long teamId,
+            @RequestBody final UpdateTeamParticipantRequest updateTeamParticipantRequest) {
+        teamService.updateMyInfo(teamId, loginMemberRequest.getId(), updateTeamParticipantRequest.getNickname());
         return ResponseEntity.noContent().build();
     }
 }

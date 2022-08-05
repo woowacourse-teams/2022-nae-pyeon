@@ -1,3 +1,4 @@
+import { raw } from "@storybook/react";
 import { rest } from "msw";
 
 import myTeamsDummy from "../dummy/myTeams.json";
@@ -20,9 +21,13 @@ const teamHandlers = [
   // 내가 가입한 모임 조회
   rest.get("/api/v1/teams/me", (req, res, ctx) => {
     const accessToken = req.headers.headers.authorization;
+    const page = +req.url.searchParams.get("page");
+    const count = +req.url.searchParams.get("count");
 
     const result = {
-      teams: myTeams,
+      totalCount: myTeams.length,
+      currentPage: Number(page),
+      teams: myTeams.slice(page * count, page * count + count),
     };
 
     return res(ctx.json(result));
@@ -31,9 +36,18 @@ const teamHandlers = [
   // 전체 모임 조회
   rest.get("/api/v1/teams", (req, res, ctx) => {
     const accessToken = req.headers.headers.authorization;
+    const keyword = req.url.searchParams.get("keyword");
+    const page = +req.url.searchParams.get("page");
+    const count = +req.url.searchParams.get("count");
+
+    const keywordTeam = totalTeams.filter((team) =>
+      team.name.includes(keyword)
+    );
 
     const result = {
-      teams: totalTeams,
+      totalCount: keywordTeam.length,
+      currentPage: Number(page),
+      teams: keywordTeam.slice(page * count, page * count + count),
     };
 
     return res(ctx.json(result));
@@ -53,6 +67,11 @@ const teamHandlers = [
     const { teamId } = req.params;
     const { nickname } = req.body;
 
+    return res(ctx.status(204));
+  }),
+
+  // 모임 닉네임 수정
+  rest.put("/api/v1/teams/:teamId/me", (req, res, ctx) => {
     return res(ctx.status(204));
   }),
 

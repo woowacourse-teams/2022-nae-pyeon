@@ -1,14 +1,11 @@
 import axios from "axios";
-import { API_URL } from "@/constants";
-import { getCookie } from "@/util/cookie";
-
-const accessToken = getCookie("accessToken") || "";
+import { QueryClient } from "@tanstack/react-query";
 
 const appClient = axios.create({
-  baseURL: API_URL,
+  baseURL: process.env.API_URL,
   timeout: 3000,
 });
 
-appClient.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+const queryClient = new QueryClient();
 
-export default appClient;
+export { appClient, queryClient };

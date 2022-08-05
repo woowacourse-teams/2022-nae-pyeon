@@ -31,8 +31,9 @@ public class MessageController {
     public ResponseEntity<CreateResponse> createMessage(@AuthenticationPrincipal LoginMemberRequest loginMemberRequest,
                                                         @RequestBody @Valid final MessageRequest messageRequest,
                                                         @PathVariable final Long rollingpaperId) {
-        final Long messageId =
-                messageService.saveMessage(messageRequest.getContent(), loginMemberRequest.getId(), rollingpaperId);
+        final Long messageId = messageService.saveMessage(
+                messageRequest.getContent(), messageRequest.getColor(), rollingpaperId, loginMemberRequest.getId()
+        );
         return ResponseEntity.created(
                 URI.create("/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId)
         ).body(new CreateResponse(messageId));
@@ -48,12 +49,17 @@ public class MessageController {
     }
 
     @PutMapping("/{messageId}")
-    public ResponseEntity<Void> updateMessageContent(
+    public ResponseEntity<Void> updateMessage(
             @AuthenticationPrincipal LoginMemberRequest loginMemberRequest,
             @RequestBody @Valid final MessageUpdateContentRequest messageUpdateContentRequest,
             @PathVariable final Long rollingpaperId,
             @PathVariable final Long messageId) {
-        messageService.updateContent(messageId, messageUpdateContentRequest.getContent(), loginMemberRequest.getId());
+        messageService.updateMessage(
+                messageId,
+                messageUpdateContentRequest.getContent(),
+                messageUpdateContentRequest.getColor(),
+                loginMemberRequest.getId()
+        );
         return ResponseEntity.noContent().build();
     }
 

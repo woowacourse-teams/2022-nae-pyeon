@@ -1,11 +1,10 @@
 package com.woowacourse.naepyeon.service;
 
-import com.woowacourse.naepyeon.domain.Member;
-import com.woowacourse.naepyeon.exception.InvalidLoginException;
-import com.woowacourse.naepyeon.repository.MemberRepository;
+import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
+import com.woowacourse.naepyeon.support.oauth.kakao.KakaoPlatformUserProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,16 +14,34 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class AuthService {
 
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final KakaoPlatformUserProvider kakaoPlatformUserProvider;
 
-    public TokenResponseDto createToken(final TokenRequestDto tokenRequestDto) {
-        final Member member = memberRepository.findByEmail(tokenRequestDto.getEmail())
-                .orElseThrow(() -> new InvalidLoginException(tokenRequestDto.getEmail()));
-        if (!member.checkPassword(tokenRequestDto.getPassword())) {
-            throw new InvalidLoginException(tokenRequestDto.getEmail());
-        }
-        final String accessToken = jwtTokenProvider.createToken(String.valueOf(member.getId()));
-        return new TokenResponseDto(accessToken);
+    public TokenResponseDto createTokenWithKakaoOauth(final TokenRequestDto tokenRequestDto) {
+        final PlatformUserDto platformUser = kakaoPlatformUserProvider.getPlatformUser(
+                tokenRequestDto.getAuthorizationCode(),
+                tokenRequestDto.getRedirectUri()
+        );
+
+        final Long memberId = createOrFindMemberId(platformUser);
+        final String accessToken = jwtTokenProvider.createToken(String.valueOf(memberId));
+        return new TokenResponseDto(accessToken, memberId);
+    }
+
+    private Long createOrFindMemberId(final PlatformUserDto platformUser) {
+        return memberService.findMemberIdByPlatformAndPlatformId(
+                platformUser.getPlatform(),
+                platformUser.getPlatformId()
+        ).orElseGet(() -> saveMember(platformUser));
+    }
+
+    private Long saveMember(final PlatformUserDto platformUser) {
+        return memberService.save(
+                platformUser.getUsername(),
+                platformUser.getEmail(),
+                platformUser.getPlatform(),
+                platformUser.getPlatformId()
+        );
     }
 }

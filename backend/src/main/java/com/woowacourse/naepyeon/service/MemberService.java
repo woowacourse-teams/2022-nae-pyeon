@@ -1,10 +1,11 @@
 package com.woowacourse.naepyeon.service;
 
 import com.woowacourse.naepyeon.domain.Member;
-import com.woowacourse.naepyeon.exception.DuplicateMemberEmailException;
+import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,12 +17,8 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public Long save(final String username, final String email, final String password) {
-        memberRepository.findByEmail(email)
-                .ifPresent(param -> {
-                    throw new DuplicateMemberEmailException();
-                });
-        final Member member = new Member(username, email, password);
+    public Long save(final String username, final String email, final String platformType, final String platformId) {
+        final Member member = new Member(username, email, Platform.valueOf(platformType), platformId);
         return memberRepository.save(member);
     }
 
@@ -30,6 +27,7 @@ public class MemberService {
         final Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException(memberId));
         return new MemberResponseDto(
+                member.getId(),
                 member.getUsername(),
                 member.getEmail()
         );
@@ -45,5 +43,9 @@ public class MemberService {
         memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException(memberId));
         memberRepository.delete(memberId);
+    }
+
+    public Optional<Long> findMemberIdByPlatformAndPlatformId(final String platform, final String platformId) {
+        return memberRepository.findMemberIdByPlatformAndPlatformId(Platform.valueOf(platform), platformId);
     }
 }

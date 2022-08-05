@@ -6,14 +6,19 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.domain.Member;
+import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
+import com.woowacourse.naepyeon.exception.DuplicateNicknameException;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamException;
+import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
+import com.woowacourse.naepyeon.service.dto.AllTeamsResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
+import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.util.List;
@@ -29,8 +34,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class TeamServiceTest {
 
-    private final Member member = new Member("내편이", "naePyeon@test.com", "testtest123");
-    private final Member member2 = new Member("알렉스형", "alex@test.com", "testtest123");
+    private final Member member = new Member("내편이", "naePyeon@test.com", Platform.KAKAO, "1");
+    private final Member member2 = new Member("알렉스형", "alex@test.com", Platform.KAKAO, "2");
     private final Team team1 = new Team("wooteco1", "테스트 모임입니다.", "testEmoji", "#123456");
     private final Team team2 = new Team("wooteco2", "테스트 모임입니다.", "testEmoji", "#123456");
     private final Team team3 = new Team("wooteco3", "테스트 모임입니다.", "testEmoji", "#123456");
@@ -94,7 +99,7 @@ class TeamServiceTest {
         );
         final Long teamId = teamService.save(teamRequest, member.getId());
 
-        final List<Long> joinedTeamIds = teamService.findByJoinedMemberId(member.getId())
+        final List<Long> joinedTeamIds = teamService.findByJoinedMemberId(member.getId(), 0, 5)
                 .getTeams()
                 .stream()
                 .map(TeamResponseDto::getId)
@@ -184,9 +189,21 @@ class TeamServiceTest {
     }
 
     @Test
+    @DisplayName("이름에 특정 키워드가 포함된 모임들을 조회한다.")
+    void findTeamsByContainingTeamName() {
+        final List<TeamResponseDto> actual =
+                teamService.findTeamsByContainingTeamName("wooteco1", member.getId(), 0, 5)
+                        .getTeams();
+        final List<TeamResponseDto> expected = List.of(TeamResponseDto.of(team1, false));
+        assertThat(actual)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    @Test
     @DisplayName("모든 모임을 조회한다.")
     void findAll() {
-        final TeamsResponseDto teams = teamService.findAll(member.getId());
+        final AllTeamsResponseDto teams = teamService.findAll(member.getId());
         final List<String> teamNames = teams.getTeams()
                 .stream()
                 .map(TeamResponseDto::getName)
@@ -203,7 +220,7 @@ class TeamServiceTest {
         teamParticipationRepository.save(teamParticipation1);
         teamParticipationRepository.save(teamParticipation2);
 
-        final TeamsResponseDto teams = teamService.findByJoinedMemberId(member.getId());
+        final TeamsResponseDto teams = teamService.findByJoinedMemberId(member.getId(), 0, 5);
         final List<String> teamNames = teams.getTeams()
                 .stream()
                 .map(TeamResponseDto::getName)
@@ -250,6 +267,81 @@ class TeamServiceTest {
     @DisplayName("모임에 회원 가입 여부를 확인할 때, 해당 모임이 존재하지 않으면 예외를 발생시킨다.")
     void isJoinedMemberWithNotFoundTeam() {
         assertThatThrownBy(() -> teamService.isJoinedMember(member.getId(), team1.getId() + 1000L))
+                .isInstanceOf(NotFoundTeamException.class);
+    }
+
+    @Test
+    @DisplayName("모임에서의 마이페이지를 조회한다.")
+    void findMyInfoInTeam() {
+        final String expected = "닉네임1";
+        final TeamParticipation teamParticipation = new TeamParticipation(team1, member, expected);
+        teamParticipationRepository.save(teamParticipation);
+
+        final TeamMemberResponseDto actual = teamService.findMyInfoInTeam(team1.getId(), member.getId());
+
+        assertThat(actual.getNickname()).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("모임 내 마이페이지 조회 창에서 가입한 모임이 아닐 경우 예외를 발생시킨다.")
+    void findMyInfoInOtherTeam() {
+        final TeamParticipation teamParticipation = new TeamParticipation(team1, member, "해커");
+        teamParticipationRepository.save(teamParticipation);
+
+        assertThatThrownBy(() -> teamService.findMyInfoInTeam(team2.getId(), member.getId()))
+                .isInstanceOf(UncertificationTeamMemberException.class);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 모임에서 마이페이지를 조회할 경우 예외를 발생시킨다.")
+    void findMyInfoInNotExistTeam() {
+        assertThatThrownBy(() -> teamService.findMyInfoInTeam(team1.getId() + 10000L, member.getId()))
+                .isInstanceOf(NotFoundTeamException.class);
+    }
+
+    @Test
+    @DisplayName("모임에 가입된 닉네임을 수정한다. 다른 모임에 해당 닉네임이 존재해도 수정에 문제되지 않는다.")
+    void updateNickname() {
+        final String expected = "닉네임1";
+        final TeamParticipation teamParticipation1 = new TeamParticipation(team1, member, "닉네임1");
+        final TeamParticipation teamParticipation2 = new TeamParticipation(team2, member2, "닉네임2");
+        teamParticipationRepository.save(teamParticipation1);
+        teamParticipationRepository.save(teamParticipation2);
+
+        teamService.updateMyInfo(team2.getId(), member2.getId(), expected);
+
+        final String actual = teamParticipationRepository.findNicknameByMemberIdAndTeamId(member2.getId(),
+                team2.getId());
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("이미 존재하는 닉네임으로 닉네임을 수정할 경우 예외를 발생시킨다.")
+    void updateDuplicateNickname() {
+        final String expected = "닉네임1";
+        final TeamParticipation teamParticipation1 = new TeamParticipation(team1, member, "닉네임1");
+        final TeamParticipation teamParticipation2 = new TeamParticipation(team1, member2, "닉네임2");
+        teamParticipationRepository.save(teamParticipation1);
+        teamParticipationRepository.save(teamParticipation2);
+
+        assertThatThrownBy(() -> teamService.updateMyInfo(team1.getId(), member2.getId(), expected))
+                .isInstanceOf(DuplicateNicknameException.class);
+    }
+
+    @Test
+    @DisplayName("내가 가입되지 않은 모임에서 닉네임 변경을 하려 할 경우 예외를 발생시킨다.")
+    void updateNicknameNotMyTeam() {
+        final TeamParticipation teamParticipation = new TeamParticipation(team1, member, "해커");
+        teamParticipationRepository.save(teamParticipation);
+
+        assertThatThrownBy(() -> teamService.updateMyInfo(team2.getId(), member.getId(), "선량한시민"))
+                .isInstanceOf(UncertificationTeamMemberException.class);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 모임에서 닉네임 변경을 하려 할 경우 예외를 발생시킨다.")
+    void updateNicknameNotExistTeam() {
+        assertThatThrownBy(() -> teamService.updateMyInfo(team1.getId() + 10000L, member.getId(), "해커"))
                 .isInstanceOf(NotFoundTeamException.class);
     }
 }

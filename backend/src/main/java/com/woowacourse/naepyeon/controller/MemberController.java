@@ -2,20 +2,22 @@ package com.woowacourse.naepyeon.controller;
 
 import com.woowacourse.naepyeon.controller.auth.AuthenticationPrincipal;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
-import com.woowacourse.naepyeon.controller.dto.MemberRegisterRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
 import com.woowacourse.naepyeon.service.MemberService;
+import com.woowacourse.naepyeon.service.MessageService;
+import com.woowacourse.naepyeon.service.RollingpaperService;
 import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
-import java.net.URI;
+import com.woowacourse.naepyeon.service.dto.ReceivedRollingpapersResponseDto;
+import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,20 +26,36 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
-
-    @PostMapping
-    public ResponseEntity<Void> createMember(
-            @RequestBody @Valid final MemberRegisterRequest memberRegisterRequest) {
-        memberService.save(memberRegisterRequest.getUsername(), memberRegisterRequest.getEmail(),
-                memberRegisterRequest.getPassword());
-        return ResponseEntity.created(URI.create("/api/v1/members/me")).build();
-    }
+    private final RollingpaperService rollingpaperService;
+    private final MessageService messageService;
 
     @GetMapping("/me")
     public ResponseEntity<MemberResponseDto> findMember(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest) {
         final MemberResponseDto memberResponseDto = memberService.findById(loginMemberRequest.getId());
         return ResponseEntity.ok().body(memberResponseDto);
+    }
+
+    @GetMapping("/me/rollingpapers/received")
+    public ResponseEntity<ReceivedRollingpapersResponseDto> findReceivedRollingpapers(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @RequestParam("page") final Integer page,
+            @RequestParam("count") final int count
+    ) {
+        return ResponseEntity.ok(
+                rollingpaperService.findReceivedRollingpapers(loginMemberRequest.getId(), page, count)
+        );
+    }
+
+    @GetMapping("/me/messages/written")
+    public ResponseEntity<WrittenMessagesResponseDto> findWrittenMessages(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @RequestParam("page") final Integer page,
+            @RequestParam("count") final int count
+    ) {
+        return ResponseEntity.ok(
+                messageService.findWrittenMessages(loginMemberRequest.getId(), page, count)
+        );
     }
 
     @PutMapping("/me")

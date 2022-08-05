@@ -12,12 +12,17 @@ import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.RollingpaperRepository;
 import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
+import com.woowacourse.naepyeon.service.dto.ReceivedRollingpaperResponseDto;
+import com.woowacourse.naepyeon.service.dto.ReceivedRollingpapersResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperPreviewResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpapersResponseDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,7 +97,22 @@ public class RollingpaperService {
     }
 
     private String findRollingpaperAddresseeNickname(final Rollingpaper rollingpaper, final Long teamId) {
-        return teamParticipationRepository.findNicknameByMemberId(rollingpaper.getAddresseeId(), teamId);
+        return teamParticipationRepository.findNicknameByMemberIdAndTeamId(rollingpaper.getAddresseeId(), teamId);
+    }
+
+    @Transactional(readOnly = true)
+    public ReceivedRollingpapersResponseDto findReceivedRollingpapers(
+            final Long loginMemberId, final Integer page, final int count) {
+        final Pageable pageRequest = PageRequest.of(page, count);
+        final Page<Rollingpaper> rollingpapers = rollingpaperRepository.findByMemberId(loginMemberId, pageRequest);
+        final List<ReceivedRollingpaperResponseDto> receivedRollingpaperResponseDtos = rollingpapers.stream()
+                .map(it -> ReceivedRollingpaperResponseDto.of(it.getId(), it.getTitle(), it.getTeam()))
+                .collect(Collectors.toUnmodifiableList());
+        return new ReceivedRollingpapersResponseDto(
+                rollingpapers.getTotalElements(),
+                rollingpapers.getNumber(),
+                receivedRollingpaperResponseDtos
+        );
     }
 
     public void updateTitle(final Long rollingpaperId, final String newTitle, final Long teamId,

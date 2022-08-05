@@ -2,19 +2,18 @@ import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
-import Logo from "@/assets/images/logo.png";
-import { BiSearch, BiUser } from "react-icons/bi";
-import { deleteCookie } from "@/util/cookie";
 import { UserContext } from "@/context/UserContext";
 import IconButton from "./IconButton";
 
+import SearchIcon from "@/assets/icons/bx-search.svg";
+import UserIcon from "@/assets/icons/bx-user.svg";
+
 const Header = () => {
-  const { setIsLoggedIn } = useContext(UserContext);
+  const { logout } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleLogoutClick = () => {
-    deleteCookie("accessToken");
-    setIsLoggedIn(false);
+  const handleMyPageClick = () => {
+    navigate("/mypage");
   };
 
   const handleSearchClick = () => {
@@ -28,10 +27,10 @@ const Header = () => {
       </Link>
       <StyledNav>
         <IconButton onClick={handleSearchClick} size="medium">
-          <BiSearch />
+          <SearchIcon />
         </IconButton>
-        <IconButton onClick={handleLogoutClick} size="medium">
-          <BiUser />
+        <IconButton onClick={handleMyPageClick} size="medium">
+          <UserIcon />
         </IconButton>
       </StyledNav>
     </StyledHeader>
@@ -39,6 +38,10 @@ const Header = () => {
 };
 
 const StyledHeader = styled.header`
+  position: sticky;
+  top: 0px;
+  z-index: 9;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -47,7 +50,7 @@ const StyledHeader = styled.header`
 
   width: 100%;
   height: 70px;
-  background-color: white;
+  background-color: ${({ theme }) => `${theme.colors.WHITE}e8`};
 
   img {
     width: 30px;

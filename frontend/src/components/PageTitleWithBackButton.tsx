@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from "react";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 
-import { BiChevronLeft } from "react-icons/bi";
+import ChevronIcon from "@/assets/icons/bx-chevron-left.svg";
 
 import IconButton from "@components/IconButton";
 
@@ -16,7 +16,7 @@ const PageTitleWithBackButton = ({ children }: PropsWithChildren) => {
   return (
     <StyledPageTitleContainer>
       <IconButton onClick={handleBackButtonClick}>
-        <BiChevronLeft />
+        <ChevronIcon />
       </IconButton>
       <h1>{children}</h1>
     </StyledPageTitleContainer>

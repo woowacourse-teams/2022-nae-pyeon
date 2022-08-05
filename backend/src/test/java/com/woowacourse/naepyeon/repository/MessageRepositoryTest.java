@@ -1,25 +1,51 @@
 package com.woowacourse.naepyeon.repository;
 
+import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Message;
+import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.domain.TeamParticipation;
+import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
+import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
 class MessageRepositoryTest {
 
-    private static final String content = "안녕하세요";
+    private static final String content = "안녕하세요😁";
+
+    @Autowired
+    private TeamRepository teamRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private RollingpaperRepository rollingpaperRepository;
+
+    @Autowired
+    private MessageRepository messageRepository;
+
+    @Autowired
+    private TeamParticipationRepository teamParticipationRepository;
+
+    @Autowired
+    private EntityManager em;
 
     private final Team team = new Team(
             "nae-pyeon",
@@ -27,18 +53,9 @@ class MessageRepositoryTest {
             "testEmoji",
             "#123456"
     );
-    private final Member member = new Member("member", "email1@email.com", "password123");
-    private final Member author = new Member("author", "email2@email.com", "password123");
+    private final Member member = new Member("member", "email1@email.com", Platform.KAKAO, "1");
+    private final Member author = new Member("author", "email2@email.com", Platform.KAKAO, "2");
     private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", team, member);
-
-    @Autowired
-    private TeamRepository teamRepository;
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private RollingpaperRepository rollingpaperRepository;
-    @Autowired
-    private MessageRepository messageRepository;
 
     @BeforeEach
     void setUp() {
@@ -81,17 +98,43 @@ class MessageRepositoryTest {
         assertThat(findMessages.size()).isEqualTo(2);
     }
 
+    @Test
+    @DisplayName("본인이 작성한 메시지들을 찾는다.")
+    void findAllByMemberIdAndPageRequest() {
+        final TeamParticipation teamParticipation1 = new TeamParticipation(team, member, "멤버");
+        teamParticipationRepository.save(teamParticipation1);
+        final TeamParticipation teamParticipation2 = new TeamParticipation(team, author, "작성자");
+        teamParticipationRepository.save(teamParticipation2);
+
+        final Message message1 = createMessage();
+        messageRepository.save(message1);
+        final Message message2 = createMessage();
+        messageRepository.save(message2);
+        final Message message3 = createMessage();
+        messageRepository.save(message3);
+        final Message message4 = createMessage();
+        messageRepository.save(message4);
+        final Message message5 = createMessage();
+        messageRepository.save(message5);
+
+        final Page<WrittenMessageResponseDto> writtenMessageResponseDtos =
+                messageRepository.findAllByAuthorId(author.getId(), PageRequest.of(1, 2));
+        final List<WrittenMessageResponseDto> actual = writtenMessageResponseDtos.getContent();
+
+        assertThat(actual).hasSize(2);
+    }
 
     @Test
-    @DisplayName("본인이 작성한 메시지 내용을 변경한다.")
+    @DisplayName("본인이 작성한 메시지 내용과 색상을 변경한다.")
     void update() {
         final Member member = memberRepository.findByEmail(author.getEmail())
                 .orElseThrow();
-        final Message message = new Message(content, member, rollingpaper);
+        final Message message = new Message(content, "green", member, rollingpaper);
         final Long messageId = messageRepository.save(message);
         final String newContent = "알고리즘이 좋아요";
+        final String newColor = "red";
 
-        messageRepository.update(messageId, newContent);
+        messageRepository.update(messageId, newColor, newContent);
         final Message updateMessage = messageRepository.findById(messageId)
                 .orElseThrow();
 
@@ -103,7 +146,7 @@ class MessageRepositoryTest {
     void delete() {
         final Member member = memberRepository.findByEmail(author.getEmail())
                 .orElseThrow();
-        final Message message = new Message(content, member, rollingpaper);
+        final Message message = new Message(content, "green", member, rollingpaper);
         final Long messageId = messageRepository.save(message);
 
         messageRepository.delete(messageId);
@@ -112,7 +155,33 @@ class MessageRepositoryTest {
                 .isEmpty();
     }
 
+    @Test
+    @DisplayName("메시지를 생성할 때 생성일자가 올바르게 나온다.")
+    void createMemberWhen() {
+        final Message message = createMessage();
+        final Long messageId = messageRepository.save(message);
+
+        final Message actual = messageRepository.findById(messageId)
+                .orElseThrow();
+        assertThat(actual.getCreatedDate()).isAfter(LocalDateTime.MIN);
+    }
+
+    @Test
+    @DisplayName("메시지를 수정할 때 수정일자가 올바르게 나온다.")
+    void updateMemberWhen() throws InterruptedException {
+        final Message message = createMessage();
+        final Long messageId = messageRepository.save(message);
+
+        sleep(1);
+        message.changeContent("updateupdate");
+        em.flush();
+
+        final Message actual = messageRepository.findById(messageId)
+                .orElseThrow();
+        assertThat(actual.getLastModifiedDate()).isAfter(actual.getCreatedDate());
+    }
+
     private Message createMessage() {
-        return new Message(content, author, rollingpaper);
+        return new Message(content, "green", author, rollingpaper);
     }
 }

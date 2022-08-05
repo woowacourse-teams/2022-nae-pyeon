@@ -4,18 +4,25 @@ import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
+import com.woowacourse.naepyeon.exception.DuplicateNicknameException;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamException;
+import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
+import com.woowacourse.naepyeon.service.dto.AllTeamsResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
+import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,7 +78,24 @@ public class TeamService {
         teamRepository.delete(teamId);
     }
 
-    public TeamsResponseDto findAll(final Long memberId) {
+    public TeamsResponseDto findTeamsByContainingTeamName(final String keyword, final Long memberId,
+                                                          final Integer page, final int count) {
+        final Pageable pageRequest = PageRequest.of(page, count);
+        final Page<Team> teams = teamRepository.findTeamsByContainingTeamName(keyword, pageRequest);
+        final List<Team> joinedTeams = teamParticipationRepository.findTeamsByMemberId(memberId);
+
+        final List<TeamResponseDto> teamResponseDtos = teams.stream()
+                .map(team -> TeamResponseDto.of(team, joinedTeams.contains(team)))
+                .collect(Collectors.toList());
+
+        return new TeamsResponseDto(
+                teams.getTotalElements(),
+                teams.getNumber(),
+                teamResponseDtos
+        );
+    }
+
+    public AllTeamsResponseDto findAll(final Long memberId) {
         final List<Team> teams = teamRepository.findAll();
         final List<Team> joinedTeams = teamParticipationRepository.findTeamsByMemberId(memberId);
 
@@ -79,16 +103,21 @@ public class TeamService {
                 .map(team -> TeamResponseDto.of(team, joinedTeams.contains(team)))
                 .collect(Collectors.toList());
 
-        return new TeamsResponseDto(teamResponseDtos);
+        return new AllTeamsResponseDto(teamResponseDtos);
     }
 
-    public TeamsResponseDto findByJoinedMemberId(final Long memberId) {
-        final List<Team> teams = teamParticipationRepository.findTeamsByMemberId(memberId);
+    public TeamsResponseDto findByJoinedMemberId(final Long memberId, final Integer page, final int count) {
+        final Pageable pageRequest = PageRequest.of(page, count);
+        final Page<Team> teams = teamParticipationRepository.findTeamsByMemberIdAndPageRequest(memberId, pageRequest);
         final List<TeamResponseDto> teamResponseDtos = teams.stream()
                 .map(team -> TeamResponseDto.of(team, true))
                 .collect(Collectors.toList());
 
-        return new TeamsResponseDto(teamResponseDtos);
+        return new TeamsResponseDto(
+                teams.getTotalElements(),
+                teams.getNumber(),
+                teamResponseDtos
+        );
     }
 
     public JoinedMembersResponseDto findJoinedMembers(final Long teamId) {
@@ -103,6 +132,27 @@ public class TeamService {
                 ).collect(Collectors.toList());
 
         return new JoinedMembersResponseDto(joinedMembers);
+    }
+
+    public TeamMemberResponseDto findMyInfoInTeam(final Long teamId, final Long memberId) {
+        checkMemberNotIncludedTeam(teamId, memberId);
+        final String nickname = teamParticipationRepository.findNicknameByMemberIdAndTeamId(memberId, teamId);
+        return new TeamMemberResponseDto(nickname);
+    }
+
+    @Transactional
+    public void updateMyInfo(final Long teamId, final Long memberId, final String newNickname) {
+        checkMemberNotIncludedTeam(teamId, memberId);
+        if (teamParticipationRepository.findAllNicknamesByTeamId(teamId).contains(newNickname)) {
+            throw new DuplicateNicknameException(newNickname);
+        }
+        teamParticipationRepository.updateNickname(newNickname, memberId, teamId);
+    }
+
+    private void checkMemberNotIncludedTeam(final Long teamId, final Long memberId) {
+        if (!isJoinedMember(memberId, teamId)) {
+            throw new UncertificationTeamMemberException(teamId, memberId);
+        }
     }
 
     public boolean isJoinedMember(final Long memberId, final Long teamId) {

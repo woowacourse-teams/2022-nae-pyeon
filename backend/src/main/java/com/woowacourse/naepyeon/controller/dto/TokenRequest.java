@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TokenRequest {
 
-    private String email;
-    private String password;
+    private String authorizationCode;
+    private String redirectUri;
 
     public TokenRequestDto toServiceRequest() {
-        return new TokenRequestDto(email, password);
+        return new TokenRequestDto(authorizationCode, redirectUri);
     }
 }

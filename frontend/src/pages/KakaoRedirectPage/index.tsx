@@ -1,0 +1,54 @@
+import React, { useEffect, useContext } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+
+import { UserContext } from "@/context/UserContext";
+
+import { postKakaoOauth } from "@/api/kakaoOauth";
+
+import { CustomError } from "@/types";
+import { RequestKakaoOauthBody } from "@/types/oauth";
+
+const KakaoRedirectPage = () => {
+  const navigate = useNavigate();
+  const { login } = useContext(UserContext);
+  const params = new URLSearchParams(useLocation().search);
+  const authorizationCode = params.get("code");
+
+  const { mutate: kakaoOauthLogin } = useMutation(
+    ({ authorizationCode, redirectUri }: RequestKakaoOauthBody) =>
+      postKakaoOauth({
+        authorizationCode,
+        redirectUri,
+      }),
+    {
+      onSuccess: (data) => {
+        login(data.accessToken, data.id);
+        navigate(`/`, { replace: true });
+      },
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response) {
+          const customError = error.response.data as CustomError;
+          console.error(customError.message);
+        }
+      },
+    }
+  );
+
+  useEffect(() => {
+    const redirectUri = process.env.KAKAO_REDIRECT_URL;
+    if (!authorizationCode || !redirectUri) {
+      return;
+    }
+
+    kakaoOauthLogin({
+      authorizationCode,
+      redirectUri,
+    });
+  }, []);
+
+  return <div>KakaoRedirectPage</div>;
+};
+
+export default KakaoRedirectPage;

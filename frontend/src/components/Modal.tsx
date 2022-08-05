@@ -1,8 +1,9 @@
 import React, { PropsWithChildren } from "react";
+import ReactDom from "react-dom";
 import styled from "@emotion/styled";
 import IconButton from "./IconButton";
 
-import { BiX } from "react-icons/bi";
+import XIcon from "@/assets/icons/bx-x.svg";
 
 interface ModalProps {
   onClickCloseButton: React.MouseEventHandler;
@@ -12,7 +13,7 @@ const Modal = ({
   children,
   onClickCloseButton,
 }: PropsWithChildren<ModalProps>) => {
-  return (
+  return ReactDom.createPortal(
     <>
       <StyledDimmer onClick={onClickCloseButton} />
       <StyledModalContainer>
@@ -21,7 +22,8 @@ const Modal = ({
         </StyledCloseButtonWrapper>
         {children}
       </StyledModalContainer>
-    </>
+    </>,
+    document.getElementById("modal__root")!
   );
 };
 
@@ -30,7 +32,7 @@ const CloseButton = ({
 }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <IconButton type="button" size="small" onClick={onClick}>
-      <BiX />
+      <XIcon />
     </IconButton>
   );
 };
@@ -45,6 +47,8 @@ const StyledDimmer = styled.div`
 
   background-color: ${({ theme }) => `${theme.colors.GRAY_700}66`};
   backdrop-filter: blur(1px);
+
+  z-index: 99;
 `;
 
 const StyledModalContainer = styled.div`
@@ -60,12 +64,14 @@ const StyledModalContainer = styled.div`
   border-radius: 8px;
   background: #ffffff;
   box-shadow: 0px 4px 4px 2px rgba(147, 147, 147, 0.25);
+
+  z-index: 99;
 `;
 
 const StyledCloseButtonWrapper = styled.div`
   position: absolute;
   top: 0;
-  left: 0;
+  right: 0;
 
   padding: 10px;
 `;

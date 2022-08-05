@@ -6,6 +6,8 @@ import com.woowacourse.naepyeon.repository.jpa.RollingpaperJpaDao;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -28,6 +30,11 @@ public class JpaRollingpaperRepository implements RollingpaperRepository {
     @Override
     public List<Rollingpaper> findByMemberId(final Long memberId) {
         return rollingpaperJpaDao.findByMemberId(memberId);
+    }
+
+    @Override
+    public Page<Rollingpaper> findByMemberId(final Long memberId, final Pageable pageRequest) {
+        return rollingpaperJpaDao.findByMemberId(memberId, pageRequest);
     }
 
     @Override

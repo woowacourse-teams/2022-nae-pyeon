@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.repository;
 
+import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.exception.DuplicateTeamPaticipateException;
@@ -8,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -35,6 +38,12 @@ public class JpaTeamParticipationRepository implements TeamParticipationReposito
     }
 
     @Override
+    public Optional<Member> findMemberByMemberIdAndTeamId(final Long memberId, final Long teamId) {
+        return teamParticipationJpaDao.findMemberByMemberIdAndTeamId(memberId, teamId);
+
+    }
+
+    @Override
     public List<TeamParticipation> findByTeamId(final Long teamId) {
         return teamParticipationJpaDao.findByTeamId(teamId);
     }
@@ -45,8 +54,18 @@ public class JpaTeamParticipationRepository implements TeamParticipationReposito
     }
 
     @Override
-    public String findNicknameByMemberId(final Long addresseeId, final Long teamId) {
-        return teamParticipationJpaDao.findNicknameByMemberIdAndTeamId(addresseeId, teamId);
+    public Page<Team> findTeamsByMemberIdAndPageRequest(final Long memberId, final Pageable pageRequest) {
+        return teamParticipationJpaDao.findTeamsByMemberIdAndPageRequest(memberId, pageRequest);
+    }
+
+    @Override
+    public String findNicknameByMemberIdAndTeamId(final Long memberId, final Long teamId) {
+        return teamParticipationJpaDao.findNicknameByMemberIdAndTeamId(memberId, teamId);
+    }
+
+    @Override
+    public List<String> findAllNicknamesByTeamId(final Long teamId) {
+        return teamParticipationJpaDao.findNicknamesByTeamId(teamId);
     }
 
     @Override
@@ -54,5 +73,10 @@ public class JpaTeamParticipationRepository implements TeamParticipationReposito
         final List<Team> teams = teamParticipationJpaDao.findTeamsByMemberId(memberId);
         return teams.stream()
                 .anyMatch(team -> team.getId().equals(teamId));
+    }
+
+    @Override
+    public void updateNickname(final String newNickname, final Long memberId, final Long teamId) {
+        teamParticipationJpaDao.updateNickname(newNickname, memberId, teamId);
     }
 }
