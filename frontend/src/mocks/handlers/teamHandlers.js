@@ -47,7 +47,7 @@ const teamHandlers = [
     const result = {
       totalCount: keywordTeam.length,
       currentPage: Number(page),
-      teams: keywordTeam.slice((page - 1) * count, (page - 1) * count + count),
+      teams: keywordTeam.slice(page * count, page * count + count),
     };
 
     return res(ctx.json(result));

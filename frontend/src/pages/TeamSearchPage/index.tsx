@@ -10,6 +10,7 @@ import { getTeamSearchResult } from "@/api/team";
 import SearchInput from "@/components/SearchInput";
 import SearchResultItem from "@/pages/TeamSearchPage/components/SearchResultItem";
 
+import EmptyStateImg from "@/assets/images/empty-state.svg";
 import { TOTAL_TEAMS_PAGING_COUNT } from "@/constants";
 
 import { CustomError } from "@/types";
@@ -93,6 +94,23 @@ const TeamSearch = () => {
     return <div>에러</div>;
   }
 
+  if (totalTeamResponse.pages[0].teams.length === 0) {
+    return (
+      <>
+        <StyledSearch>
+          <SearchInput
+            onClick={handleSearchClick}
+            onChange={handleSearchChange}
+          />
+        </StyledSearch>
+        <StyledEmptySearch>
+          <EmptyStateImg />
+          <div>검색 결과가 없어요!</div>
+        </StyledEmptySearch>
+      </>
+    );
+  }
+
   return (
     <>
       <StyledSearch>
@@ -119,6 +137,28 @@ const TeamSearch = () => {
     </>
   );
 };
+
+const StyledEmptySearch = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 10px;
+  height: 75vh;
+
+  svg {
+    font-size: 200px;
+  }
+
+  div {
+    font-size: 24px;
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.GRAY_400};
+
+    margin-bottom: 20px;
+  }
+`;
 
 const StyledSearch = styled.div`
   padding: 20px;
