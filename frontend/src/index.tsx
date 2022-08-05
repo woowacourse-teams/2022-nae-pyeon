@@ -6,10 +6,8 @@ import { SnackbarProvider } from "@/context/SnackbarContext";
 import App from "./App";
 
 /* eslint-disable */
-
 if (process.env.NODE_ENV === "development") {
   const { worker } = require("./mocks/browser");
-
   worker.start();
 }
 
