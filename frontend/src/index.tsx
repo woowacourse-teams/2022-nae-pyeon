@@ -5,9 +5,11 @@ import { BrowserRouter } from "react-router-dom";
 import { SnackbarProvider } from "@/context/SnackbarContext";
 import App from "./App";
 
+/* eslint-disable */
+
 if (process.env.NODE_ENV === "development") {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { worker } = require("./mocks/browser");
+
   worker.start();
 }
 
