@@ -17,9 +17,10 @@ const COOKIE_KEY = {
 };
 
 const RequireLogin = () => {
-  const { isLoggedIn, login } = useContext(UserContext);
+  const isLogged = getCookie(COOKIE_KEY.ACCESS_TOKEN);
+  const { login } = useContext(UserContext);
 
-  if (!isLoggedIn) {
+  if (!isLogged) {
     return <Navigate to="/login" replace />;
   }
 

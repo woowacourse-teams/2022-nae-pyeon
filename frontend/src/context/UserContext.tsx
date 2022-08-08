@@ -17,9 +17,7 @@ interface UserContextType {
 const UserContext = createContext<UserContextType>(null!);
 
 const UserProvider = ({ children }: PropsWithChildren) => {
-  const accessTokenCookie = getCookie(COOKIE_KEY.ACCESS_TOKEN);
-
-  const [isLoggedIn, setIsLoggedIn] = useState(!!accessTokenCookie);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [memberId, setMemberId] = useState<number | null>(null);
 
   const login = (accessToken: string, memberId: number) => {
