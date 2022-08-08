@@ -1,6 +1,5 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 
 import HeaderLayoutPage from "@/pages/HeaderLayoutPage";
 import RollingpaperPage from "@/pages/RollingpaperPage";
@@ -22,30 +21,11 @@ import Snackbar from "@/components/Snackbar";
 import { UserProvider } from "@/context/UserContext";
 import { useSnackbar } from "@/context/SnackbarContext";
 
-import { appClient, setAppClientHeaderAuthorization } from "@/api";
-
-import { getCookie } from "@/util/cookie";
-import { UserInfo } from "@/types/index";
-import { getMyUserInfoWithAccessToken } from "./api/member";
-
-const COOKIE_KEY = {
-  ACCESS_TOKEN: "accessToken",
-};
+import useAutoLogin from "@/hooks/useAutoLogin";
 
 const App = () => {
   const { isOpened } = useSnackbar();
-  const accessTokenCookie = getCookie(COOKIE_KEY.ACCESS_TOKEN);
-
-  const { data, isLoading, isFetching, isError } = useQuery<UserInfo>(
-    ["memberId"],
-    () => getMyUserInfoWithAccessToken(accessTokenCookie),
-    {
-      enabled: !!accessTokenCookie,
-      onSuccess: () => {
-        setAppClientHeaderAuthorization(accessTokenCookie || "");
-      },
-    }
-  );
+  const { data, isLoading, isFetching, isError } = useAutoLogin();
 
   if (isLoading && isFetching) {
     return <PageContainer>초기 로딩 중</PageContainer>;
