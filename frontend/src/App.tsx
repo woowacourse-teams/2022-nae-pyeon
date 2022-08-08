@@ -22,10 +22,11 @@ import Snackbar from "@/components/Snackbar";
 import { UserProvider } from "@/context/UserContext";
 import { useSnackbar } from "@/context/SnackbarContext";
 
-import { appClient } from "@/api";
+import { appClient, setAppClientHeaderAuthorization } from "@/api";
 
 import { getCookie } from "@/util/cookie";
 import { UserInfo } from "@/types/index";
+import { getMyUserInfoWithAccessToken } from "./api/member";
 
 const COOKIE_KEY = {
   ACCESS_TOKEN: "accessToken",
@@ -37,20 +38,11 @@ const App = () => {
 
   const { data, isLoading, isFetching, isError } = useQuery<UserInfo>(
     ["memberId"],
-    () =>
-      appClient
-        .get("/members/me", {
-          headers: {
-            Authorization: `Bearer ${accessTokenCookie || ""}`,
-          },
-        })
-        .then((response) => response.data),
+    () => getMyUserInfoWithAccessToken(accessTokenCookie),
     {
       enabled: !!accessTokenCookie,
       onSuccess: () => {
-        appClient.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${accessTokenCookie}`;
+        setAppClientHeaderAuthorization(accessTokenCookie || "");
       },
     }
   );

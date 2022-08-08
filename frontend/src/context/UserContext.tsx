@@ -1,6 +1,6 @@
 import { useState, createContext, PropsWithChildren } from "react";
 
-import { appClient } from "@/api";
+import { setAppClientHeaderAuthorization } from "@/api";
 import { deleteCookie, setCookie } from "@/util/cookie";
 
 const COOKIE_KEY = {
@@ -36,16 +36,14 @@ const UserProvider = ({
   const [memberId, setMemberId] = useState<number | null>(initialData.memberId);
 
   const login = (accessToken: string, memberId: number) => {
-    appClient.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${accessToken}`;
+    setAppClientHeaderAuthorization(accessToken);
     setCookie(COOKIE_KEY.ACCESS_TOKEN, accessToken);
     setIsLoggedIn(true);
     setMemberId(memberId);
   };
 
   const logout = () => {
-    appClient.defaults.headers.common["Authorization"] = `Bearer `;
+    setAppClientHeaderAuthorization("");
     deleteCookie(COOKIE_KEY.ACCESS_TOKEN);
     setIsLoggedIn(false);
     setMemberId(null);
