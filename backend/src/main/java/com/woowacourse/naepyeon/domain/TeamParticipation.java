@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(
-        name = "team_member",
+        name = "team_participation",
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "participate_duplicate",
@@ -33,7 +33,7 @@ public class TeamParticipation extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "team_member_id")
+    @Column(name = "team_participation_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

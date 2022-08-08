@@ -20,7 +20,7 @@ spring:
     baseline-on-migrate: true
 
 logging.level:
-  org.hibernate.SQL: debug
+  org.hibernate.SQL: info
 
 security:
   jwt:
