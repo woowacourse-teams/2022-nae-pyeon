@@ -39,74 +39,29 @@ const App = () => {
         <PageContainer>
           <UserProvider>
             <Routes>
-              <Route path="/" element={<HeaderLayoutPage />}>
+              <Route element={<RequireLogin />}>
+                <Route path="/" element={<HeaderLayoutPage />}>
+                  <Route path="/" element={<MainPage />} />
+                  <Route path="team/:teamId" element={<TeamDetailPage />} />
+                  <Route path="search" element={<TeamSearch />} />
+                  <Route path="mypage" element={<MyPage />} />
+                  <Route path="*" element={<ErrorPage />} />
+                </Route>
+
+                <Route path="team/new" element={<TeamCreationPage />} />
                 <Route
-                  path="/"
-                  element={
-                    <RequireLogin>
-                      <MainPage />
-                    </RequireLogin>
-                  }
+                  path="team/:teamId/rollingpaper/new"
+                  element={<RollingpaperCreationPage />}
                 />
                 <Route
-                  path="team/:teamId"
-                  element={
-                    <RequireLogin>
-                      <TeamDetailPage />
-                    </RequireLogin>
-                  }
+                  path="team/:teamId/rollingpaper/:rollingpaperId"
+                  element={<RollingpaperPage />}
                 />
-                <Route
-                  path="search"
-                  element={
-                    <RequireLogin>
-                      <TeamSearch />
-                    </RequireLogin>
-                  }
-                />
-                <Route
-                  path="mypage"
-                  element={
-                    <RequireLogin>
-                      <MyPage />
-                    </RequireLogin>
-                  }
-                />
-                <Route path="*" element={<ErrorPage />} />
               </Route>
-              <Route
-                path="login"
-                element={
-                  <RequireLogout>
-                    <LoginPage />
-                  </RequireLogout>
-                }
-              />
-              <Route
-                path="team/new"
-                element={
-                  <RequireLogin>
-                    <TeamCreationPage />
-                  </RequireLogin>
-                }
-              />
-              <Route
-                path="team/:teamId/rollingpaper/new"
-                element={
-                  <RequireLogin>
-                    <RollingpaperCreationPage />
-                  </RequireLogin>
-                }
-              />
-              <Route
-                path="team/:teamId/rollingpaper/:rollingpaperId"
-                element={
-                  <RequireLogin>
-                    <RollingpaperPage />
-                  </RequireLogin>
-                }
-              />
-              <Route path="oauth/kakao" element={<KakaoRedirectPage />} />
+              <Route element={<RequireLogout />}>
+                <Route path="login" element={<LoginPage />} />
+                <Route path="oauth/kakao" element={<KakaoRedirectPage />} />
+              </Route>
             </Routes>
             {isOpened && <Snackbar />}
           </UserProvider>
