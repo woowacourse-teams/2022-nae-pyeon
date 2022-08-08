@@ -1,5 +1,4 @@
 import { useState, createContext, PropsWithChildren } from "react";
-import { useQuery } from "@tanstack/react-query";
 
 import { appClient } from "@/api";
 import { deleteCookie, getCookie, setCookie } from "@/util/cookie";
@@ -15,12 +14,6 @@ interface UserContextType {
   memberId: number | null;
 }
 
-interface UserInfo {
-  id: number;
-  username: string;
-  email: string;
-}
-
 const UserContext = createContext<UserContextType>(null!);
 
 const UserProvider = ({ children }: PropsWithChildren) => {
@@ -28,29 +21,6 @@ const UserProvider = ({ children }: PropsWithChildren) => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(!!accessTokenCookie);
   const [memberId, setMemberId] = useState<number | null>(null);
-
-  useQuery<UserInfo>(
-    ["memberId"],
-    () =>
-      appClient
-        .get("/members/me", {
-          headers: {
-            Authorization: `Bearer ${accessTokenCookie || ""}`,
-          },
-        })
-        .then((response) => response.data),
-    {
-      enabled: !!accessTokenCookie,
-      onSuccess: (data) => {
-        setMemberId(data.id);
-        setIsLoggedIn(true);
-
-        appClient.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${accessTokenCookie}`;
-      },
-    }
-  );
 
   const login = (accessToken: string, memberId: number) => {
     appClient.defaults.headers.common[
