@@ -1,8 +1,7 @@
 import { useState, createContext, PropsWithChildren } from "react";
-import { useQuery } from "@tanstack/react-query";
 
 import { appClient } from "@/api";
-import { deleteCookie, getCookie, setCookie } from "@/util/cookie";
+import { deleteCookie, setCookie } from "@/util/cookie";
 
 const COOKIE_KEY = {
   ACCESS_TOKEN: "accessToken",
@@ -10,55 +9,31 @@ const COOKIE_KEY = {
 
 interface UserContextType {
   isLoggedIn: boolean;
+  memberId: number | null;
   login: (accessToken: string, memberId: number) => void;
   logout: () => void;
-  memberId: number | null;
 }
 
-interface UserInfo {
-  id: number;
-  username: string;
-  email: string;
+type UserContextState = {
+  isLoggedIn: boolean;
+  memberId: number | null;
+};
+
+interface UserProvideProps {
+  initialData: UserContextState | undefined;
 }
 
 const UserContext = createContext<UserContextType>(null!);
 
-const UserProvider = ({ children }: PropsWithChildren) => {
-  const accessTokenCookie = getCookie(COOKIE_KEY.ACCESS_TOKEN);
-
-  const [isLoggedIn, setIsLoggedIn] = useState(!!accessTokenCookie);
-  const [memberId, setMemberId] = useState<number | null>(null);
-
-  useQuery<UserInfo>(
-    ["memberId"],
-    () =>
-      appClient
-        .get("/members/me", {
-          headers: {
-            Authorization: `Bearer ${accessTokenCookie || ""}`,
-          },
-        })
-        .then((response) => response.data),
-    {
-      enabled: !!accessTokenCookie,
-      onSuccess: (data) => {
-        setMemberId(data.id);
-        setIsLoggedIn(true);
-
-        appClient.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${accessTokenCookie}`;
-      },
-    }
-  );
-
-  const autoLogin = (accessToken: string, memberId: number) => {
-    appClient.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${accessToken}`;
-    setIsLoggedIn(true);
-    setMemberId(memberId);
-  };
+const UserProvider = ({
+  children,
+  initialData = {
+    isLoggedIn: false,
+    memberId: null,
+  },
+}: PropsWithChildren<UserProvideProps>) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(initialData.isLoggedIn);
+  const [memberId, setMemberId] = useState<number | null>(initialData.memberId);
 
   const login = (accessToken: string, memberId: number) => {
     appClient.defaults.headers.common[
@@ -76,7 +51,7 @@ const UserProvider = ({ children }: PropsWithChildren) => {
     setMemberId(null);
   };
 
-  const value = { isLoggedIn, autoLogin, login, logout, memberId };
+  const value = { isLoggedIn, login, logout, memberId };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
