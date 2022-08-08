@@ -52,6 +52,14 @@ const UserProvider = ({ children }: PropsWithChildren) => {
     }
   );
 
+  const autoLogin = (accessToken: string, memberId: number) => {
+    appClient.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${accessToken}`;
+    setIsLoggedIn(true);
+    setMemberId(memberId);
+  };
+
   const login = (accessToken: string, memberId: number) => {
     appClient.defaults.headers.common[
       "Authorization"
@@ -68,7 +76,7 @@ const UserProvider = ({ children }: PropsWithChildren) => {
     setMemberId(null);
   };
 
-  const value = { isLoggedIn, login, logout, memberId };
+  const value = { isLoggedIn, autoLogin, login, logout, memberId };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
