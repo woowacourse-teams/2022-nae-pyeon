@@ -8,4 +8,8 @@ const appClient = axios.create({
 
 const queryClient = new QueryClient();
 
-export { appClient, queryClient };
+const setAppClientHeaderAuthorization = (accessToken: string) => {
+  appClient.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+};
+
+export { appClient, queryClient, setAppClientHeaderAuthorization };
