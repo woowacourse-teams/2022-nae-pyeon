@@ -15,6 +15,9 @@ import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import { COLORS, REGEX } from "@/constants";
 import { CustomError } from "@/types";
 
+import LabeledToggle from "@/pages/TeamCreationPage/components/LabeledToggle";
+import useToggle from "@/pages/TeamCreationPage/hooks/useToggle";
+
 const emojis = [
   { id: 1, value: "🐶" },
   { id: 2, value: "❤️" },
@@ -37,6 +40,7 @@ const TeamCreationPage = () => {
   const [color, setColor] = useState("");
 
   const navigate = useNavigate();
+  const { isChecked: isPrivateTeam, handleToggleClick } = useToggle();
 
   const { mutate: createTeam } = useMutation(
     () => {
@@ -47,6 +51,7 @@ const TeamCreationPage = () => {
           emoji,
           color,
           nickname,
+          isPrivateTeam,
         })
         .then((response) => response.data);
     },
@@ -121,6 +126,11 @@ const TeamCreationPage = () => {
           radios={colors}
           onClickRadio={setColor}
         />
+        <LabeledToggle
+          labelText="비공개로 만들기"
+          isChecked={isPrivateTeam}
+          onClickToggle={handleToggleClick}
+        />
         <Button
           type="submit"
           onClick={handleTeamCreationSubmit}
@@ -144,6 +154,8 @@ const TeamCreationPage = () => {
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
+
+  padding-bottom: 20px;
 
   gap: 20px;
 
