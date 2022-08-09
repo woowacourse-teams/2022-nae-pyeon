@@ -98,15 +98,16 @@ const StyledMessage = styled.div`
   justify-content: space-between;
   white-space: pre-line;
 
-  width: 130px;
-  min-height: 130px;
+  width: 100%;
+  aspect-ratio: 1;
+  min-width: 180px;
   padding: 20px 15px 10px;
 
   background-color: ${(props) => props.color};
 
   @media only screen and (min-width: 600px) {
-    width: 180px;
-    min-height: 180px;
+    /* width: 180px; */
+    min-width: 300px;
   }
 `;
 

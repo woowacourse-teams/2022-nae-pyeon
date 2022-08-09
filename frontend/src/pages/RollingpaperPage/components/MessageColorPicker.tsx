@@ -38,10 +38,6 @@ const MessageColorPicker = ({ onClickRadio, color }: ColorPickerProps) => {
 };
 
 const StyledColorPickerContainer = styled.div`
-  position: absolute;
-  left: 130px;
-  margin-left: 4px;
-
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -50,11 +46,6 @@ const StyledColorPickerContainer = styled.div`
 
   border-radius: 4px;
   background-color: ${({ theme }) => theme.colors.GRAY_700};
-
-  @media only screen and (min-width: 600px) {
-    left: 180px;
-    margin-left: 8px;
-  }
 `;
 
 const StyledRadio = styled.div<StyledRadioProps>`

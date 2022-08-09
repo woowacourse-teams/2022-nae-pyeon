@@ -20,7 +20,7 @@ type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
 const MessageSubmitButton = ({ onClick }: ButtonAttributes) => {
   return (
     <CircleButton type="button" onClick={onClick}>
-      <CheckIcon />
+      작성 완료
     </CircleButton>
   );
 };
@@ -28,7 +28,7 @@ const MessageSubmitButton = ({ onClick }: ButtonAttributes) => {
 const MessageCancelButton = ({ onClick }: ButtonAttributes) => {
   return (
     <CircleButton type="button" onClick={onClick}>
-      <XIcon />
+      작성 취소
     </CircleButton>
   );
 };
@@ -60,7 +60,10 @@ export const MessageForm = ({
           onChange={handleTextAreaChange}
           backgroundColor={color}
         />
-        <MessageColorPicker onClickRadio={onClickColor} color={color} />
+        <StyledMessageColorPickerWrapper>
+          <MessageColorPicker onClickRadio={onClickColor} color={color} />
+        </StyledMessageColorPickerWrapper>
+
         <IconButtonContainer>
           <MessageSubmitButton onClick={onSubmit} />
           <MessageCancelButton onClick={onCancel} />
@@ -74,6 +77,12 @@ const StyledMessageForm = styled.form`
   position: relative;
   display: flex;
   flex-direction: column;
+`;
+
+const StyledMessageColorPickerWrapper = styled.div`
+  position: absolute;
+  right: 0;
+  transform: translateX(105%);
 `;
 
 const Background = styled.div`
@@ -101,24 +110,24 @@ const IconButtonContainer = styled.div`
 `;
 
 const CircleButton = styled.button`
-  width: 32px;
+  width: 120px;
   height: 32px;
 
   font-size: 18px;
 
   border: none;
-  border-radius: 50%;
+  border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.GRAY_700};
-  fill: ${({ theme }) => theme.colors.GRAY_200};
+  color: ${({ theme }) => theme.colors.GRAY_200};
 
   &:hover {
     border: 2px solid ${({ theme }) => theme.colors.GRAY_700};
     background-color: ${({ theme }) => theme.colors.GRAY_300};
-    fill: ${({ theme }) => theme.colors.GRAY_800};
+    color: ${({ theme }) => theme.colors.GRAY_800};
   }
 
   @media only screen and (min-width: 600px) {
-    width: 36px;
+    width: 120px;
     height: 36px;
 
     font-size: 20px;

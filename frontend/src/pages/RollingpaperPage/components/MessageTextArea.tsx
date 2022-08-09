@@ -58,8 +58,9 @@ const StyledMessageContainer = styled.div<StyledMessageContainerProps>`
   flex-direction: column;
   justify-content: space-between;
 
-  width: 130px;
-  min-height: 130px;
+  width: 100%;
+  aspect-ratio: 1;
+  min-width: 180px;
   padding: 20px 15px 10px;
 
   font-size: 14px;
@@ -69,8 +70,7 @@ const StyledMessageContainer = styled.div<StyledMessageContainerProps>`
   background-color: ${({ backgroundColor }) => backgroundColor};
 
   @media only screen and (min-width: 600px) {
-    width: 180px;
-    min-height: 180px;
+    min-width: 300px;
 
     font-size: 14px;
     line-height: 18px;
