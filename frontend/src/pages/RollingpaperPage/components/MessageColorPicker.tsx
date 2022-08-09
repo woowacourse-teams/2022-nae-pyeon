@@ -39,8 +39,8 @@ const MessageColorPicker = ({ onClickRadio, color }: ColorPickerProps) => {
 
 const StyledColorPickerContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: row;
+  justify-content: space-evenly;
 
   padding: 10px 4px;
 

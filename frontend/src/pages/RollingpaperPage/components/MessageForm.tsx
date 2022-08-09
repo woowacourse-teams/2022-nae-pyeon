@@ -81,8 +81,11 @@ const StyledMessageForm = styled.form`
 
 const StyledMessageColorPickerWrapper = styled.div`
   position: absolute;
-  right: 0;
-  transform: translateX(105%);
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -105%);
+
+  width: 80%;
 `;
 
 const Background = styled.div`
@@ -97,10 +100,17 @@ const Background = styled.div`
 `;
 
 const IconButtonContainer = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 110%);
+
+  width: 90%;
+
   display: flex;
   flex-direction: row;
   align-self: center;
-  gap: 20px;
+  justify-content: space-evenly;
 
   margin-top: 4px;
 
