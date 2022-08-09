@@ -112,15 +112,15 @@ class MemberAcceptanceTest extends AcceptanceTest {
         final String messageContent3 = "테스트";
         final String messageColor1 = "green";
         final String messageColor2 = "red";
-        final Long messageId1 = 메시지_작성(kei, rollingpaperId1, new MessageRequest(messageContent1, messageColor1))
-                .as(CreateResponse.class)
-                .getId();
-        final Long messageId2 = 메시지_작성(kei, rollingpaperId1, new MessageRequest(messageContent2, messageColor2))
-                .as(CreateResponse.class)
-                .getId();
-        메시지_작성(kei, rollingpaperId2, new MessageRequest(messageContent3, "yellow"))
-                .as(CreateResponse.class)
-                .getId();
+        final Long messageId1 =
+                메시지_작성(kei, rollingpaperId1, new MessageRequest(messageContent1, messageColor1, false, false))
+                        .as(CreateResponse.class)
+                        .getId();
+        final Long messageId2 =
+                메시지_작성(kei, rollingpaperId1, new MessageRequest(messageContent2, messageColor2, false, false))
+                        .as(CreateResponse.class)
+                        .getId();
+        메시지_작성(kei, rollingpaperId2, new MessageRequest(messageContent3, "yellow", false, false));
 
         //내가 작성한 메시지를 2개만 조회
         final WrittenMessagesResponseDto writtenMessagesResponseDto = 나의_메시지_조회(kei, 0, 2)

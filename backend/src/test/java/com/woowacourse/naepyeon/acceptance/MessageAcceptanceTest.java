@@ -48,7 +48,7 @@ class MessageAcceptanceTest extends AcceptanceTest {
         final ExtractableResponse<Response> response = 메시지_작성(
                 zero,
                 rollingpaperId,
-                new MessageRequest("환영해 알렉스!!!🤗", "green")
+                new MessageRequest("환영해 알렉스!!!🤗", "green", false, false)
         );
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
@@ -67,9 +67,9 @@ class MessageAcceptanceTest extends AcceptanceTest {
                 .as(CreateResponse.class)
                 .getId();
 
-        메시지_작성(kei, rollingpaperId, new MessageRequest("환영해 알렉스!!!", "green"));
-        메시지_작성(kei, rollingpaperId, new MessageRequest("알렉스 점심 뭐 먹어?", "green"));
-        메시지_작성(kei, rollingpaperId, new MessageRequest("생일축하해!", "green"));
+        메시지_작성(kei, rollingpaperId, new MessageRequest("환영해 알렉스!!!", "green", false, false));
+        메시지_작성(kei, rollingpaperId, new MessageRequest("알렉스 점심 뭐 먹어?", "green", false, false));
+        메시지_작성(kei, rollingpaperId, new MessageRequest("생일축하해!", "green", false, false));
 
         final RollingpaperResponseDto response = 롤링페이퍼_특정_조회(alex, teamId, rollingpaperId)
                 .as(RollingpaperResponseDto.class);
@@ -90,17 +90,18 @@ class MessageAcceptanceTest extends AcceptanceTest {
                 .as(CreateResponse.class)
                 .getId();
 
-        final Long messageId = 메시지_작성(seungpang, rollingpaperId, new MessageRequest("환영해 알렉스!!!", "green"))
-                .as(CreateResponse.class)
-                .getId();
+        final Long messageId =
+                메시지_작성(seungpang, rollingpaperId, new MessageRequest("환영해 알렉스!!!", "green", false, false))
+                        .as(CreateResponse.class)
+                        .getId();
 
         final ExtractableResponse<Response> response = 메시지_수정(seungpang, rollingpaperId, messageId,
                 new MessageUpdateContentRequest("오늘 뭐해??", "red"));
 
         final MessageResponseDto actual = 메시지_조회(seungpang, rollingpaperId, messageId)
                 .as(MessageResponseDto.class);
-        final MessageResponseDto expected =
-                new MessageResponseDto(actual.getId(), "오늘 뭐해??", "red", actual.getFrom(), actual.getAuthorId());
+        final MessageResponseDto expected = new MessageResponseDto(actual.getId(), "오늘 뭐해??", actual.getFrom(),
+                actual.getAuthorId(), "red", false, false);
 
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value()),
@@ -123,9 +124,10 @@ class MessageAcceptanceTest extends AcceptanceTest {
         final Long rollingpaperId = 회원_롤링페이퍼_생성(zero, teamId, rollingpaperCreateRequest).as(CreateResponse.class)
                 .getId();
 
-        final Long messageId = 메시지_작성(zero, rollingpaperId, new MessageRequest("환영해 알렉스!!!", "green"))
-                .as(CreateResponse.class)
-                .getId();
+        final Long messageId =
+                메시지_작성(zero, rollingpaperId, new MessageRequest("환영해 알렉스!!!", "green", false, false))
+                        .as(CreateResponse.class)
+                        .getId();
 
         final ExtractableResponse<Response> response =
                 메시지_수정(zero, rollingpaperId, messageId, new MessageUpdateContentRequest("a".repeat(501), "green"));
@@ -146,9 +148,10 @@ class MessageAcceptanceTest extends AcceptanceTest {
                 .as(CreateResponse.class)
                 .getId();
 
-        final Long messageId = 메시지_작성(alex, rollingpaperId, new MessageRequest("테스트 메시지2", "green"))
-                .as(CreateResponse.class)
-                .getId();
+        final Long messageId =
+                메시지_작성(alex, rollingpaperId, new MessageRequest("테스트 메시지2", "green", false, false))
+                        .as(CreateResponse.class)
+                        .getId();
 
         final ExtractableResponse<Response> response = 메시지_수정(seungpang, rollingpaperId, messageId,
                 new MessageUpdateContentRequest("수정할 때 예외 발생", "green"));
@@ -163,7 +166,7 @@ class MessageAcceptanceTest extends AcceptanceTest {
 
         final Long invalidMessageId = 9999L;
         final ExtractableResponse<Response> response =
-                메시지_작성(zero, invalidMessageId, new MessageRequest("환영해 알렉스!!!", "green"));
+                메시지_작성(zero, invalidMessageId, new MessageRequest("환영해 알렉스!!!", "green", false, false));
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
     }
@@ -181,7 +184,7 @@ class MessageAcceptanceTest extends AcceptanceTest {
                 .as(CreateResponse.class)
                 .getId();
 
-        final Long messageId = 메시지_작성(kei, rollingpaperId, new MessageRequest("곧 삭제될 메시지", "green"))
+        final Long messageId = 메시지_작성(kei, rollingpaperId, new MessageRequest("곧 삭제될 메시지", "green", false, false))
                 .as(CreateResponse.class)
                 .getId();
 
@@ -203,7 +206,7 @@ class MessageAcceptanceTest extends AcceptanceTest {
                 .as(CreateResponse.class)
                 .getId();
 
-        메시지_작성(seungpang, rollingpaperId, new MessageRequest("테스트 메시지", "green"));
+        메시지_작성(seungpang, rollingpaperId, new MessageRequest("테스트 메시지", "green", false, false));
 
         final Long invalidMessageId = 9999L;
         final ExtractableResponse<Response> response = 메시지_삭제(seungpang, rollingpaperId, invalidMessageId);
@@ -224,8 +227,8 @@ class MessageAcceptanceTest extends AcceptanceTest {
                 .as(CreateResponse.class)
                 .getId();
 
-        메시지_작성(kei, rollingpaperId, new MessageRequest("테스트 메시지1", "green"));
-        final Long messageId = 메시지_작성(alex, rollingpaperId, new MessageRequest("테스트 메시지2", "green"))
+        메시지_작성(kei, rollingpaperId, new MessageRequest("테스트 메시지1", "green", false, false));
+        final Long messageId = 메시지_작성(alex, rollingpaperId, new MessageRequest("테스트 메시지2", "green", false, false))
                 .as(CreateResponse.class)
                 .getId();
 
@@ -251,7 +254,7 @@ class MessageAcceptanceTest extends AcceptanceTest {
 
         final String content = "상세조회용 메시지 입니다.";
         final String color = "green";
-        final Long messageId = 메시지_작성(alex, rollingpaperId, new MessageRequest(content, color))
+        final Long messageId = 메시지_작성(alex, rollingpaperId, new MessageRequest(content, color, false, false))
                 .as(CreateResponse.class)
                 .getId();
 

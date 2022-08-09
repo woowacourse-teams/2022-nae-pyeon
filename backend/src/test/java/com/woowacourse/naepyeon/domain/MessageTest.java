@@ -21,7 +21,7 @@ class MessageTest {
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
         final Member author = new Member("author", "a@hello.com", Platform.KAKAO, "2");
         final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", team, member);
-        final Message message = new Message("헬로우", "green", author, rollingpaper);
+        final Message message = new Message("헬로우", "green", author, rollingpaper, false, false);
         final String expected = "낫 헬로우";
 
         message.changeContent(expected);
@@ -41,7 +41,7 @@ class MessageTest {
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
         final Member author = new Member("author", "a@hello.com", Platform.KAKAO, "2");
         final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", team, member);
-        assertThatThrownBy(() -> new Message("a".repeat(501), "green", author, rollingpaper))
+        assertThatThrownBy(() -> new Message("a".repeat(501), "green", author, rollingpaper, false, false))
                 .isInstanceOf(ExceedMessageContentLengthException.class);
     }
 
@@ -57,7 +57,7 @@ class MessageTest {
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
         final Member author = new Member("author", "a@hello.com", Platform.KAKAO, "2");
         final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", team, member);
-        final Message message = new Message("헬로우", "green", author, rollingpaper);
+        final Message message = new Message("헬로우", "green", author, rollingpaper, false, false);
         final String expected = "red";
 
         message.changeColor(expected);

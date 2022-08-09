@@ -12,6 +12,7 @@ import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.MessageRepository;
 import com.woowacourse.naepyeon.repository.RollingpaperRepository;
 import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
+import com.woowacourse.naepyeon.service.dto.MessageRequestDto;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
@@ -34,12 +35,14 @@ public class MessageService {
     private final MemberRepository memberRepository;
     private final TeamParticipationRepository teamParticipationRepository;
 
-    public Long saveMessage(final String content, final String color, final Long rollingpaperId, final Long authorId) {
+    public Long saveMessage(final MessageRequestDto messageRequestDto, final Long rollingpaperId, final Long authorId) {
         final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
                 .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
         final Member author = memberRepository.findById(authorId)
                 .orElseThrow(() -> new NotFoundMemberException(authorId));
-        final Message message = new Message(content, color, author, rollingpaper);
+        final Message message =
+                new Message(messageRequestDto.getContent(), messageRequestDto.getColor(), author, rollingpaper,
+                        messageRequestDto.isAnonymous(), messageRequestDto.isSecret());
         return messageRepository.save(message);
     }
 
@@ -49,10 +52,8 @@ public class MessageService {
                 .stream()
                 .map(message -> {
                     final Member author = message.getAuthor();
-                    return new MessageResponseDto(
-                            message.getId(),
-                            message.getContent(),
-                            message.getColor(),
+                    return MessageResponseDto.of(
+                            message,
                             findMessageWriterNickname(teamId, message),
                             author.getId()
                     );
@@ -87,7 +88,7 @@ public class MessageService {
         final Team team = rollingpaper.getTeam();
         final Member author = message.getAuthor();
         final String nickname = findMessageWriterNickname(team.getId(), message);
-        return new MessageResponseDto(messageId, message.getContent(), message.getColor(), nickname, author.getId());
+        return MessageResponseDto.of(message, nickname, author.getId());
     }
 
     public void updateMessage(final Long messageId, final String newContent, final String newColor,

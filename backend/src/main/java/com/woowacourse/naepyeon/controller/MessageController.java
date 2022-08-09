@@ -32,7 +32,7 @@ public class MessageController {
                                                         @RequestBody @Valid final MessageRequest messageRequest,
                                                         @PathVariable final Long rollingpaperId) {
         final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaperId, loginMemberRequest.getId()
+                messageRequest.toServiceDto(), rollingpaperId, loginMemberRequest.getId()
         );
         return ResponseEntity.created(
                 URI.create("/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId)

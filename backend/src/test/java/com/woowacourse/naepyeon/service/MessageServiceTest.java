@@ -15,6 +15,7 @@ import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.RollingpaperRepository;
 import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
+import com.woowacourse.naepyeon.service.dto.MessageRequestDto;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
@@ -71,9 +72,11 @@ class MessageServiceTest {
     @DisplayName("메시지를 저장하고 id로 찾는다.")
     void saveMessageAndFind() {
         final MessageRequest messageRequest = createMessageRequest();
-        final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
-        );
+        final Long messageId =
+                messageService.saveMessage(
+                        MessageRequestDto.of(messageRequest.getContent(), messageRequest.getColor()),
+                        rollingpaper.getId(), author.getId()
+                );
 
         final MessageResponseDto messageResponse = messageService.findMessage(messageId, rollingpaper.getId());
 
@@ -85,14 +88,17 @@ class MessageServiceTest {
     @DisplayName("내가 작성한 메시지 목록을 조회한다.")
     void findWrittenMessages() {
         final MessageRequest messageRequest = createMessageRequest();
-        final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
-        );
+        final Long messageId =
+                messageService.saveMessage(MessageRequestDto.of(messageRequest.getContent(), messageRequest.getColor()),
+                        rollingpaper.getId(), author.getId()
+                );
         messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), otherAuthor.getId()
+                MessageRequestDto.of(messageRequest.getContent(), messageRequest.getColor()),
+                rollingpaper.getId(), otherAuthor.getId()
         );
         final Long messageId2 = messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
+                MessageRequestDto.of(messageRequest.getContent(), messageRequest.getColor()),
+                rollingpaper.getId(), author.getId()
         );
 
         final WrittenMessagesResponseDto writtenMessagesResponseDto =
@@ -129,9 +135,10 @@ class MessageServiceTest {
     @DisplayName("메시지 내용과 색상을 수정한다.")
     void updateContent() {
         final MessageRequest messageRequest = createMessageRequest();
-        final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
-        );
+        final Long messageId =
+                messageService.saveMessage(MessageRequestDto.of(messageRequest.getContent(), messageRequest.getColor()),
+                        rollingpaper.getId(), author.getId()
+                );
         final String expectedContent = "안녕하지 못합니다.";
         final String expectedColor = "red";
 
@@ -139,7 +146,7 @@ class MessageServiceTest {
 
         final MessageResponseDto actual = messageService.findMessage(messageId, rollingpaper.getId());
         final MessageResponseDto expected =
-                new MessageResponseDto(messageId, expectedContent, expectedColor, "이케이", author.getId());
+                new MessageResponseDto(messageId, expectedContent, "이케이", author.getId(), expectedColor, false, false);
         assertThat(actual)
                 .usingRecursiveComparison()
                 .isEqualTo(expected);
@@ -150,7 +157,8 @@ class MessageServiceTest {
     void updateContentWithNotAuthor() {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
+                MessageRequestDto.of(messageRequest.getContent(), messageRequest.getColor()),
+                rollingpaper.getId(), author.getId()
         );
         final String expected = "안녕하지 못합니다.";
 
@@ -162,9 +170,11 @@ class MessageServiceTest {
     @DisplayName("메시지를 id로 제거한다.")
     void deleteMessage() {
         final MessageRequest messageRequest = createMessageRequest();
-        final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
-        );
+        final Long messageId =
+                messageService.saveMessage(
+                        MessageRequestDto.of(messageRequest.getContent(), messageRequest.getColor()),
+                        rollingpaper.getId(), author.getId()
+                );
 
         messageService.deleteMessage(messageId, author.getId());
 
@@ -176,15 +186,17 @@ class MessageServiceTest {
     @DisplayName("메시지 작성자가 아닌 멤버가 메시지를 삭제할 경우 예외발생")
     void deleteMessageWithNotAuthor() {
         final MessageRequest messageRequest = createMessageRequest();
-        final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
-        );
+        final Long messageId =
+                messageService.saveMessage(
+                        MessageRequestDto.of(messageRequest.getContent(), messageRequest.getColor()),
+                        rollingpaper.getId(), author.getId()
+                );
 
         assertThatThrownBy(() -> messageService.deleteMessage(messageId, 9999L))
                 .isInstanceOf(NotAuthorException.class);
     }
 
     private MessageRequest createMessageRequest() {
-        return new MessageRequest("안녕하세요", "green");
+        return new MessageRequest("안녕하세요", "green", false, false);
     }
 }
