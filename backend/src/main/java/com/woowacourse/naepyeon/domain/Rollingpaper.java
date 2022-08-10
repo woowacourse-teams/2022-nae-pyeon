@@ -1,8 +1,14 @@
 package com.woowacourse.naepyeon.domain;
 
 import com.woowacourse.naepyeon.exception.ExceedRollingpaperNameLengthException;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,9 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -30,17 +33,22 @@ public class Rollingpaper extends BaseEntity {
     @Column(name = "title", length = 20, nullable = false)
     private String title;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "classification", nullable = false)
+    private Classification classification;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id")
     private Member member;
 
-    public Rollingpaper(final String title, final Team team, final Member member) {
+    public Rollingpaper(final String title, final Classification classification, final Team team, final Member member) {
         validateRollingpaper(title);
         this.title = title;
+        this.classification = classification;
         this.team = team;
         this.member = member;
     }
