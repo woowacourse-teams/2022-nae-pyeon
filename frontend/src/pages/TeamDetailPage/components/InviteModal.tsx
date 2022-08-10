@@ -17,15 +17,17 @@ const InviteModal = ({ onClickClose }: InviteModalProp) => {
   const { openSnackbar } = useSnackbar();
   const link = "http://djslfjslfjsdlkfjsldkf";
 
-  const handleCopyButton = (e: React.MouseEvent, link: string) => {
-    e.preventDefault();
+  const handleCopyButton =
+    (link: string): React.MouseEventHandler =>
+    (e) => {
+      e.preventDefault();
 
-    copyClipboard(
-      link,
-      () => openSnackbar("초대 링크가 복사되었습니다"),
-      () => openSnackbar("초대 링크가 복사에 실패했습니다")
-    );
-  };
+      copyClipboard(
+        link,
+        () => openSnackbar("초대 링크가 복사되었습니다"),
+        () => openSnackbar("초대 링크가 복사에 실패했습니다")
+      );
+    };
 
   return (
     <Modal onClickCloseButton={onClickClose}>
@@ -34,7 +36,7 @@ const InviteModal = ({ onClickClose }: InviteModalProp) => {
         <div>모임에 초대하려면 아래 링크를 공유하세요</div>
         <StyledLinkCopy>
           <StyledLink>{link}</StyledLink>
-          <IconButton size="small" onClick={(e) => handleCopyButton(e, link)}>
+          <IconButton size="small" onClick={handleCopyButton(link)}>
             <CopyIcon />
           </IconButton>
         </StyledLinkCopy>
