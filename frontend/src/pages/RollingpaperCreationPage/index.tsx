@@ -11,6 +11,7 @@ import LabeledInput from "@/components/LabeledInput";
 import AutoCompleteInput from "@/components/AutoCompleteInput";
 import Button from "@/components/Button";
 
+import useAutoCompleteInput from "@/hooks/useAutoCompleteInput";
 import { Rollingpaper, CustomError } from "@/types";
 import { REGEX } from "@/constants";
 
@@ -27,14 +28,33 @@ const RollingpaperCreationPage = () => {
   const navigate = useNavigate();
   const { teamId } = useParams();
   const [rollingpaperTitle, setRollingpaperTitle] = useState("");
-  const [rollingpaperTo, setRollingpaperTo] = useState("");
+  const {
+    value: rollingpaperTo,
+    onChange: onChangeRollingpaperTo,
+    autoCompleteList,
+    isOpen,
+    ref,
+    onFocus,
+    onClick,
+    setKeywordList,
+  } = useAutoCompleteInput();
 
   const {
     isLoading,
     isError,
     data: teamMemberResponse,
-  } = useQuery<TeamMemberResponse>(["team-member", teamId], () =>
-    appClient.get(`/teams/${teamId}/members`).then((response) => response.data)
+  } = useQuery<TeamMemberResponse>(
+    ["team-member", teamId],
+    () =>
+      appClient
+        .get(`/teams/${teamId}/members`)
+        .then((response) => response.data),
+    {
+      onSuccess: (data) => {
+        const nicknameList = data.members.map((member) => member.nickname);
+        setKeywordList(nicknameList);
+      },
+    }
   );
 
   const { mutate: postRollingpaper } = useMutation(
@@ -117,10 +137,12 @@ const RollingpaperCreationPage = () => {
         <AutoCompleteInput
           labelText="받는 사람"
           value={rollingpaperTo}
-          setValue={setRollingpaperTo}
-          searchKeywordList={teamMemberResponse.members.map(
-            (member) => member.nickname
-          )}
+          autoCompleteList={autoCompleteList}
+          isOpen={isOpen}
+          ref={ref}
+          onChange={onChangeRollingpaperTo}
+          onFocus={onFocus}
+          onClick={onClick}
         />
         <Button
           type="submit"
