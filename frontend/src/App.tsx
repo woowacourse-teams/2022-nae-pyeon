@@ -22,6 +22,7 @@ import { UserProvider } from "@/context/UserContext";
 import { useSnackbar } from "@/context/SnackbarContext";
 
 import useAutoLogin from "@/hooks/useAutoLogin";
+import InvitePage from "@/pages/InvitePage";
 
 const App = () => {
   const { isOpened } = useSnackbar();
@@ -64,6 +65,7 @@ const App = () => {
           <Route element={<RequireLogout />}>
             <Route path="login" element={<LoginPage />} />
             <Route path="oauth/kakao" element={<KakaoRedirectPage />} />
+            <Route path="invite" element={<InvitePage />} />
           </Route>
         </Routes>
         {isOpened && <Snackbar />}
