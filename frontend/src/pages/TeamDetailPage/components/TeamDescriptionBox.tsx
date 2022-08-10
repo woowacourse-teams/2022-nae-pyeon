@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 
 import Dropdown from "@/components/Dropdown";
-
-import TeamNicknameModalForm from "@/pages/TeamDetailPage/components/TeamNicknameModalForm";
+import NicknameEditModalForm from "@/pages/TeamDetailPage/components/NicknameEditModalForm";
 
 import MeatballIcon from "@/assets/icons/bx-dots-horizontal-rounded.svg";
+
 interface TeamDescriptionBoxProps {
   name: string;
   description: string;
@@ -56,8 +56,7 @@ const TeamDescriptionBox = ({
       </StyledHeader>
       <p>{description}</p>
       {isNicknameEditOpen && (
-        <TeamNicknameModalForm
-          mode="edit"
+        <NicknameEditModalForm
           onClickCloseButton={() => setIsNicknameEditOpen(false)}
         />
       )}
