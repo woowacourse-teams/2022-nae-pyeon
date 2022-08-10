@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
 import Dropdown from "@/components/Dropdown";
 import NicknameEditModalForm from "@/pages/TeamDetailPage/components/NicknameEditModalForm";
 
 import MeatballIcon from "@/assets/icons/bx-dots-horizontal-rounded.svg";
+import useModal from "@/hooks/useModal";
 
 interface TeamDescriptionBoxProps {
   name: string;
@@ -26,7 +27,7 @@ const TeamDescriptionBox = ({
   color,
   joined,
 }: TeamDescriptionBoxProps) => {
-  const [isNicknameEditOpen, setIsNicknameEditOpen] = useState(false);
+  const { isOpen, handleModalClose, handleModalOpen } = useModal();
 
   const teamMoreOption = [
     {
@@ -37,9 +38,7 @@ const TeamDescriptionBox = ({
     },
     {
       option: "모임 프로필 설정",
-      callback: () => {
-        setIsNicknameEditOpen(true);
-      },
+      callback: handleModalOpen,
     },
   ];
 
@@ -55,10 +54,8 @@ const TeamDescriptionBox = ({
         )}
       </StyledHeader>
       <p>{description}</p>
-      {isNicknameEditOpen && (
-        <NicknameEditModalForm
-          onClickCloseButton={() => setIsNicknameEditOpen(false)}
-        />
+      {isOpen && (
+        <NicknameEditModalForm onClickCloseButton={handleModalClose} />
       )}
     </StyledTeamDescriptionContainer>
   );
