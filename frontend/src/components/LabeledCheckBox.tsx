@@ -18,8 +18,8 @@ const LabeledCheckBox = ({
     <StyledLabel checked={checked}>
       <StyledCheckBoxInput
         type="checkbox"
-        onChange={onChange}
         checked={checked}
+        onChange={onChange}
       />
       {labeledText}
     </StyledLabel>

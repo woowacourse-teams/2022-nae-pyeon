@@ -1,9 +1,11 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { useEffect, Dispatch, SetStateAction } from "react";
 import styled from "@emotion/styled";
 import MessageTextArea from "@/pages/RollingpaperPage/components/MessageTextArea";
 import MessageColorPicker from "@/pages/RollingpaperPage/components/MessageColorPicker";
 
 import LabeledCheckBox from "@/components/LabeledCheckBox";
+
+import useCheckBox from "@/hooks/useCheckBox";
 
 import CheckIcon from "@/assets/icons/bx-check.svg";
 import XIcon from "@/assets/icons/bx-x.svg";
@@ -45,6 +47,14 @@ export const MessageForm = ({
   color,
   onClickColor,
 }: MessageFormProps) => {
+  const {
+    checked: anonymousChecked,
+    handleChange: handleAnonymousCheckBoxChange,
+  } = useCheckBox({ initialCheckedState: false });
+
+  const { checked: secretChecked, handleChange: handleSecretCheckBoxChange } =
+    useCheckBox({ initialCheckedState: false });
+
   const handleTextAreaChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
     e
   ) => {
@@ -66,8 +76,16 @@ export const MessageForm = ({
         />
         <StyledMessageFormBottom>
           <StyledCheckBoxContainer>
-            <LabeledCheckBox labeledText="익명" checked={true} />
-            <LabeledCheckBox labeledText="비밀글" checked={false} />
+            <LabeledCheckBox
+              labeledText="익명"
+              checked={anonymousChecked}
+              onChange={handleAnonymousCheckBoxChange}
+            />
+            <LabeledCheckBox
+              labeledText="비밀글"
+              checked={secretChecked}
+              onChange={handleSecretCheckBoxChange}
+            />
           </StyledCheckBoxContainer>
           <StyledTextLength>{content.length}/500</StyledTextLength>
         </StyledMessageFormBottom>
