@@ -43,7 +43,7 @@ const StyledPage = styled.div`
   gap: 40px;
 
   height: 100vh;
-  padding-top: 20px;
+  padding-top: 40px;
 `;
 
 const StyledJoinForm = styled.form`
