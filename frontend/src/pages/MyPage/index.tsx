@@ -149,12 +149,4 @@ const StyledTabs = styled.div`
   gap: 20px;
 `;
 
-const StyledListWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  height: 600px;
-`;
-
 export default MyPage;
