@@ -19,17 +19,19 @@ type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const MessageSubmitButton = ({ onClick }: ButtonAttributes) => {
   return (
-    <CircleButton type="button" onClick={onClick}>
-      작성 완료
-    </CircleButton>
+    <StyledMessageFormButton type="button" onClick={onClick}>
+      <CheckIcon />
+      저장
+    </StyledMessageFormButton>
   );
 };
 
 const MessageCancelButton = ({ onClick }: ButtonAttributes) => {
   return (
-    <CircleButton type="button" onClick={onClick}>
-      작성 취소
-    </CircleButton>
+    <StyledMessageFormButton type="button" onClick={onClick}>
+      <XIcon />
+      취소
+    </StyledMessageFormButton>
   );
 };
 
@@ -119,8 +121,13 @@ const IconButtonContainer = styled.div`
   }
 `;
 
-const CircleButton = styled.button`
-  width: 120px;
+const StyledMessageFormButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  width: 80px;
   height: 32px;
 
   font-size: 18px;
@@ -129,11 +136,13 @@ const CircleButton = styled.button`
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.GRAY_700};
   color: ${({ theme }) => theme.colors.GRAY_200};
+  fill: ${({ theme }) => theme.colors.GRAY_200};
 
   &:hover {
     border: 2px solid ${({ theme }) => theme.colors.GRAY_700};
     background-color: ${({ theme }) => theme.colors.GRAY_300};
     color: ${({ theme }) => theme.colors.GRAY_800};
+    fill: ${({ theme }) => theme.colors.GRAY_800};
   }
 
   @media only screen and (min-width: 600px) {
