@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "@emotion/styled";
@@ -11,9 +11,10 @@ import LabeledInput from "@/components/LabeledInput";
 import AutoCompleteInput from "@/components/AutoCompleteInput";
 import Button from "@/components/Button";
 
-import useAutoCompleteInput from "@/hooks/useAutoCompleteInput";
 import { Rollingpaper, CustomError } from "@/types";
 import { REGEX } from "@/constants";
+import useAutoCompleteInput from "@/hooks/useAutoCompleteInput";
+import useInput from "@/hooks/useInput";
 
 interface TeamMemberResponse {
   members: TeamMember[];
@@ -27,7 +28,8 @@ interface TeamMember {
 const RollingpaperCreationPage = () => {
   const navigate = useNavigate();
   const { teamId } = useParams();
-  const [rollingpaperTitle, setRollingpaperTitle] = useState("");
+  const { value: rollingpaperTitle, onChange: onChangeRollingpaperTitle } =
+    useInput("");
   const {
     value: rollingpaperTo,
     onChange: onChangeRollingpaperTo,
@@ -131,8 +133,8 @@ const RollingpaperCreationPage = () => {
         <LabeledInput
           labelText="롤링페이퍼 제목"
           value={rollingpaperTitle}
-          setValue={setRollingpaperTitle}
           pattern={REGEX.ROLLINGPAPER_TITLE.source}
+          onChange={onChangeRollingpaperTitle}
         />
         <AutoCompleteInput
           labelText="받는 사람"
@@ -163,7 +165,6 @@ const StyledForm = styled.form`
   flex-direction: column;
   align-items: center;
   gap: 40px;
-
   button {
     align-self: flex-end;
   }
