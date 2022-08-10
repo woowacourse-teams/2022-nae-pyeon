@@ -35,7 +35,6 @@ const useAutoCompleteInput = () => {
       const newAutoCompleteList = sortAutoCompleteList(e.target.value);
 
       setAutoCompleteList(newAutoCompleteList);
-
       setIsOpen(true);
     }
   };
