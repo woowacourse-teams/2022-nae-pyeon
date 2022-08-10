@@ -5,7 +5,7 @@ import UnderlineInput from "@/components/UnderlineInput";
 import LineButton from "@/components/LineButton";
 
 import { REGEX } from "@/constants";
-import TeamDescription from "@/pages/InvitePage/components/TeamDescription";
+import TeamDescriptionBox from "@/pages/InvitePage/components/TeamDescriptionBox";
 
 const InvitePage = () => {
   const [nickname, setNickname] = useState("");
@@ -16,7 +16,7 @@ const InvitePage = () => {
 
   return (
     <StyledPage>
-      <TeamDescription
+      <TeamDescriptionBox
         color="#98DAFF"
         emoji="❤️"
         name="우테코 4기"

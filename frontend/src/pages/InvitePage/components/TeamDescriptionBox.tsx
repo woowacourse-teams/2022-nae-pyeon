@@ -1,29 +1,29 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-interface TeamDescriptionProp {
+interface TeamDescriptionBoxProp {
   color: string;
   emoji: string;
   name: string;
   description: string;
 }
 
-const TeamDescription = ({
+const TeamDescriptionBox = ({
   color,
   emoji,
   name,
   description,
-}: TeamDescriptionProp) => {
+}: TeamDescriptionBoxProp) => {
   return (
-    <StyledTeamDescription color={color}>
+    <StyledTeamDescriptionBox color={color}>
       <StyledEmoji>{emoji}</StyledEmoji>
       <StyledTitle>{name}</StyledTitle>
       <StyledDescription>{description}</StyledDescription>
-    </StyledTeamDescription>
+    </StyledTeamDescriptionBox>
   );
 };
 
-const StyledTeamDescription = styled.div`
+const StyledTeamDescriptionBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -48,4 +48,4 @@ const StyledTitle = styled.h3`
 
 const StyledDescription = styled.div``;
 
-export default TeamDescription;
+export default TeamDescriptionBox;
