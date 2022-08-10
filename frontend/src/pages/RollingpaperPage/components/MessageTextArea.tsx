@@ -63,18 +63,11 @@ const StyledMessageContainer = styled.div<StyledMessageContainerProps>`
   min-width: 180px;
   padding: 20px 15px 10px;
 
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 16px;
+  line-height: 22px;
 
   border: 2px solid ${({ theme }) => theme.colors.GRAY_700};
   background-color: ${({ backgroundColor }) => backgroundColor};
-
-  @media only screen and (min-width: 600px) {
-    min-width: 300px;
-
-    font-size: 14px;
-    line-height: 18px;
-  }
 `;
 
 const StyledTextArea = styled.textarea`

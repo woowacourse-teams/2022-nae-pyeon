@@ -26,7 +26,7 @@ const StyledIconButton = styled.button<ButtonAttributes>`
 
   font-size: ${(props) =>
     props.size === "small"
-      ? "20px"
+      ? "24px"
       : props.size === "medium"
       ? "30px"
       : "40px"};

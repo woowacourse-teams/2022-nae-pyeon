@@ -236,6 +236,7 @@ const StyledLetterPaperTop = styled.div`
 `;
 
 const StyledTo = styled.h3`
+  font-size: 18px;
   font-weight: 600;
 `;
 

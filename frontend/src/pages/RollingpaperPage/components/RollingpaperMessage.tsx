@@ -101,7 +101,7 @@ const StyledMessage = styled.div`
   width: 100%;
   aspect-ratio: 1;
   min-width: 180px;
-  padding: 20px 15px 10px;
+  padding: 20px 20px 12px;
 
   background-color: ${(props) => props.color};
 `;
@@ -109,13 +109,8 @@ const StyledMessage = styled.div`
 const StyledMessageContent = styled.div`
   overflow: hidden;
 
-  font-size: 14px;
-  line-height: 16px;
-
-  @media only screen and (min-width: 600px) {
-    font-size: 14px;
-    line-height: 18px;
-  }
+  font-size: 16px;
+  line-height: 22px;
 `;
 
 const StyledMessageBottom = styled.div`
@@ -128,24 +123,29 @@ const StyledMessageBottom = styled.div`
 `;
 
 const StyledMessageButton = styled.div`
+  position: relative;
+  left: -6px;
+  top: 6px;
+
   display: flex;
-  gap: 4px;
+  gap: 8px;
+
+  button {
+    padding: 6px;
+  }
 
   svg {
-    fill: ${({ theme }) => theme.colors.GRAY_700};
+    fill: ${({ theme }) => theme.colors.GRAY_600};
   }
 `;
 
 const StyledMessageAuthor = styled.div`
-  margin-left: auto;
-  width: 50px;
+  width: 50%;
   text-align: right;
-  font-size: 12px;
-  color: ${({ theme }) => theme.colors.GRAY_700};
+  margin-left: auto;
 
-  @media only screen and (min-width: 600px) {
-    width: 90px;
-  }
+  font-size: 16px;
+  color: ${({ theme }) => theme.colors.GRAY_700};
 `;
 
 export default RollingpaperMessage;
