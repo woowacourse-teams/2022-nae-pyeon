@@ -1,8 +1,5 @@
 package com.woowacourse.naepyeon.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
@@ -18,7 +15,6 @@ import com.woowacourse.naepyeon.repository.TeamRepository;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,19 +22,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
+import static com.woowacourse.naepyeon.domain.Classification.MEMBER;
+import static com.woowacourse.naepyeon.domain.Classification.TEAM;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
 class MessageServiceTest {
 
+    private static final String TEAM_NAME = "nae-pyeon";
     private final Team team = new Team(
-            "nae-pyeon",
+            TEAM_NAME,
             "테스트 모임입니다.",
             "testEmoji",
             "#123456");
     private final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
     private final Member author = new Member("author", "au@hello.com", Platform.KAKAO, "2");
     private final Member otherAuthor = new Member("author2", "aut@hello.com", Platform.KAKAO, "3");
-    private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", team, member);
+    private final Rollingpaper teamRollingpaper = new Rollingpaper("AlexAndKei", TEAM, team, member);
+    private final Rollingpaper memberRollingpaper = new Rollingpaper("AlexAndKei", MEMBER, team, member);
     private final TeamParticipation teamParticipation1 = new TeamParticipation(team, member, "일케이");
     private final TeamParticipation teamParticipation2 = new TeamParticipation(team, author, "이케이");
     private final TeamParticipation teamParticipation3 = new TeamParticipation(team, otherAuthor, "삼케이");
@@ -61,7 +66,8 @@ class MessageServiceTest {
         memberRepository.save(member);
         memberRepository.save(author);
         memberRepository.save(otherAuthor);
-        rollingpaperRepository.save(rollingpaper);
+        rollingpaperRepository.save(memberRollingpaper);
+        rollingpaperRepository.save(teamRollingpaper);
         teamParticipationRepository.save(teamParticipation1);
         teamParticipationRepository.save(teamParticipation2);
         teamParticipationRepository.save(teamParticipation3);
@@ -72,10 +78,10 @@ class MessageServiceTest {
     void saveMessageAndFind() {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
+                messageRequest.getContent(), messageRequest.getColor(), memberRollingpaper.getId(), author.getId()
         );
 
-        final MessageResponseDto messageResponse = messageService.findMessage(messageId, rollingpaper.getId());
+        final MessageResponseDto messageResponse = messageService.findMessage(messageId, memberRollingpaper.getId());
 
         assertThat(messageResponse).extracting("content", "from", "authorId")
                 .containsExactly(messageRequest.getContent(), "이케이", author.getId());
@@ -86,13 +92,13 @@ class MessageServiceTest {
     void findWrittenMessages() {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
+                messageRequest.getContent(), messageRequest.getColor(), memberRollingpaper.getId(), author.getId()
         );
         messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), otherAuthor.getId()
+                messageRequest.getContent(), messageRequest.getColor(), memberRollingpaper.getId(), otherAuthor.getId()
         );
         final Long messageId2 = messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
+                messageRequest.getContent(), messageRequest.getColor(), teamRollingpaper.getId(), author.getId()
         );
 
         final WrittenMessagesResponseDto writtenMessagesResponseDto =
@@ -101,23 +107,23 @@ class MessageServiceTest {
         final List<WrittenMessageResponseDto> expected = List.of(
                 new WrittenMessageResponseDto(
                         messageId,
-                        rollingpaper.getId(),
-                        rollingpaper.getTitle(),
+                        memberRollingpaper.getId(),
+                        memberRollingpaper.getTitle(),
                         team.getId(),
                         team.getName(),
-                        "일케이",
                         messageRequest.getContent(),
-                        messageRequest.getColor()
+                        messageRequest.getColor(),
+                        "일케이"
                 ),
                 new WrittenMessageResponseDto(
                         messageId2,
-                        rollingpaper.getId(),
-                        rollingpaper.getTitle(),
+                        teamRollingpaper.getId(),
+                        teamRollingpaper.getTitle(),
                         team.getId(),
                         team.getName(),
-                        "일케이",
                         messageRequest.getContent(),
-                        messageRequest.getColor()
+                        messageRequest.getColor(),
+                        TEAM_NAME
                 )
         );
         assertThat(actual)
@@ -130,14 +136,14 @@ class MessageServiceTest {
     void updateContent() {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
+                messageRequest.getContent(), messageRequest.getColor(), memberRollingpaper.getId(), author.getId()
         );
         final String expectedContent = "안녕하지 못합니다.";
         final String expectedColor = "red";
 
         messageService.updateMessage(messageId, expectedContent, expectedColor, author.getId());
 
-        final MessageResponseDto actual = messageService.findMessage(messageId, rollingpaper.getId());
+        final MessageResponseDto actual = messageService.findMessage(messageId, memberRollingpaper.getId());
         final MessageResponseDto expected =
                 new MessageResponseDto(messageId, expectedContent, expectedColor, "이케이", author.getId());
         assertThat(actual)
@@ -150,7 +156,7 @@ class MessageServiceTest {
     void updateContentWithNotAuthor() {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
+                messageRequest.getContent(), messageRequest.getColor(), memberRollingpaper.getId(), author.getId()
         );
         final String expected = "안녕하지 못합니다.";
 
@@ -163,12 +169,12 @@ class MessageServiceTest {
     void deleteMessage() {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
+                messageRequest.getContent(), messageRequest.getColor(), memberRollingpaper.getId(), author.getId()
         );
 
         messageService.deleteMessage(messageId, author.getId());
 
-        assertThatThrownBy(() -> messageService.findMessage(messageId, rollingpaper.getId()))
+        assertThatThrownBy(() -> messageService.findMessage(messageId, memberRollingpaper.getId()))
                 .isInstanceOf(NotFoundMessageException.class);
     }
 
@@ -177,7 +183,7 @@ class MessageServiceTest {
     void deleteMessageWithNotAuthor() {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaper.getId(), author.getId()
+                messageRequest.getContent(), messageRequest.getColor(), memberRollingpaper.getId(), author.getId()
         );
 
         assertThatThrownBy(() -> messageService.deleteMessage(messageId, 9999L))

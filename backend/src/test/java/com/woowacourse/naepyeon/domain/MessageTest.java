@@ -1,11 +1,12 @@
 package com.woowacourse.naepyeon.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import com.woowacourse.naepyeon.exception.ExceedMessageContentLengthException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import static com.woowacourse.naepyeon.domain.Classification.MEMBER;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class MessageTest {
 
@@ -20,7 +21,7 @@ class MessageTest {
         );
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
         final Member author = new Member("author", "a@hello.com", Platform.KAKAO, "2");
-        final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", team, member);
+        final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", MEMBER, team, member);
         final Message message = new Message("헬로우", "green", author, rollingpaper);
         final String expected = "낫 헬로우";
 
@@ -40,7 +41,7 @@ class MessageTest {
         );
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
         final Member author = new Member("author", "a@hello.com", Platform.KAKAO, "2");
-        final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", team, member);
+        final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", MEMBER, team, member);
         assertThatThrownBy(() -> new Message("a".repeat(501), "green", author, rollingpaper))
                 .isInstanceOf(ExceedMessageContentLengthException.class);
     }
@@ -56,7 +57,7 @@ class MessageTest {
         );
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
         final Member author = new Member("author", "a@hello.com", Platform.KAKAO, "2");
-        final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", team, member);
+        final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", MEMBER, team, member);
         final Message message = new Message("헬로우", "green", author, rollingpaper);
         final String expected = "red";
 

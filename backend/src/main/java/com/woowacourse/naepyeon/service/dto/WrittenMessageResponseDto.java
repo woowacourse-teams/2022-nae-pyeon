@@ -18,9 +18,9 @@ public class WrittenMessageResponseDto {
     private String rollingpaperTitle;
     private Long teamId;
     private String teamName;
-    private String to;
     private String content;
     private String color;
+    private String to;
 
     public static WrittenMessageResponseDto of(
             final Rollingpaper rollingpaper, final Team team,
@@ -32,9 +32,9 @@ public class WrittenMessageResponseDto {
                 rollingpaper.getTitle(),
                 team.getId(),
                 team.getName(),
-                addresseeNickName,
                 message.getContent(),
-                message.getColor()
+                message.getColor(),
+                addresseeNickName
         );
     }
 }
