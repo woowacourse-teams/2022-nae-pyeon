@@ -129,7 +129,7 @@ const TeamCreationPage = () => {
         <LabeledToggle
           labelText="비공개로 만들기"
           isChecked={isPrivateTeam}
-          onClickToggle={handleToggleClick}
+          onClick={handleToggleClick}
         />
         <Button
           type="submit"

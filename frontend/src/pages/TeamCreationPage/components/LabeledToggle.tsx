@@ -5,7 +5,7 @@ import { css } from "@emotion/react";
 interface LabeledToggleProp {
   labelText: string;
   isChecked: boolean;
-  onClickToggle: React.MouseEventHandler<HTMLDivElement>;
+  onClick: React.MouseEventHandler<HTMLDivElement>;
 }
 
 interface StyledCircleProp {
@@ -15,7 +15,7 @@ interface StyledCircleProp {
 export const LabeledToggle = ({
   labelText,
   isChecked,
-  onClickToggle,
+  onClick,
 }: LabeledToggleProp) => {
   return (
     <StyledLabeledToggle>
@@ -33,7 +33,7 @@ export const LabeledToggle = ({
           "모임이 비공개로 설정된 경우 초대링크를 통해서만 참여할 수 있습니다."
         )}
       </StyledMessage>
-      <ToggleBtn onClick={onClickToggle}>
+      <ToggleBtn onClick={onClick}>
         <Circle checked={isChecked} />
       </ToggleBtn>
     </StyledLabeledToggle>
