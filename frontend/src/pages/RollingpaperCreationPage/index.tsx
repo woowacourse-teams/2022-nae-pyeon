@@ -28,16 +28,18 @@ interface TeamMember {
 const RollingpaperCreationPage = () => {
   const navigate = useNavigate();
   const { teamId } = useParams();
-  const { value: rollingpaperTitle, onChange: onChangeRollingpaperTitle } =
-    useInput("");
+  const {
+    value: rollingpaperTitle,
+    handleInputChange: handleRollingpaperTitleChange,
+  } = useInput("");
   const {
     value: rollingpaperTo,
-    onChange: onChangeRollingpaperTo,
     autoCompleteList,
     isOpen,
     ref,
-    onFocus,
-    onClick,
+    handleAutoInputChange,
+    handleAutoInputFocus,
+    handleListItemClick,
     setKeywordList,
   } = useAutoCompleteInput();
 
@@ -134,7 +136,7 @@ const RollingpaperCreationPage = () => {
           labelText="롤링페이퍼 제목"
           value={rollingpaperTitle}
           pattern={REGEX.ROLLINGPAPER_TITLE.source}
-          onChange={onChangeRollingpaperTitle}
+          onChange={handleRollingpaperTitleChange}
         />
         <AutoCompleteInput
           labelText="받는 사람"
@@ -142,9 +144,9 @@ const RollingpaperCreationPage = () => {
           autoCompleteList={autoCompleteList}
           isOpen={isOpen}
           ref={ref}
-          onChange={onChangeRollingpaperTo}
-          onFocus={onFocus}
-          onClick={onClick}
+          onChange={handleAutoInputChange}
+          onFocus={handleAutoInputFocus}
+          onClick={handleListItemClick}
         />
         <Button
           type="submit"

@@ -34,8 +34,10 @@ const TeamCreationPage = () => {
   const [teamDescription, setTeamDescription] = useState("");
   const [emoji, setEmoji] = useState("");
   const [color, setColor] = useState("");
-  const { value: teamName, onChange: onChangeTeamName } = useInput("");
-  const { value: nickname, onChange: onChangeNickname } = useInput("");
+  const { value: teamName, handleInputChange: handleTeamNameChange } =
+    useInput("");
+  const { value: nickname, handleInputChange: handleNicknameChange } =
+    useInput("");
 
   const navigate = useNavigate();
 
@@ -94,7 +96,7 @@ const TeamCreationPage = () => {
           labelText="모임명"
           value={teamName}
           pattern={REGEX.TEAM_NAME.source}
-          onChange={onChangeTeamName}
+          onChange={handleTeamNameChange}
           errorMessage={"1~20자 사이의 모임명을 입력해주세요"}
         />
         <LabeledTextArea
@@ -109,7 +111,7 @@ const TeamCreationPage = () => {
           labelText="나의 닉네임"
           value={nickname}
           pattern={REGEX.USERNAME.source}
-          onChange={onChangeNickname}
+          onChange={handleNicknameChange}
           errorMessage={"2~20자 사이의 닉네임을 입력해주세요"}
         />
         <LabeledRadio

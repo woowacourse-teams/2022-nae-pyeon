@@ -21,14 +21,14 @@ const useAutoCompleteInput = () => {
     return newAutocompleteList;
   };
 
-  const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleAutoInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setValue(e.target.value);
     const newAutoCompleteList = sortAutoCompleteList(e.target.value);
 
     setAutoCompleteList(newAutoCompleteList);
   };
 
-  const onFocus: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleAutoInputFocus: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (ref.current) {
       ref.current.focus();
 
@@ -40,7 +40,7 @@ const useAutoCompleteInput = () => {
     }
   };
 
-  const onClick: MouseEventHandler<HTMLElement> = (e) => {
+  const handleListItemClick: MouseEventHandler<HTMLElement> = (e) => {
     const selectedItem = e.target as HTMLElement;
     setValue(selectedItem.innerText);
   };
@@ -67,9 +67,9 @@ const useAutoCompleteInput = () => {
     isOpen,
     autoCompleteList,
     ref,
-    onChange,
-    onFocus,
-    onClick,
+    handleAutoInputChange,
+    handleAutoInputFocus,
+    handleListItemClick,
     setKeywordList,
   };
 };
