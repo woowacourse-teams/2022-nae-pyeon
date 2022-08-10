@@ -40,6 +40,7 @@ const MessageColorPicker = ({ onClickRadio, color }: ColorPickerProps) => {
 const StyledColorPickerContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-evenly;
 
   padding: 10px 4px;
@@ -53,6 +54,7 @@ const StyledRadio = styled.div<StyledRadioProps>`
   align-items: center;
   justify-content: center;
 
+  box-sizing: content-box;
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -71,6 +73,7 @@ const StyledRadio = styled.div<StyledRadioProps>`
 const StyledInput = styled.input`
   position: absolute;
   overflow: hidden;
+
   width: 1px;
   height: 1px;
   padding: 0;
