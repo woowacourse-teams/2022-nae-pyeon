@@ -1,5 +1,19 @@
 package com.woowacourse.naepyeon.acceptance;
 
+import com.woowacourse.naepyeon.controller.dto.CreateMemberRollingpaperRequest;
+import com.woowacourse.naepyeon.controller.dto.CreateResponse;
+import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
+import com.woowacourse.naepyeon.controller.dto.MessageRequest;
+import com.woowacourse.naepyeon.controller.dto.MessageUpdateContentRequest;
+import com.woowacourse.naepyeon.controller.dto.TeamRequest;
+import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
+import com.woowacourse.naepyeon.service.dto.RollingpaperResponseDto;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.롤링페이퍼_특정_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_삭제;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_수정;
@@ -10,20 +24,6 @@ import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_추�
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_롤링페이퍼_생성;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-
-import com.woowacourse.naepyeon.controller.dto.CreateResponse;
-import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
-import com.woowacourse.naepyeon.controller.dto.MessageRequest;
-import com.woowacourse.naepyeon.controller.dto.MessageUpdateContentRequest;
-import com.woowacourse.naepyeon.controller.dto.RollingpaperCreateRequest;
-import com.woowacourse.naepyeon.controller.dto.TeamRequest;
-import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
-import com.woowacourse.naepyeon.service.dto.RollingpaperResponseDto;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 
 class MessageAcceptanceTest extends AcceptanceTest {
 
@@ -40,9 +40,9 @@ class MessageAcceptanceTest extends AcceptanceTest {
 
         모임_가입(alex, teamId, new JoinTeamMemberRequest("알렉스당"));
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest =
-                new RollingpaperCreateRequest("하이알렉스", alex.getId());
-        final Long rollingpaperId = 회원_롤링페이퍼_생성(zero, teamId, rollingpaperCreateRequest).as(CreateResponse.class)
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이알렉스", alex.getId());
+        final Long rollingpaperId = 회원_롤링페이퍼_생성(zero, teamId, createMemberRollingpaperRequest).as(CreateResponse.class)
                 .getId();
 
         final ExtractableResponse<Response> response = 메시지_작성(
@@ -61,9 +61,9 @@ class MessageAcceptanceTest extends AcceptanceTest {
                 .getId();
         모임_가입(alex, teamId, new JoinTeamMemberRequest("알렉스당"));
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest =
-                new RollingpaperCreateRequest("하이알렉스", alex.getId());
-        final Long rollingpaperId = 회원_롤링페이퍼_생성(kei, teamId, rollingpaperCreateRequest)
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이알렉스", alex.getId());
+        final Long rollingpaperId = 회원_롤링페이퍼_생성(kei, teamId, createMemberRollingpaperRequest)
                 .as(CreateResponse.class)
                 .getId();
 
@@ -84,9 +84,9 @@ class MessageAcceptanceTest extends AcceptanceTest {
                 .getId();
         모임_가입(alex, teamId, new JoinTeamMemberRequest("알렉스당"));
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest =
-                new RollingpaperCreateRequest("하이알렉스", alex.getId());
-        final Long rollingpaperId = 회원_롤링페이퍼_생성(seungpang, teamId, rollingpaperCreateRequest)
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이알렉스", alex.getId());
+        final Long rollingpaperId = 회원_롤링페이퍼_생성(seungpang, teamId, createMemberRollingpaperRequest)
                 .as(CreateResponse.class)
                 .getId();
 
@@ -118,9 +118,9 @@ class MessageAcceptanceTest extends AcceptanceTest {
 
         모임_가입(alex, teamId, new JoinTeamMemberRequest("알렉스당"));
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest =
-                new RollingpaperCreateRequest("하이알렉스", alex.getId());
-        final Long rollingpaperId = 회원_롤링페이퍼_생성(zero, teamId, rollingpaperCreateRequest).as(CreateResponse.class)
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이알렉스", alex.getId());
+        final Long rollingpaperId = 회원_롤링페이퍼_생성(zero, teamId, createMemberRollingpaperRequest).as(CreateResponse.class)
                 .getId();
 
         final Long messageId = 메시지_작성(zero, rollingpaperId, new MessageRequest("환영해 알렉스!!!", "green"))
@@ -140,9 +140,9 @@ class MessageAcceptanceTest extends AcceptanceTest {
                 .getId();
         모임_가입(alex, teamId, new JoinTeamMemberRequest("알렉스당"));
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest =
-                new RollingpaperCreateRequest("하이알렉스", alex.getId());
-        final Long rollingpaperId = 회원_롤링페이퍼_생성(seungpang, teamId, rollingpaperCreateRequest)
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이알렉스", alex.getId());
+        final Long rollingpaperId = 회원_롤링페이퍼_생성(seungpang, teamId, createMemberRollingpaperRequest)
                 .as(CreateResponse.class)
                 .getId();
 
@@ -175,9 +175,9 @@ class MessageAcceptanceTest extends AcceptanceTest {
                 .getId();
         모임_가입(alex, teamId, new JoinTeamMemberRequest("알렉스당"));
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest =
-                new RollingpaperCreateRequest("하이알렉스", alex.getId());
-        final Long rollingpaperId = 회원_롤링페이퍼_생성(kei, teamId, rollingpaperCreateRequest)
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이알렉스", alex.getId());
+        final Long rollingpaperId = 회원_롤링페이퍼_생성(kei, teamId, createMemberRollingpaperRequest)
                 .as(CreateResponse.class)
                 .getId();
 
@@ -197,9 +197,9 @@ class MessageAcceptanceTest extends AcceptanceTest {
                 .getId();
         모임_가입(alex, teamId, new JoinTeamMemberRequest("알렉스당"));
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest =
-                new RollingpaperCreateRequest("하이알렉스", alex.getId());
-        final Long rollingpaperId = 회원_롤링페이퍼_생성(seungpang, teamId, rollingpaperCreateRequest)
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이알렉스", alex.getId());
+        final Long rollingpaperId = 회원_롤링페이퍼_생성(seungpang, teamId, createMemberRollingpaperRequest)
                 .as(CreateResponse.class)
                 .getId();
 
@@ -218,9 +218,9 @@ class MessageAcceptanceTest extends AcceptanceTest {
                 .getId();
         모임_가입(alex, teamId, new JoinTeamMemberRequest("알렉스당"));
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest =
-                new RollingpaperCreateRequest("하이알렉스", alex.getId());
-        final Long rollingpaperId = 회원_롤링페이퍼_생성(kei, teamId, rollingpaperCreateRequest)
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이알렉스", alex.getId());
+        final Long rollingpaperId = 회원_롤링페이퍼_생성(kei, teamId, createMemberRollingpaperRequest)
                 .as(CreateResponse.class)
                 .getId();
 
@@ -243,9 +243,9 @@ class MessageAcceptanceTest extends AcceptanceTest {
         final String nickname = "알렉스당";
         모임_가입(alex, teamId, new JoinTeamMemberRequest(nickname));
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest =
-                new RollingpaperCreateRequest("하이 승팡", seungpang.getId());
-        final Long rollingpaperId = 회원_롤링페이퍼_생성(alex, teamId, rollingpaperCreateRequest)
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이 승팡", seungpang.getId());
+        final Long rollingpaperId = 회원_롤링페이퍼_생성(alex, teamId, createMemberRollingpaperRequest)
                 .as(CreateResponse.class)
                 .getId();
 

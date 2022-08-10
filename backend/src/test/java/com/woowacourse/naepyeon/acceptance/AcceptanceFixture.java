@@ -1,11 +1,11 @@
 package com.woowacourse.naepyeon.acceptance;
 
+import com.woowacourse.naepyeon.controller.dto.CreateMemberRollingpaperRequest;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageUpdateContentRequest;
-import com.woowacourse.naepyeon.controller.dto.RollingpaperCreateRequest;
 import com.woowacourse.naepyeon.controller.dto.RollingpaperUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.TokenRequest;
@@ -169,18 +169,13 @@ public class AcceptanceFixture {
 
     public static ExtractableResponse<Response> 회원_롤링페이퍼_생성(final TokenResponseDto tokenResponseDto,
                                                             final Long teamId,
-                                                            final RollingpaperCreateRequest rollingpaperCreateRequest) {
-        return post(tokenResponseDto, rollingpaperCreateRequest, "/api/v1/teams/" + teamId + "/rollingpapers");
+                                                            final CreateMemberRollingpaperRequest createMemberRollingpaperRequest) {
+        return post(tokenResponseDto, createMemberRollingpaperRequest, "/api/v1/teams/" + teamId + "/rollingpapers");
     }
 
     public static ExtractableResponse<Response> 나의_롤링페이퍼_조회(
             final TokenResponseDto tokenResponseDto, final int page, final int count) {
         return get_search(tokenResponseDto, "/api/v1/members/me/rollingpapers/received", "", page, count);
-    }
-
-    public static ExtractableResponse<Response> 회원의_롤링페이퍼_조회(final TokenResponseDto tokenResponseDto,
-                                                             final Long teamId) {
-        return get(tokenResponseDto, "/api/v1/teams/" + teamId + "/rollingpapers/me");
     }
 
     public static ExtractableResponse<Response> 롤링페이퍼_특정_조회(final TokenResponseDto tokenResponseDto,

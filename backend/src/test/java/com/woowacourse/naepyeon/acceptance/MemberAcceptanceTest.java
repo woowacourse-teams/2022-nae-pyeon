@@ -1,5 +1,24 @@
 package com.woowacourse.naepyeon.acceptance;
 
+import com.woowacourse.naepyeon.controller.dto.CreateMemberRollingpaperRequest;
+import com.woowacourse.naepyeon.controller.dto.CreateResponse;
+import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
+import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
+import com.woowacourse.naepyeon.controller.dto.MessageRequest;
+import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
+import com.woowacourse.naepyeon.service.dto.ReceivedRollingpaperResponseDto;
+import com.woowacourse.naepyeon.service.dto.ReceivedRollingpapersResponseDto;
+import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
+import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
+import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+
+import java.util.List;
+
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.나의_롤링페이퍼_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.나의_메시지_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_작성;
@@ -10,24 +29,6 @@ import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_삭�
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_유저네임_수정;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_조회;
 import static org.assertj.core.api.Assertions.assertThat;
-
-import com.woowacourse.naepyeon.controller.dto.CreateResponse;
-import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
-import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
-import com.woowacourse.naepyeon.controller.dto.MessageRequest;
-import com.woowacourse.naepyeon.controller.dto.RollingpaperCreateRequest;
-import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
-import com.woowacourse.naepyeon.service.dto.ReceivedRollingpaperResponseDto;
-import com.woowacourse.naepyeon.service.dto.ReceivedRollingpapersResponseDto;
-import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
-import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
-import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
-import java.util.List;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 
 class MemberAcceptanceTest extends AcceptanceTest {
 
@@ -66,12 +67,12 @@ class MemberAcceptanceTest extends AcceptanceTest {
 
         final String rollingpaperTitle1 = "알렉스가좋아요";
         final Long rollingpaperId1 = 회원_롤링페이퍼_생성(zero, teamId,
-                new RollingpaperCreateRequest(rollingpaperTitle1, alex.getId()))
+                new CreateMemberRollingpaperRequest(rollingpaperTitle1, alex.getId()))
                 .as(CreateResponse.class)
                 .getId();
         final String rollingpaperTitle2 = "영환이형도좋아요";
         final Long rollingpaperId2 = 회원_롤링페이퍼_생성(zero, teamId,
-                new RollingpaperCreateRequest(rollingpaperTitle2, alex.getId()))
+                new CreateMemberRollingpaperRequest(rollingpaperTitle2, alex.getId()))
                 .as(CreateResponse.class)
                 .getId();
 
@@ -99,11 +100,11 @@ class MemberAcceptanceTest extends AcceptanceTest {
 
         final String rollingpaperTitle1 = "알렉스가좋아요";
         final Long rollingpaperId1 = 회원_롤링페이퍼_생성(kei, teamId,
-                new RollingpaperCreateRequest(rollingpaperTitle1, seungpang.getId()))
+                new CreateMemberRollingpaperRequest(rollingpaperTitle1, seungpang.getId()))
                 .as(CreateResponse.class)
                 .getId();
         final Long rollingpaperId2 = 회원_롤링페이퍼_생성(kei, teamId,
-                new RollingpaperCreateRequest("영환이형도좋아요", seungpang.getId()))
+                new CreateMemberRollingpaperRequest("영환이형도좋아요", seungpang.getId()))
                 .as(CreateResponse.class)
                 .getId();
 
@@ -133,9 +134,9 @@ class MemberAcceptanceTest extends AcceptanceTest {
                         rollingpaperTitle1,
                         teamId,
                         "woowacourse-4th",
-                        "나는야모임장",
                         messageContent1,
-                        messageColor1
+                        messageColor1,
+                        "나는야모임장"
                 ),
                 new WrittenMessageResponseDto(
                         messageId2,
@@ -143,9 +144,9 @@ class MemberAcceptanceTest extends AcceptanceTest {
                         rollingpaperTitle1,
                         teamId,
                         "woowacourse-4th",
-                        "나는야모임장",
                         messageContent2,
-                        messageColor2
+                        messageColor2,
+                        "나는야모임장"
                 )
         );
 
