@@ -8,7 +8,7 @@ interface AutoCompleteInputProps
   labelText?: string;
   autoCompleteList: string[];
   isOpen: boolean;
-  onClick: React.MouseEventHandler<HTMLElement>;
+  onClick: (item: string) => React.MouseEventHandler<HTMLElement>;
 }
 
 const AutoCompleteInput = React.forwardRef<
@@ -27,7 +27,7 @@ const AutoCompleteInput = React.forwardRef<
           {autoCompleteList.map((autocompleteListItem) => (
             <StyledAutocompleteListItem
               key={autocompleteListItem}
-              onClick={onClick}
+              onClick={onClick(autocompleteListItem)}
             >
               {autocompleteListItem}
             </StyledAutocompleteListItem>

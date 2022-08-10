@@ -39,10 +39,11 @@ const useAutoCompleteInput = () => {
     }
   };
 
-  const handleListItemClick: MouseEventHandler<HTMLElement> = (e) => {
-    const selectedItem = e.target as HTMLElement;
-    setValue(selectedItem.innerText);
-  };
+  const handleListItemClick =
+    (item: string): MouseEventHandler<HTMLElement> =>
+    () => {
+      setValue(item);
+    };
 
   const handleDocumentClick = (e: MouseEvent) => {
     e.preventDefault();
