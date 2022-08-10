@@ -48,7 +48,6 @@ export const MessageTextArea = ({
       >
         {children}
       </StyledTextArea>
-      <StyledTextLength>{value.length}/500</StyledTextLength>
     </StyledMessageContainer>
   );
 };
@@ -85,13 +84,6 @@ const StyledTextArea = styled.textarea`
   &:focus {
     outline: none;
   }
-`;
-
-const StyledTextLength = styled.div`
-  display: inline;
-  align-self: flex-end;
-
-  color: ${({ theme }) => theme.colors.GRAY_600};
 `;
 
 export default MessageTextArea;

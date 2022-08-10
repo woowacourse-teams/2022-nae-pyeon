@@ -3,6 +3,8 @@ import styled from "@emotion/styled";
 import MessageTextArea from "@/pages/RollingpaperPage/components/MessageTextArea";
 import MessageColorPicker from "@/pages/RollingpaperPage/components/MessageColorPicker";
 
+import LabeledCheckBox from "@/components/LabeledCheckBox";
+
 import CheckIcon from "@/assets/icons/bx-check.svg";
 import XIcon from "@/assets/icons/bx-x.svg";
 
@@ -62,10 +64,16 @@ export const MessageForm = ({
           onChange={handleTextAreaChange}
           backgroundColor={color}
         />
+        <StyledMessageFormBottom>
+          <StyledCheckBoxContainer>
+            <LabeledCheckBox labeledText="익명" checked={true} />
+            <LabeledCheckBox labeledText="비밀글" checked={false} />
+          </StyledCheckBoxContainer>
+          <StyledTextLength>{content.length}/500</StyledTextLength>
+        </StyledMessageFormBottom>
         <StyledMessageColorPickerWrapper>
           <MessageColorPicker onClickRadio={onClickColor} color={color} />
         </StyledMessageColorPickerWrapper>
-
         <IconButtonContainer>
           <MessageSubmitButton onClick={onSubmit} />
           <MessageCancelButton onClick={onCancel} />
@@ -79,6 +87,33 @@ const StyledMessageForm = styled.form`
   position: relative;
   display: flex;
   flex-direction: column;
+`;
+
+const StyledMessageFormBottom = styled.div`
+  position: absolute;
+  bottom: 0;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  height: max-content;
+  padding: 0 15px 15px;
+`;
+
+const StyledCheckBoxContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+`;
+
+const StyledTextLength = styled.div`
+  display: inline;
+  align-self: flex-end;
+
+  color: ${({ theme }) => theme.colors.GRAY_600};
 `;
 
 const StyledMessageColorPickerWrapper = styled.div`
