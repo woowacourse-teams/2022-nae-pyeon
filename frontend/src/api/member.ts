@@ -26,9 +26,16 @@ const getMySentMessage = (page = 0, count = 5) => {
     .then((response) => response.data);
 };
 
+const postMyNickname = (username: string) => {
+  return appClient
+    .put("/members/me", { username })
+    .then((response) => response.data);
+};
+
 export {
   getMyUserInfo,
   getMyUserInfoWithAccessToken,
   getMyReceivedRollingpapers,
   getMySentMessage,
+  postMyNickname,
 };

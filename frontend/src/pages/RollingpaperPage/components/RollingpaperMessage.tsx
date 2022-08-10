@@ -11,9 +11,10 @@ import TrashIcon from "@/assets/icons/bx-trash.svg";
 import Pencil from "@/assets/icons/bx-pencil.svg";
 
 import { CustomError } from "@/types";
-import { appClient, queryClient } from "@/api";
+import { queryClient } from "@/api";
 import { useSnackbar } from "@/context/SnackbarContext";
-import { useParams } from "react-router-dom";
+import { deleteRollingpaperMessage } from "@/api/message";
+import useParamValidate from "@/hooks/useParamValidate";
 
 interface EditMessageProp {
   messageId: number;
@@ -40,14 +41,11 @@ const RollingpaperMessage = ({
 }: RollingpaperMessageProp) => {
   const { memberId } = useContext(UserContext);
   const { openSnackbar } = useSnackbar();
-  const { rollingpaperId } = useParams();
+  const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
 
   const { mutate: deleteMessage } = useMutation(
-    () => {
-      return appClient
-        .delete(`/rollingpapers/${rollingpaperId}/messages/${messageId}`)
-        .then((response) => response.data);
-    },
+    () =>
+      deleteRollingpaperMessage({ rollingpaperId: +rollingpaperId, messageId }),
     {
       onSuccess: () => {
         queryClient.refetchQueries(["rollingpaper", rollingpaperId]);

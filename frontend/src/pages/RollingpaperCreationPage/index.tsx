@@ -1,10 +1,8 @@
 import React from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import axios from "axios";
-
-import { appClient } from "@/api";
 
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LabeledInput from "@/components/LabeledInput";
@@ -13,8 +11,13 @@ import Button from "@/components/Button";
 
 import { Rollingpaper, CustomError } from "@/types";
 import { REGEX } from "@/constants";
+
 import useAutoCompleteInput from "@/hooks/useAutoCompleteInput";
 import useInput from "@/hooks/useInput";
+
+import { getTeamMembers } from "@/api/team";
+import { postNewRollingpaper } from "@/api/rollingpaper";
+import useParamValidate from "@/hooks/useParamValidate";
 
 interface TeamMemberResponse {
   members: TeamMember[];
@@ -27,7 +30,7 @@ interface TeamMember {
 
 const RollingpaperCreationPage = () => {
   const navigate = useNavigate();
-  const { teamId } = useParams();
+  const { teamId } = useParamValidate(["teamId"]);
   const {
     value: rollingpaperTitle,
     handleInputChange: handleRollingpaperTitleChange,
@@ -47,32 +50,16 @@ const RollingpaperCreationPage = () => {
     isLoading,
     isError,
     data: teamMemberResponse,
-  } = useQuery<TeamMemberResponse>(
-    ["team-member", teamId],
-    () =>
-      appClient
-        .get(`/teams/${teamId}/members`)
-        .then((response) => response.data),
-    {
-      onSuccess: (data) => {
-        const nicknameList = data.members.map((member) => member.nickname);
-        setKeywordList(nicknameList);
-      },
-    }
+  } = useQuery<TeamMemberResponse>(["team-member", teamId], () =>
+    getTeamMembers(+teamId)
   );
 
   const { mutate: postRollingpaper } = useMutation(
     ({
       title,
       addresseeId,
-    }: Pick<Rollingpaper, "title"> & { addresseeId: number }) => {
-      return appClient
-        .post(`/teams/${teamId}/rollingpapers`, {
-          title,
-          addresseeId,
-        })
-        .then((response) => response.data);
-    },
+    }: Pick<Rollingpaper, "title"> & { addresseeId: number }) =>
+      postNewRollingpaper({ teamId: +teamId, title, addresseeId }),
     {
       onSuccess: (data) => {
         const { id: newRollingpaperId } = data;

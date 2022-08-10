@@ -7,10 +7,11 @@ import styled from "@emotion/styled";
 import IconButton from "@/components/IconButton";
 import RollingpaperListItem from "@/pages/TeamDetailPage/components/RollingpaperListItem";
 
-import { appClient } from "@/api";
 import { CustomError } from "@/types";
 
 import PlusIcon from "@/assets/icons/bx-plus.svg";
+import { getTeamRollingpapers } from "@/api/team";
+import useParamValidate from "@/hooks/useParamValidate";
 
 interface Rollingpaper {
   id: number;
@@ -24,7 +25,7 @@ interface RollingpaperListResponse {
 
 const RollingpaperList = () => {
   const navigate = useNavigate();
-  const { teamId } = useParams();
+  const { teamId } = useParamValidate(["teamId"]);
 
   const {
     isLoading: isLoadingGetTeamRollingpaperList,
@@ -32,9 +33,7 @@ const RollingpaperList = () => {
     error: getTeamRollingpaperListError,
     data: teamRollinpaperListResponse,
   } = useQuery<RollingpaperListResponse>(["rollingpaperList", teamId], () =>
-    appClient.get(`/teams/${teamId}/rollingpapers`).then((response) => {
-      return response.data;
-    })
+    getTeamRollingpapers(+teamId)
   );
 
   if (isLoadingGetTeamRollingpaperList) {

@@ -12,9 +12,11 @@ import UnderlineInput from "@/components/UnderlineInput";
 
 import { REGEX } from "@/constants";
 import { CustomError, ValueOf } from "@/types";
-import { appClient, queryClient } from "@/api";
+import { queryClient } from "@/api";
 import Pencil from "@/assets/icons/bx-pencil.svg";
+
 import useInput from "@/hooks/useInput";
+import { postMyNickname } from "@/api/member";
 
 const MODE = {
   NORMAL: "normal",
@@ -37,8 +39,7 @@ const UserProfile = ({ username, email }: UserProfileProp) => {
 
   const { mutate: updateUserProfile } = useMutation(
     async ({ username }: Pick<UserProfileProp, "username">) => {
-      const response = await appClient.put("/members/me", { username });
-      return response.data;
+      return postMyNickname(username);
     },
     {
       onSuccess: () => {
