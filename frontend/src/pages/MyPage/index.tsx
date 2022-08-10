@@ -134,7 +134,11 @@ const MyPage = () => {
         />
       </StyledTabs>
 
-      {tab === TAB.RECEIVED_PAPER ? <RollingpaperList /> : <MessageList />}
+      {tab === TAB.RECEIVED_PAPER ? (
+        <RollingpaperList maxPage={responseReceivedRollingpapers.totalCount} />
+      ) : (
+        <MessageList maxPage={responseSentMessages.totalCount} />
+      )}
     </>
   );
 };

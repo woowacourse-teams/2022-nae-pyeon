@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import styled from "@emotion/styled";
 
@@ -11,16 +11,22 @@ import EmptyStateImg from "@/assets/images/empty-state.svg";
 import { MYPAGE_ROLLINGPAPER_PAGING_COUNT } from "@/constants";
 
 import { ResponseReceivedRollingpapers } from "@/types";
+import usePaging from "@/hooks/usePaging";
 
-const RollingpaperList = () => {
-  const [pageNumber, setPageNumber] = useState(0);
+interface RollingpaperListProp {
+  maxPage: number;
+}
+
+const RollingpaperList = ({ maxPage }: RollingpaperListProp) => {
+  const { currentPage, handleNumberClick, handleNextClick, handlePrevClick } =
+    usePaging(maxPage);
 
   const { isLoading, isError, error, data } =
     useQuery<ResponseReceivedRollingpapers>(
-      ["received-rollingpapers", pageNumber],
+      ["received-rollingpapers", currentPage],
       () =>
         getMyReceivedRollingpapers(
-          pageNumber,
+          currentPage,
           MYPAGE_ROLLINGPAPER_PAGING_COUNT
         ),
       { keepPreviousData: true }
@@ -43,11 +49,11 @@ const RollingpaperList = () => {
       </StyledRollingpaperList>
       <StyledPaging>
         <Paging
-          maxPage={Math.ceil(
-            data.totalCount / MYPAGE_ROLLINGPAPER_PAGING_COUNT
-          )}
-          currentPage={pageNumber}
-          setCurrentPage={setPageNumber}
+          currentPage={currentPage}
+          maxPage={maxPage}
+          handleNumberClick={handleNumberClick}
+          handleNextClick={handleNextClick}
+          handlePrevClick={handlePrevClick}
         />
       </StyledPaging>
     </>

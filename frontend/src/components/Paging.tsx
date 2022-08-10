@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
 import IconButton from "@/components/IconButton";
@@ -9,35 +9,25 @@ import RightIcon from "@/assets/icons/bx-chevron-right.svg";
 interface PagingProp {
   currentPage: number;
   maxPage: number;
-  setCurrentPage: Dispatch<SetStateAction<number>>;
+  handleNumberClick: (number: number) => React.MouseEventHandler;
+  handleNextClick: React.MouseEventHandler;
+  handlePrevClick: React.MouseEventHandler;
 }
 
 type StyledPaging = {
   isCurrent: boolean;
 };
 
-const Paging = ({ currentPage, maxPage, setCurrentPage }: PagingProp) => {
-  const handleNumberClick = (number: number) => {
-    setCurrentPage(number);
-  };
-
-  const handleMinusClick = () => {
-    if (currentPage <= 0) {
-      return;
-    }
-    setCurrentPage((prev) => prev - 1);
-  };
-
-  const handlePlusClick = () => {
-    if (currentPage + 1 >= maxPage) {
-      return;
-    }
-    setCurrentPage((prev) => prev + 1);
-  };
-
+const Paging = ({
+  currentPage,
+  maxPage,
+  handleNumberClick,
+  handleNextClick,
+  handlePrevClick,
+}: PagingProp) => {
   return (
     <StyledPaging>
-      <IconButton onClick={handleMinusClick}>
+      <IconButton onClick={handlePrevClick}>
         <LeftIcon />
       </IconButton>
       {currentPage < 3 || maxPage <= 5 ? (
@@ -46,7 +36,7 @@ const Paging = ({ currentPage, maxPage, setCurrentPage }: PagingProp) => {
             <StyledPage
               isCurrent={currentPage === num}
               key={num}
-              onClick={() => handleNumberClick(num)}
+              onClick={handleNumberClick(num)}
             >
               {num + 1}
             </StyledPage>
@@ -77,7 +67,7 @@ const Paging = ({ currentPage, maxPage, setCurrentPage }: PagingProp) => {
           ))}
         </StyledPageButtons>
       )}
-      <IconButton onClick={handlePlusClick}>
+      <IconButton onClick={handleNextClick}>
         <RightIcon />
       </IconButton>
     </StyledPaging>
