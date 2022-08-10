@@ -11,6 +11,7 @@ import UnderlineInput from "@/components/UnderlineInput";
 
 import { REGEX } from "@/constants";
 import { useSnackbar } from "@/context/SnackbarContext";
+import useInput from "@/hooks/useInput";
 
 interface NicknameCreateModalFormProp {
   onClickCloseButton: () => void;
@@ -25,7 +26,8 @@ const NicknameCreateModalForm = ({
 }: NicknameCreateModalFormProp) => {
   const { openSnackbar } = useSnackbar();
   const { teamId } = useParams();
-  const [nickname, setNickname] = useState("");
+  const { value: nickname, handleInputChange: handleNicknameChange } =
+    useInput("");
 
   const { mutate: joinTeam } = useMutation(
     async ({ nickname }: TeamJoinFormInfo) => {
@@ -62,9 +64,9 @@ const NicknameCreateModalForm = ({
         <p>모임에서 사용할 닉네임을 입력해주세요. (1 ~ 20자)</p>
         <UnderlineInput
           value={nickname}
-          setValue={setNickname}
           pattern={REGEX.TEAM_NICKNAME.source}
           errorMessage="1 ~ 20자 사이의 닉네임을 입력해주세요"
+          onChange={handleNicknameChange}
         />
         <LineButton type="submit">모임 가입하기</LineButton>
       </StyledJoinForm>

@@ -6,28 +6,12 @@ import ErrorIcon from "@/assets/icons/bxs-error.svg";
 interface UnderlineInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string;
-  setValue: (value: string) => void;
 }
 
-const UnderlineInput = ({
-  type = "text",
-  placeholder,
-  pattern,
-  errorMessage,
-  value,
-  setValue,
-}: UnderlineInputProps) => {
+const UnderlineInput = ({ errorMessage, ...props }: UnderlineInputProps) => {
   return (
     <StyledInputContainer>
-      <StyledInput
-        type={type}
-        value={value}
-        placeholder={placeholder}
-        pattern={pattern}
-        onChange={(e) => {
-          setValue(e.target.value);
-        }}
-      />
+      <StyledInput {...props} />
       <div>
         <ErrorIcon />
         {errorMessage}
