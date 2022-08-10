@@ -18,6 +18,8 @@ type StyledPaging = {
   isCurrent: boolean;
 };
 
+const MAX_PAGE_COUNT = 7;
+
 const Paging = ({
   currentPage,
   maxPage,
@@ -30,9 +32,14 @@ const Paging = ({
       <IconButton onClick={handlePrevClick}>
         <LeftIcon />
       </IconButton>
-      {currentPage < 3 || maxPage <= 5 ? (
+      {currentPage < Math.ceil(MAX_PAGE_COUNT / 2) ||
+      maxPage <= MAX_PAGE_COUNT ? (
         <StyledPageButtons>
-          {[...Array(maxPage > 5 ? 5 : maxPage).keys()].map((num) => (
+          {[
+            ...Array(
+              maxPage > MAX_PAGE_COUNT ? MAX_PAGE_COUNT : maxPage
+            ).keys(),
+          ].map((num) => (
             <StyledPage
               isCurrent={currentPage === num}
               key={num}
@@ -42,13 +49,13 @@ const Paging = ({
             </StyledPage>
           ))}
         </StyledPageButtons>
-      ) : currentPage > maxPage - 3 ? (
+      ) : currentPage > maxPage - Math.ceil(MAX_PAGE_COUNT / 2) ? (
         <StyledPageButtons>
-          {[...Array(5).keys()].reverse().map((num) => (
+          {[...Array(MAX_PAGE_COUNT).keys()].reverse().map((num) => (
             <StyledPage
               isCurrent={currentPage === maxPage - num - 1}
               key={num}
-              onClick={() => handleNumberClick(maxPage - num - 1)}
+              onClick={handleNumberClick(maxPage - num - 1)}
             >
               {maxPage - num}
             </StyledPage>
@@ -56,13 +63,18 @@ const Paging = ({
         </StyledPageButtons>
       ) : (
         <StyledPageButtons>
-          {[...Array(5).keys()].map((num) => (
+          {[...Array(MAX_PAGE_COUNT).keys()].map((num) => (
             <StyledPage
-              isCurrent={currentPage === currentPage - (2 - num)}
+              isCurrent={
+                currentPage ===
+                currentPage - (Math.floor(MAX_PAGE_COUNT / 2) - num)
+              }
               key={num}
-              onClick={() => handleNumberClick(currentPage - (2 - num))}
+              onClick={handleNumberClick(
+                currentPage - (Math.floor(MAX_PAGE_COUNT / 2) - num)
+              )}
             >
-              {currentPage - (2 - num) + 1}
+              {currentPage - (Math.floor(MAX_PAGE_COUNT / 2) - num) + 1}
             </StyledPage>
           ))}
         </StyledPageButtons>

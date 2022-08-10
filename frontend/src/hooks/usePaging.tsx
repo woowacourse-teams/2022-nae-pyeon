@@ -9,14 +9,14 @@ const usePaging = (maxPage: number) => {
       setCurrentPage(number);
     };
 
-  const handleNextClick = () => {
+  const handlePrevClick = () => {
     if (currentPage <= 0) {
       return;
     }
     setCurrentPage((prev) => prev - 1);
   };
 
-  const handlePrevClick = () => {
+  const handleNextClick = () => {
     if (currentPage + 1 >= maxPage) {
       return;
     }
