@@ -14,13 +14,13 @@ interface AutoCompleteInputProps
 const AutoCompleteInput = React.forwardRef<
   HTMLInputElement,
   AutoCompleteInputProps
->(({ labelText, autoCompleteList, isOpen, onClick, ...rest }, ref) => {
+>(({ labelText, autoCompleteList, isOpen, onClick, ...prop }, ref) => {
   return (
     <StyledLabel>
       {labelText}
       <StyledInputContainer>
         <SearchIcon />
-        <input ref={ref} {...rest} />
+        <input ref={ref} {...prop} />
       </StyledInputContainer>
       {isOpen && autoCompleteList.length > 0 && (
         <StyledAutocompleteList>

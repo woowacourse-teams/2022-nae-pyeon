@@ -12,12 +12,12 @@ interface LabeledInputProps
 const LabeledInput = ({
   labelText,
   errorMessage,
-  ...rest
+  ...prop
 }: LabeledInputProps) => {
   return (
     <StyledLabel>
       {labelText}
-      <input {...rest} />
+      <input {...prop} />
       <div>
         <ErrorIcon />
         {errorMessage}
