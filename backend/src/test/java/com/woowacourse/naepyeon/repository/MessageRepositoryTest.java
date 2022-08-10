@@ -1,9 +1,5 @@
 package com.woowacourse.naepyeon.repository;
 
-import static java.lang.Thread.sleep;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Message;
 import com.woowacourse.naepyeon.domain.Platform;
@@ -11,9 +7,6 @@ import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
-import java.time.LocalDateTime;
-import java.util.List;
-import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,6 +15,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static com.woowacourse.naepyeon.domain.Classification.MEMBER;
+import static java.lang.Thread.sleep;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
@@ -55,7 +57,7 @@ class MessageRepositoryTest {
     );
     private final Member member = new Member("member", "email1@email.com", Platform.KAKAO, "1");
     private final Member author = new Member("author", "email2@email.com", Platform.KAKAO, "2");
-    private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", team, member);
+    private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", MEMBER, team, member);
 
     @BeforeEach
     void setUp() {
