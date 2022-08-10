@@ -77,14 +77,14 @@ const RollingpaperMessage = ({
       <StyledMessageContent>{content}</StyledMessageContent>
       <StyledMessageBottom>
         {memberId === authorId && (
-          <StyledMessageButton>
+          <StyledMessageButtonContainer>
             <IconButton size="small" onClick={handleEditButtonClick}>
               <Pencil />
             </IconButton>
             <IconButton size="small" onClick={handleDeleteButtonClick}>
               <TrashIcon />
             </IconButton>
-          </StyledMessageButton>
+          </StyledMessageButtonContainer>
         )}
         <StyledMessageAuthor>{author}</StyledMessageAuthor>
       </StyledMessageBottom>
@@ -122,7 +122,7 @@ const StyledMessageBottom = styled.div`
   padding: 4px 0 4px 0;
 `;
 
-const StyledMessageButton = styled.div`
+const StyledMessageButtonContainer = styled.div`
   position: relative;
   left: -6px;
   top: 6px;
