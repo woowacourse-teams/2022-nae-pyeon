@@ -2,6 +2,7 @@ package com.woowacourse.naepyeon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.domain.Member;
@@ -74,14 +75,128 @@ class MessageServiceTest {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId =
                 messageService.saveMessage(
-                        MessageRequestDto.of(messageRequest.getContent(), messageRequest.getColor()),
+                        MessageRequestDto.publicRequest(messageRequest.getContent(), messageRequest.getColor()),
                         rollingpaper.getId(), author.getId()
                 );
-
-        final MessageResponseDto messageResponse = messageService.findMessage(messageId, rollingpaper.getId());
+        final MessageResponseDto messageResponse =
+                messageService.findMessage(messageId, rollingpaper.getId(), author.getId());
 
         assertThat(messageResponse).extracting("content", "from", "authorId")
                 .containsExactly(messageRequest.getContent(), "이케이", author.getId());
+    }
+
+    @Test
+    @DisplayName("익명 메시지일 경우, 조회자가 누구든지 상관없이 닉네임은 빈 문자열로 넘겨준다.")
+    void findAnonymousMessage() {
+        final Long messageId =
+                messageService.saveMessage(
+                        new MessageRequestDto("안녕하세요", "green", true, false),
+                        rollingpaper.getId(), author.getId()
+                );
+        final MessageResponseDto messageResponse =
+                messageService.findMessage(messageId, rollingpaper.getId(), author.getId());
+
+        assertThat(messageResponse.getFrom()).isEqualTo("");
+    }
+
+    @Test
+    @DisplayName("비밀 메시지인 경우, 작성자는 내용을 확인할 수 있다.")
+    void findSecretMessageWithAuthor() {
+        final Long messageId =
+                messageService.saveMessage(
+                        new MessageRequestDto("안녕하세요", "green", false, true),
+                        rollingpaper.getId(), author.getId()
+                );
+        final MessageResponseDto messageResponse =
+                messageService.findMessage(messageId, rollingpaper.getId(), author.getId());
+
+        assertThat(messageResponse.getContent()).isEqualTo("안녕하세요");
+    }
+
+    @Test
+    @DisplayName("비밀 메시지인 경우, 롤링페이퍼 수신인은 내용을 확인할 수 있다.")
+    void findSecretMessageWithAddressee() {
+        final Long messageId =
+                messageService.saveMessage(
+                        new MessageRequestDto("안녕하세요", "green", false, true),
+                        rollingpaper.getId(), author.getId()
+                );
+        final MessageResponseDto messageResponse =
+                messageService.findMessage(messageId, rollingpaper.getId(), member.getId());
+
+        assertThat(messageResponse.getContent()).isEqualTo("안녕하세요");
+    }
+
+    @Test
+    @DisplayName("비밀 메시지인 경우, 작성자와 롤링페이퍼 수신인 외의 회원은 내용을 빈 문자열로 넘겨준다.")
+    void findSecretMessage() {
+        final Long messageId =
+                messageService.saveMessage(
+                        new MessageRequestDto("안녕하세요", "green", false, true),
+                        rollingpaper.getId(), author.getId()
+                );
+        final MessageResponseDto messageResponse =
+                messageService.findMessage(messageId, rollingpaper.getId(), otherAuthor.getId());
+
+        assertThat(messageResponse.getContent()).isEqualTo("");
+    }
+
+    @Test
+    @DisplayName("비밀글이 아닌 경우 visible은 항상 true이다.")
+    void isVisibleWithNotSecret() {
+        final Long messageId =
+                messageService.saveMessage(
+                        new MessageRequestDto("안녕하세요", "green", true, false),
+                        rollingpaper.getId(), author.getId()
+                );
+        final MessageResponseDto messageResponse =
+                messageService.findMessage(messageId, rollingpaper.getId(), otherAuthor.getId());
+
+        assertThat(messageResponse.isVisible()).isTrue();
+    }
+
+    @Test
+    @DisplayName("비밀글인 경우, 작성자와 수신인 외의 경우에 visible은 false이다.")
+    void isVisibleWithSecret() {
+        final Long messageId =
+                messageService.saveMessage(
+                        new MessageRequestDto("안녕하세요", "green", true, true),
+                        rollingpaper.getId(), author.getId()
+                );
+        final MessageResponseDto messageResponse1 =
+                messageService.findMessage(messageId, rollingpaper.getId(), member.getId());
+        final MessageResponseDto messageResponse2 =
+                messageService.findMessage(messageId, rollingpaper.getId(), author.getId());
+        final MessageResponseDto messageResponse3 =
+                messageService.findMessage(messageId, rollingpaper.getId(), otherAuthor.getId());
+
+        assertAll(
+                () -> assertThat(messageResponse1.isVisible()).isTrue(),
+                () -> assertThat(messageResponse2.isVisible()).isTrue(),
+                () -> assertThat(messageResponse3.isVisible()).isFalse()
+        );
+    }
+
+    @Test
+    @DisplayName("작성자와 수신인 외의 경우에 editable은 false이다.")
+    void isEditable() {
+        final Long messageId =
+                messageService.saveMessage(
+                        new MessageRequestDto("안녕하세요", "green", true, false),
+                        rollingpaper.getId(), author.getId()
+                );
+        final MessageResponseDto messageResponse1 =
+                messageService.findMessage(messageId, rollingpaper.getId(), member.getId());
+        final MessageResponseDto messageResponse2 =
+                messageService.findMessage(messageId, rollingpaper.getId(), author.getId());
+        final MessageResponseDto messageResponse3 =
+                messageService.findMessage(messageId, rollingpaper.getId(), otherAuthor.getId());
+
+        assertAll(
+                () -> assertThat(messageResponse1.isEditable()).isFalse(),
+                () -> assertThat(messageResponse2.isEditable()).isTrue(),
+                () -> assertThat(messageResponse3.isEditable()).isFalse()
+        );
     }
 
     @Test
@@ -89,15 +204,16 @@ class MessageServiceTest {
     void findWrittenMessages() {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId =
-                messageService.saveMessage(MessageRequestDto.of(messageRequest.getContent(), messageRequest.getColor()),
+                messageService.saveMessage(
+                        MessageRequestDto.publicRequest(messageRequest.getContent(), messageRequest.getColor()),
                         rollingpaper.getId(), author.getId()
                 );
         messageService.saveMessage(
-                MessageRequestDto.of(messageRequest.getContent(), messageRequest.getColor()),
+                MessageRequestDto.publicRequest(messageRequest.getContent(), messageRequest.getColor()),
                 rollingpaper.getId(), otherAuthor.getId()
         );
         final Long messageId2 = messageService.saveMessage(
-                MessageRequestDto.of(messageRequest.getContent(), messageRequest.getColor()),
+                MessageRequestDto.publicRequest(messageRequest.getContent(), messageRequest.getColor()),
                 rollingpaper.getId(), author.getId()
         );
 
@@ -136,7 +252,8 @@ class MessageServiceTest {
     void updateContent() {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId =
-                messageService.saveMessage(MessageRequestDto.of(messageRequest.getContent(), messageRequest.getColor()),
+                messageService.saveMessage(
+                        MessageRequestDto.publicRequest(messageRequest.getContent(), messageRequest.getColor()),
                         rollingpaper.getId(), author.getId()
                 );
         final String expectedContent = "안녕하지 못합니다.";
@@ -144,9 +261,10 @@ class MessageServiceTest {
 
         messageService.updateMessage(messageId, expectedContent, expectedColor, author.getId());
 
-        final MessageResponseDto actual = messageService.findMessage(messageId, rollingpaper.getId());
+        final MessageResponseDto actual = messageService.findMessage(messageId, rollingpaper.getId(), author.getId());
         final MessageResponseDto expected =
-                new MessageResponseDto(messageId, expectedContent, "이케이", author.getId(), expectedColor, false, false);
+                new MessageResponseDto(messageId, expectedContent, "이케이", author.getId(),
+                        expectedColor, false, false, true, true);
         assertThat(actual)
                 .usingRecursiveComparison()
                 .isEqualTo(expected);
@@ -157,7 +275,7 @@ class MessageServiceTest {
     void updateContentWithNotAuthor() {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
-                MessageRequestDto.of(messageRequest.getContent(), messageRequest.getColor()),
+                MessageRequestDto.publicRequest(messageRequest.getContent(), messageRequest.getColor()),
                 rollingpaper.getId(), author.getId()
         );
         final String expected = "안녕하지 못합니다.";
@@ -172,13 +290,13 @@ class MessageServiceTest {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId =
                 messageService.saveMessage(
-                        MessageRequestDto.of(messageRequest.getContent(), messageRequest.getColor()),
+                        MessageRequestDto.publicRequest(messageRequest.getContent(), messageRequest.getColor()),
                         rollingpaper.getId(), author.getId()
                 );
 
         messageService.deleteMessage(messageId, author.getId());
 
-        assertThatThrownBy(() -> messageService.findMessage(messageId, rollingpaper.getId()))
+        assertThatThrownBy(() -> messageService.findMessage(messageId, rollingpaper.getId(), author.getId()))
                 .isInstanceOf(NotFoundMessageException.class);
     }
 
@@ -188,7 +306,7 @@ class MessageServiceTest {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId =
                 messageService.saveMessage(
-                        MessageRequestDto.of(messageRequest.getContent(), messageRequest.getColor()),
+                        MessageRequestDto.publicRequest(messageRequest.getContent(), messageRequest.getColor()),
                         rollingpaper.getId(), author.getId()
                 );
 

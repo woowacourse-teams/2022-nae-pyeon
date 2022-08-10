@@ -18,8 +18,11 @@ public class MessageResponseDto {
     private String color;
     private boolean anonymous;
     private boolean secret;
+    private boolean visible;
+    private boolean editable;
 
-    public static MessageResponseDto of(final Message message, final String nickname, final Long authorId) {
+    public static MessageResponseDto of(final Message message, final String nickname, final Long authorId,
+                                        final boolean visible, final boolean editable) {
         return new MessageResponseDto(
                 message.getId(),
                 message.getContent(),
@@ -27,7 +30,24 @@ public class MessageResponseDto {
                 authorId,
                 message.getColor(),
                 message.isAnonymous(),
-                message.isSecret()
+                message.isSecret(),
+                visible,
+                editable
+        );
+    }
+
+    public static MessageResponseDto of(final Message message, final String content, final String nickname,
+                                        final Long authorId, final boolean visible, final boolean editable) {
+        return new MessageResponseDto(
+                message.getId(),
+                content,
+                nickname,
+                authorId,
+                message.getColor(),
+                message.isAnonymous(),
+                message.isSecret(),
+                visible,
+                editable
         );
     }
 }

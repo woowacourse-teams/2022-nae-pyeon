@@ -101,7 +101,7 @@ class MessageAcceptanceTest extends AcceptanceTest {
         final MessageResponseDto actual = 메시지_조회(seungpang, rollingpaperId, messageId)
                 .as(MessageResponseDto.class);
         final MessageResponseDto expected = new MessageResponseDto(actual.getId(), "오늘 뭐해??", actual.getFrom(),
-                actual.getAuthorId(), "red", false, false);
+                actual.getAuthorId(), "red", false, false, true, true);
 
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value()),

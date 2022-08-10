@@ -94,10 +94,10 @@ public abstract class TestSupport {
         rollingpaperId1 = rollingpaperService.createRollingpaper("이순신 환영해", teamId, memberId1, memberId2);
         rollingpaperId2 = rollingpaperService.createRollingpaper("홍길동 반가워", teamId, memberId2, memberId1);
 
-        messageId = messageService.saveMessage(MessageRequestDto.of("생일축하해!", "#123456"), rollingpaperId1, memberId2);
-        messageService.saveMessage(MessageRequestDto.of("환영합니다", "#123456"), rollingpaperId1, memberId1);
-        messageService.saveMessage(MessageRequestDto.of("감사합니다!", "#123456"), rollingpaperId2, memberId1);
-        messageService.saveMessage(MessageRequestDto.of("많은 가르침 받았습니다.", "#123456"), rollingpaperId2, memberId2);
+        messageId = messageService.saveMessage(MessageRequestDto.publicRequest("생일축하해!", "#123456"), rollingpaperId1, memberId2);
+        messageService.saveMessage(MessageRequestDto.publicRequest("환영합니다", "#123456"), rollingpaperId1, memberId1);
+        messageService.saveMessage(MessageRequestDto.publicRequest("감사합니다!", "#123456"), rollingpaperId2, memberId1);
+        messageService.saveMessage(MessageRequestDto.publicRequest("많은 가르침 받았습니다.", "#123456"), rollingpaperId2, memberId2);
     }
 
     protected String readJson(final String path) throws IOException {

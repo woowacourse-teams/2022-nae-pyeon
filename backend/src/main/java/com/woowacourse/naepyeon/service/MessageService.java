@@ -40,22 +40,28 @@ public class MessageService {
                 .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
         final Member author = memberRepository.findById(authorId)
                 .orElseThrow(() -> new NotFoundMemberException(authorId));
-        final Message message =
-                new Message(messageRequestDto.getContent(), messageRequestDto.getColor(), author, rollingpaper,
-                        messageRequestDto.isAnonymous(), messageRequestDto.isSecret());
+        final Message message = new Message(messageRequestDto.getContent(), messageRequestDto.getColor(),
+                author, rollingpaper, messageRequestDto.isAnonymous(), messageRequestDto.isSecret());
         return messageRepository.save(message);
     }
 
     @Transactional(readOnly = true)
-    public List<MessageResponseDto> findMessages(final Long rollingpaperId, final Long teamId) {
+    public List<MessageResponseDto> findMessages(
+            final Long rollingpaperId, final Long teamId, final Long loginMemberId) {
+        final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
+                .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
         return messageRepository.findAllByRollingpaperId(rollingpaperId)
                 .stream()
                 .map(message -> {
                     final Member author = message.getAuthor();
+                    final String nickname = findMessageWriterNickname(teamId, message);
                     return MessageResponseDto.of(
                             message,
-                            findMessageWriterNickname(teamId, message),
-                            author.getId()
+                            hideContentWhenSecret(message, rollingpaper, message.getContent(), loginMemberId),
+                            hideAuthorNicknameWhenAnonymous(message, nickname),
+                            author.getId(),
+                            checkVisibleToLoginMember(message, rollingpaper, loginMemberId),
+                            checkEditableToLoginMember(message, loginMemberId)
                     );
                 })
                 .collect(Collectors.toUnmodifiableList());
@@ -80,7 +86,7 @@ public class MessageService {
     }
 
     @Transactional(readOnly = true)
-    public MessageResponseDto findMessage(final Long messageId, final Long rollingpaperId) {
+    public MessageResponseDto findMessage(final Long messageId, final Long rollingpaperId, final Long loginMemberId) {
         final Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new NotFoundMessageException(messageId));
         final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
@@ -88,7 +94,42 @@ public class MessageService {
         final Team team = rollingpaper.getTeam();
         final Member author = message.getAuthor();
         final String nickname = findMessageWriterNickname(team.getId(), message);
-        return MessageResponseDto.of(message, nickname, author.getId());
+        final String responseNickname = hideAuthorNicknameWhenAnonymous(message, nickname);
+        final String responseContent = hideContentWhenSecret(message, rollingpaper, message.getContent(),
+                loginMemberId);
+        final boolean visible = checkVisibleToLoginMember(message, rollingpaper, loginMemberId);
+        final boolean editable = checkEditableToLoginMember(message, loginMemberId);
+        return MessageResponseDto.of(message, responseContent, responseNickname, author.getId(), visible, editable);
+    }
+
+    private String hideAuthorNicknameWhenAnonymous(final Message message, final String nickname) {
+        if (message.isAnonymous()) {
+            return "";
+        }
+        return nickname;
+    }
+
+    private String hideContentWhenSecret(final Message message, final Rollingpaper rollingpaper,
+                                         final String content, final Long loginMemberId) {
+        if (!message.isSecret()) {
+            return content;
+        }
+        if (message.isAuthor(loginMemberId) || rollingpaper.isAddressee(loginMemberId)) {
+            return content;
+        }
+        return "";
+    }
+
+    private boolean checkVisibleToLoginMember(
+            final Message message, final Rollingpaper rollingpaper, final Long loginMemberId) {
+        if (!message.isSecret()) {
+            return true;
+        }
+        return message.isAuthor(loginMemberId) || rollingpaper.isAddressee(loginMemberId);
+    }
+
+    private boolean checkEditableToLoginMember(final Message message, final Long loginMemberId) {
+        return message.isAuthor(loginMemberId);
     }
 
     public void updateMessage(final Long messageId, final String newContent, final String newColor,
