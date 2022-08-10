@@ -104,11 +104,6 @@ const StyledMessage = styled.div`
   padding: 20px 15px 10px;
 
   background-color: ${(props) => props.color};
-
-  @media only screen and (min-width: 600px) {
-    /* width: 180px; */
-    min-width: 300px;
-  }
 `;
 
 const StyledMessageContent = styled.div`
