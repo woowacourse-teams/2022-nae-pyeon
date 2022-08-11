@@ -98,11 +98,11 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
 
     let newSlicedMessageList;
     if (width < 960) {
-      newSlicedMessageList = divideArrayByIndexRemainder(messageList, 2);
+      newSlicedMessageList = [messageList];
     } else if (width < 1280) {
-      newSlicedMessageList = divideArrayByIndexRemainder(messageList, 3);
+      newSlicedMessageList = divideArrayByIndexRemainder(messageList, 2);
     } else {
-      newSlicedMessageList = divideArrayByIndexRemainder(messageList, 4);
+      newSlicedMessageList = divideArrayByIndexRemainder(messageList, 3);
     }
 
     setSlicedMessageLists(newSlicedMessageList);
@@ -236,6 +236,7 @@ const StyledLetterPaperTop = styled.div`
 `;
 
 const StyledTo = styled.h3`
+  font-size: 18px;
   font-weight: 600;
 `;
 
@@ -251,7 +252,7 @@ const StyledMessageList = styled.div`
 
 const StyledSlicedMessageLists = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   grid-row-gap: 20px;
   grid-column-gap: 20px;
   justify-items: center;
@@ -259,11 +260,11 @@ const StyledSlicedMessageLists = styled.div`
   height: calc(100% - 40px);
 
   @media only screen and (min-width: 960px) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   @media only screen and (min-width: 1280px) {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 `;
 

@@ -38,23 +38,15 @@ const MessageColorPicker = ({ onClickRadio, color }: ColorPickerProps) => {
 };
 
 const StyledColorPickerContainer = styled.div`
-  position: absolute;
-  left: 130px;
-  margin-left: 4px;
-
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
 
   padding: 10px 4px;
 
   border-radius: 4px;
   background-color: ${({ theme }) => theme.colors.GRAY_700};
-
-  @media only screen and (min-width: 600px) {
-    left: 180px;
-    margin-left: 8px;
-  }
 `;
 
 const StyledRadio = styled.div<StyledRadioProps>`
@@ -62,6 +54,7 @@ const StyledRadio = styled.div<StyledRadioProps>`
   align-items: center;
   justify-content: center;
 
+  box-sizing: content-box;
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -80,6 +73,7 @@ const StyledRadio = styled.div<StyledRadioProps>`
 const StyledInput = styled.input`
   position: absolute;
   overflow: hidden;
+
   width: 1px;
   height: 1px;
   padding: 0;

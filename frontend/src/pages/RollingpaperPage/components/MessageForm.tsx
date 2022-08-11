@@ -3,6 +3,10 @@ import styled from "@emotion/styled";
 import MessageTextArea from "@/pages/RollingpaperPage/components/MessageTextArea";
 import MessageColorPicker from "@/pages/RollingpaperPage/components/MessageColorPicker";
 
+import LabeledCheckBox from "@/components/LabeledCheckBox";
+
+import useCheckBox from "@/hooks/useCheckBox";
+
 import CheckIcon from "@/assets/icons/bx-check.svg";
 import XIcon from "@/assets/icons/bx-x.svg";
 
@@ -19,17 +23,19 @@ type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const MessageSubmitButton = ({ onClick }: ButtonAttributes) => {
   return (
-    <CircleButton type="button" onClick={onClick}>
+    <StyledMessageFormButton type="button" onClick={onClick}>
       <CheckIcon />
-    </CircleButton>
+      저장
+    </StyledMessageFormButton>
   );
 };
 
 const MessageCancelButton = ({ onClick }: ButtonAttributes) => {
   return (
-    <CircleButton type="button" onClick={onClick}>
+    <StyledMessageFormButton type="button" onClick={onClick}>
       <XIcon />
-    </CircleButton>
+      취소
+    </StyledMessageFormButton>
   );
 };
 
@@ -41,6 +47,14 @@ export const MessageForm = ({
   color,
   onClickColor,
 }: MessageFormProps) => {
+  const {
+    checked: anonymousChecked,
+    handleChange: handleAnonymousCheckBoxChange,
+  } = useCheckBox({ initialCheckedState: false });
+
+  const { checked: secretChecked, handleChange: handleSecretCheckBoxChange } =
+    useCheckBox({ initialCheckedState: false });
+
   const handleTextAreaChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
     e
   ) => {
@@ -52,7 +66,7 @@ export const MessageForm = ({
 
   return (
     <>
-      <Background />
+      <StyledBackground />
       <StyledMessageForm>
         <MessageTextArea
           placeholder="메시지를 입력해보세요!"
@@ -60,11 +74,28 @@ export const MessageForm = ({
           onChange={handleTextAreaChange}
           backgroundColor={color}
         />
-        <MessageColorPicker onClickRadio={onClickColor} color={color} />
-        <IconButtonContainer>
+        <StyledMessageFormBottom>
+          <StyledCheckBoxContainer>
+            <LabeledCheckBox
+              labeledText="익명"
+              checked={anonymousChecked}
+              onChange={handleAnonymousCheckBoxChange}
+            />
+            <LabeledCheckBox
+              labeledText="비밀글"
+              checked={secretChecked}
+              onChange={handleSecretCheckBoxChange}
+            />
+          </StyledCheckBoxContainer>
+          <StyledTextLength>{content.length}/500</StyledTextLength>
+        </StyledMessageFormBottom>
+        <StyledMessageColorPickerWrapper>
+          <MessageColorPicker onClickRadio={onClickColor} color={color} />
+        </StyledMessageColorPickerWrapper>
+        <StyledIconButtonContainer>
           <MessageSubmitButton onClick={onSubmit} />
           <MessageCancelButton onClick={onCancel} />
-        </IconButtonContainer>
+        </StyledIconButtonContainer>
       </StyledMessageForm>
     </>
   );
@@ -76,7 +107,43 @@ const StyledMessageForm = styled.form`
   flex-direction: column;
 `;
 
-const Background = styled.div`
+const StyledMessageFormBottom = styled.div`
+  position: absolute;
+  bottom: 0;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  height: max-content;
+  padding: 0 15px 15px;
+`;
+
+const StyledCheckBoxContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+`;
+
+const StyledTextLength = styled.div`
+  display: inline;
+  align-self: flex-end;
+
+  color: ${({ theme }) => theme.colors.GRAY_600};
+`;
+
+const StyledMessageColorPickerWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -105%);
+
+  width: 80%;
+`;
+
+const StyledBackground = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -87,11 +154,18 @@ const Background = styled.div`
   background: transparent;
 `;
 
-const IconButtonContainer = styled.div`
+const StyledIconButtonContainer = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 110%);
+
+  width: 90%;
+
   display: flex;
   flex-direction: row;
   align-self: center;
-  gap: 20px;
+  justify-content: space-evenly;
 
   margin-top: 4px;
 
@@ -100,25 +174,32 @@ const IconButtonContainer = styled.div`
   }
 `;
 
-const CircleButton = styled.button`
-  width: 32px;
+const StyledMessageFormButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  width: 80px;
   height: 32px;
 
   font-size: 18px;
 
   border: none;
-  border-radius: 50%;
+  border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.GRAY_700};
+  color: ${({ theme }) => theme.colors.GRAY_200};
   fill: ${({ theme }) => theme.colors.GRAY_200};
 
   &:hover {
     border: 2px solid ${({ theme }) => theme.colors.GRAY_700};
     background-color: ${({ theme }) => theme.colors.GRAY_300};
+    color: ${({ theme }) => theme.colors.GRAY_800};
     fill: ${({ theme }) => theme.colors.GRAY_800};
   }
 
   @media only screen and (min-width: 600px) {
-    width: 36px;
+    width: 120px;
     height: 36px;
 
     font-size: 20px;
