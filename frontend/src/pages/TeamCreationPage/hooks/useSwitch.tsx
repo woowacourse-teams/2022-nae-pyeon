@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
-const useToggle = () => {
+const useSwitch = () => {
   const [isChecked, setIsChecked] = useState(false);
 
-  const handleToggleClick = () => {
+  const handleSwitchClick = () => {
     setIsChecked((prev) => !prev);
   };
 
-  return { isChecked, handleToggleClick };
+  return { isChecked, handleSwitchClick };
 };
 
-export default useToggle;
+export default useSwitch;

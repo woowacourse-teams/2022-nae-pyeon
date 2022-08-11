@@ -1,24 +1,20 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
+import Switch from "@/components/Switch";
 
-interface LabeledToggleProp {
+interface LabeledSwitchProp {
   labelText: string;
   isChecked: boolean;
   onClick: React.MouseEventHandler<HTMLDivElement>;
 }
 
-interface StyledCircleProp {
-  checked: boolean;
-}
-
-export const LabeledToggle = ({
+export const LabeledSwitch = ({
   labelText,
   isChecked,
   onClick,
-}: LabeledToggleProp) => {
+}: LabeledSwitchProp) => {
   return (
-    <StyledLabeledToggle>
+    <StyledLabeledSwitch>
       {labelText}
       <StyledInput type="checkbox" checked={isChecked} />
       <StyledMessage>
@@ -33,14 +29,12 @@ export const LabeledToggle = ({
           "모임이 비공개로 설정된 경우 초대링크를 통해서만 참여할 수 있습니다."
         )}
       </StyledMessage>
-      <ToggleBtn onClick={onClick}>
-        <Circle checked={isChecked} />
-      </ToggleBtn>
-    </StyledLabeledToggle>
+      <Switch onClick={onClick} isChecked={isChecked} />
+    </StyledLabeledSwitch>
   );
 };
 
-const StyledLabeledToggle = styled.label`
+const StyledLabeledSwitch = styled.label`
   display: flex;
   flex-direction: column;
 
@@ -67,40 +61,4 @@ const StyledBold = styled.span`
   color: ${({ theme }) => theme.colors.GRAY_600};
 `;
 
-const ToggleBtn = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 60px;
-  height: 30px;
-  margin-top: 4px;
-
-  border-radius: 20px;
-  border: none;
-
-  cursor: pointer;
-  background-color: ${({ theme }) => theme.colors.GRAY_300};
-
-  transition: all 0.5s ease-in-out;
-`;
-
-const Circle = styled.div<StyledCircleProp>`
-  background-color: white;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  position: absolute;
-  left: 5%;
-  transition: all 0.5s ease-in-out;
-
-  ${(props) =>
-    props.checked &&
-    css`
-      transform: translate(30px, 0);
-      transition: all 0.5s ease-in-out;
-    `}
-`;
-
-export default LabeledToggle;
+export default LabeledSwitch;
