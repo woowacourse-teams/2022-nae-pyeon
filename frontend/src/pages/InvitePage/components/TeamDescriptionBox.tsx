@@ -16,8 +16,7 @@ const TeamDescriptionBox = ({
 }: TeamDescriptionBoxProp) => {
   return (
     <StyledTeamDescriptionBox color={color}>
-      <StyledEmoji>{emoji}</StyledEmoji>
-      <StyledTitle>{name}</StyledTitle>
+      <h3>{`${emoji} ${name}`}</h3>
       <StyledDescription>{description}</StyledDescription>
     </StyledTeamDescriptionBox>
   );
@@ -35,15 +34,13 @@ const StyledTeamDescriptionBox = styled.div`
   border-radius: 8px;
 
   background-color: ${(prop) => `${prop.color}AB`};
-`;
 
-const StyledEmoji = styled.div`
-  font-size: 32px;
-`;
+  h3 {
+    margin-top: 10px;
 
-const StyledTitle = styled.h3`
-  font-size: 32px;
-  font-weight: 600;
+    font-size: 32px;
+    font-weight: 600;
+  }
 `;
 
 const StyledDescription = styled.div``;
