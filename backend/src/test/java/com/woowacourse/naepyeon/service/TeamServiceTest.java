@@ -21,6 +21,7 @@ import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
+import com.woowacourse.naepyeon.support.InviteTokenProvider;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,6 +49,9 @@ class TeamServiceTest {
     private MemberRepository memberRepository;
     @Autowired
     private TeamParticipationRepository teamParticipationRepository;
+
+    @Autowired
+    private InviteTokenProvider inviteTokenProvider;
 
     @BeforeEach
     void setUp() {
@@ -343,5 +347,38 @@ class TeamServiceTest {
     void updateNicknameNotExistTeam() {
         assertThatThrownBy(() -> teamService.updateMyInfo(team1.getId() + 10000L, member.getId(), "해커"))
                 .isInstanceOf(NotFoundTeamException.class);
+    }
+
+    @Test
+    @DisplayName("팀 id를 받아 해당 팀의 초대토큰을 생성한다.")
+    void createInviteToken() {
+        final String inviteToken = teamService.createInviteToken(team1.getId());
+
+        final Long tokenTeamId = inviteTokenProvider.getTeamId(inviteToken);
+
+        assertThat(tokenTeamId).isEqualTo(team1.getId());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 팀의 초대토큰을 생성하려 할 경우 예외를 발생시킨다.")
+    void createInviteTokenWithNotExistTeam() {
+        assertThatThrownBy(() -> teamService.createInviteToken(9999L))
+                .isInstanceOf(NotFoundTeamException.class);
+    }
+
+    @Test
+    @DisplayName("초대 토큰으로 멤버를 팀에 가입시킨다.")
+    void inviteJoin() {
+        final String inviteToken = teamService.createInviteToken(team1.getId());
+
+        final Long teamParticipationId = teamService.inviteJoin(inviteToken, member.getId(), "가입할래요");
+
+        final TeamParticipation teamParticipation = teamParticipationRepository.findById(teamParticipationId)
+                .get();
+
+        assertAll(
+                () -> assertThat(teamParticipation.getMember().getId()).isEqualTo(member.getId()),
+                () -> assertThat(teamParticipation.getTeam().getId()).isEqualTo(team1.getId())
+        );
     }
 }

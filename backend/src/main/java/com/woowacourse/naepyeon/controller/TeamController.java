@@ -2,8 +2,11 @@ package com.woowacourse.naepyeon.controller;
 
 import com.woowacourse.naepyeon.controller.auth.AuthenticationPrincipal;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
+import com.woowacourse.naepyeon.controller.dto.InviteJoinRequest;
+import com.woowacourse.naepyeon.controller.dto.InviteTokenResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
+import com.woowacourse.naepyeon.controller.dto.TeamIdResponse;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
@@ -120,6 +123,37 @@ public class TeamController {
             @PathVariable final Long teamId,
             @RequestBody final UpdateTeamParticipantRequest updateTeamParticipantRequest) {
         teamService.updateMyInfo(teamId, loginMemberRequest.getId(), updateTeamParticipantRequest.getNickname());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{teamId}/invite")
+    public ResponseEntity<InviteTokenResponse> createInviteToken(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @PathVariable final Long teamId) {
+        if (!teamService.isJoinedMember(loginMemberRequest.getId(), teamId)) {
+            throw new UncertificationTeamMemberException(teamId, loginMemberRequest.getId());
+        }
+        final String inviteToken = teamService.createInviteToken(teamId);
+        return ResponseEntity.ok(new InviteTokenResponse(inviteToken));
+    }
+
+    @GetMapping("/invite")
+    public ResponseEntity<TeamIdResponse> getTeamIdByInviteToken(
+            @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @RequestParam("inviteToken") final String inviteToken) {
+
+        final Long teamId = teamService.getTeamIdByToken(inviteToken);
+        return ResponseEntity.ok(new TeamIdResponse(teamId));
+    }
+
+    @PostMapping("/invite/join")
+    public ResponseEntity<Void> inviteJoin(@AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+                                           @RequestBody final InviteJoinRequest inviteJoinRequest) {
+        teamService.inviteJoin(
+                inviteJoinRequest.getInviteToken(),
+                loginMemberRequest.getId(),
+                inviteJoinRequest.getNickname()
+        );
         return ResponseEntity.noContent().build();
     }
 }

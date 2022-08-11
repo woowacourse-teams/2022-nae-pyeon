@@ -25,6 +25,7 @@ security:
     token:
       expire-length: ${JWT_EXPIRE_LENGTH}
       secret-key: ${JWT_SECRET_KEY}
+      invite-expire-length: 86400000
 
 kakao:
   admin-key: ${KAKAO_ADMIN_KEY}

@@ -31,6 +31,8 @@ security:
       secret-key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.ih1aovtQShabQ7l0cINw4k1fagApg3qLWiB8Kt59Lno
       expire-length: 3600000
 
+invite-expire-length: 86400000
+
 kakao:
   admin-key: admin_key
   client-id: client_id

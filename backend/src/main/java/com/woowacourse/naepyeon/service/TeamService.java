@@ -17,6 +17,7 @@ import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
+import com.woowacourse.naepyeon.support.InviteTokenProvider;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class TeamService {
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
     private final TeamParticipationRepository teamParticipationRepository;
+    private final InviteTokenProvider inviteTokenProvider;
 
     @Transactional
     public Long save(final TeamRequest teamRequest, final Long memberId) {
@@ -160,5 +162,22 @@ public class TeamService {
             throw new NotFoundTeamException(teamId);
         }
         return teamParticipationRepository.isJoinedMember(memberId, teamId);
+    }
+
+    public String createInviteToken(final Long teamId) {
+        if (teamRepository.findById(teamId).isEmpty()) {
+            throw new NotFoundTeamException(teamId);
+        }
+        return inviteTokenProvider.createInviteToken(teamId);
+    }
+
+    public Long getTeamIdByToken(final String inviteToken) {
+        return inviteTokenProvider.getTeamId(inviteToken);
+    }
+
+    public Long inviteJoin(final String inviteToken, final Long memberId, final String nickname) {
+        final Long teamId = inviteTokenProvider.getTeamId(inviteToken);
+
+        return joinMember(teamId, memberId, nickname);
     }
 }
