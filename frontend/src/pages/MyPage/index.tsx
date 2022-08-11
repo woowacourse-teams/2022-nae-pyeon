@@ -135,9 +135,18 @@ const MyPage = () => {
       </StyledTabs>
 
       {tab === TAB.RECEIVED_PAPER ? (
-        <RollingpaperList maxPage={responseReceivedRollingpapers.totalCount} />
+        <RollingpaperList
+          lastPage={Math.ceil(
+            responseReceivedRollingpapers.totalCount /
+              MYPAGE_ROLLINGPAPER_PAGING_COUNT
+          )}
+        />
       ) : (
-        <MessageList maxPage={responseSentMessages.totalCount} />
+        <MessageList
+          lastPage={Math.ceil(
+            responseSentMessages.totalCount / MYPAGE_ROLLINGPAPER_PAGING_COUNT
+          )}
+        />
       )}
     </>
   );

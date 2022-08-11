@@ -14,12 +14,12 @@ import { ResponseSentMessages } from "@/types";
 import usePaging from "@/hooks/usePaging";
 
 interface MessageListProp {
-  maxPage: number;
+  lastPage: number;
 }
 
-const MessageList = ({ maxPage }: MessageListProp) => {
+const MessageList = ({ lastPage }: MessageListProp) => {
   const { currentPage, handleNumberClick, handleNextClick, handlePrevClick } =
-    usePaging(maxPage);
+    usePaging(lastPage);
 
   const { isLoading, isError, error, data } = useQuery<ResponseSentMessages>(
     ["sent-messages", currentPage],
@@ -45,7 +45,7 @@ const MessageList = ({ maxPage }: MessageListProp) => {
       <StyledPaging>
         <Paging
           currentPage={currentPage}
-          maxPage={maxPage}
+          lastPage={lastPage}
           handleNumberClick={handleNumberClick}
           handleNextClick={handleNextClick}
           handlePrevClick={handlePrevClick}

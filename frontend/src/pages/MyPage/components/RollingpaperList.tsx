@@ -14,12 +14,12 @@ import { ResponseReceivedRollingpapers } from "@/types";
 import usePaging from "@/hooks/usePaging";
 
 interface RollingpaperListProp {
-  maxPage: number;
+  lastPage: number;
 }
 
-const RollingpaperList = ({ maxPage }: RollingpaperListProp) => {
+const RollingpaperList = ({ lastPage }: RollingpaperListProp) => {
   const { currentPage, handleNumberClick, handleNextClick, handlePrevClick } =
-    usePaging(maxPage);
+    usePaging(lastPage);
 
   const { isLoading, isError, error, data } =
     useQuery<ResponseReceivedRollingpapers>(
@@ -50,7 +50,7 @@ const RollingpaperList = ({ maxPage }: RollingpaperListProp) => {
       <StyledPaging>
         <Paging
           currentPage={currentPage}
-          maxPage={maxPage}
+          lastPage={lastPage}
           handleNumberClick={handleNumberClick}
           handleNextClick={handleNextClick}
           handlePrevClick={handlePrevClick}

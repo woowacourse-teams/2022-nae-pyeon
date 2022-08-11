@@ -8,7 +8,7 @@ import RightIcon from "@/assets/icons/bx-chevron-right.svg";
 
 interface PagingProp {
   currentPage: number;
-  maxPage: number;
+  lastPage: number;
   handleNumberClick: (number: number) => React.MouseEventHandler;
   handleNextClick: React.MouseEventHandler;
   handlePrevClick: React.MouseEventHandler;
@@ -18,11 +18,11 @@ type StyledPaging = {
   isCurrent: boolean;
 };
 
-const MAX_PAGE_COUNT = 7;
+const MAX_PAGE_COUNT = 5;
 
 const Paging = ({
   currentPage,
-  maxPage,
+  lastPage,
   handleNumberClick,
   handleNextClick,
   handlePrevClick,
@@ -33,11 +33,11 @@ const Paging = ({
         <LeftIcon />
       </IconButton>
       {currentPage < Math.ceil(MAX_PAGE_COUNT / 2) ||
-      maxPage <= MAX_PAGE_COUNT ? (
+      lastPage <= MAX_PAGE_COUNT ? (
         <StyledPageButtons>
           {[
             ...Array(
-              maxPage > MAX_PAGE_COUNT ? MAX_PAGE_COUNT : maxPage
+              lastPage > MAX_PAGE_COUNT ? MAX_PAGE_COUNT : lastPage
             ).keys(),
           ].map((num) => (
             <StyledPage
@@ -49,15 +49,15 @@ const Paging = ({
             </StyledPage>
           ))}
         </StyledPageButtons>
-      ) : currentPage > maxPage - Math.ceil(MAX_PAGE_COUNT / 2) ? (
+      ) : currentPage > lastPage - Math.ceil(MAX_PAGE_COUNT / 2) ? (
         <StyledPageButtons>
           {[...Array(MAX_PAGE_COUNT).keys()].reverse().map((num) => (
             <StyledPage
-              isCurrent={currentPage === maxPage - num - 1}
+              isCurrent={currentPage === lastPage - num - 1}
               key={num}
-              onClick={handleNumberClick(maxPage - num - 1)}
+              onClick={handleNumberClick(lastPage - num - 1)}
             >
-              {maxPage - num}
+              {lastPage - num}
             </StyledPage>
           ))}
         </StyledPageButtons>
