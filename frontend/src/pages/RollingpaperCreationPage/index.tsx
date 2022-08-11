@@ -146,7 +146,7 @@ const RollingpaperCreationPage = () => {
           ref={ref}
           onChange={handleAutoInputChange}
           onFocus={handleAutoInputFocus}
-          onClick={handleListItemClick}
+          onClickListItem={handleListItemClick}
         />
         <Button
           type="submit"

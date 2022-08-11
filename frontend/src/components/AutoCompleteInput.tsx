@@ -4,17 +4,17 @@ import styled from "@emotion/styled";
 import SearchIcon from "@/assets/icons/bx-search.svg";
 
 interface AutoCompleteInputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onClick"> {
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   labelText?: string;
   autoCompleteList: string[];
   isOpen: boolean;
-  onClick: (item: string) => React.MouseEventHandler<HTMLElement>;
+  onClickListItem: (item: string) => React.MouseEventHandler<HTMLElement>;
 }
 
 const AutoCompleteInput = React.forwardRef<
   HTMLInputElement,
   AutoCompleteInputProps
->(({ labelText, autoCompleteList, isOpen, onClick, ...prop }, ref) => {
+>(({ labelText, autoCompleteList, isOpen, onClickListItem, ...prop }, ref) => {
   return (
     <StyledLabel>
       {labelText}
@@ -27,7 +27,7 @@ const AutoCompleteInput = React.forwardRef<
           {autoCompleteList.map((autocompleteListItem) => (
             <StyledAutocompleteListItem
               key={autocompleteListItem}
-              onClick={onClick(autocompleteListItem)}
+              onClick={onClickListItem(autocompleteListItem)}
             >
               {autocompleteListItem}
             </StyledAutocompleteListItem>
