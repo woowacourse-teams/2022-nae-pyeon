@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
 import UnderlineInput from "@/components/UnderlineInput";
@@ -6,6 +6,7 @@ import LineButton from "@/components/LineButton";
 
 import { REGEX } from "@/constants";
 import TeamDescriptionBox from "@/pages/InvitePage/components/TeamDescriptionBox";
+
 import useInput from "@/hooks/useInput";
 
 const InvitePage = () => {
