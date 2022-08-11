@@ -1,4 +1,4 @@
-import React, { useEffect, Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import styled from "@emotion/styled";
 import MessageTextArea from "@/pages/RollingpaperPage/components/MessageTextArea";
 import MessageColorPicker from "@/pages/RollingpaperPage/components/MessageColorPicker";
