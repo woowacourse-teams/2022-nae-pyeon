@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
 import UnderlineInput from "@/components/UnderlineInput";
@@ -7,8 +7,10 @@ import LineButton from "@/components/LineButton";
 import { REGEX } from "@/constants";
 import TeamDescriptionBox from "@/pages/InvitePage/components/TeamDescriptionBox";
 
+import useInput from "@/hooks/useInput";
+
 const InvitePage = () => {
-  const [nickname, setNickname] = useState("");
+  const { value: nickname, handleInputChange } = useInput("");
 
   const handleTeamJoinSubmit = () => {
     console.log("team join logic");
@@ -26,9 +28,9 @@ const InvitePage = () => {
         <p>모임에서 사용할 닉네임을 입력해주세요. (1 ~ 20자)</p>
         <UnderlineInput
           value={nickname}
-          setValue={setNickname}
           pattern={REGEX.TEAM_NICKNAME.source}
           errorMessage="1 ~ 20자 사이의 닉네임을 입력해주세요"
+          onChange={handleInputChange}
         />
         <LineButton type="submit">모임 가입하기</LineButton>
       </StyledJoinForm>

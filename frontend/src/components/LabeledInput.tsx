@@ -7,30 +7,17 @@ interface LabeledInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   labelText: string;
   errorMessage?: string;
-  setValue: (value: string) => void;
 }
 
 const LabeledInput = ({
-  type = "text",
   labelText,
-  placeholder,
-  pattern,
   errorMessage,
-  value,
-  setValue,
+  ...prop
 }: LabeledInputProps) => {
   return (
     <StyledLabel>
       {labelText}
-      <input
-        type={type}
-        value={value}
-        placeholder={placeholder}
-        pattern={pattern}
-        onChange={(e) => {
-          setValue(e.target.value);
-        }}
-      />
+      <input {...prop} />
       <div>
         <ErrorIcon />
         {errorMessage}
@@ -42,8 +29,8 @@ const LabeledInput = ({
 const StyledLabel = styled.label`
   display: flex;
   flex-direction: column;
-  width: 100%;
 
+  width: 100%;
   font-size: 14px;
   color: ${({ theme }) => theme.colors.GRAY_600};
 
@@ -55,7 +42,6 @@ const StyledLabel = styled.label`
     height: 48px;
     margin-top: 8px;
     padding: 0 10px;
-
     border: none;
     border-radius: 8px;
     background-color: ${({ theme }) => theme.colors.GRAY_100};
@@ -78,7 +64,6 @@ const StyledLabel = styled.label`
 
   div {
     visibility: hidden;
-
     margin-top: 8px;
     color: ${({ theme }) => theme.colors.RED_300};
 
@@ -86,7 +71,6 @@ const StyledLabel = styled.label`
       position: relative;
       top: 2px;
       margin-right: 4px;
-
       fill: ${({ theme }) => theme.colors.RED_300};
     }
   }

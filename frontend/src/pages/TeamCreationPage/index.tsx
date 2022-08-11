@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import styled from "@emotion/styled";
 
+import useInput from "@/hooks/useInput";
 import { appClient } from "@/api";
 
 import LabeledInput from "@/components/LabeledInput";
@@ -33,11 +34,13 @@ const colors = Object.values(COLORS).map((value, index) => ({
 }));
 
 const TeamCreationPage = () => {
-  const [teamName, setTeamName] = useState("");
   const [teamDescription, setTeamDescription] = useState("");
-  const [nickname, setNickname] = useState("");
   const [emoji, setEmoji] = useState("");
   const [color, setColor] = useState("");
+  const { value: teamName, handleInputChange: handleTeamNameChange } =
+    useInput("");
+  const { value: nickname, handleInputChange: handleNicknameChange } =
+    useInput("");
 
   const navigate = useNavigate();
   const { isChecked: isPrivateTeam, handleSwitchClick } = useSwitch();
@@ -97,8 +100,8 @@ const TeamCreationPage = () => {
         <LabeledInput
           labelText="모임명"
           value={teamName}
-          setValue={setTeamName}
           pattern={REGEX.TEAM_NAME.source}
+          onChange={handleTeamNameChange}
           errorMessage={"1~20자 사이의 모임명을 입력해주세요"}
         />
         <LabeledTextArea
@@ -112,8 +115,8 @@ const TeamCreationPage = () => {
         <LabeledInput
           labelText="나의 닉네임"
           value={nickname}
-          setValue={setNickname}
           pattern={REGEX.USERNAME.source}
+          onChange={handleNicknameChange}
           errorMessage={"2~20자 사이의 닉네임을 입력해주세요"}
         />
         <LabeledRadio
@@ -154,11 +157,10 @@ const TeamCreationPage = () => {
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
-
-  padding-bottom: 20px;
-
   gap: 20px;
-
+  
+  padding-bottom: 20px;
+  
   fieldset {
     margin-bottom: 20px;
   }

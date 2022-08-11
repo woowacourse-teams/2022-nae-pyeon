@@ -11,49 +11,26 @@ import UnderlineInput from "@/components/UnderlineInput";
 
 import { REGEX } from "@/constants";
 import { useSnackbar } from "@/context/SnackbarContext";
+import useInput from "@/hooks/useInput";
 
-interface TeamJoinModalFormProp {
+interface NicknameEditModalForm {
   onClickCloseButton: () => void;
-  mode: string;
 }
 
-interface TeamJoinFormInfo {
+interface NicknameEditFormInfo {
   nickname: string;
 }
 
-const MODE = {
-  JOIN: "join",
-  EDIT: "edit",
-} as const;
-
-const TeamNicknameModalForm = ({
+const NicknameEditModalForm = ({
   onClickCloseButton,
-  mode,
-}: TeamJoinModalFormProp) => {
+}: NicknameEditModalForm) => {
   const { openSnackbar } = useSnackbar();
   const { teamId } = useParams();
-  const [nickname, setNickname] = useState("");
-
-  const { mutate: joinTeam } = useMutation(
-    async ({ nickname }: TeamJoinFormInfo) => {
-      const response = await appClient.post(`/teams/${teamId}`, { nickname });
-      return response.data;
-    },
-    {
-      onSuccess: () => {
-        onClickCloseButton();
-        openSnackbar("모임 가입 완료");
-        queryClient.refetchQueries(["team", teamId]);
-        queryClient.refetchQueries(["rollingpaperList", teamId]);
-      },
-      onError: (error) => {
-        console.log(error);
-      },
-    }
-  );
+  const { value: nickname, handleInputChange: handleNicknameChange } =
+    useInput("");
 
   const { mutate: editTeamNickname } = useMutation(
-    async ({ nickname }: TeamJoinFormInfo) => {
+    async ({ nickname }: NicknameEditFormInfo) => {
       const response = await appClient.put(`/teams/${teamId}/me`, { nickname });
       return response.data;
     },
@@ -70,39 +47,27 @@ const TeamNicknameModalForm = ({
     }
   );
 
-  const handleTeamJoinSubmit =
-    (mode: string): React.FormEventHandler<HTMLFormElement> =>
-    (e) => {
-      e.preventDefault();
+  const handleTeamJoinSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
 
-      if (!REGEX.TEAM_NICKNAME.test(nickname)) {
-        alert("1 ~ 20자 사이의 닉네임을 입력해주세요");
-        return;
-      }
-
-      if (mode === MODE.JOIN) {
-        joinTeam({ nickname });
-      }
-
-      if (mode === MODE.EDIT) {
-        editTeamNickname({ nickname });
-      }
-    };
+    if (!REGEX.TEAM_NICKNAME.test(nickname)) {
+      alert("1 ~ 20자 사이의 닉네임을 입력해주세요");
+      return;
+    }
+    editTeamNickname({ nickname });
+  };
 
   return (
     <Modal onClickCloseButton={onClickCloseButton}>
-      <StyledJoinForm onSubmit={handleTeamJoinSubmit(mode)}>
+      <StyledJoinForm onSubmit={handleTeamJoinSubmit}>
         <p>모임에서 사용할 닉네임을 입력해주세요. (1 ~ 20자)</p>
         <UnderlineInput
           value={nickname}
-          setValue={setNickname}
           pattern={REGEX.TEAM_NICKNAME.source}
           errorMessage="1 ~ 20자 사이의 닉네임을 입력해주세요"
+          onChange={handleNicknameChange}
         />
-        {mode === MODE.JOIN && (
-          <LineButton type="submit">모임 가입하기</LineButton>
-        )}
-        {mode === MODE.EDIT && <LineButton type="submit">수정하기</LineButton>}
+        <LineButton type="submit">수정하기</LineButton>
       </StyledJoinForm>
     </Modal>
   );
@@ -125,4 +90,4 @@ const StyledJoinForm = styled.form`
   }
 `;
 
-export default TeamNicknameModalForm;
+export default NicknameEditModalForm;

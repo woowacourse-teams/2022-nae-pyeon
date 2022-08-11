@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
 import RollingpaperListItem from "@/pages/TeamDetailPage/components/RollingpaperListItem";
 import IconButton from "@/components/IconButton";
 import LineButton from "@/components/LineButton";
-import TeamNicknameModalForm from "@/pages/TeamDetailPage/components/TeamNicknameModalForm";
+import NicknameCreateModalForm from "@/pages/TeamDetailPage/components/NicknameCreateModalForm";
 
 import PlusIcon from "@/assets/icons/bx-plus.svg";
+import useModal from "@/hooks/useModal";
 
 const dummyRollingpapers = [
   {
@@ -27,24 +28,14 @@ const dummyRollingpapers = [
 ];
 
 const TeamJoinSection = () => {
-  const [isOpenJoinForm, setIsOpenJoinForm] = useState(false);
-
-  const handleJoinFormCloseButtonClick = () => {
-    setIsOpenJoinForm(false);
-  };
+  const { isOpen, handleModalClose, handleModalOpen } = useModal();
 
   return (
     <StyledRollingpaperListContainer>
       <StyledDimmer />
       <StyledTeamJoinModal>
         <p>롤링페이퍼를 확인하려면 모임에 참여해주세요</p>
-        <LineButton
-          onClick={() => {
-            setIsOpenJoinForm(true);
-          }}
-        >
-          참여 요청하기
-        </LineButton>
+        <LineButton onClick={handleModalOpen}>참여 요청하기</LineButton>
       </StyledTeamJoinModal>
       <StyledRollingpaperListHead>
         <h4>롤링페이퍼 목록</h4>
@@ -57,11 +48,8 @@ const TeamJoinSection = () => {
           <RollingpaperListItem key={rollingpaper.id} {...rollingpaper} />
         ))}
       </StyledRollingpaperList>
-      {isOpenJoinForm && (
-        <TeamNicknameModalForm
-          mode="join"
-          onClickCloseButton={handleJoinFormCloseButtonClick}
-        />
+      {isOpen && (
+        <NicknameCreateModalForm onClickCloseButton={handleModalClose} />
       )}
     </StyledRollingpaperListContainer>
   );
