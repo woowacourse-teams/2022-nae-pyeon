@@ -360,6 +360,23 @@ class TeamServiceTest {
     }
 
     @Test
+    @DisplayName("초대 토큰으로 팀 정보를 조회한다.")
+    void getTeamByInviteToken() {
+        final String inviteToken = teamService.createInviteToken(team1.getId());
+
+        final TeamResponseDto teamResponseDto = teamService.getTeamByInviteToken(inviteToken, member.getId());
+
+        assertThat(teamResponseDto).extracting("id", "name", "description", "emoji", "color")
+                .containsExactly(
+                        team1.getId(),
+                        team1.getName(),
+                        team1.getDescription(),
+                        team1.getEmoji(),
+                        team1.getColor()
+                );
+    }
+
+    @Test
     @DisplayName("존재하지 않는 팀의 초대토큰을 생성하려 할 경우 예외를 발생시킨다.")
     void createInviteTokenWithNotExistTeam() {
         assertThatThrownBy(() -> teamService.createInviteToken(9999L))

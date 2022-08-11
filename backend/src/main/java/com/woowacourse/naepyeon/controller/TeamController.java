@@ -6,7 +6,6 @@ import com.woowacourse.naepyeon.controller.dto.InviteJoinRequest;
 import com.woowacourse.naepyeon.controller.dto.InviteTokenResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
-import com.woowacourse.naepyeon.controller.dto.TeamIdResponse;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
@@ -138,12 +137,12 @@ public class TeamController {
     }
 
     @GetMapping("/invite")
-    public ResponseEntity<TeamIdResponse> getTeamIdByInviteToken(
+    public ResponseEntity<TeamResponseDto> getTeamByInviteToken(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @RequestParam("inviteToken") final String inviteToken) {
 
-        final Long teamId = teamService.getTeamIdByToken(inviteToken);
-        return ResponseEntity.ok(new TeamIdResponse(teamId));
+        final TeamResponseDto teamResponseDto = teamService.getTeamByInviteToken(inviteToken, loginMemberRequest.getId());
+        return ResponseEntity.ok(teamResponseDto);
     }
 
     @PostMapping("/invite/join")
