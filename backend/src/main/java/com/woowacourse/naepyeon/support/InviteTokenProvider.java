@@ -27,7 +27,7 @@ public class InviteTokenProvider {
     private final long validityInMilliseconds;
 
     public InviteTokenProvider(@Value("${security.jwt.token.secret-key}") final String secretKey,
-                               @Value("${invite-expire-length}") final long validityInMilliseconds) {
+                               @Value("${security.jwt.token.invite-expire-length}") final long validityInMilliseconds) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         this.validityInMilliseconds = validityInMilliseconds;
     }
