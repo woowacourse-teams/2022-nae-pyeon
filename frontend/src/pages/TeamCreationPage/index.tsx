@@ -16,6 +16,9 @@ import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import { COLORS, REGEX } from "@/constants";
 import { CustomError } from "@/types";
 
+import LabeledSwitch from "@/pages/TeamCreationPage/components/LabeledSwitch";
+import useSwitch from "@/pages/TeamCreationPage/hooks/useSwitch";
+
 const emojis = [
   { id: 1, value: "🐶" },
   { id: 2, value: "❤️" },
@@ -40,6 +43,7 @@ const TeamCreationPage = () => {
     useInput("");
 
   const navigate = useNavigate();
+  const { isChecked: isPrivateTeam, handleSwitchClick } = useSwitch();
 
   const { mutate: createTeam } = useMutation(
     () => {
@@ -50,6 +54,7 @@ const TeamCreationPage = () => {
           emoji,
           color,
           nickname,
+          isPrivateTeam,
         })
         .then((response) => response.data);
     },
@@ -124,6 +129,11 @@ const TeamCreationPage = () => {
           radios={colors}
           onClickRadio={setColor}
         />
+        <LabeledSwitch
+          labelText="비공개로 만들기"
+          isChecked={isPrivateTeam}
+          onClick={handleSwitchClick}
+        />
         <Button
           type="submit"
           onClick={handleTeamCreationSubmit}
@@ -148,6 +158,9 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  
+  padding-bottom: 20px;
+  
   fieldset {
     margin-bottom: 20px;
   }

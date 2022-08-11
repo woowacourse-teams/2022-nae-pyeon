@@ -3,9 +3,11 @@ import styled from "@emotion/styled";
 
 import Dropdown from "@/components/Dropdown";
 import NicknameEditModalForm from "@/pages/TeamDetailPage/components/NicknameEditModalForm";
+import InviteModal from "./InviteModal";
+
+import useModal from "@/hooks/useModal";
 
 import MeatballIcon from "@/assets/icons/bx-dots-horizontal-rounded.svg";
-import useModal from "@/hooks/useModal";
 
 interface TeamDescriptionBoxProps {
   name: string;
@@ -33,7 +35,7 @@ const TeamDescriptionBox = ({
     {
       option: "초대하기",
       callback: () => {
-        console.log("초대하기");
+        setIsInviteOpen(true);
       },
     },
     {
@@ -56,6 +58,9 @@ const TeamDescriptionBox = ({
       <p>{description}</p>
       {isOpen && (
         <NicknameEditModalForm onClickCloseButton={handleModalClose} />
+      )}
+      {isInviteOpen && (
+        <InviteModal onClickClose={() => setIsInviteOpen(false)} />
       )}
     </StyledTeamDescriptionContainer>
   );
