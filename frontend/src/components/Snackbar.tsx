@@ -35,6 +35,7 @@ const StyledSnackbar = styled.div`
   left: 50%;
   margin-left: -125px;
   padding: 8px;
+  z-index: 9999;
 
   width: 250px;
 
