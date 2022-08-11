@@ -6,6 +6,7 @@ import Dropdown from "@/components/Dropdown";
 import TeamNicknameModalForm from "@/pages/TeamDetailPage/components/TeamNicknameModalForm";
 
 import MeatballIcon from "@/assets/icons/bx-dots-horizontal-rounded.svg";
+import InviteModal from "./InviteModal";
 interface TeamDescriptionBoxProps {
   name: string;
   description: string;
@@ -27,12 +28,13 @@ const TeamDescriptionBox = ({
   joined,
 }: TeamDescriptionBoxProps) => {
   const [isNicknameEditOpen, setIsNicknameEditOpen] = useState(false);
+  const [isInviteOpen, setIsInviteOpen] = useState(false);
 
   const teamMoreOption = [
     {
       option: "초대하기",
       callback: () => {
-        console.log("초대하기");
+        setIsInviteOpen(true);
       },
     },
     {
@@ -60,6 +62,9 @@ const TeamDescriptionBox = ({
           mode="edit"
           onClickCloseButton={() => setIsNicknameEditOpen(false)}
         />
+      )}
+      {isInviteOpen && (
+        <InviteModal onClickClose={() => setIsInviteOpen(false)} />
       )}
     </StyledTeamDescriptionContainer>
   );

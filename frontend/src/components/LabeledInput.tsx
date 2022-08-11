@@ -47,6 +47,10 @@ const StyledLabel = styled.label`
   font-size: 14px;
   color: ${({ theme }) => theme.colors.GRAY_600};
 
+  @media only screen and (min-width: 600px) {
+    font-size: 16px;
+  }
+
   input {
     height: 48px;
     margin-top: 8px;

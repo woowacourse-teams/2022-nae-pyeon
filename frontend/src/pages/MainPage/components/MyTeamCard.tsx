@@ -53,7 +53,7 @@ const StyledMyTeamCard = styled.div<StyledMyTeamCardProps>`
     transition: transform 0.3s ease;
   }
 
-  @media only screen and (min-width: 400px) {
+  @media only screen and (min-width: 600px) {
     width: 160px;
     height: 210px;
 
