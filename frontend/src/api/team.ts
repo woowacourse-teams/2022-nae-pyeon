@@ -8,7 +8,7 @@ interface Team {
   nickname: string;
 }
 
-interface TeamNicknameProp {
+interface TeamNicknameArgs {
   teamId: number;
   nickname: string;
 }
@@ -59,12 +59,12 @@ const postTeam = ({
     })
     .then((response) => response.data);
 
-const postTeamNickname = ({ teamId, nickname }: TeamNicknameProp) =>
+const postTeamNickname = ({ teamId, nickname }: TeamNicknameArgs) =>
   appClient
     .post(`/teams/${teamId}`, { nickname })
     .then((response) => response.data);
 
-const putTeamNickname = ({ teamId, nickname }: TeamNicknameProp) =>
+const putTeamNickname = ({ teamId, nickname }: TeamNicknameArgs) =>
   appClient
     .put(`/teams/${teamId}/me`, { nickname })
     .then((response) => response.data);

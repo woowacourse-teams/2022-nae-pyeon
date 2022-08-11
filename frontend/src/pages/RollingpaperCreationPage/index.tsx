@@ -16,7 +16,7 @@ import useAutoCompleteInput from "@/hooks/useAutoCompleteInput";
 import useInput from "@/hooks/useInput";
 
 import { getTeamMembers } from "@/api/team";
-import { postNewRollingpaper } from "@/api/rollingpaper";
+import { postRollingpaper } from "@/api/rollingpaper";
 import useParamValidate from "@/hooks/useParamValidate";
 
 interface TeamMemberResponse {
@@ -54,12 +54,12 @@ const RollingpaperCreationPage = () => {
     getTeamMembers(+teamId)
   );
 
-  const { mutate: postRollingpaper } = useMutation(
+  const { mutate: postNewRollingpaper } = useMutation(
     ({
       title,
       addresseeId,
     }: Pick<Rollingpaper, "title"> & { addresseeId: number }) =>
-      postNewRollingpaper({ teamId: +teamId, title, addresseeId }),
+      postRollingpaper({ teamId: +teamId, title, addresseeId }),
     {
       onSuccess: (data) => {
         const { id: newRollingpaperId } = data;
@@ -105,7 +105,7 @@ const RollingpaperCreationPage = () => {
       return alert("받는 사람은 모임원 중 한 명이어야 합니다.");
     }
 
-    postRollingpaper({ title: rollingpaperTitle, addresseeId: receiver.id });
+    postNewRollingpaper({ title: rollingpaperTitle, addresseeId: receiver.id });
   };
 
   if (isLoading) {

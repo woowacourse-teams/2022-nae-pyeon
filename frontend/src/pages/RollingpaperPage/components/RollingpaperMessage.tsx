@@ -13,7 +13,7 @@ import Pencil from "@/assets/icons/bx-pencil.svg";
 import { CustomError } from "@/types";
 import { queryClient } from "@/api";
 import { useSnackbar } from "@/context/SnackbarContext";
-import { deleteRollingpaperMessage } from "@/api/message";
+import { deleteMessage } from "@/api/message";
 import useParamValidate from "@/hooks/useParamValidate";
 
 interface EditMessageProp {
@@ -43,9 +43,8 @@ const RollingpaperMessage = ({
   const { openSnackbar } = useSnackbar();
   const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
 
-  const { mutate: deleteMessage } = useMutation(
-    () =>
-      deleteRollingpaperMessage({ rollingpaperId: +rollingpaperId, messageId }),
+  const { mutate: deleteRollingpaperMessage } = useMutation(
+    () => deleteMessage({ rollingpaperId: +rollingpaperId, messageId }),
     {
       onSuccess: () => {
         queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
@@ -66,7 +65,7 @@ const RollingpaperMessage = ({
 
   const handleDeleteButtonClick = () => {
     if (confirm("메시지를 삭제하시겠습니까?")) {
-      deleteMessage();
+      deleteRollingpaperMessage();
     }
   };
 

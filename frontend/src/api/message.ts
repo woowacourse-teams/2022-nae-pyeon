@@ -1,13 +1,13 @@
 import { appClient } from "@/api";
 
-interface PutMessageProp {
+interface PutMessageArgs {
   rollingpaperId: number;
   editMessageId: number | null;
   content: string;
   color: string;
 }
 
-interface DeleteMessageProp {
+interface DeleteMessageArgs {
   rollingpaperId: number;
   messageId: number;
 }
@@ -17,7 +17,7 @@ const putMessage = ({
   editMessageId,
   content,
   color,
-}: PutMessageProp) =>
+}: PutMessageArgs) =>
   appClient
     .put(`/rollingpapers/${rollingpaperId}/messages/${editMessageId}`, {
       content,
@@ -29,7 +29,7 @@ const postMessage = ({
   rollingpaperId,
   content,
   color,
-}: Partial<PutMessageProp>) =>
+}: Partial<PutMessageArgs>) =>
   appClient
     .post(`/rollingpapers/${rollingpaperId}/messages`, {
       content,
@@ -37,12 +37,9 @@ const postMessage = ({
     })
     .then((response) => response.data);
 
-const deleteRollingpaperMessage = ({
-  rollingpaperId,
-  messageId,
-}: DeleteMessageProp) =>
+const deleteMessage = ({ rollingpaperId, messageId }: DeleteMessageArgs) =>
   appClient
     .delete(`/rollingpapers/${rollingpaperId}/messages/${messageId}`)
     .then((response) => response.data);
 
-export { putMessage, postMessage, deleteRollingpaperMessage };
+export { putMessage, postMessage, deleteMessage };

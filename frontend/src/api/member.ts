@@ -1,10 +1,10 @@
 import { appClient } from "@/api";
 
-const getMyUserInfo = () => {
+const getMyInfo = () => {
   return appClient.get("/members/me").then((response) => response.data);
 };
 
-const getMyUserInfoWithAccessToken = (accessToken: string | null) => {
+const getMyInfoWithAccessToken = (accessToken: string | null) => {
   return appClient
     .get("/members/me", {
       headers: {
@@ -33,8 +33,8 @@ const postMyNickname = (username: string) => {
 };
 
 export {
-  getMyUserInfo,
-  getMyUserInfoWithAccessToken,
+  getMyInfo,
+  getMyInfoWithAccessToken,
   getMyReceivedRollingpapers,
   getMySentMessage,
   postMyNickname,

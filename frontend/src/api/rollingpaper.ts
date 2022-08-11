@@ -1,6 +1,6 @@
 import { appClient } from "@/api";
 
-interface PostRollingpaperProp {
+interface PostRollingpaperArgs {
   teamId: number;
   title: string;
   addresseeId: number;
@@ -10,11 +10,11 @@ const getRollingpaper = (teamId: number, rollingpaperId: number) =>
     .get(`/teams/${teamId}/rollingpapers/${rollingpaperId}`)
     .then((response) => response.data);
 
-const postNewRollingpaper = ({
+const postRollingpaper = ({
   teamId,
   title,
   addresseeId,
-}: PostRollingpaperProp) =>
+}: PostRollingpaperArgs) =>
   appClient
     .post(`/teams/${teamId}/rollingpapers`, {
       title,
@@ -22,4 +22,4 @@ const postNewRollingpaper = ({
     })
     .then((response) => response.data);
 
-export { getRollingpaper, postNewRollingpaper };
+export { getRollingpaper, postRollingpaper };
