@@ -65,7 +65,7 @@ const StyledLegend = styled.legend`
   font-size: 14px;
   color: ${({ theme }) => theme.colors.GRAY_600};
 
-  @media only screen and (min-width: 400px) {
+  @media only screen and (min-width: 600px) {
     font-size: 16px;
   }
 `;
