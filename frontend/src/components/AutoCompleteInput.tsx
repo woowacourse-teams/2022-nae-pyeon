@@ -90,6 +90,10 @@ const StyledLabel = styled.label`
 
   font-size: 14px;
   color: ${({ theme }) => theme.colors.GRAY_600};
+
+  @media only screen and (min-width: 400px) {
+    font-size: 16px;
+  }
 `;
 
 const StyledInputContainer = styled.div`

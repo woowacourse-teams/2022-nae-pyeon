@@ -64,6 +64,10 @@ const LabeledRadio = ({
 const StyledLegend = styled.legend`
   font-size: 14px;
   color: ${({ theme }) => theme.colors.GRAY_600};
+
+  @media only screen and (min-width: 400px) {
+    font-size: 16px;
+  }
 `;
 
 const StyledRadioContainer = styled.div`

@@ -40,6 +40,10 @@ const StyledLabeledSwitch = styled.label`
 
   font-size: 14px;
   color: ${({ theme }) => theme.colors.GRAY_600};
+
+  @media only screen and (min-width: 400px) {
+    font-size: 16px;
+  }
 `;
 
 const StyledInput = styled.input`
@@ -54,6 +58,10 @@ const StyledMessage = styled.span`
 
   font-size: 12px;
   color: ${({ theme }) => theme.colors.GRAY_500};
+
+  @media only screen and (min-width: 400px) {
+    font-size: 14px;
+  }
 `;
 
 const StyledBold = styled.span`
