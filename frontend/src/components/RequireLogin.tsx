@@ -1,16 +1,20 @@
 import { useContext } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 import { UserContext } from "@/context/UserContext";
 
-const RequireLogin = ({ children }: { children: JSX.Element }) => {
+const RequireLogin = () => {
   const { isLoggedIn } = useContext(UserContext);
 
   if (!isLoggedIn) {
     return <Navigate to="/login" replace />;
   }
 
-  return children;
+  return (
+    <>
+      <Outlet />
+    </>
+  );
 };
 
 export default RequireLogin;

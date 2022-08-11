@@ -1,6 +1,6 @@
 Configutation:
   name: Default
-  status: debug
+  status: info
 
   Properties:
     Property:
@@ -36,7 +36,7 @@ Configutation:
               exceeds: 31
   Loggers:
     Root:
-      level: debug
+      level: info
       AppenderRef:
         - ref: Console_Appender
         - ref: File_Appender
@@ -44,7 +44,7 @@ Configutation:
     Logger:
       - name: com.woowacourse.naepyeon
         additivity: false
-        level: debug
+        level: info
         AppenderRef:
           - ref: Console_Appender
           - ref: File_Appender

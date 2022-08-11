@@ -11,7 +11,7 @@ const getCookie = (name: string) => {
 };
 
 const deleteCookie = (name: string) => {
-  document.cookie = `${encodeURIComponent(name)}=; max-age=-1`;
+  document.cookie = `${encodeURIComponent(name)}=; max-age=-1; path=/  `;
 };
 
 export { deleteCookie, getCookie, setCookie };
