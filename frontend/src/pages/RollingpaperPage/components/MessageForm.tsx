@@ -66,7 +66,7 @@ export const MessageForm = ({
 
   return (
     <>
-      <Background />
+      <StyledBackground />
       <StyledMessageForm>
         <MessageTextArea
           placeholder="메시지를 입력해보세요!"
@@ -92,10 +92,10 @@ export const MessageForm = ({
         <StyledMessageColorPickerWrapper>
           <MessageColorPicker onClickRadio={onClickColor} color={color} />
         </StyledMessageColorPickerWrapper>
-        <IconButtonContainer>
+        <StyledIconButtonContainer>
           <MessageSubmitButton onClick={onSubmit} />
           <MessageCancelButton onClick={onCancel} />
-        </IconButtonContainer>
+        </StyledIconButtonContainer>
       </StyledMessageForm>
     </>
   );
@@ -143,7 +143,7 @@ const StyledMessageColorPickerWrapper = styled.div`
   width: 80%;
 `;
 
-const Background = styled.div`
+const StyledBackground = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -154,7 +154,7 @@ const Background = styled.div`
   background: transparent;
 `;
 
-const IconButtonContainer = styled.div`
+const StyledIconButtonContainer = styled.div`
   position: absolute;
   bottom: 0;
   left: 50%;
