@@ -75,7 +75,7 @@ class MessageServiceTest {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId =
                 messageService.saveMessage(
-                        MessageRequestDto.publicRequest(messageRequest.getContent(), messageRequest.getColor()),
+                        new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
                         rollingpaper.getId(), author.getId()
                 );
         final MessageResponseDto messageResponse =
@@ -205,15 +205,15 @@ class MessageServiceTest {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId =
                 messageService.saveMessage(
-                        MessageRequestDto.publicRequest(messageRequest.getContent(), messageRequest.getColor()),
+                        new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
                         rollingpaper.getId(), author.getId()
                 );
         messageService.saveMessage(
-                MessageRequestDto.publicRequest(messageRequest.getContent(), messageRequest.getColor()),
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
                 rollingpaper.getId(), otherAuthor.getId()
         );
         final Long messageId2 = messageService.saveMessage(
-                MessageRequestDto.publicRequest(messageRequest.getContent(), messageRequest.getColor()),
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
                 rollingpaper.getId(), author.getId()
         );
 
@@ -253,7 +253,7 @@ class MessageServiceTest {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId =
                 messageService.saveMessage(
-                        MessageRequestDto.publicRequest(messageRequest.getContent(), messageRequest.getColor()),
+                        new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
                         rollingpaper.getId(), author.getId()
                 );
         final String expectedContent = "안녕하지 못합니다.";
@@ -275,7 +275,7 @@ class MessageServiceTest {
     void updateContentWithNotAuthor() {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
-                MessageRequestDto.publicRequest(messageRequest.getContent(), messageRequest.getColor()),
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
                 rollingpaper.getId(), author.getId()
         );
         final String expected = "안녕하지 못합니다.";
@@ -290,7 +290,7 @@ class MessageServiceTest {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId =
                 messageService.saveMessage(
-                        MessageRequestDto.publicRequest(messageRequest.getContent(), messageRequest.getColor()),
+                        new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
                         rollingpaper.getId(), author.getId()
                 );
 
@@ -306,7 +306,7 @@ class MessageServiceTest {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId =
                 messageService.saveMessage(
-                        MessageRequestDto.publicRequest(messageRequest.getContent(), messageRequest.getColor()),
+                        new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
                         rollingpaper.getId(), author.getId()
                 );
 

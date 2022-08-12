@@ -17,8 +17,4 @@ public class MessageRequestDto {
     private boolean anonymous;
 
     private boolean secret;
-
-    public static MessageRequestDto publicRequest(final String content, final String color) {
-        return new MessageRequestDto(content, color, false, false);
-    }
 }
