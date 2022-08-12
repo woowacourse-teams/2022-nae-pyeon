@@ -1,6 +1,6 @@
 import { appClient } from "@/api";
 import { Team } from "@/types";
-interface SearchArgs {
+interface SearchRequest {
   keyword: string;
   count: number;
 }
@@ -15,7 +15,7 @@ const getMyTeams =
   };
 
 const getTeamSearchResult =
-  ({ keyword, count }: SearchArgs) =>
+  ({ keyword, count }: SearchRequest) =>
   async ({ pageParam = 0 }) => {
     const data = appClient
       .get(`teams?keyword=${keyword}&page=${pageParam}&count=${count}`)
