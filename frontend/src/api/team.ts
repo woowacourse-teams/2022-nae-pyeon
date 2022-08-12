@@ -1,16 +1,14 @@
 import { appClient } from "@/api";
-
-interface Team {
-  teamName: string;
-  teamDescription: string;
-  emoji: string;
-  color: string;
-  nickname: string;
-}
+import { Team } from "@/types";
 
 interface TeamNicknameArgs {
   teamId: number;
   nickname: string;
+}
+
+interface SearchArgs {
+  keyword: string;
+  count: number;
 }
 
 const getMyTeams =
@@ -23,7 +21,7 @@ const getMyTeams =
   };
 
 const getTeamSearchResult =
-  ({ keyword, count }: { keyword: string; count: number }) =>
+  ({ keyword, count }: SearchArgs) =>
   async ({ pageParam = 0 }) => {
     const data = appClient
       .get(`teams?keyword=${keyword}&page=${pageParam}&count=${count}`)
@@ -48,7 +46,7 @@ const postTeam = ({
   emoji,
   color,
   nickname,
-}: Team) =>
+}: Omit<Team, "id">) =>
   appClient
     .post("/teams", {
       name: teamName,
