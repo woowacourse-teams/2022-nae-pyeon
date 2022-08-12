@@ -2,6 +2,7 @@ package com.woowacourse.naepyeon.acceptance;
 
 import com.woowacourse.naepyeon.controller.dto.CreateMemberRollingpaperRequest;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
+import com.woowacourse.naepyeon.controller.dto.CreateTeamRollingpaperRequest;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
@@ -171,6 +172,12 @@ public class AcceptanceFixture {
                                                             final Long teamId,
                                                             final CreateMemberRollingpaperRequest createMemberRollingpaperRequest) {
         return post(tokenResponseDto, createMemberRollingpaperRequest, "/api/v1/teams/" + teamId + "/rollingpapers");
+    }
+
+    public static ExtractableResponse<Response> 모임_롤링페이퍼_생성(final TokenResponseDto tokenResponseDto,
+                                                            final Long teamId,
+                                                            final CreateTeamRollingpaperRequest createTeamRollingpaperRequest) {
+        return post(tokenResponseDto, createTeamRollingpaperRequest, "/api/v1/teams/" + teamId + "/team-rollingpapers");
     }
 
     public static ExtractableResponse<Response> 나의_롤링페이퍼_조회(

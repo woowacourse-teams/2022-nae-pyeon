@@ -73,7 +73,7 @@ public class RollingpaperService {
 
     @Transactional(readOnly = true)
     public RollingpaperResponseDto findById(final Long rollingpaperId, final Long teamId, final Long loginMemberId) {
-        final Rollingpaper rollingpaper = checkCanCreateRollingpaper(rollingpaperId, teamId, loginMemberId);
+        final Rollingpaper rollingpaper = checkCreatableRollingpaper(rollingpaperId, teamId, loginMemberId);
 
         return RollingpaperResponseDto.of(
                 RollingpaperPreviewResponseDto.createPreviewRollingpaper(
@@ -83,7 +83,7 @@ public class RollingpaperService {
         );
     }
 
-    private Rollingpaper checkCanCreateRollingpaper(final Long rollingpaperId, final Long teamId, final Long loginMemberId) {
+    private Rollingpaper checkCreatableRollingpaper(final Long rollingpaperId, final Long teamId, final Long loginMemberId) {
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
             throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }

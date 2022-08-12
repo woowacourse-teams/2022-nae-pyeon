@@ -27,7 +27,7 @@ public class RollingpaperPreviewResponseDto {
         return getRollingpaperPreviewResponseDto(rollingpaper, to);
     }
 
-    private static RollingpaperPreviewResponseDto getRollingpaperPreviewResponseDto(Rollingpaper rollingpaper, String to) {
+    private static RollingpaperPreviewResponseDto getRollingpaperPreviewResponseDto(final Rollingpaper rollingpaper, final String to) {
         return new RollingpaperPreviewResponseDto(
                 rollingpaper.getId(),
                 rollingpaper.getTitle(),
