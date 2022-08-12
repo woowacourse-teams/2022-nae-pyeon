@@ -27,16 +27,34 @@ const dummyRollingpapers = [
   },
 ];
 
-const TeamJoinSection = () => {
+type TeamJoinSectionProps = {
+  isSecretTeam: boolean;
+};
+
+const TeamJoinSection = ({ isSecretTeam }: TeamJoinSectionProps) => {
   const { isOpen, handleModalClose, handleModalOpen } = useModal();
+
+  const PublicTeamModal = () => (
+    <StyledTeamJoinModal>
+      <p>롤링페이퍼를 확인하려면 모임에 참여해주세요</p>
+      <LineButton onClick={handleModalOpen}>참여 요청하기</LineButton>
+    </StyledTeamJoinModal>
+  );
+
+  const PrivateTeamModal = () => (
+    <StyledTeamJoinModal>
+      <p>
+        🔒 비공개 모임입니다.
+        <br />
+        관리자에게 초대링크를 요청하세요.
+      </p>
+    </StyledTeamJoinModal>
+  );
 
   return (
     <StyledRollingpaperListContainer>
       <StyledDimmer />
-      <StyledTeamJoinModal>
-        <p>롤링페이퍼를 확인하려면 모임에 참여해주세요</p>
-        <LineButton onClick={handleModalOpen}>참여 요청하기</LineButton>
-      </StyledTeamJoinModal>
+      {isSecretTeam ? <PrivateTeamModal /> : <PublicTeamModal />}
       <StyledRollingpaperListHead>
         <h4>롤링페이퍼 목록</h4>
         <IconButton size="small">
