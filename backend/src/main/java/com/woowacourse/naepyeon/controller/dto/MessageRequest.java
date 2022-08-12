@@ -18,10 +18,8 @@ public class MessageRequest {
 
     private String color;
 
-    @NotNull
     private boolean anonymous;
 
-    @NotNull
     private boolean secret;
 
     public MessageRequestDto toServiceDto() {
