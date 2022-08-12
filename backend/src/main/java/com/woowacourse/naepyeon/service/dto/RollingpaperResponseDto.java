@@ -19,7 +19,8 @@ public class RollingpaperResponseDto {
     private Classification classification;
     private List<MessageResponseDto> messages;
 
-    public static RollingpaperResponseDto of(final RollingpaperPreviewResponseDto rollingpaperPreviewResponseDto, final List<MessageResponseDto> messages) {
+    public static RollingpaperResponseDto of(final RollingpaperPreviewResponseDto rollingpaperPreviewResponseDto,
+                                             final List<MessageResponseDto> messages) {
         return new RollingpaperResponseDto(
                 rollingpaperPreviewResponseDto.getId(),
                 rollingpaperPreviewResponseDto.getTitle(),

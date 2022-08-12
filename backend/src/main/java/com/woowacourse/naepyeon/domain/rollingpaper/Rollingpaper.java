@@ -70,4 +70,12 @@ public class Rollingpaper extends BaseEntity {
     public Long getAddresseeId() {
         return member.getId();
     }
+
+    public boolean isMemberNull() {
+        return this.member == null;
+    }
+
+    public boolean checkSameClassification(Classification classification) {
+        return this.classification.equals(classification);
+    }
 }

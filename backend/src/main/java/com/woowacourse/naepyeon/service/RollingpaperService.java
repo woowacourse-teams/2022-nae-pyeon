@@ -1,9 +1,9 @@
 package com.woowacourse.naepyeon.service;
 
-import com.woowacourse.naepyeon.domain.rollingpaper.Classification;
 import com.woowacourse.naepyeon.domain.Member;
-import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.domain.rollingpaper.Classification;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundRollingpaperException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamException;
@@ -83,7 +83,8 @@ public class RollingpaperService {
         );
     }
 
-    private Rollingpaper checkCreatableRollingpaper(final Long rollingpaperId, final Long teamId, final Long loginMemberId) {
+    private Rollingpaper checkCreatableRollingpaper(final Long rollingpaperId, final Long teamId,
+                                                    final Long loginMemberId) {
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
             throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
@@ -92,7 +93,7 @@ public class RollingpaperService {
     }
 
     public String findRollingpaperAddresseeNickname(final Rollingpaper rollingpaper, final Long teamId) {
-        if (rollingpaper.getMember() == null) {
+        if (rollingpaper.isMemberNull()) {
             return "";
         }
         return teamParticipationRepository.findNicknameByMemberIdAndTeamId(rollingpaper.getAddresseeId(), teamId);

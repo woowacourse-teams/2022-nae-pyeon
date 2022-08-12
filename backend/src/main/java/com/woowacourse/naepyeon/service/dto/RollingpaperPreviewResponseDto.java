@@ -19,15 +19,17 @@ public class RollingpaperPreviewResponseDto {
     private String to;
     private Classification classification;
 
-    public static RollingpaperPreviewResponseDto createPreviewRollingpaper(final Rollingpaper rollingpaper, final String to) {
-        if (rollingpaper.getClassification().equals(TEAM)) {
+    public static RollingpaperPreviewResponseDto createPreviewRollingpaper(final Rollingpaper rollingpaper,
+                                                                           final String to) {
+        if (rollingpaper.checkSameClassification(TEAM)) {
             return getRollingpaperPreviewResponseDto(rollingpaper, rollingpaper.getTeam().getName());
         }
 
         return getRollingpaperPreviewResponseDto(rollingpaper, to);
     }
 
-    private static RollingpaperPreviewResponseDto getRollingpaperPreviewResponseDto(final Rollingpaper rollingpaper, final String to) {
+    private static RollingpaperPreviewResponseDto getRollingpaperPreviewResponseDto(final Rollingpaper rollingpaper,
+                                                                                    final String to) {
         return new RollingpaperPreviewResponseDto(
                 rollingpaper.getId(),
                 rollingpaper.getTitle(),

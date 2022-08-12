@@ -102,16 +102,20 @@ class RollingpaperServiceTest {
     }
 
     @Test
+    @DisplayName("모임에 속하지 않은 회원이 모임 롤링페이퍼를 생성할 때 예외를 발생시킨다.")
+    void saveTeamRollingpaperWithAnonymous() {
+        assertThatThrownBy(() -> rollingpaperService.createTeamRollingpaper(ROLLINGPAPER_TITLE, teamId, member3Id))
+                .isInstanceOf(UncertificationTeamMemberException.class);
+    }
+
+    @Test
     @DisplayName("모임에 속하지 않은 회원이 id값으로 롤링페이퍼를 찾을 때 예외를 발생시킨다.")
     void saveRollingpaperAndFindWithAnonymous() {
         final Long rollingpaperId =
                 rollingpaperService.createMemberRollingpaper(ROLLINGPAPER_TITLE, teamId, member2Id, memberId);
 
-        final RollingpaperResponseDto rollingpaperResponse =
-                rollingpaperService.findById(rollingpaperId, teamId, memberId);
-
-        assertThat(rollingpaperResponse).extracting("title", "to", "messages")
-                .containsExactly(ROLLINGPAPER_TITLE, MEMBER_NICKNAME, List.of());
+        assertThatThrownBy(() -> rollingpaperService.findById(rollingpaperId, teamId, member3Id))
+                .isInstanceOf(UncertificationTeamMemberException.class);
     }
 
     @Test
