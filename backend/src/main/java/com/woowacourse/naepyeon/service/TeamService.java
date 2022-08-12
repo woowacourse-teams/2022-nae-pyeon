@@ -171,7 +171,7 @@ public class TeamService {
         return inviteTokenProvider.createInviteToken(teamId);
     }
 
-    public TeamResponseDto getTeamByInviteToken(final String inviteToken, final Long memberId) {
+    public TeamResponseDto findTeamByInviteToken(final String inviteToken, final Long memberId) {
         final Long teamId = inviteTokenProvider.getTeamId(inviteToken);
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundTeamException(teamId));

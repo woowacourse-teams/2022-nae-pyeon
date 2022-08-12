@@ -141,7 +141,7 @@ public class TeamController {
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @RequestParam("inviteToken") final String inviteToken) {
 
-        final TeamResponseDto teamResponseDto = teamService.getTeamByInviteToken(inviteToken,
+        final TeamResponseDto teamResponseDto = teamService.findTeamByInviteToken(inviteToken,
                 loginMemberRequest.getId());
         return ResponseEntity.ok(teamResponseDto);
     }
