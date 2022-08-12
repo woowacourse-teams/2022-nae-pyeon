@@ -5,10 +5,16 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.woowacourse.naepyeon.controller.dto.InviteJoinRequest;
+import com.woowacourse.naepyeon.support.InviteTokenProvider;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 class TeamControllerTest extends TestSupport {
+
+    @Autowired
+    private InviteTokenProvider inviteTokenProvider;
 
     @Test
     void getTeam() throws Exception {
@@ -116,6 +122,40 @@ class TeamControllerTest extends TestSupport {
                                 .content(readJson("/json/teams/update-my-info.json"))
                 )
                 .andExpect(status().isNoContent())
+                .andDo(restDocs.document());
+    }
+
+    @Test
+    void createInviteToken() throws Exception {
+        mockMvc.perform(
+                        post("/api/v1/teams/{teamId}/invite", teamId)
+                                .header("Authorization", "Bearer " + joinedMemberAccessToken)
+                                .contentType(MediaType.APPLICATION_JSON)
+                ).andExpect(status().isOk())
+                .andDo(restDocs.document());
+    }
+
+    @Test
+    void getTeamIdByInviteToken() throws Exception {
+        final String inviteToken = inviteTokenProvider.createInviteToken(teamId);
+        mockMvc.perform(
+                        get("/api/v1/teams/invite?inviteToken=" + inviteToken)
+                                .header("Authorization", "Bearer " + joinedMemberAccessToken)
+                                .contentType(MediaType.APPLICATION_JSON)
+                ).andExpect(status().isOk())
+                .andDo(restDocs.document());
+    }
+
+    @Test
+    void inviteJoin() throws Exception {
+        final String inviteToken = inviteTokenProvider.createInviteToken(teamId);
+        final InviteJoinRequest inviteJoinRequest = new InviteJoinRequest(inviteToken, "모임가입닉네임");
+        mockMvc.perform(
+                        post("/api/v1/teams/invite/join")
+                                .header("Authorization", "Bearer " + notJoinedMemberAccessToken)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(inviteJoinRequest))
+                ).andExpect(status().isNoContent())
                 .andDo(restDocs.document());
     }
 }

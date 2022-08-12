@@ -17,6 +17,7 @@ import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
+import com.woowacourse.naepyeon.support.InviteTokenProvider;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class TeamService {
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
     private final TeamParticipationRepository teamParticipationRepository;
+    private final InviteTokenProvider inviteTokenProvider;
 
     @Transactional
     public Long save(final TeamRequest teamRequest, final Long memberId) {
@@ -156,9 +158,31 @@ public class TeamService {
     }
 
     public boolean isJoinedMember(final Long memberId, final Long teamId) {
+        validateExistTeam(teamId);
+        return teamParticipationRepository.isJoinedMember(memberId, teamId);
+    }
+
+    public String createInviteToken(final Long teamId) {
+        validateExistTeam(teamId);
+        return inviteTokenProvider.createInviteToken(teamId);
+    }
+
+    private void validateExistTeam(final Long teamId) {
         if (teamRepository.findById(teamId).isEmpty()) {
             throw new NotFoundTeamException(teamId);
         }
-        return teamParticipationRepository.isJoinedMember(memberId, teamId);
+    }
+
+    public TeamResponseDto findTeamByInviteToken(final String inviteToken, final Long memberId) {
+        final Long teamId = inviteTokenProvider.getTeamId(inviteToken);
+        final Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new NotFoundTeamException(teamId));
+        return TeamResponseDto.of(team, teamParticipationRepository.isJoinedMember(memberId, teamId));
+    }
+
+    public Long inviteJoin(final String inviteToken, final Long memberId, final String nickname) {
+        final Long teamId = inviteTokenProvider.getTeamId(inviteToken);
+
+        return joinMember(teamId, memberId, nickname);
     }
 }

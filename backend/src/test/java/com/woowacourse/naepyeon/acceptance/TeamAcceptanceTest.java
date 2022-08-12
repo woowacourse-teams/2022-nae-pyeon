@@ -10,11 +10,15 @@ import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_생�
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_이름_수정;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_추가;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임에_가입한_회원_목록_조회;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.초대_토큰_생성;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.초대_토큰으로_팀_상세_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.키워드로_모든_모임_조회;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
+import com.woowacourse.naepyeon.controller.dto.ErrorResponse;
+import com.woowacourse.naepyeon.controller.dto.InviteTokenResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
@@ -381,6 +385,71 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 new UpdateTeamParticipantRequest("나는야모임장");
         final ExtractableResponse<Response> response = 모임_내_닉네임_변경(seungpang, teamId, updateTeamParticipantRequest);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    @DisplayName("모임의 초대 코드를 생성하고 모임 정보를 얻는다.")
+    void findTeamByInviteToken() {
+        final Long teamId = 모임_생성(alex);
+        final String inviteToken = 초대_토큰_생성(alex, teamId).as(InviteTokenResponse.class)
+                .getInviteToken();
+
+        final ExtractableResponse<Response> response = 초대_토큰으로_팀_상세_조회(alex, inviteToken);
+        final Long findTeamId = response.as(TeamResponseDto.class)
+                .getId();
+
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(findTeamId).isEqualTo(teamId)
+        );
+    }
+
+    @Test
+    @DisplayName("형식에 맞지 않는 초대코드로 모임 정보를 요청시 예외가 발생한다.")
+    void findTeamByInviteTokenWithInvalidToken() {
+        final String invalidFormInviteToken = "invalidInviteTokeninvalidInviteTokeninvalidInviteToken"
+                + "invalidInviteTokeninvalidInviteTokeninvalidInviteToken";
+
+        final ExtractableResponse<Response> response = 초대_토큰으로_팀_상세_조회(alex, invalidFormInviteToken);
+        final ErrorResponse errorResponse = response.as(ErrorResponse.class);
+
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
+                () -> assertThat(errorResponse).extracting("errorCode", "message")
+                        .containsExactly("4015", "올바르지 않은 토큰입니다.")
+        );
+    }
+
+    @Test
+    @DisplayName("시크릿 키가 변조된 초대코드로 모임 정보를 요청시 예외가 발생한다.")
+    void findTeamByInviteTokenWithInvalidSecretKey() {
+        final Long teamId = 모임_생성(alex);
+        final String invalidSecretKeyInviteToken = invalidSecretKeyInviteTokenProvider.createInviteToken(teamId);
+
+        final ExtractableResponse<Response> response = 초대_토큰으로_팀_상세_조회(alex, invalidSecretKeyInviteToken);
+        final ErrorResponse errorResponse = response.as(ErrorResponse.class);
+
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
+                () -> assertThat(errorResponse).extracting("errorCode", "message")
+                        .containsExactly("4016", "토큰의 secret key가 변조됐습니다. 해킹의 우려가 존재합니다.")
+        );
+    }
+
+    @Test
+    @DisplayName("유효시간이 지난 초대코드로 모임 정보를 요청시 예외가 발생한다.")
+    void findTeamByInviteTokenWithExpiredToken() {
+        final Long teamId = 모임_생성(alex);
+        final String expiredInviteToken = expiredTokenInviteTokenProvider.createInviteToken(teamId);
+
+        final ExtractableResponse<Response> response = 초대_토큰으로_팀_상세_조회(alex, expiredInviteToken);
+        final ErrorResponse errorResponse = response.as(ErrorResponse.class);
+
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
+                () -> assertThat(errorResponse).extracting("errorCode", "message")
+                        .containsExactly("4017", "토큰의 유효기간이 만료됐습니다.")
+        );
     }
 
     private void 모임_삭제됨(ExtractableResponse<Response> response) {

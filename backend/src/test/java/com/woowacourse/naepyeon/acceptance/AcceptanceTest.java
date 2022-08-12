@@ -9,11 +9,13 @@ import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
+import com.woowacourse.naepyeon.support.InviteTokenProvider;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
 import com.woowacourse.naepyeon.support.oauth.kakao.KakaoPlatformUserProvider;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -43,6 +45,17 @@ public class AcceptanceTest {
     protected TokenResponseDto seungpang;
     protected TokenResponseDto zero;
 
+    @Value("${security.jwt.token.secret-key}")
+    protected String secretKey;
+
+    protected final InviteTokenProvider invalidSecretKeyInviteTokenProvider
+            = new InviteTokenProvider(
+            "invalidSecretKeyInvalidSecretKeyInvalidSecretKeyInvalidSecretKey",
+            8640000L
+    );
+
+    protected InviteTokenProvider expiredTokenInviteTokenProvider;
+
     @BeforeEach
     public void setUp() {
         RestAssured.port = port;
@@ -67,5 +80,7 @@ public class AcceptanceTest {
         when(kakaoPlatformUserProvider.getPlatformUser(anyString(), anyString()))
                 .thenReturn(new PlatformUserDto(zeroName, "email4@email.com", "KAKAO", "4"));
         zero = authService.createTokenWithKakaoOauth(new TokenRequestDto(zeroName, "https://..."));
+
+        expiredTokenInviteTokenProvider = new InviteTokenProvider(secretKey, 0);
     }
 }

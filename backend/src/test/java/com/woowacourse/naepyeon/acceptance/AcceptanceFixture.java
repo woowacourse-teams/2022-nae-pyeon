@@ -229,4 +229,14 @@ public class AcceptanceFixture {
             final TokenResponseDto tokenResponseDto, final int page, final int count) {
         return get_search(tokenResponseDto, "/api/v1/members/me/messages/written", "", page, count);
     }
+
+    public static ExtractableResponse<Response> 초대_토큰_생성(
+            final TokenResponseDto tokenResponseDto, final Long teamId) {
+        return post(tokenResponseDto, "", "/api/v1/teams/" + teamId + "/invite");
+    }
+
+    public static ExtractableResponse<Response> 초대_토큰으로_팀_상세_조회(
+            final TokenResponseDto tokenResponseDto, final String inviteToken) {
+        return get(tokenResponseDto, "/api/v1/teams/invite?inviteToken=" + inviteToken);
+    }
 }
