@@ -12,7 +12,7 @@ const messageHandlers = [
       const { rollingpaperId } = req.params;
       const accessToken = req.headers.headers.authorization;
 
-      const { content } = req.body;
+      const { content, color, anonymous, secret } = req.body;
 
       const result = {
         id: 1,
