@@ -11,10 +11,7 @@ import lombok.NoArgsConstructor;
 public class MessageRequestDto {
 
     private String content;
-
     private String color;
-
     private boolean anonymous;
-
     private boolean secret;
 }
