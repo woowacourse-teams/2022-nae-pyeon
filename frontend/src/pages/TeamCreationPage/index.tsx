@@ -42,7 +42,7 @@ const TeamCreationPage = () => {
     useInput("");
 
   const navigate = useNavigate();
-  const { isChecked: isPrivateTeam, handleSwitchClick } = useSwitch();
+  const { isChecked: isSecretTeam, handleSwitchClick } = useSwitch();
 
   const { mutate: createTeam } = useMutation(
     () => {
@@ -52,6 +52,7 @@ const TeamCreationPage = () => {
         emoji,
         color,
         nickname,
+        secret: isSecretTeam,
       });
     },
     {
@@ -127,7 +128,7 @@ const TeamCreationPage = () => {
         />
         <LabeledSwitch
           labelText="비공개로 만들기"
-          isChecked={isPrivateTeam}
+          isChecked={isSecretTeam}
           onClick={handleSwitchClick}
         />
         <Button

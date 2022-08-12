@@ -40,6 +40,7 @@ const postTeam = ({
   emoji,
   color,
   nickname,
+  secret,
 }: Omit<Team, "id" | "joined">) =>
   appClient
     .post("/teams", {
@@ -48,6 +49,7 @@ const postTeam = ({
       emoji,
       color,
       nickname,
+      secret,
     })
     .then((response) => response.data);
 
