@@ -44,7 +44,7 @@ const RollingpaperMessage = ({
   const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
 
   const { mutate: deleteRollingpaperMessage } = useMutation(
-    () => deleteMessage({ rollingpaperId: +rollingpaperId, messageId }),
+    () => deleteMessage({ rollingpaperId: +rollingpaperId, id: messageId }),
     {
       onSuccess: () => {
         queryClient.refetchQueries(["rollingpaper", rollingpaperId]);

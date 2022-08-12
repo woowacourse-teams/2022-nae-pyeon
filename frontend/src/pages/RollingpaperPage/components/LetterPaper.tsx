@@ -46,7 +46,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
     ({ content, color }: Pick<Message, "content" | "color">) => {
       return putMessage({
         rollingpaperId: +rollingpaperId,
-        editMessageId,
+        id: editMessageId,
         content,
         color,
       });
