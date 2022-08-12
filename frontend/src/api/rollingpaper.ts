@@ -5,9 +5,9 @@ interface PostRollingpaperArgs {
   title: string;
   addresseeId: number;
 }
-const getRollingpaper = (teamId: number, rollingpaperId: number) =>
+const getRollingpaper = (teamId: number, id: number) =>
   appClient
-    .get(`/teams/${teamId}/rollingpapers/${rollingpaperId}`)
+    .get(`/teams/${teamId}/rollingpapers/${id}`)
     .then((response) => response.data);
 
 const postRollingpaper = ({

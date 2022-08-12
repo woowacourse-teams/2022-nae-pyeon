@@ -23,14 +23,14 @@ const getTeamSearchResult =
     return data;
   };
 
-const getTeam = (teamId: number) =>
-  appClient.get(`/teams/${teamId}`).then((response) => response.data);
+const getTeam = (id: number) =>
+  appClient.get(`/teams/${id}`).then((response) => response.data);
 
-const getTeamMembers = (teamId: number) =>
-  appClient.get(`/teams/${teamId}/members`).then((response) => response.data);
+const getTeamMembers = (id: number) =>
+  appClient.get(`/teams/${id}/members`).then((response) => response.data);
 
-const getTeamRollingpapers = (teamId: number) =>
-  appClient.get(`/teams/${teamId}/rollingpapers`).then((response) => {
+const getTeamRollingpapers = (id: number) =>
+  appClient.get(`/teams/${id}/rollingpapers`).then((response) => {
     return response.data;
   });
 
