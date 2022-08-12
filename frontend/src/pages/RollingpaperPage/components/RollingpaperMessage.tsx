@@ -26,8 +26,8 @@ interface RollingpaperMessageProp {
   content: string;
   author: string;
   color: string;
-  authorId: number;
   messageId: number;
+  editable: boolean;
   onClickEdit: ({ messageId, color, content }: EditMessageProp) => void;
 }
 
@@ -35,8 +35,8 @@ const RollingpaperMessage = ({
   content,
   author,
   color,
-  authorId,
   messageId,
+  editable,
   onClickEdit,
 }: RollingpaperMessageProp) => {
   const { memberId } = useContext(UserContext);
@@ -73,7 +73,7 @@ const RollingpaperMessage = ({
     <StyledMessage color={color}>
       <StyledMessageContent>{content}</StyledMessageContent>
       <StyledMessageBottom>
-        {memberId === authorId && (
+        {editable && (
           <StyledMessageButtonContainer>
             <IconButton size="small" onClick={handleEditButtonClick}>
               <Pencil />

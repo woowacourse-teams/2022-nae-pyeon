@@ -16,6 +16,7 @@ import { useSnackbar } from "@/context/SnackbarContext";
 import { COLORS } from "@/constants";
 import useParamValidate from "@/hooks/useParamValidate";
 import { putMessage, postMessage } from "@/api/message";
+import SecretMessage from "./SecretMessage";
 
 const INIT_COLOR = COLORS.YELLOW;
 
@@ -193,17 +194,22 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
                   />
                 );
               }
-              return (
-                <RollingpaperMessage
-                  key={message.id}
-                  content={message.content}
-                  author={message.from}
-                  color={message.color}
-                  authorId={message.authorId}
-                  messageId={message.id}
-                  onClickEdit={handleEditMessageClick}
-                />
-              );
+
+              if (message.visible) {
+                return (
+                  <RollingpaperMessage
+                    key={message.id}
+                    content={message.content}
+                    author={message.from}
+                    color={message.color}
+                    messageId={message.id}
+                    onClickEdit={handleEditMessageClick}
+                    editable={message.editable}
+                  />
+                );
+              }
+
+              return <SecretMessage key={message.id} author={message.from} />;
             })}
           </StyledMessageList>
         ))}

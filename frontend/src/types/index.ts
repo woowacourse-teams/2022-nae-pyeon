@@ -12,8 +12,11 @@ export interface Message {
   id: number;
   content: string;
   from: string;
-  authorId: number;
   color: string;
+  anonymous: boolean;
+  secret: boolean;
+  editable: boolean;
+  visible: boolean;
 }
 
 export interface Rollingpaper {
