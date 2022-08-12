@@ -1,3 +1,12 @@
+export interface Team {
+  id: number;
+  teamName: string;
+  teamDescription: string;
+  emoji: string;
+  color: string;
+  nickname: string;
+}
+
 export interface Message {
   id: number;
   content: string;
