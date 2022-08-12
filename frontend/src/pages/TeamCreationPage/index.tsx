@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import styled from "@emotion/styled";
 
 import useInput from "@/hooks/useInput";
@@ -15,8 +12,8 @@ import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LabeledSwitch from "@/components/LabeledSwitch";
 
 import { COLORS, REGEX } from "@/constants";
-import { CustomError } from "@/types";
-import { postTeam } from "@/api/team";
+
+import useCreateTeam from "@/pages/TeamCreationPage/hooks/useCreateTeam";
 
 const emojis = [
   { id: 1, value: "🐶" },
@@ -33,40 +30,16 @@ const colors = Object.values(COLORS).map((value, index) => ({
 }));
 
 const TeamCreationPage = () => {
+  const { value: teamName, handleInputChange: handleTeamNameChange } =
+    useInput("");
   const [teamDescription, setTeamDescription] = useState("");
   const [emoji, setEmoji] = useState("");
   const [color, setColor] = useState("");
-  const { value: teamName, handleInputChange: handleTeamNameChange } =
-    useInput("");
   const { value: nickname, handleInputChange: handleNicknameChange } =
     useInput("");
-
-  const navigate = useNavigate();
   const { isChecked: isSecretTeam, handleSwitchClick } = useSwitch();
 
-  const { mutate: createTeam } = useMutation(
-    () => {
-      return postTeam({
-        name: teamName,
-        description: teamDescription,
-        emoji,
-        color,
-        nickname,
-        secret: isSecretTeam,
-      });
-    },
-    {
-      onSuccess: () => {
-        navigate("/");
-      },
-      onError: (error) => {
-        if (axios.isAxiosError(error) && error.response) {
-          const customError = error.response.data as CustomError;
-          alert(customError.message);
-        }
-      },
-    }
-  );
+  const createTeam = useCreateTeam();
 
   const handleTeamCreationSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -87,7 +60,14 @@ const TeamCreationPage = () => {
       return alert("모임 색상을 선택해주세요");
     }
 
-    createTeam();
+    createTeam({
+      name: teamName,
+      description: teamDescription,
+      emoji,
+      color,
+      nickname,
+      secret: isSecretTeam,
+    });
   };
 
   return (
