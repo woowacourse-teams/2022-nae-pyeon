@@ -1,6 +1,5 @@
 import { appClient } from "@/api";
 import { Team } from "@/types";
-
 interface SearchArgs {
   keyword: string;
   count: number;
