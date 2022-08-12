@@ -28,7 +28,7 @@ const StyledSecretMessageContainer = styled.div`
 `;
 
 const StyledGuideText = styled.div`
-  font-size: 15px;
+  font-size: 14px;
 `;
 
 const StyledGuideTextTitle = styled.h3`
