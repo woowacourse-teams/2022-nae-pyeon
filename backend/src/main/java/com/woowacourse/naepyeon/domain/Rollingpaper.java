@@ -56,6 +56,10 @@ public class Rollingpaper extends BaseEntity {
         this.title = title;
     }
 
+    public boolean isAddressee(final Long memberId) {
+        return this.member.isSameMember(memberId);
+    }
+
     public Long getAddresseeId() {
         return member.getId();
     }

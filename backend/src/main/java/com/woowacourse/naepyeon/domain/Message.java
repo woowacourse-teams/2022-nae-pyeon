@@ -41,12 +41,21 @@ public class Message extends BaseEntity {
     @JoinColumn(name = "rollingpaper_id", nullable = false)
     private Rollingpaper rollingpaper;
 
-    public Message(final String content, final String color, final Member author, final Rollingpaper rollingpaper) {
+    @Column(name = "anonymous", nullable = false)
+    private boolean anonymous;
+
+    @Column(name = "secret", nullable = false)
+    private boolean secret;
+
+    public Message(final String content, final String color, final Member author, final Rollingpaper rollingpaper,
+                   final boolean anonymous, final boolean secret) {
         validateContentLength(content);
         this.content = content;
         this.color = color;
         this.author = author;
         this.rollingpaper = rollingpaper;
+        this.anonymous = anonymous;
+        this.secret = secret;
     }
 
     public void changeContent(final String newContent) {

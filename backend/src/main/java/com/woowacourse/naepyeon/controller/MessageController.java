@@ -28,11 +28,12 @@ public class MessageController {
     private final MessageService messageService;
 
     @PostMapping
-    public ResponseEntity<CreateResponse> createMessage(@AuthenticationPrincipal LoginMemberRequest loginMemberRequest,
-                                                        @RequestBody @Valid final MessageRequest messageRequest,
-                                                        @PathVariable final Long rollingpaperId) {
+    public ResponseEntity<CreateResponse> createMessage(
+            @AuthenticationPrincipal final LoginMemberRequest loginMemberRequest,
+            @RequestBody @Valid final MessageRequest messageRequest,
+            @PathVariable final Long rollingpaperId) {
         final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaperId, loginMemberRequest.getId()
+                messageRequest.toServiceDto(), rollingpaperId, loginMemberRequest.getId()
         );
         return ResponseEntity.created(
                 URI.create("/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId)
@@ -41,16 +42,17 @@ public class MessageController {
 
     @GetMapping("/{messageId}")
     public ResponseEntity<MessageResponseDto> findMessage(
-            @AuthenticationPrincipal LoginMemberRequest loginMemberRequest,
+            @AuthenticationPrincipal final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long rollingpaperId,
             @PathVariable final Long messageId) {
-        final MessageResponseDto messageResponse = messageService.findMessage(messageId, rollingpaperId);
+        final MessageResponseDto messageResponse =
+                messageService.findMessage(messageId, rollingpaperId, loginMemberRequest.getId());
         return ResponseEntity.ok(messageResponse);
     }
 
     @PutMapping("/{messageId}")
     public ResponseEntity<Void> updateMessage(
-            @AuthenticationPrincipal LoginMemberRequest loginMemberRequest,
+            @AuthenticationPrincipal final LoginMemberRequest loginMemberRequest,
             @RequestBody @Valid final MessageUpdateContentRequest messageUpdateContentRequest,
             @PathVariable final Long rollingpaperId,
             @PathVariable final Long messageId) {
@@ -64,7 +66,7 @@ public class MessageController {
     }
 
     @DeleteMapping("/{messageId}")
-    public ResponseEntity<Void> deleteMessage(@AuthenticationPrincipal LoginMemberRequest loginMemberRequest,
+    public ResponseEntity<Void> deleteMessage(@AuthenticationPrincipal final LoginMemberRequest loginMemberRequest,
                                               @PathVariable final Long rollingpaperId,
                                               @PathVariable final Long messageId) {
         messageService.deleteMessage(messageId, loginMemberRequest.getId());

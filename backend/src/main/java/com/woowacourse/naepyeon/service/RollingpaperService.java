@@ -68,7 +68,7 @@ public class RollingpaperService {
                 rollingpaperId,
                 rollingpaper.getTitle(),
                 findRollingpaperAddresseeNickname(rollingpaper, teamId),
-                messageService.findMessages(rollingpaperId, teamId)
+                messageService.findMessages(rollingpaperId, teamId, loginMemberId)
         );
     }
 
