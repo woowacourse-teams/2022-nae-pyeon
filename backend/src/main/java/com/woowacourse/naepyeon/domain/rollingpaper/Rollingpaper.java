@@ -38,7 +38,7 @@ public class Rollingpaper extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "classification", nullable = false)
-    private Classification classification;
+    private Recipient recipient;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", nullable = false)
@@ -48,10 +48,10 @@ public class Rollingpaper extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public Rollingpaper(final String title, final Classification classification, final Team team, final Member member) {
+    public Rollingpaper(final String title, final Recipient recipient, final Team team, final Member member) {
         validateRollingpaper(title);
         this.title = title;
-        this.classification = classification;
+        this.recipient = recipient;
         this.team = team;
         this.member = member;
     }
@@ -75,7 +75,7 @@ public class Rollingpaper extends BaseEntity {
         return this.member == null;
     }
 
-    public boolean checkSameClassification(Classification classification) {
-        return this.classification.equals(classification);
+    public boolean checkSameRecipient(Recipient recipient) {
+        return this.recipient.equals(recipient);
     }
 }

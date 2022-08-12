@@ -19,7 +19,7 @@ import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.woowacourse.naepyeon.domain.rollingpaper.Classification.MEMBER;
+import static com.woowacourse.naepyeon.domain.rollingpaper.Recipient.MEMBER;
 import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;

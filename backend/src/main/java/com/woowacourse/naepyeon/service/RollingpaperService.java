@@ -2,7 +2,7 @@ package com.woowacourse.naepyeon.service;
 
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
-import com.woowacourse.naepyeon.domain.rollingpaper.Classification;
+import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundRollingpaperException;
@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.woowacourse.naepyeon.domain.rollingpaper.Classification.MEMBER;
+import static com.woowacourse.naepyeon.domain.rollingpaper.Recipient.MEMBER;
 
 @Service
 @RequiredArgsConstructor
@@ -67,7 +67,7 @@ public class RollingpaperService {
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
             throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
-        final Rollingpaper rollingpaper = new Rollingpaper(title, Classification.TEAM, team, null);
+        final Rollingpaper rollingpaper = new Rollingpaper(title, Recipient.TEAM, team, null);
         return rollingpaperRepository.save(rollingpaper);
     }
 

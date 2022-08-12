@@ -1,13 +1,13 @@
 package com.woowacourse.naepyeon.service.dto;
 
-import com.woowacourse.naepyeon.domain.rollingpaper.Classification;
+import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static com.woowacourse.naepyeon.domain.rollingpaper.Classification.TEAM;
+import static com.woowacourse.naepyeon.domain.rollingpaper.Recipient.TEAM;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,11 +17,11 @@ public class RollingpaperPreviewResponseDto {
     private Long id;
     private String title;
     private String to;
-    private Classification classification;
+    private Recipient recipient;
 
     public static RollingpaperPreviewResponseDto createPreviewRollingpaper(final Rollingpaper rollingpaper,
                                                                            final String to) {
-        if (rollingpaper.checkSameClassification(TEAM)) {
+        if (rollingpaper.checkSameRecipient(TEAM)) {
             return getRollingpaperPreviewResponseDto(rollingpaper, rollingpaper.getTeam().getName());
         }
 
@@ -34,7 +34,7 @@ public class RollingpaperPreviewResponseDto {
                 rollingpaper.getId(),
                 rollingpaper.getTitle(),
                 to,
-                rollingpaper.getClassification()
+                rollingpaper.getRecipient()
         );
     }
 }

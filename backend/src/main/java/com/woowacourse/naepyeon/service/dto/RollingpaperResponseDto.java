@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.service.dto;
 
-import com.woowacourse.naepyeon.domain.rollingpaper.Classification;
+import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +16,7 @@ public class RollingpaperResponseDto {
     private Long id;
     private String title;
     private String to;
-    private Classification classification;
+    private Recipient recipient;
     private List<MessageResponseDto> messages;
 
     public static RollingpaperResponseDto of(final RollingpaperPreviewResponseDto rollingpaperPreviewResponseDto,
@@ -25,7 +25,7 @@ public class RollingpaperResponseDto {
                 rollingpaperPreviewResponseDto.getId(),
                 rollingpaperPreviewResponseDto.getTitle(),
                 rollingpaperPreviewResponseDto.getTo(),
-                rollingpaperPreviewResponseDto.getClassification(),
+                rollingpaperPreviewResponseDto.getRecipient(),
                 messages
         );
     }

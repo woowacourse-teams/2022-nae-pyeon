@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.domain.rollingpaper;
 
-public enum Classification {
+public enum Recipient {
 
     MEMBER,
     TEAM

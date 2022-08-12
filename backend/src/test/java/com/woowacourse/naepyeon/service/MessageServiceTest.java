@@ -24,8 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.woowacourse.naepyeon.domain.rollingpaper.Classification.MEMBER;
-import static com.woowacourse.naepyeon.domain.rollingpaper.Classification.TEAM;
+import static com.woowacourse.naepyeon.domain.rollingpaper.Recipient.MEMBER;
+import static com.woowacourse.naepyeon.domain.rollingpaper.Recipient.TEAM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
