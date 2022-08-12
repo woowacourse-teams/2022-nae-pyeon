@@ -7,9 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
-import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
+import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.NotAuthorException;
 import com.woowacourse.naepyeon.exception.NotFoundMessageException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
@@ -32,15 +33,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class MessageServiceTest {
 
+    private static final String TEAM_NAME = "nae-pyeon";
     private final Team team = new Team(
-            "nae-pyeon",
+            TEAM_NAME,
             "테스트 모임입니다.",
             "testEmoji",
             "#123456");
     private final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
     private final Member author = new Member("author", "au@hello.com", Platform.KAKAO, "2");
     private final Member otherAuthor = new Member("author2", "aut@hello.com", Platform.KAKAO, "3");
-    private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", team, member);
+    private final Rollingpaper teamRollingpaper = new Rollingpaper("AlexAndKei", Recipient.TEAM, team, member);
+    private final Rollingpaper memberRollingpaper = new Rollingpaper("AlexAndKei", Recipient.MEMBER, team, member);
     private final TeamParticipation teamParticipation1 = new TeamParticipation(team, member, "일케이");
     private final TeamParticipation teamParticipation2 = new TeamParticipation(team, author, "이케이");
     private final TeamParticipation teamParticipation3 = new TeamParticipation(team, otherAuthor, "삼케이");
@@ -63,7 +66,8 @@ class MessageServiceTest {
         memberRepository.save(member);
         memberRepository.save(author);
         memberRepository.save(otherAuthor);
-        rollingpaperRepository.save(rollingpaper);
+        rollingpaperRepository.save(memberRollingpaper);
+        rollingpaperRepository.save(teamRollingpaper);
         teamParticipationRepository.save(teamParticipation1);
         teamParticipationRepository.save(teamParticipation2);
         teamParticipationRepository.save(teamParticipation3);
@@ -73,13 +77,12 @@ class MessageServiceTest {
     @DisplayName("메시지를 저장하고 id로 찾는다.")
     void saveMessageAndFind() {
         final MessageRequest messageRequest = createMessageRequest();
-        final Long messageId =
-                messageService.saveMessage(
-                        new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
-                        rollingpaper.getId(), author.getId()
-                );
+        final Long messageId = messageService.saveMessage(
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
+                memberRollingpaper.getId(), author.getId()
+        );
         final MessageResponseDto messageResponse =
-                messageService.findMessage(messageId, rollingpaper.getId(), author.getId());
+                messageService.findMessage(messageId, memberRollingpaper.getId(), author.getId());
 
         assertThat(messageResponse).extracting("content", "from", "authorId")
                 .containsExactly(messageRequest.getContent(), "이케이", author.getId());
@@ -91,10 +94,10 @@ class MessageServiceTest {
         final Long messageId =
                 messageService.saveMessage(
                         new MessageRequestDto("안녕하세요", "green", true, false),
-                        rollingpaper.getId(), author.getId()
+                        memberRollingpaper.getId(), author.getId()
                 );
         final MessageResponseDto messageResponse =
-                messageService.findMessage(messageId, rollingpaper.getId(), author.getId());
+                messageService.findMessage(messageId, memberRollingpaper.getId(), author.getId());
 
         assertThat(messageResponse.getFrom()).isEqualTo("");
     }
@@ -105,10 +108,10 @@ class MessageServiceTest {
         final Long messageId =
                 messageService.saveMessage(
                         new MessageRequestDto("안녕하세요", "green", false, true),
-                        rollingpaper.getId(), author.getId()
+                        memberRollingpaper.getId(), author.getId()
                 );
         final MessageResponseDto messageResponse =
-                messageService.findMessage(messageId, rollingpaper.getId(), author.getId());
+                messageService.findMessage(messageId, memberRollingpaper.getId(), author.getId());
 
         assertThat(messageResponse.getContent()).isEqualTo("안녕하세요");
     }
@@ -119,10 +122,10 @@ class MessageServiceTest {
         final Long messageId =
                 messageService.saveMessage(
                         new MessageRequestDto("안녕하세요", "green", false, true),
-                        rollingpaper.getId(), author.getId()
+                        memberRollingpaper.getId(), author.getId()
                 );
         final MessageResponseDto messageResponse =
-                messageService.findMessage(messageId, rollingpaper.getId(), member.getId());
+                messageService.findMessage(messageId, memberRollingpaper.getId(), member.getId());
 
         assertThat(messageResponse.getContent()).isEqualTo("안녕하세요");
     }
@@ -133,10 +136,10 @@ class MessageServiceTest {
         final Long messageId =
                 messageService.saveMessage(
                         new MessageRequestDto("안녕하세요", "green", false, true),
-                        rollingpaper.getId(), author.getId()
+                        memberRollingpaper.getId(), author.getId()
                 );
         final MessageResponseDto messageResponse =
-                messageService.findMessage(messageId, rollingpaper.getId(), otherAuthor.getId());
+                messageService.findMessage(messageId, memberRollingpaper.getId(), otherAuthor.getId());
 
         assertThat(messageResponse.getContent()).isEqualTo("");
     }
@@ -147,10 +150,10 @@ class MessageServiceTest {
         final Long messageId =
                 messageService.saveMessage(
                         new MessageRequestDto("안녕하세요", "green", true, false),
-                        rollingpaper.getId(), author.getId()
+                        memberRollingpaper.getId(), author.getId()
                 );
         final MessageResponseDto messageResponse =
-                messageService.findMessage(messageId, rollingpaper.getId(), otherAuthor.getId());
+                messageService.findMessage(messageId, memberRollingpaper.getId(), otherAuthor.getId());
 
         assertThat(messageResponse.isVisible()).isTrue();
     }
@@ -161,14 +164,14 @@ class MessageServiceTest {
         final Long messageId =
                 messageService.saveMessage(
                         new MessageRequestDto("안녕하세요", "green", true, true),
-                        rollingpaper.getId(), author.getId()
+                        memberRollingpaper.getId(), author.getId()
                 );
         final MessageResponseDto messageResponse1 =
-                messageService.findMessage(messageId, rollingpaper.getId(), member.getId());
+                messageService.findMessage(messageId, memberRollingpaper.getId(), member.getId());
         final MessageResponseDto messageResponse2 =
-                messageService.findMessage(messageId, rollingpaper.getId(), author.getId());
+                messageService.findMessage(messageId, memberRollingpaper.getId(), author.getId());
         final MessageResponseDto messageResponse3 =
-                messageService.findMessage(messageId, rollingpaper.getId(), otherAuthor.getId());
+                messageService.findMessage(messageId, memberRollingpaper.getId(), otherAuthor.getId());
 
         assertAll(
                 () -> assertThat(messageResponse1.isVisible()).isTrue(),
@@ -183,14 +186,14 @@ class MessageServiceTest {
         final Long messageId =
                 messageService.saveMessage(
                         new MessageRequestDto("안녕하세요", "green", true, false),
-                        rollingpaper.getId(), author.getId()
+                        memberRollingpaper.getId(), author.getId()
                 );
         final MessageResponseDto messageResponse1 =
-                messageService.findMessage(messageId, rollingpaper.getId(), member.getId());
+                messageService.findMessage(messageId, memberRollingpaper.getId(), member.getId());
         final MessageResponseDto messageResponse2 =
-                messageService.findMessage(messageId, rollingpaper.getId(), author.getId());
+                messageService.findMessage(messageId, memberRollingpaper.getId(), author.getId());
         final MessageResponseDto messageResponse3 =
-                messageService.findMessage(messageId, rollingpaper.getId(), otherAuthor.getId());
+                messageService.findMessage(messageId, memberRollingpaper.getId(), otherAuthor.getId());
 
         assertAll(
                 () -> assertThat(messageResponse1.isEditable()).isFalse(),
@@ -203,18 +206,13 @@ class MessageServiceTest {
     @DisplayName("내가 작성한 메시지 목록을 조회한다.")
     void findWrittenMessages() {
         final MessageRequest messageRequest = createMessageRequest();
-        final Long messageId =
-                messageService.saveMessage(
-                        new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
-                        rollingpaper.getId(), author.getId()
-                );
-        messageService.saveMessage(
+        final Long messageId = messageService.saveMessage(
                 new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
-                rollingpaper.getId(), otherAuthor.getId()
+                memberRollingpaper.getId(), author.getId()
         );
         final Long messageId2 = messageService.saveMessage(
                 new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
-                rollingpaper.getId(), author.getId()
+                teamRollingpaper.getId(), author.getId()
         );
 
         final WrittenMessagesResponseDto writtenMessagesResponseDto =
@@ -223,23 +221,23 @@ class MessageServiceTest {
         final List<WrittenMessageResponseDto> expected = List.of(
                 new WrittenMessageResponseDto(
                         messageId,
-                        rollingpaper.getId(),
-                        rollingpaper.getTitle(),
+                        memberRollingpaper.getId(),
+                        memberRollingpaper.getTitle(),
                         team.getId(),
                         team.getName(),
-                        "일케이",
                         messageRequest.getContent(),
-                        messageRequest.getColor()
+                        messageRequest.getColor(),
+                        "일케이"
                 ),
                 new WrittenMessageResponseDto(
                         messageId2,
-                        rollingpaper.getId(),
-                        rollingpaper.getTitle(),
+                        teamRollingpaper.getId(),
+                        teamRollingpaper.getTitle(),
                         team.getId(),
                         team.getName(),
-                        "일케이",
                         messageRequest.getContent(),
-                        messageRequest.getColor()
+                        messageRequest.getColor(),
+                        TEAM_NAME
                 )
         );
         assertThat(actual)
@@ -251,17 +249,17 @@ class MessageServiceTest {
     @DisplayName("메시지 내용과 색상을 수정한다.")
     void updateContent() {
         final MessageRequest messageRequest = createMessageRequest();
-        final Long messageId =
-                messageService.saveMessage(
-                        new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
-                        rollingpaper.getId(), author.getId()
-                );
+        final Long messageId = messageService.saveMessage(
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
+                memberRollingpaper.getId(), author.getId()
+        );
         final String expectedContent = "안녕하지 못합니다.";
         final String expectedColor = "red";
 
         messageService.updateMessage(messageId, expectedContent, expectedColor, author.getId());
 
-        final MessageResponseDto actual = messageService.findMessage(messageId, rollingpaper.getId(), author.getId());
+        final MessageResponseDto actual = messageService.findMessage(messageId, memberRollingpaper.getId(),
+                author.getId());
         final MessageResponseDto expected =
                 new MessageResponseDto(messageId, expectedContent, "이케이", author.getId(),
                         expectedColor, false, false, true, true);
@@ -276,7 +274,7 @@ class MessageServiceTest {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
                 new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
-                rollingpaper.getId(), author.getId()
+                memberRollingpaper.getId(), author.getId()
         );
         final String expected = "안녕하지 못합니다.";
 
@@ -288,15 +286,14 @@ class MessageServiceTest {
     @DisplayName("메시지를 id로 제거한다.")
     void deleteMessage() {
         final MessageRequest messageRequest = createMessageRequest();
-        final Long messageId =
-                messageService.saveMessage(
-                        new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
-                        rollingpaper.getId(), author.getId()
-                );
+        final Long messageId = messageService.saveMessage(
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
+                memberRollingpaper.getId(), author.getId()
+        );
 
         messageService.deleteMessage(messageId, author.getId());
 
-        assertThatThrownBy(() -> messageService.findMessage(messageId, rollingpaper.getId(), author.getId()))
+        assertThatThrownBy(() -> messageService.findMessage(messageId, memberRollingpaper.getId(), author.getId()))
                 .isInstanceOf(NotFoundMessageException.class);
     }
 
@@ -304,11 +301,11 @@ class MessageServiceTest {
     @DisplayName("메시지 작성자가 아닌 멤버가 메시지를 삭제할 경우 예외발생")
     void deleteMessageWithNotAuthor() {
         final MessageRequest messageRequest = createMessageRequest();
-        final Long messageId =
-                messageService.saveMessage(
-                        new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
-                        rollingpaper.getId(), author.getId()
-                );
+
+        final Long messageId = messageService.saveMessage(
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
+                memberRollingpaper.getId(), author.getId()
+        );
 
         assertThatThrownBy(() -> messageService.deleteMessage(messageId, 9999L))
                 .isInstanceOf(NotAuthorException.class);

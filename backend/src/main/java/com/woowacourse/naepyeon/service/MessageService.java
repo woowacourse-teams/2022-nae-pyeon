@@ -2,8 +2,8 @@ package com.woowacourse.naepyeon.service;
 
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Message;
-import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.NotAuthorException;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundMessageException;
