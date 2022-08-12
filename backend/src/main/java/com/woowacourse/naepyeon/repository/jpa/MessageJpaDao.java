@@ -16,8 +16,8 @@ public interface MessageJpaDao extends JpaRepository<Message, Long> {
 
     @Query(value = "select new com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto"
             + "(m.id, r.id, r.title, t.id, t.name, m.content, m.color, "
-            + "case when r.classification = com.woowacourse.naepyeon.domain.Classification.MEMBER then p.nickname "
-            + "when r.classification = com.woowacourse.naepyeon.domain.Classification.TEAM then t.name "
+            + "case when r.classification = com.woowacourse.naepyeon.domain.rollingpaper.Classification.MEMBER then p.nickname "
+            + "when r.classification = com.woowacourse.naepyeon.domain.rollingpaper.Classification.TEAM then t.name "
             + "else '' end) "
             + "from Message m"
             + ", Rollingpaper r"

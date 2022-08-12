@@ -87,9 +87,8 @@ public class RollingpaperService {
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
             throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
-        final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
+        return rollingpaperRepository.findById(rollingpaperId)
                 .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
-        return rollingpaper;
     }
 
     public String findRollingpaperAddresseeNickname(final Rollingpaper rollingpaper, final Long teamId) {
