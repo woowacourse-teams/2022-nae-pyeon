@@ -9,7 +9,7 @@ import RollingpaperList from "@/pages/MyPage/components/RollingpaperList";
 import MessageList from "@/pages/MyPage/components/MessageList";
 
 import {
-  getMyUserInfo,
+  getMyInfo,
   getMyReceivedRollingpapers,
   getMySentMessage,
 } from "@/api/member";
@@ -42,7 +42,7 @@ const MyPage = () => {
     isError: isErrorGetUserProfile,
     error: getUserProfileError,
     data: userProfile,
-  } = useQuery<UserInfo>(["user-profile"], () => getMyUserInfo());
+  } = useQuery<UserInfo>(["user-profile"], () => getMyInfo());
 
   const {
     isLoading: isLoadingGetReceivedRollingpapers,

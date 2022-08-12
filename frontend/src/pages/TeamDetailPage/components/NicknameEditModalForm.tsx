@@ -1,39 +1,35 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
 import { useMutation } from "@tanstack/react-query";
 import styled from "@emotion/styled";
 
-import { appClient, queryClient } from "@/api";
+import { queryClient } from "@/api";
 
 import LineButton from "@/components/LineButton";
 import Modal from "@/components/Modal";
 import UnderlineInput from "@/components/UnderlineInput";
 
+import useParamValidate from "@/hooks/useParamValidate";
+import useInput from "@/hooks/useInput";
+
 import { REGEX } from "@/constants";
 import { useSnackbar } from "@/context/SnackbarContext";
-import useInput from "@/hooks/useInput";
+
+import { putTeamNickname } from "@/api/team";
 
 interface NicknameEditModalForm {
   onClickCloseButton: () => void;
-}
-
-interface NicknameEditFormInfo {
-  nickname: string;
 }
 
 const NicknameEditModalForm = ({
   onClickCloseButton,
 }: NicknameEditModalForm) => {
   const { openSnackbar } = useSnackbar();
-  const { teamId } = useParams();
+  const { teamId } = useParamValidate(["teamId"]);
   const { value: nickname, handleInputChange: handleNicknameChange } =
     useInput("");
 
   const { mutate: editTeamNickname } = useMutation(
-    async ({ nickname }: NicknameEditFormInfo) => {
-      const response = await appClient.put(`/teams/${teamId}/me`, { nickname });
-      return response.data;
-    },
+    async (nickname: string) => putTeamNickname({ id: +teamId, nickname }),
     {
       onSuccess: () => {
         onClickCloseButton();
@@ -54,7 +50,7 @@ const NicknameEditModalForm = ({
       alert("1 ~ 20자 사이의 닉네임을 입력해주세요");
       return;
     }
-    editTeamNickname({ nickname });
+    editTeamNickname(nickname);
   };
 
   return (

@@ -13,15 +13,7 @@ import SearchResultItem from "@/pages/TeamSearchPage/components/SearchResultItem
 import EmptyStateImg from "@/assets/images/empty-state.svg";
 import { TOTAL_TEAMS_PAGING_COUNT } from "@/constants";
 
-import { CustomError } from "@/types";
-
-interface Team {
-  id: number;
-  name: string;
-  description: string;
-  emoji: string;
-  color: string;
-}
+import { Team, CustomError } from "@/types";
 
 const TeamSearch = () => {
   const [searchKeyword, setSearchKeyword] = useState("");

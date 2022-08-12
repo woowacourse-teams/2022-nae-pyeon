@@ -5,7 +5,6 @@ import axios from "axios";
 import styled from "@emotion/styled";
 
 import useInput from "@/hooks/useInput";
-import { appClient } from "@/api";
 
 import LabeledInput from "@/components/LabeledInput";
 import LabeledRadio from "@/components/LabeledRadio";
@@ -15,6 +14,7 @@ import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 
 import { COLORS, REGEX } from "@/constants";
 import { CustomError } from "@/types";
+import { postTeam } from "@/api/team";
 
 import LabeledSwitch from "@/pages/TeamCreationPage/components/LabeledSwitch";
 import useSwitch from "@/pages/TeamCreationPage/hooks/useSwitch";
@@ -47,16 +47,13 @@ const TeamCreationPage = () => {
 
   const { mutate: createTeam } = useMutation(
     () => {
-      return appClient
-        .post("/teams", {
-          name: teamName,
-          description: teamDescription,
-          emoji,
-          color,
-          nickname,
-          isPrivateTeam,
-        })
-        .then((response) => response.data);
+      return postTeam({
+        name: teamName,
+        description: teamDescription,
+        emoji,
+        color,
+        nickname,
+      });
     },
     {
       onSuccess: () => {
@@ -158,9 +155,9 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  
+
   padding-bottom: 20px;
-  
+
   fieldset {
     margin-bottom: 20px;
   }

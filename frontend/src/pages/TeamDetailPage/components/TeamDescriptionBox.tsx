@@ -3,24 +3,15 @@ import styled from "@emotion/styled";
 
 import Dropdown from "@/components/Dropdown";
 import NicknameEditModalForm from "@/pages/TeamDetailPage/components/NicknameEditModalForm";
-import InviteModal from "./InviteModal";
+import InviteModal from "@/pages/TeamDetailPage/components/InviteModal";
 
 import useModal from "@/hooks/useModal";
 
 import MeatballIcon from "@/assets/icons/bx-dots-horizontal-rounded.svg";
 
-interface TeamDescriptionBoxProps {
-  name: string;
-  description: string;
-  emoji: string;
-  color: string;
-  joined: boolean;
-}
+import { Team } from "@/types";
 
-type StyledTeamDescriptionContainerProps = Pick<
-  TeamDescriptionBoxProps,
-  "color"
->;
+type StyledTeamDescriptionContainerProps = Pick<Team, "color">;
 
 const TeamDescriptionBox = ({
   name,
@@ -28,7 +19,7 @@ const TeamDescriptionBox = ({
   emoji,
   color,
   joined,
-}: TeamDescriptionBoxProps) => {
+}: Omit<Team, "id" | "nickname">) => {
   const {
     isOpen: isTeamNicknameOpen,
     handleModalClose: handleTeamNicknameClose,

@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
 import { useMutation } from "@tanstack/react-query";
 import styled from "@emotion/styled";
 
-import { appClient, queryClient } from "@/api";
+import { queryClient } from "@/api";
 
 import LineButton from "@/components/LineButton";
 import Modal from "@/components/Modal";
@@ -11,28 +10,27 @@ import UnderlineInput from "@/components/UnderlineInput";
 
 import { REGEX } from "@/constants";
 import { useSnackbar } from "@/context/SnackbarContext";
+
 import useInput from "@/hooks/useInput";
+
+import { postTeamNickname } from "@/api/team";
+import useParamValidate from "@/hooks/useParamValidate";
 
 interface NicknameCreateModalFormProp {
   onClickCloseButton: () => void;
-}
-
-interface TeamJoinFormInfo {
-  nickname: string;
 }
 
 const NicknameCreateModalForm = ({
   onClickCloseButton,
 }: NicknameCreateModalFormProp) => {
   const { openSnackbar } = useSnackbar();
-  const { teamId } = useParams();
   const { value: nickname, handleInputChange: handleNicknameChange } =
     useInput("");
+  const { teamId } = useParamValidate(["teamId"]);
 
   const { mutate: joinTeam } = useMutation(
-    async ({ nickname }: TeamJoinFormInfo) => {
-      const response = await appClient.post(`/teams/${teamId}`, { nickname });
-      return response.data;
+    async (nickname: string) => {
+      postTeamNickname({ id: +teamId, nickname });
     },
     {
       onSuccess: () => {
@@ -55,7 +53,7 @@ const NicknameCreateModalForm = ({
       return;
     }
 
-    joinTeam({ nickname });
+    joinTeam(nickname);
   };
 
   return (

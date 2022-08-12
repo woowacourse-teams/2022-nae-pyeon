@@ -1,3 +1,13 @@
+export interface Team {
+  id: number;
+  name: string;
+  description: string;
+  emoji: string;
+  color: string;
+  nickname: string;
+  joined: boolean;
+}
+
 export interface Message {
   id: number;
   content: string;

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import styled from "@emotion/styled";
@@ -8,13 +7,15 @@ import IconButton from "@components/IconButton";
 import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 import RollingpaperMessage from "@/pages/RollingpaperPage/components/RollingpaperMessage";
 
-import { appClient, queryClient } from "@/api";
+import { queryClient } from "@/api";
 import { Message, CustomError } from "@/types";
 
 import PencilIcon from "@/assets/icons/bx-pencil.svg";
 import { divideArrayByIndexRemainder } from "@/util";
 import { useSnackbar } from "@/context/SnackbarContext";
 import { COLORS } from "@/constants";
+import useParamValidate from "@/hooks/useParamValidate";
+import { putMessage, postMessage } from "@/api/message";
 
 const INIT_COLOR = COLORS.YELLOW;
 
@@ -38,17 +39,17 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
   const [content, setContent] = useState("");
   const [color, setColor] = useState(INIT_COLOR);
 
-  const { rollingpaperId } = useParams();
+  const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
   const { openSnackbar } = useSnackbar();
 
   const { mutate: updateMessage } = useMutation(
     ({ content, color }: Pick<Message, "content" | "color">) => {
-      return appClient
-        .put(`/rollingpapers/${rollingpaperId}/messages/${editMessageId}`, {
-          content,
-          color,
-        })
-        .then((response) => response.data);
+      return putMessage({
+        rollingpaperId: +rollingpaperId,
+        id: editMessageId,
+        content,
+        color,
+      });
     },
     {
       onSuccess: () => {
@@ -66,12 +67,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
 
   const { mutate: createMessage } = useMutation(
     ({ content, color }: Pick<Message, "content" | "color">) => {
-      return appClient
-        .post(`/rollingpapers/${rollingpaperId}/messages`, {
-          content,
-          color,
-        })
-        .then((response) => response.data);
+      return postMessage({ rollingpaperId: +rollingpaperId, content, color });
     },
     {
       onSuccess: () => {

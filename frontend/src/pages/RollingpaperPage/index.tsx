@@ -1,17 +1,19 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-
-import { appClient } from "@/api";
 
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
 
 import { Rollingpaper, CustomError } from "@/types";
+import { getRollingpaper } from "@/api/rollingpaper";
+import useParamValidate from "@/hooks/useParamValidate";
 
 const RollingpaperPage = () => {
-  const { teamId, rollingpaperId } = useParams();
+  const { teamId, rollingpaperId } = useParamValidate([
+    "teamId",
+    "rollingpaperId",
+  ]);
 
   const {
     isLoading,
@@ -19,9 +21,7 @@ const RollingpaperPage = () => {
     error: rollingpaperError,
     data: rollingpaper,
   } = useQuery<Rollingpaper>(["rollingpaper", rollingpaperId], () =>
-    appClient
-      .get(`/teams/${teamId}/rollingpapers/${rollingpaperId}`)
-      .then((response) => response.data)
+    getRollingpaper(+teamId, +rollingpaperId)
   );
 
   if (isLoading) {
