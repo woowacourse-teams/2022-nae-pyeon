@@ -62,12 +62,12 @@ public class RollingpaperService {
     }
 
     public Long createTeamRollingpaper(final String title, final Long teamId, final Long loginMemberId) {
-        Team team = teamRepository.findById(teamId)
+        final Team team = teamRepository.findById(teamId)
                 .orElseThrow((() -> new NotFoundTeamException(teamId)));
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
             throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
-        Rollingpaper rollingpaper = new Rollingpaper(title, Classification.TEAM, team, null);
+        final Rollingpaper rollingpaper = new Rollingpaper(title, Classification.TEAM, team, null);
         return rollingpaperRepository.save(rollingpaper);
     }
 
