@@ -5,19 +5,18 @@ import axios from "axios";
 import styled from "@emotion/styled";
 
 import useInput from "@/hooks/useInput";
+import useSwitch from "@/hooks/useSwitch";
 
 import LabeledInput from "@/components/LabeledInput";
 import LabeledRadio from "@/components/LabeledRadio";
 import LabeledTextArea from "@/components/LabeledTextArea";
 import Button from "@/components/Button";
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
+import LabeledSwitch from "@/components/LabeledSwitch";
 
 import { COLORS, REGEX } from "@/constants";
 import { CustomError } from "@/types";
 import { postTeam } from "@/api/team";
-
-import LabeledSwitch from "@/pages/TeamCreationPage/components/LabeledSwitch";
-import useSwitch from "@/pages/TeamCreationPage/hooks/useSwitch";
 
 const emojis = [
   { id: 1, value: "🐶" },
