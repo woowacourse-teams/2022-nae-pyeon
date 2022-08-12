@@ -78,4 +78,8 @@ public class Rollingpaper extends BaseEntity {
     public boolean checkSameRecipient(Recipient recipient) {
         return this.recipient.equals(recipient);
     }
+
+    public String getTeamName() {
+        return team.getName();
+    }
 }

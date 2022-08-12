@@ -22,7 +22,7 @@ public class RollingpaperPreviewResponseDto {
     public static RollingpaperPreviewResponseDto createPreviewRollingpaper(final Rollingpaper rollingpaper,
                                                                            final String to) {
         if (rollingpaper.checkSameRecipient(TEAM)) {
-            return getRollingpaperPreviewResponseDto(rollingpaper, rollingpaper.getTeam().getName());
+            return getRollingpaperPreviewResponseDto(rollingpaper, rollingpaper.getTeamName());
         }
 
         return getRollingpaperPreviewResponseDto(rollingpaper, to);
