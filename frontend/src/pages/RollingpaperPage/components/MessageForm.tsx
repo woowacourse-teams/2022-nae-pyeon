@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import MessageTextArea from "@/pages/RollingpaperPage/components/MessageTextArea";
 import MessageColorPicker from "@/pages/RollingpaperPage/components/MessageColorPicker";
@@ -16,7 +16,7 @@ type MessageFormProps = {
   content: string;
   onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
   color: string;
-  onClickColor: Dispatch<SetStateAction<string>>;
+  onClickColor: (value: string) => void;
 };
 
 type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;

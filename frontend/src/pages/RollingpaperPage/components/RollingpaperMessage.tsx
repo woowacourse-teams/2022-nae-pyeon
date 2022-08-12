@@ -1,26 +1,13 @@
-import React, { useContext } from "react";
-import { useMutation } from "@tanstack/react-query";
+import React from "react";
 import styled from "@emotion/styled";
-import axios from "axios";
 
 import IconButton from "@/components/IconButton";
-
-import { UserContext } from "@/context/UserContext";
 
 import TrashIcon from "@/assets/icons/bx-trash.svg";
 import Pencil from "@/assets/icons/bx-pencil.svg";
 
-import { CustomError } from "@/types";
-import { queryClient } from "@/api";
-import { useSnackbar } from "@/context/SnackbarContext";
-import { deleteMessage } from "@/api/message";
-import useParamValidate from "@/hooks/useParamValidate";
-
-interface EditMessageProp {
-  messageId: number;
-  color: string;
-  content: string;
-}
+import useUpdateMessage from "../hooks/useUpdateMessage";
+import MessageForm from "./MessageForm";
 
 interface RollingpaperMessageProp {
   content: string;
@@ -28,7 +15,8 @@ interface RollingpaperMessageProp {
   color: string;
   messageId: number;
   editable: boolean;
-  onClickEdit: ({ messageId, color, content }: EditMessageProp) => void;
+  anonymous: boolean;
+  secret: boolean;
 }
 
 const RollingpaperMessage = ({
@@ -37,38 +25,39 @@ const RollingpaperMessage = ({
   color,
   messageId,
   editable,
-  onClickEdit,
+  anonymous,
+  secret,
 }: RollingpaperMessageProp) => {
-  const { memberId } = useContext(UserContext);
-  const { openSnackbar } = useSnackbar();
-  const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
+  const {
+    isWrite,
+    color: newColor,
+    content: newContent,
+    handleMessageChange,
+    handleMessageSubmit,
+    handleMessageCancel,
+    handleEditButtonClick,
+    handleDeleteButtonClick,
+    handleColorClick,
+  } = useUpdateMessage({
+    id: messageId,
+    initContent: content,
+    initColor: color,
+    initAnonymous: anonymous,
+    initSecret: secret,
+  });
 
-  const { mutate: deleteRollingpaperMessage } = useMutation(
-    () => deleteMessage({ rollingpaperId: +rollingpaperId, id: messageId }),
-    {
-      onSuccess: () => {
-        queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
-        openSnackbar("메시지 삭제 완료");
-      },
-      onError: (error) => {
-        if (axios.isAxiosError(error) && error.response) {
-          const customError = error.response.data as CustomError;
-          alert(customError.message);
-        }
-      },
-    }
-  );
-
-  const handleEditButtonClick = () => {
-    onClickEdit({ messageId, color, content });
-  };
-
-  const handleDeleteButtonClick = () => {
-    if (confirm("메시지를 삭제하시겠습니까?")) {
-      deleteRollingpaperMessage();
-    }
-  };
-
+  if (isWrite) {
+    return (
+      <MessageForm
+        onSubmit={handleMessageSubmit}
+        onCancel={handleMessageCancel}
+        onChange={handleMessageChange}
+        content={newContent}
+        color={newColor}
+        onClickColor={handleColorClick}
+      />
+    );
+  }
   return (
     <StyledMessage color={color}>
       <StyledMessageContent>{content}</StyledMessageContent>

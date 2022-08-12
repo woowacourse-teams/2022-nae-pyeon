@@ -1,9 +1,9 @@
-import React, { SetStateAction } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import { COLORS } from "@/constants";
 
 interface ColorPickerProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  onClickRadio: React.Dispatch<SetStateAction<string>>;
+  onClickRadio: (value: string) => void;
   color: string;
 }
 
@@ -12,9 +12,11 @@ interface StyledRadioProps {
 }
 
 const MessageColorPicker = ({ onClickRadio, color }: ColorPickerProps) => {
-  const handleRadioChange = (value: string) => {
-    onClickRadio(value);
-  };
+  const handleRadioChange =
+    (value: string): React.ChangeEventHandler<HTMLInputElement> =>
+    () => {
+      onClickRadio(value);
+    };
 
   return (
     <StyledColorPickerContainer>
@@ -25,9 +27,7 @@ const MessageColorPicker = ({ onClickRadio, color }: ColorPickerProps) => {
               type="radio"
               value={radio}
               checked={color === radio}
-              onChange={() => {
-                handleRadioChange(radio);
-              }}
+              onChange={handleRadioChange(radio)}
             />
             <StyledRadio backgroundColor={radio} />
           </label>

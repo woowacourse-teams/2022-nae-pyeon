@@ -5,6 +5,8 @@ interface PutMessageRequest {
   id: number | null;
   content: string;
   color: string;
+  anonymous: boolean;
+  secret: boolean;
 }
 
 interface DeleteMessageRequest {
@@ -17,11 +19,15 @@ const putMessage = ({
   id,
   content,
   color,
+  anonymous,
+  secret,
 }: PutMessageRequest) =>
   appClient
     .put(`/rollingpapers/${rollingpaperId}/messages/${id}`, {
       content,
       color,
+      anonymous,
+      secret,
     })
     .then((response) => response.data);
 
@@ -29,11 +35,15 @@ const postMessage = ({
   rollingpaperId,
   content,
   color,
+  anonymous,
+  secret,
 }: Partial<PutMessageRequest>) =>
   appClient
     .post(`/rollingpapers/${rollingpaperId}/messages`, {
       content,
       color,
+      anonymous,
+      secret,
     })
     .then((response) => response.data);
 
