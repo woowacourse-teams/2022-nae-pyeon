@@ -162,8 +162,7 @@ public class AcceptanceFixture {
         return get(tokenResponseDto, "/api/v1/teams/" + teamId + "/me");
     }
 
-    public static ExtractableResponse<Response> 모임_내_닉네임_변경(final TokenResponseDto tokenResponseDto,
-                                                            final Long teamId,
+    public static ExtractableResponse<Response> 모임_내_닉네임_변경(final TokenResponseDto tokenResponseDto, final Long teamId,
                                                             final UpdateTeamParticipantRequest updateTeamParticipantRequest) {
         return put(tokenResponseDto, updateTeamParticipantRequest, "/api/v1/teams/" + teamId + "/me");
     }

@@ -2,6 +2,7 @@ package com.woowacourse.naepyeon.repository;
 
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
+import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
@@ -179,6 +180,6 @@ class RollingpaperRepositoryTest {
     }
 
     private Rollingpaper createRollingPaper() {
-        return new Rollingpaper(rollingPaperTitle, MEMBER, team, member);
+        return new Rollingpaper(rollingPaperTitle, Recipient.MEMBER, team, member);
     }
 }

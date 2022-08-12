@@ -1,11 +1,11 @@
 package com.woowacourse.naepyeon.domain;
 
+import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.ExceedRollingpaperNameLengthException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.woowacourse.naepyeon.domain.rollingpaper.Recipient.MEMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -21,7 +21,7 @@ class RollingpaperTest {
                 "#123456"
         );
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
-        final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", MEMBER, team, member);
+        final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", Recipient.MEMBER, team, member);
         final String expected = "kth990303";
 
         rollingpaper.changeTitle(expected);
@@ -39,7 +39,7 @@ class RollingpaperTest {
                 "#123456"
         );
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
-        final Rollingpaper rollingpaper = new Rollingpaper("seungpang", MEMBER, team, member);
+        final Rollingpaper rollingpaper = new Rollingpaper("seungpang", Recipient.MEMBER, team, member);
 
         final String invalidTitle = "seungapng, happy new year, good luck";
 
@@ -58,7 +58,7 @@ class RollingpaperTest {
         );
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
 
-        assertThatThrownBy(() -> new Rollingpaper("seungpang seungpang seungpang", MEMBER, team, member))
+        assertThatThrownBy(() -> new Rollingpaper("seungpang seungpang seungpang", Recipient.MEMBER, team, member))
                 .isInstanceOf(ExceedRollingpaperNameLengthException.class);
     }
 }

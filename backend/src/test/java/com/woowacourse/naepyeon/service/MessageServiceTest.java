@@ -3,6 +3,7 @@ package com.woowacourse.naepyeon.service;
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
+import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
@@ -42,8 +43,8 @@ class MessageServiceTest {
     private final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
     private final Member author = new Member("author", "au@hello.com", Platform.KAKAO, "2");
     private final Member otherAuthor = new Member("author2", "aut@hello.com", Platform.KAKAO, "3");
-    private final Rollingpaper teamRollingpaper = new Rollingpaper("AlexAndKei", TEAM, team, member);
-    private final Rollingpaper memberRollingpaper = new Rollingpaper("AlexAndKei", MEMBER, team, member);
+    private final Rollingpaper teamRollingpaper = new Rollingpaper("AlexAndKei", Recipient.TEAM, team, member);
+    private final Rollingpaper memberRollingpaper = new Rollingpaper("AlexAndKei", Recipient.MEMBER, team, member);
     private final TeamParticipation teamParticipation1 = new TeamParticipation(team, member, "일케이");
     private final TeamParticipation teamParticipation2 = new TeamParticipation(team, author, "이케이");
     private final TeamParticipation teamParticipation3 = new TeamParticipation(team, otherAuthor, "삼케이");
