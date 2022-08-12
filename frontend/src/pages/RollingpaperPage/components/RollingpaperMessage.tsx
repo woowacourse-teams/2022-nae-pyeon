@@ -96,7 +96,6 @@ const StyledMessage = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  white-space: pre-line;
 
   width: 100%;
   aspect-ratio: 1;

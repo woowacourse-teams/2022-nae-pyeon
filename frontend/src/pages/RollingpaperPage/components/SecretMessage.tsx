@@ -14,7 +14,6 @@ const StyledSecretMessageContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  white-space: pre-line;
 
   text-align: center;
 
