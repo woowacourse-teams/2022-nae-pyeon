@@ -1,11 +1,20 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-const SecretMessage = () => {
+interface SecretMessageProp {
+  author: string;
+}
+
+const SecretMessage = ({ author }: SecretMessageProp) => {
   return (
     <StyledSecretMessageContainer>
-      <StyledGuideTextTitle>🔒 비밀글입니다.</StyledGuideTextTitle>
-      <StyledGuideText>작성자와 받은 사람만 확인할 수 있어요.</StyledGuideText>
+      <StyledContent>
+        <StyledGuideTextTitle>🔒 비밀글입니다.</StyledGuideTextTitle>
+        <StyledGuideText>
+          작성자와 받은 사람만 확인할 수 있어요.
+        </StyledGuideText>
+      </StyledContent>
+      <StyledMessageAuthor>{author}</StyledMessageAuthor>
     </StyledSecretMessageContainer>
   );
 };
@@ -13,7 +22,7 @@ const SecretMessage = () => {
 const StyledSecretMessageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
 
   text-align: center;
 
@@ -26,12 +35,24 @@ const StyledSecretMessageContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.GRAY_300};
 `;
 
+const StyledContent = styled.div`
+  padding: 100px 0;
+`;
 const StyledGuideText = styled.div`
   font-size: 14px;
 `;
 
 const StyledGuideTextTitle = styled.h3`
   margin-bottom: 10px;
+`;
+
+const StyledMessageAuthor = styled.div`
+  width: 50%;
+  text-align: right;
+  margin-left: auto;
+
+  font-size: 16px;
+  color: ${({ theme }) => theme.colors.GRAY_700};
 `;
 
 export default SecretMessage;
