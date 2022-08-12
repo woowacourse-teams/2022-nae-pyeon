@@ -47,7 +47,13 @@ const TeamCreationPage = () => {
 
   const { mutate: createTeam } = useMutation(
     () => {
-      return postTeam({ teamName, teamDescription, emoji, color, nickname });
+      return postTeam({
+        name: teamName,
+        description: teamDescription,
+        emoji,
+        color,
+        nickname,
+      });
     },
     {
       onSuccess: () => {

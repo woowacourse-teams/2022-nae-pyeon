@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useMutation } from "@tanstack/react-query";
 import styled from "@emotion/styled";
 
@@ -13,15 +13,11 @@ import { useSnackbar } from "@/context/SnackbarContext";
 
 import useInput from "@/hooks/useInput";
 
-import { postTeamNickname, putTeamNickname } from "@/api/team";
+import { postTeamNickname } from "@/api/team";
 import useParamValidate from "@/hooks/useParamValidate";
 
 interface NicknameCreateModalFormProp {
   onClickCloseButton: () => void;
-}
-
-interface TeamJoinFormInfo {
-  nickname: string;
 }
 
 const NicknameCreateModalForm = ({
@@ -33,8 +29,8 @@ const NicknameCreateModalForm = ({
   const { teamId } = useParamValidate(["teamId"]);
 
   const { mutate: joinTeam } = useMutation(
-    async ({ nickname }: TeamJoinFormInfo) => {
-      postTeamNickname({ teamId: +teamId, nickname });
+    async (nickname: string) => {
+      postTeamNickname({ id: +teamId, nickname });
     },
     {
       onSuccess: () => {
@@ -57,7 +53,7 @@ const NicknameCreateModalForm = ({
       return;
     }
 
-    joinTeam({ nickname });
+    joinTeam(nickname);
   };
 
   return (

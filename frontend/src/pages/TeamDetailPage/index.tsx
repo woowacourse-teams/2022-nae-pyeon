@@ -7,17 +7,9 @@ import TeamDescriptionBox from "@/pages/TeamDetailPage/components/TeamDescriptio
 import RollingpaperList from "@/pages/TeamDetailPage/components/RollingpaperList";
 import TeamJoinSection from "@/pages/TeamDetailPage/components/TeamJoinSection";
 
-import { CustomError } from "@/types";
+import { Team, CustomError } from "@/types";
 import { getTeam } from "@/api/team";
 import useParamValidate from "@/hooks/useParamValidate";
-interface Team {
-  id: number;
-  name: string;
-  description: string;
-  emoji: string;
-  color: string;
-  joined: boolean;
-}
 
 const TeamDetailPage = () => {
   const { teamId } = useParamValidate(["teamId"]);

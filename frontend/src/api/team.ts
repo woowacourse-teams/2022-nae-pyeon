@@ -1,11 +1,6 @@
 import { appClient } from "@/api";
 import { Team } from "@/types";
 
-interface TeamNicknameArgs {
-  teamId: number;
-  nickname: string;
-}
-
 interface SearchArgs {
   keyword: string;
   count: number;
@@ -41,30 +36,30 @@ const getTeamRollingpapers = (teamId: number) =>
   });
 
 const postTeam = ({
-  teamName,
-  teamDescription,
+  name,
+  description,
   emoji,
   color,
   nickname,
-}: Omit<Team, "id">) =>
+}: Omit<Team, "id" | "joined">) =>
   appClient
     .post("/teams", {
-      name: teamName,
-      description: teamDescription,
+      name,
+      description,
       emoji,
       color,
       nickname,
     })
     .then((response) => response.data);
 
-const postTeamNickname = ({ teamId, nickname }: TeamNicknameArgs) =>
+const postTeamNickname = ({ id, nickname }: Pick<Team, "id" | "nickname">) =>
   appClient
-    .post(`/teams/${teamId}`, { nickname })
+    .post(`/teams/${id}`, { nickname })
     .then((response) => response.data);
 
-const putTeamNickname = ({ teamId, nickname }: TeamNicknameArgs) =>
+const putTeamNickname = ({ id, nickname }: Pick<Team, "id" | "nickname">) =>
   appClient
-    .put(`/teams/${teamId}/me`, { nickname })
+    .put(`/teams/${id}/me`, { nickname })
     .then((response) => response.data);
 
 export {

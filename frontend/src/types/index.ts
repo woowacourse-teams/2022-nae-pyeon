@@ -1,10 +1,11 @@
 export interface Team {
   id: number;
-  teamName: string;
-  teamDescription: string;
+  name: string;
+  description: string;
   emoji: string;
   color: string;
   nickname: string;
+  joined: boolean;
 }
 
 export interface Message {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import styled from "@emotion/styled";
@@ -17,10 +17,6 @@ interface NicknameEditModalForm {
   onClickCloseButton: () => void;
 }
 
-interface NicknameEditFormInfo {
-  nickname: string;
-}
-
 const NicknameEditModalForm = ({
   onClickCloseButton,
 }: NicknameEditModalForm) => {
@@ -30,7 +26,7 @@ const NicknameEditModalForm = ({
     useInput("");
 
   const { mutate: editTeamNickname } = useMutation(
-    async ({ nickname }: NicknameEditFormInfo) => {
+    async (nickname: string) => {
       const response = await appClient.put(`/teams/${teamId}/me`, { nickname });
       return response.data;
     },
@@ -54,7 +50,7 @@ const NicknameEditModalForm = ({
       alert("1 ~ 20자 사이의 닉네임을 입력해주세요");
       return;
     }
-    editTeamNickname({ nickname });
+    editTeamNickname(nickname);
   };
 
   return (

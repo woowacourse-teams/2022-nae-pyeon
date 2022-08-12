@@ -7,17 +7,11 @@ import styled from "@emotion/styled";
 import IconButton from "@/components/IconButton";
 import RollingpaperListItem from "@/pages/TeamDetailPage/components/RollingpaperListItem";
 
-import { CustomError } from "@/types";
+import { Rollingpaper, CustomError } from "@/types";
 
 import PlusIcon from "@/assets/icons/bx-plus.svg";
 import { getTeamRollingpapers } from "@/api/team";
 import useParamValidate from "@/hooks/useParamValidate";
-
-interface Rollingpaper {
-  id: number;
-  title: string;
-  to: string;
-}
 
 interface RollingpaperListResponse {
   rollingpapers: Omit<Rollingpaper, "messages">[];
