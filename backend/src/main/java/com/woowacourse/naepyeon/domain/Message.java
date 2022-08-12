@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.domain;
 
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.ExceedMessageContentLengthException;
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -3,7 +3,7 @@ package com.woowacourse.naepyeon.repository;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Message;
 import com.woowacourse.naepyeon.domain.Platform;
-import com.woowacourse.naepyeon.domain.Rollingpaper;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
@@ -20,7 +20,7 @@ import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.woowacourse.naepyeon.domain.Classification.MEMBER;
+import static com.woowacourse.naepyeon.domain.rollingpaper.Classification.MEMBER;
 import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;

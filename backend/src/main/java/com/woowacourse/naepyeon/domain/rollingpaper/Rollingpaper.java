@@ -1,5 +1,8 @@
-package com.woowacourse.naepyeon.domain;
+package com.woowacourse.naepyeon.domain.rollingpaper;
 
+import com.woowacourse.naepyeon.domain.BaseEntity;
+import com.woowacourse.naepyeon.domain.Member;
+import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.exception.ExceedRollingpaperNameLengthException;
 import lombok.AccessLevel;
 import lombok.Getter;

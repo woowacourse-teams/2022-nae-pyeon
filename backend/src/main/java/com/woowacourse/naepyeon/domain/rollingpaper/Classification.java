@@ -1,4 +1,4 @@
-package com.woowacourse.naepyeon.domain;
+package com.woowacourse.naepyeon.domain.rollingpaper;
 
 public enum Classification {
 

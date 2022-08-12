@@ -1,7 +1,7 @@
 package com.woowacourse.naepyeon.service;
 
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
-import com.woowacourse.naepyeon.domain.Rollingpaper;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.NotFoundRollingpaperException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamMemberException;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;

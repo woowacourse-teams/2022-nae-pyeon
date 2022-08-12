@@ -1,8 +1,8 @@
 package com.woowacourse.naepyeon.service;
 
-import com.woowacourse.naepyeon.domain.Classification;
+import com.woowacourse.naepyeon.domain.rollingpaper.Classification;
 import com.woowacourse.naepyeon.domain.Member;
-import com.woowacourse.naepyeon.domain.Rollingpaper;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundRollingpaperException;
@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.woowacourse.naepyeon.domain.Classification.MEMBER;
+import static com.woowacourse.naepyeon.domain.rollingpaper.Classification.MEMBER;
 
 @Service
 @RequiredArgsConstructor
@@ -61,7 +61,7 @@ public class RollingpaperService {
         }
     }
 
-    public Long createTeamRollingpaper(String title, Long teamId, Long loginMemberId) {
+    public Long createTeamRollingpaper(final String title, final Long teamId, final Long loginMemberId) {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow((() -> new NotFoundTeamException(teamId)));
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
@@ -83,7 +83,7 @@ public class RollingpaperService {
         );
     }
 
-    private Rollingpaper checkCanCreateRollingpaper(Long rollingpaperId, Long teamId, Long loginMemberId) {
+    private Rollingpaper checkCanCreateRollingpaper(final Long rollingpaperId, final Long teamId, final Long loginMemberId) {
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
             throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }

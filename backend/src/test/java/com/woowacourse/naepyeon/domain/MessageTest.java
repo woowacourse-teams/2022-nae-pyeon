@@ -1,10 +1,11 @@
 package com.woowacourse.naepyeon.domain;
 
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.ExceedMessageContentLengthException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.woowacourse.naepyeon.domain.Classification.MEMBER;
+import static com.woowacourse.naepyeon.domain.rollingpaper.Classification.MEMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

@@ -1,13 +1,13 @@
 package com.woowacourse.naepyeon.service.dto;
 
-import com.woowacourse.naepyeon.domain.Classification;
-import com.woowacourse.naepyeon.domain.Rollingpaper;
+import com.woowacourse.naepyeon.domain.rollingpaper.Classification;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static com.woowacourse.naepyeon.domain.Classification.TEAM;
+import static com.woowacourse.naepyeon.domain.rollingpaper.Classification.TEAM;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

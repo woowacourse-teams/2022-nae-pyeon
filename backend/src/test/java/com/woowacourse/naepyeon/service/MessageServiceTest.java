@@ -3,7 +3,7 @@ package com.woowacourse.naepyeon.service;
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
-import com.woowacourse.naepyeon.domain.Rollingpaper;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.exception.NotAuthorException;
@@ -24,8 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.woowacourse.naepyeon.domain.Classification.MEMBER;
-import static com.woowacourse.naepyeon.domain.Classification.TEAM;
+import static com.woowacourse.naepyeon.domain.rollingpaper.Classification.MEMBER;
+import static com.woowacourse.naepyeon.domain.rollingpaper.Classification.TEAM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

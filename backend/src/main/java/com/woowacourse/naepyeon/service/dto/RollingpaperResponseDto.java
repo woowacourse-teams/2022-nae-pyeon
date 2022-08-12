@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.service.dto;
 
-import com.woowacourse.naepyeon.domain.Classification;
+import com.woowacourse.naepyeon.domain.rollingpaper.Classification;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

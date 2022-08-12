@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.repository;
 
-import com.woowacourse.naepyeon.domain.Rollingpaper;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.NotFoundRollingpaperException;
 import com.woowacourse.naepyeon.repository.jpa.RollingpaperJpaDao;
 import java.util.List;

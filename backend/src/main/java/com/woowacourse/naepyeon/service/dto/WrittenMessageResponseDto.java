@@ -1,7 +1,7 @@
 package com.woowacourse.naepyeon.service.dto;
 
 import com.woowacourse.naepyeon.domain.Message;
-import com.woowacourse.naepyeon.domain.Rollingpaper;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
