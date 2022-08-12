@@ -3,6 +3,8 @@ package com.woowacourse.naepyeon.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.ExceedMessageContentLengthException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +22,7 @@ class MessageTest {
         );
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
         final Member author = new Member("author", "a@hello.com", Platform.KAKAO, "2");
-        final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", team, member);
+        final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", Recipient.MEMBER, team, member);
         final Message message = new Message("헬로우", "green", author, rollingpaper, false, false);
         final String expected = "낫 헬로우";
 
@@ -40,7 +42,7 @@ class MessageTest {
         );
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
         final Member author = new Member("author", "a@hello.com", Platform.KAKAO, "2");
-        final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", team, member);
+        final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", Recipient.MEMBER, team, member);
         assertThatThrownBy(() -> new Message("a".repeat(501), "green", author, rollingpaper, false, false))
                 .isInstanceOf(ExceedMessageContentLengthException.class);
     }
@@ -56,7 +58,7 @@ class MessageTest {
         );
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
         final Member author = new Member("author", "a@hello.com", Platform.KAKAO, "2");
-        final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", team, member);
+        final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", Recipient.MEMBER, team, member);
         final Message message = new Message("헬로우", "green", author, rollingpaper, false, false);
         final String expected = "red";
 

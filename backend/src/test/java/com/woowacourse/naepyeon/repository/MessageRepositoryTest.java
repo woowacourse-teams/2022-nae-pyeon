@@ -7,9 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Message;
 import com.woowacourse.naepyeon.domain.Platform;
-import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
+import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -55,7 +56,7 @@ class MessageRepositoryTest {
     );
     private final Member member = new Member("member", "email1@email.com", Platform.KAKAO, "1");
     private final Member author = new Member("author", "email2@email.com", Platform.KAKAO, "2");
-    private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", team, member);
+    private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", Recipient.MEMBER, team, member);
 
     @BeforeEach
     void setUp() {

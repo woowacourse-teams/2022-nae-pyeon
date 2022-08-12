@@ -9,9 +9,6 @@ import com.woowacourse.naepyeon.service.RollingpaperService;
 import com.woowacourse.naepyeon.service.TeamService;
 import com.woowacourse.naepyeon.service.dto.MessageRequestDto;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +23,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(RestDocumentationExtension.class)
@@ -91,8 +92,8 @@ public abstract class TestSupport {
                 memberId1);
         teamService.joinMember(teamId, memberId2, "순신이");
 
-        rollingpaperId1 = rollingpaperService.createRollingpaper("이순신 환영해", teamId, memberId1, memberId2);
-        rollingpaperId2 = rollingpaperService.createRollingpaper("홍길동 반가워", teamId, memberId2, memberId1);
+        rollingpaperId1 = rollingpaperService.createMemberRollingpaper("이순신 환영해", teamId, memberId1, memberId2);
+        rollingpaperId2 = rollingpaperService.createMemberRollingpaper("홍길동 반가워", teamId, memberId2, memberId1);
 
         messageId = messageService.saveMessage(
                 new MessageRequestDto("생일축하해!", "#123456", false, false), rollingpaperId1, memberId2

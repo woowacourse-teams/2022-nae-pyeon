@@ -14,7 +14,10 @@ public interface MessageJpaDao extends JpaRepository<Message, Long> {
     List<Message> findByRollingpaperId(final Long rollingpaperId);
 
     @Query(value = "select new com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto"
-            + "(m.id, r.id, r.title, t.id, t.name, p.nickname, m.content, m.color) "
+            + "(m.id, r.id, r.title, t.id, t.name, m.content, m.color, "
+            + "case when r.recipient = com.woowacourse.naepyeon.domain.rollingpaper.Recipient.MEMBER then p.nickname "
+            + "when r.recipient = com.woowacourse.naepyeon.domain.rollingpaper.Recipient.TEAM then t.name "
+            + "else '' end) "
             + "from Message m"
             + ", Rollingpaper r"
             + ", Team t"
