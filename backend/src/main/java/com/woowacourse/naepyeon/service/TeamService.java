@@ -158,17 +158,19 @@ public class TeamService {
     }
 
     public boolean isJoinedMember(final Long memberId, final Long teamId) {
-        if (teamRepository.findById(teamId).isEmpty()) {
-            throw new NotFoundTeamException(teamId);
-        }
+        validateExistTeam(teamId);
         return teamParticipationRepository.isJoinedMember(memberId, teamId);
     }
 
     public String createInviteToken(final Long teamId) {
+        validateExistTeam(teamId);
+        return inviteTokenProvider.createInviteToken(teamId);
+    }
+
+    private void validateExistTeam(final Long teamId) {
         if (teamRepository.findById(teamId).isEmpty()) {
             throw new NotFoundTeamException(teamId);
         }
-        return inviteTokenProvider.createInviteToken(teamId);
     }
 
     public TeamResponseDto findTeamByInviteToken(final String inviteToken, final Long memberId) {

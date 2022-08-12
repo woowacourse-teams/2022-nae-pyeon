@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class InviteJoinRequest {
 
+    @NotBlank(message = "4015:올바르지 않은 토큰입니다.")
     private String inviteToken;
 
     @NotBlank(message = "4009:닉네임은 공백일 수 없습니다.")
