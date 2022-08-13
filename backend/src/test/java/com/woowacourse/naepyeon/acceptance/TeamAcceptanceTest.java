@@ -141,8 +141,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final List<TeamResponseDto> actual = response.as(TeamsResponseDto.class)
                 .getTeams();
         final List<TeamResponseDto> expected = List.of(
-                TeamResponseDto.byRequest(team1Id, teamRequest1, true),
-                TeamResponseDto.byRequest(team2Id, teamRequest2, true)
+                createTeamResponse(team1Id, teamRequest1, true),
+                createTeamResponse(team2Id, teamRequest2, true)
         );
 
         assertThat(actual)
@@ -460,6 +460,18 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
                 () -> assertThat(errorResponse).extracting("errorCode", "message")
                         .containsExactly("4017", "토큰의 유효기간이 만료됐습니다.")
+        );
+    }
+
+    private TeamResponseDto createTeamResponse(final Long teamId, final TeamRequest teamRequest, final boolean joined) {
+        return new TeamResponseDto(
+                teamId,
+                teamRequest.getName(),
+                teamRequest.getDescription(),
+                teamRequest.getEmoji(),
+                teamRequest.getColor(),
+                joined,
+                teamRequest.isSecret()
         );
     }
 

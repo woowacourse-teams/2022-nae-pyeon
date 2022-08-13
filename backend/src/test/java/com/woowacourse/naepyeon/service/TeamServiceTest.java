@@ -39,7 +39,7 @@ class TeamServiceTest {
     private final Member member2 = new Member("알렉스형", "alex@test.com", Platform.KAKAO, "2");
     private final Team team1 = new Team("wooteco1", "테스트 모임입니다.", "testEmoji", "#123456", false);
     private final Team team2 = new Team("wooteco2", "테스트 모임입니다.", "testEmoji", "#123456", false);
-    private final Team team3 = new Team("wooteco3", "테스트 모임입니다.", "testEmoji", "#123456", true);
+    private final Team team3 = new Team("wooteco13", "테스트 모임입니다.", "testEmoji", "#123456", true);
 
     @Autowired
     private TeamService teamService;
@@ -201,7 +201,10 @@ class TeamServiceTest {
         final List<TeamResponseDto> actual =
                 teamService.findTeamsByContainingTeamName("wooteco1", member.getId(), 0, 5)
                         .getTeams();
-        final List<TeamResponseDto> expected = List.of(TeamResponseDto.of(team1, false));
+        final List<TeamResponseDto> expected = List.of(
+                TeamResponseDto.of(team1, false, false),
+                TeamResponseDto.of(team3, false, true)
+        );
         assertThat(actual)
                 .usingRecursiveComparison()
                 .isEqualTo(expected);
