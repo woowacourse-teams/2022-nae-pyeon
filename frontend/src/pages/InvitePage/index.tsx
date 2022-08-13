@@ -1,19 +1,29 @@
 import React from "react";
 import styled from "@emotion/styled";
 
+import useParamValidate from "@/hooks/useParamValidate";
+import useInput from "@/hooks/useInput";
+import useJoinTeamWithInviteToken from "@/pages/InvitePage/hooks/useJoinTeamWithInviteToken";
+
 import UnderlineInput from "@/components/UnderlineInput";
 import LineButton from "@/components/LineButton";
 
-import { REGEX } from "@/constants";
 import TeamDescriptionBox from "@/pages/InvitePage/components/TeamDescriptionBox";
 
-import useInput from "@/hooks/useInput";
+import { REGEX } from "@/constants";
 
 const InvitePage = () => {
+  const { inviteToken } = useParamValidate(["inviteToken"]);
   const { value: nickname, handleInputChange } = useInput("");
+  const joinTeamWithInviteToken = useJoinTeamWithInviteToken();
 
-  const handleTeamJoinSubmit = () => {
-    console.log("team join logic");
+  const handleTeamJoinSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+
+    joinTeamWithInviteToken({
+      nickname,
+      inviteToken,
+    });
   };
 
   return (

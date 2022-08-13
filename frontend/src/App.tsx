@@ -65,8 +65,8 @@ const App = () => {
           <Route element={<RequireLogout />}>
             <Route path="login" element={<LoginPage />} />
             <Route path="oauth/kakao" element={<KakaoRedirectPage />} />
-            <Route path="invite" element={<InvitePage />} />
           </Route>
+          <Route path="invite/:inviteToken" element={<InvitePage />} />
         </Routes>
         {isOpened && <Snackbar />}
       </UserProvider>
