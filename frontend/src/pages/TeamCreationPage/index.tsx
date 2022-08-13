@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
-import useInput from "@/hooks/useInput";
-import useSwitch from "@/hooks/useSwitch";
-import useTextArea from "@/hooks/useTextArea";
+import useCreateTeam from "@/pages/TeamCreationPage/hooks/useCreateTeam";
+import useTeamCreationForm from "@/pages/TeamCreationPage/hooks/useTeamCreationForm";
 
 import LabeledInput from "@/components/LabeledInput";
 import LabeledRadio from "@/components/LabeledRadio";
@@ -13,8 +12,6 @@ import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LabeledSwitch from "@/components/LabeledSwitch";
 
 import { COLORS, REGEX } from "@/constants";
-
-import useCreateTeam from "@/pages/TeamCreationPage/hooks/useCreateTeam";
 
 const emojis = [
   { id: 1, value: "🐶" },
@@ -31,15 +28,20 @@ const colors = Object.values(COLORS).map((value, index) => ({
 }));
 
 const TeamCreationPage = () => {
-  const { value: teamName, handleInputChange: handleTeamNameChange } =
-    useInput("");
-  const { value: teamDescription, handleChange: handleTeamDescriptionChange } =
-    useTextArea({ initialValue: "" });
-  const [emoji, setEmoji] = useState("");
-  const [color, setColor] = useState("");
-  const { value: nickname, handleInputChange: handleNicknameChange } =
-    useInput("");
-  const { isChecked: isSecretTeam, handleSwitchClick } = useSwitch();
+  const {
+    teamName,
+    teamDescription,
+    emoji,
+    color,
+    nickname,
+    isSecretTeam,
+    handleTeamNameChange,
+    handleTeamDescriptionChange,
+    setEmoji,
+    setColor,
+    handleNicknameChange,
+    handleSwitchClick,
+  } = useTeamCreationForm();
 
   const createTeam = useCreateTeam();
 
