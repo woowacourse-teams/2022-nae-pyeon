@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { useMessageTextArea } from "../hooks/useMessageTextArea";
+import { useMessageTextArea } from "@/pages/RollingpaperPage/hooks/useMessageTextArea";
 
 type MessageTextAreaProps = {
   backgroundColor: string;

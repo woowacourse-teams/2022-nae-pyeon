@@ -7,10 +7,10 @@ import TrashIcon from "@/assets/icons/bx-trash.svg";
 import Pencil from "@/assets/icons/bx-pencil.svg";
 
 import useParamValidate from "@/hooks/useParamValidate";
-import MessageForm from "./MessageForm";
-import usePrevMessage from "../hooks/usePrevMessage";
-import { useDeleteMessage } from "../hooks/useDeleteMessage";
-import useUpdateMessage from "../hooks/useUpdateMessage";
+import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
+import usePrevMessage from "@/pages/RollingpaperPage/hooks/usePrevMessage";
+import useDeleteMessage from "@/pages/RollingpaperPage/hooks/useDeleteMessage";
+import useUpdateMessage from "@/pages/RollingpaperPage/hooks/useUpdateMessage";
 
 interface RollingpaperMessageProp {
   content: string;

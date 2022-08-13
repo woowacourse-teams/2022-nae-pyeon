@@ -10,10 +10,10 @@ import { Message } from "@/types";
 import PencilIcon from "@/assets/icons/bx-pencil.svg";
 import { divideArrayByIndexRemainder } from "@/util";
 
+import useParamValidate from "@/hooks/useParamValidate";
 import SecretMessage from "@/pages/RollingpaperPage/components/SecretMessage";
 import useCreateMessage from "@/pages/RollingpaperPage/hooks/useCreateMessage";
-import useNewMessage from "../hooks/useNewMessage";
-import useParamValidate from "@/hooks/useParamValidate";
+import useNewMessage from "@/pages/RollingpaperPage/hooks/useNewMessage";
 
 interface LetterPaperProp {
   to: string;

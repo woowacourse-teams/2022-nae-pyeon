@@ -9,7 +9,7 @@ import { deleteMessage } from "@/api/message";
 
 import { CustomError } from "@/types";
 
-export const useDeleteMessage = (rollingpaperId: number) => {
+const useDeleteMessage = (rollingpaperId: number) => {
   const { openSnackbar } = useSnackbar();
 
   const { mutate: deleteRollingpaperMessage } = useMutation(
@@ -30,3 +30,5 @@ export const useDeleteMessage = (rollingpaperId: number) => {
 
   return { deleteRollingpaperMessage };
 };
+
+export default useDeleteMessage;
