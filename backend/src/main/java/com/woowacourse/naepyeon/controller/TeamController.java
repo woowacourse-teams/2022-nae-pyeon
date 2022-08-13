@@ -7,6 +7,7 @@ import com.woowacourse.naepyeon.controller.dto.InviteTokenResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
+import com.woowacourse.naepyeon.controller.dto.TeamUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
 import com.woowacourse.naepyeon.service.TeamService;
@@ -82,11 +83,11 @@ public class TeamController {
     @PutMapping("/{teamId}")
     public ResponseEntity<Void> updateTeam(@AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
                                            @PathVariable final Long teamId,
-                                           @RequestBody @Valid final TeamRequest teamRequest) {
+                                           @RequestBody @Valid final TeamUpdateRequest teamUpdateRequest) {
         if (!teamService.isJoinedMember(loginMemberRequest.getId(), teamId)) {
             throw new UncertificationTeamMemberException(teamId, loginMemberRequest.getId());
         }
-        teamService.updateName(teamId, teamRequest.getName());
+        teamService.updateName(teamId, teamUpdateRequest.getName());
         return ResponseEntity.noContent().build();
     }
 
