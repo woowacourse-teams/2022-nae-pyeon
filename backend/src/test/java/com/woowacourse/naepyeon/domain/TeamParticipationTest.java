@@ -16,7 +16,8 @@ class TeamParticipationTest {
                 "내편",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                false
         );
         final Member member = new Member("제로", "email@email.com", Platform.KAKAO, "1");
         final TeamParticipation teamParticipation = new TeamParticipation(team, member, "닉네임ㅋㅋ");
@@ -34,7 +35,8 @@ class TeamParticipationTest {
                 "내편",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                false
         );
         final Member member = new Member("제로", "email@email.com", Platform.KAKAO, "1");
         final TeamParticipation teamParticipation = new TeamParticipation(team, member, "닉네임ㅋㅋ");

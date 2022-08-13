@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.Team;
@@ -19,6 +18,7 @@ import com.woowacourse.naepyeon.repository.TeamRepository;
 import com.woowacourse.naepyeon.service.dto.AllTeamsResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
+import com.woowacourse.naepyeon.service.dto.TeamRequestDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import com.woowacourse.naepyeon.support.InviteTokenProvider;
@@ -37,9 +37,9 @@ class TeamServiceTest {
 
     private final Member member = new Member("내편이", "naePyeon@test.com", Platform.KAKAO, "1");
     private final Member member2 = new Member("알렉스형", "alex@test.com", Platform.KAKAO, "2");
-    private final Team team1 = new Team("wooteco1", "테스트 모임입니다.", "testEmoji", "#123456");
-    private final Team team2 = new Team("wooteco2", "테스트 모임입니다.", "testEmoji", "#123456");
-    private final Team team3 = new Team("wooteco3", "테스트 모임입니다.", "testEmoji", "#123456");
+    private final Team team1 = new Team("wooteco1", "테스트 모임입니다.", "testEmoji", "#123456", false);
+    private final Team team2 = new Team("wooteco2", "테스트 모임입니다.", "testEmoji", "#123456", false);
+    private final Team team3 = new Team("wooteco3", "테스트 모임입니다.", "testEmoji", "#123456", true);
 
     @Autowired
     private TeamService teamService;
@@ -66,14 +66,15 @@ class TeamServiceTest {
     @DisplayName("모임을 id값으로 찾는다.")
     void findById() {
         // given
-        final TeamRequest teamRequest = new TeamRequest(
+        final TeamRequestDto teamRequestDto = new TeamRequestDto(
                 "woowacourse",
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
-        final Long teamId = teamService.save(teamRequest, member.getId());
+        final Long teamId = teamService.save(teamRequestDto, member.getId());
 
         // when
         final TeamResponseDto findTeam = teamService.findById(teamId, member.getId());
@@ -83,10 +84,10 @@ class TeamServiceTest {
                 .extracting("id", "name", "description", "emoji", "color")
                 .containsExactly(
                         teamId,
-                        teamRequest.getName(),
-                        teamRequest.getDescription(),
-                        teamRequest.getEmoji(),
-                        teamRequest.getColor()
+                        teamRequestDto.getName(),
+                        teamRequestDto.getDescription(),
+                        teamRequestDto.getEmoji(),
+                        teamRequestDto.getColor()
                 );
     }
 
@@ -94,14 +95,15 @@ class TeamServiceTest {
     @DisplayName("모임을 생성시 생성한 유저가 자동으로 해당 모임에 가입된다.")
     void createTeamAndParticipateOwner() {
         // given
-        final TeamRequest teamRequest = new TeamRequest(
+        final TeamRequestDto teamRequestDto = new TeamRequestDto(
                 "woowacourse",
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
-        final Long teamId = teamService.save(teamRequest, member.getId());
+        final Long teamId = teamService.save(teamRequestDto, member.getId());
 
         final List<Long> joinedTeamIds = teamService.findByJoinedMemberId(member.getId(), 0, 5)
                 .getTeams()
@@ -116,14 +118,15 @@ class TeamServiceTest {
     @DisplayName("모임의 이름을 수정한다.")
     void update() {
         // given
-        final TeamRequest teamRequest = new TeamRequest(
+        final TeamRequestDto teamRequestDto = new TeamRequestDto(
                 "woowacourse-4th",
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
-        final Long teamId = teamService.save(teamRequest, member.getId());
+        final Long teamId = teamService.save(teamRequestDto, member.getId());
 
         // when
         final String expected = "woowacourse-5th";
@@ -135,9 +138,9 @@ class TeamServiceTest {
                 .containsExactly(
                         teamId,
                         expected,
-                        teamRequest.getDescription(),
-                        teamRequest.getEmoji(),
-                        teamRequest.getColor()
+                        teamRequestDto.getDescription(),
+                        teamRequestDto.getEmoji(),
+                        teamRequestDto.getColor()
                 );
     }
 
@@ -180,7 +183,7 @@ class TeamServiceTest {
     @DisplayName("존재하지 않는 회원을 가입시킬 경우 예외를 발생시킨다.")
     void joinNotFoundMember() {
         final String nickname = "닉네임";
-        assertThatThrownBy(() -> teamService.joinMember(team3.getId(), member.getId() + 1000L, nickname))
+        assertThatThrownBy(() -> teamService.joinMember(team2.getId(), member.getId() + 1000L, nickname))
                 .isInstanceOf(NotFoundMemberException.class);
     }
 

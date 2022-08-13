@@ -75,7 +75,7 @@ public class TeamController {
     public ResponseEntity<CreateResponse> createTeam(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @RequestBody @Valid final TeamRequest teamRequest) {
-        final Long teamId = teamService.save(teamRequest, loginMemberRequest.getId());
+        final Long teamId = teamService.save(teamRequest.toServiceDto(), loginMemberRequest.getId());
         return ResponseEntity.created(URI.create("/api/v1/teams/" + teamId)).body(new CreateResponse(teamId));
     }
 

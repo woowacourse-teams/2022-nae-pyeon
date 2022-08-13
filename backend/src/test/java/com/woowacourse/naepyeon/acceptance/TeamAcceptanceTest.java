@@ -45,7 +45,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         final ExtractableResponse<Response> response = 모임_추가(alex, teamRequest);
 
@@ -76,7 +77,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final String teamEmoji = "testEmoji";
         final String teamColor = "#123456";
         final TeamRequest teamRequest =
-                new TeamRequest(teamName, teamDescription, teamEmoji, teamColor, "나는야모임장");
+                new TeamRequest(teamName, teamDescription, teamEmoji, teamColor, "나는야모임장", false);
         final Long teamId = 모임_추가(alex, teamRequest)
                 .as(CreateResponse.class)
                 .getId();
@@ -104,7 +105,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         모임_추가(alex, teamRequest);
 
@@ -121,13 +123,14 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         final Long team1Id = 모임_추가(alex, teamRequest1).as(CreateResponse.class)
                 .getId();
         //모임 생성
         final TeamRequest teamRequest2 =
-                new TeamRequest("내편아니야", ".", "a", "#123456", "테스트");
+                new TeamRequest("내편아니야", ".", "a", "#123456", "테스트", false);
         final Long team2Id = 모임_추가(alex, teamRequest2).as(CreateResponse.class)
                 .getId();
 
@@ -156,7 +159,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         final Long team1Id = 모임_추가(alex, teamRequest1).as(CreateResponse.class)
                 .getId();
@@ -167,7 +171,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         모임_추가(alex, teamRequest2).as(CreateResponse.class);
 
@@ -203,7 +208,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                masterNickname
+                masterNickname,
+                false
         );
         final Long team1Id = 모임_추가(alex, teamRequest1).as(CreateResponse.class)
                 .getId();
@@ -233,7 +239,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                true
         );
         final ExtractableResponse<Response> response = 모임_이름_수정(alex, teamId, changeTeamRequest);
         모임이름이_수정됨(response);
@@ -286,7 +293,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         final Long team1Id = 모임_추가(alex, teamRequest1).as(CreateResponse.class)
                 .getId();
@@ -295,7 +303,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         모임_추가(alex, teamRequest2).as(CreateResponse.class);
         final TeamRequest teamRequest3 = new TeamRequest(
@@ -303,7 +312,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         final Long team3Id = 모임_추가(alex, teamRequest3).as(CreateResponse.class)
                 .getId();
@@ -331,7 +341,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         final ExtractableResponse<Response> response = 모임_이름_수정(alex, teamId, changeTeamRequest);
 
