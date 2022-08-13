@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
 
+import { RecipientType } from "@/pages/RollingpaperCreationPage/index";
+
 const boxInput = {
   team: {
     to: "모임",
@@ -11,8 +13,6 @@ const boxInput = {
     description: "모임 내의 멤버에게 롤링페이퍼 작성하기",
   },
 };
-
-type RecipientType = "team" | "member";
 
 interface RecipientBoxProps {
   type: RecipientType;

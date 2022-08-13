@@ -4,21 +4,27 @@ import styled from "@emotion/styled";
 import { RecipientBox } from "@/pages/RollingpaperCreationPage/components/RecipientBox";
 import TeamRollingpaperCreateForm from "@/pages/RollingpaperCreationPage/components/TeamRollingpaperCreateForm";
 import MemberRollingpaperCreateForm from "@/pages/RollingpaperCreationPage/components/MemberRollingpaperCreateForm";
+import { ValueOf } from "@/types";
 
-type RecipientType = "team" | "member";
+const RECIPIENT = {
+  TEAM: "team",
+  MEMBER: "member",
+} as const;
+
+export type RecipientType = ValueOf<typeof RECIPIENT>;
 
 const RollingpaperCreationPage = () => {
   const [recipient, setRecipient] = useState<RecipientType | null>(null);
 
   const handleTeamRollingpaperCreateClick = () => {
-    setRecipient("team");
+    setRecipient(RECIPIENT.TEAM);
   };
 
   const handleMemberRollingpaperCreateClick = () => {
-    setRecipient("member");
+    setRecipient(RECIPIENT.MEMBER);
   };
 
-  if (recipient === "team") {
+  if (recipient === RECIPIENT.TEAM) {
     return (
       <StyledMain>
         <TeamRollingpaperCreateForm />
@@ -26,7 +32,7 @@ const RollingpaperCreationPage = () => {
     );
   }
 
-  if (recipient === "member") {
+  if (recipient === RECIPIENT.MEMBER) {
     return (
       <StyledMain>
         <MemberRollingpaperCreateForm />
@@ -36,9 +42,12 @@ const RollingpaperCreationPage = () => {
 
   return (
     <StyledMain>
-      <RecipientBox type="team" onClick={handleTeamRollingpaperCreateClick} />
       <RecipientBox
-        type="member"
+        type={RECIPIENT.TEAM}
+        onClick={handleTeamRollingpaperCreateClick}
+      />
+      <RecipientBox
+        type={RECIPIENT.MEMBER}
         onClick={handleMemberRollingpaperCreateClick}
       />
     </StyledMain>
