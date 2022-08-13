@@ -1,28 +1,26 @@
 import React from "react";
+
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
-import useParamValidate from "@/hooks/useParamValidate";
 import { useSnackbar } from "@/context/SnackbarContext";
 
 import { queryClient } from "@/api";
-import { putMessage } from "@/api/message";
+import { postMessage } from "@/api/message";
 import { Message, CustomError } from "@/types";
 
-const useUpdateMessage = (id: number) => {
+const useCreateMessage = (rollingpaperId: number) => {
   const { openSnackbar } = useSnackbar();
-  const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
 
-  const { mutate: updateMessage } = useMutation(
+  const { mutate: createMessage } = useMutation(
     ({
       content,
       color,
       anonymous,
       secret,
     }: Pick<Message, "content" | "color" | "anonymous" | "secret">) => {
-      return putMessage({
-        rollingpaperId: +rollingpaperId,
-        id,
+      return postMessage({
+        rollingpaperId,
         content,
         color,
         anonymous,
@@ -32,7 +30,7 @@ const useUpdateMessage = (id: number) => {
     {
       onSuccess: () => {
         queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
-        openSnackbar("메시지 수정 완료");
+        openSnackbar("메시지 작성 완료");
       },
       onError: (error) => {
         if (axios.isAxiosError(error) && error.response) {
@@ -44,8 +42,8 @@ const useUpdateMessage = (id: number) => {
   );
 
   return {
-    updateMessage,
+    createMessage,
   };
 };
 
-export default useUpdateMessage;
+export default useCreateMessage;

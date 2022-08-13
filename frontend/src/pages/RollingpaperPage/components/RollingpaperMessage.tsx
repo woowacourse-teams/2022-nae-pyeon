@@ -6,8 +6,11 @@ import IconButton from "@/components/IconButton";
 import TrashIcon from "@/assets/icons/bx-trash.svg";
 import Pencil from "@/assets/icons/bx-pencil.svg";
 
-import useUpdateMessage from "../hooks/useUpdateMessage";
+import useParamValidate from "@/hooks/useParamValidate";
 import MessageForm from "./MessageForm";
+import usePrevMessage from "../hooks/usePrevMessage";
+import { useDeleteMessage } from "../hooks/useDeleteMessage";
+import useUpdateMessage from "../hooks/useUpdateMessage";
 
 interface RollingpaperMessageProp {
   content: string;
@@ -28,6 +31,7 @@ const RollingpaperMessage = ({
   anonymous,
   secret,
 }: RollingpaperMessageProp) => {
+  const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
   const {
     isWrite,
     color: newColor,
@@ -35,20 +39,39 @@ const RollingpaperMessage = ({
     anonymous: newAnonymous,
     secret: newSecret,
     handleMessageChange,
-    handleMessageSubmit,
-    handleMessageCancel,
     handleEditButtonClick,
-    handleDeleteButtonClick,
     handleColorClick,
     handleAnonymousCheckBoxChange,
     handleSecretCheckBoxChange,
-  } = useUpdateMessage({
-    id: messageId,
+    messageInit,
+  } = usePrevMessage({
     initContent: content,
     initColor: color,
     initAnonymous: anonymous,
     initSecret: secret,
   });
+
+  const { updateMessage } = useUpdateMessage(messageId);
+  const { deleteRollingpaperMessage } = useDeleteMessage(+rollingpaperId);
+
+  const handleMessageSubmit = () => {
+    updateMessage({
+      color: newColor,
+      content: newContent,
+      anonymous: newAnonymous,
+      secret: newSecret,
+    });
+  };
+
+  const handleDeleteButtonClick = () => {
+    deleteRollingpaperMessage(messageId);
+  };
+
+  const handleMessageCancel = () => {
+    if (confirm("메시지 작성을 취소하시겠습니까?")) {
+      messageInit();
+    }
+  };
 
   if (isWrite) {
     return (

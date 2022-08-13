@@ -11,7 +11,9 @@ import PencilIcon from "@/assets/icons/bx-pencil.svg";
 import { divideArrayByIndexRemainder } from "@/util";
 
 import SecretMessage from "@/pages/RollingpaperPage/components/SecretMessage";
-import useCreateMessage from "@/pages/RollingpaperPage/hooks/useCreasteMessage";
+import useCreateMessage from "@/pages/RollingpaperPage/hooks/useCreateMessage";
+import useNewMessage from "../hooks/useNewMessage";
+import useParamValidate from "@/hooks/useParamValidate";
 
 interface LetterPaperProp {
   to: string;
@@ -22,21 +24,33 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
   const [slicedMessageLists, setSlicedMessageLists] = useState<Message[][]>(
     Array.from(Array(4), () => [])
   );
+  const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
 
   const {
     writeNewMessage,
-    handleMessageWriteButtonClick,
-    handleMessageChange,
-    handleMessageSubmit,
-    handleMessageCancel,
-    handleColorClick,
-    handleAnonymousCheckBoxChange,
-    handleSecretCheckBoxChange,
     content,
     color,
     anonymous,
     secret,
-  } = useCreateMessage();
+    handleMessageWriteButtonClick,
+    handleMessageChange,
+    handleColorClick,
+    handleAnonymousCheckBoxChange,
+    handleSecretCheckBoxChange,
+    messageInit,
+  } = useNewMessage();
+  const { createMessage } = useCreateMessage(+rollingpaperId);
+
+  const handleMessageSubmit = () => {
+    createMessage({ content, color, anonymous, secret });
+    messageInit();
+  };
+
+  const handleMessageCancel = () => {
+    if (confirm("메시지 작성을 취소하시겠습니까?")) {
+      messageInit();
+    }
+  };
 
   const updateSlicedMessageListByWindowWidth = () => {
     const width = window.innerWidth;
