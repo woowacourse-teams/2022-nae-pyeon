@@ -61,6 +61,7 @@ const RollingpaperMessage = ({
       anonymous: newAnonymous,
       secret: newSecret,
     });
+    messageInit();
   };
 
   const handleDeleteButtonClick = () => {
