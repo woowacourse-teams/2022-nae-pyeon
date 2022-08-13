@@ -8,7 +8,7 @@ import Pencil from "@/assets/icons/bx-pencil.svg";
 
 import useParamValidate from "@/hooks/useParamValidate";
 import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
-import usePrevMessage from "@/pages/RollingpaperPage/hooks/usePrevMessage";
+import useMessage from "@/pages/RollingpaperPage/hooks/useMessage";
 import useDeleteMessage from "@/pages/RollingpaperPage/hooks/useDeleteMessage";
 import useUpdateMessage from "@/pages/RollingpaperPage/hooks/useUpdateMessage";
 
@@ -33,18 +33,18 @@ const RollingpaperMessage = ({
 }: RollingpaperMessageProp) => {
   const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
   const {
-    isWrite,
+    isEdit,
     color: newColor,
     content: newContent,
     anonymous: newAnonymous,
     secret: newSecret,
+    handleWriteButtonClick,
     handleMessageChange,
-    handleEditButtonClick,
     handleColorClick,
     handleAnonymousCheckBoxChange,
     handleSecretCheckBoxChange,
-    messageInit,
-  } = usePrevMessage({
+    initMessage,
+  } = useMessage({
     initContent: content,
     initColor: color,
     initAnonymous: anonymous,
@@ -61,7 +61,7 @@ const RollingpaperMessage = ({
       anonymous: newAnonymous,
       secret: newSecret,
     });
-    messageInit();
+    initMessage();
   };
 
   const handleDeleteButtonClick = () => {
@@ -70,11 +70,11 @@ const RollingpaperMessage = ({
 
   const handleMessageCancel = () => {
     if (confirm("메시지 작성을 취소하시겠습니까?")) {
-      messageInit();
+      initMessage();
     }
   };
 
-  if (isWrite) {
+  if (isEdit) {
     return (
       <MessageForm
         onSubmit={handleMessageSubmit}
@@ -97,7 +97,7 @@ const RollingpaperMessage = ({
       <StyledMessageBottom>
         {editable && (
           <StyledMessageButtonContainer>
-            <IconButton size="small" onClick={handleEditButtonClick}>
+            <IconButton size="small" onClick={handleWriteButtonClick}>
               <Pencil />
             </IconButton>
             <IconButton size="small" onClick={handleDeleteButtonClick}>

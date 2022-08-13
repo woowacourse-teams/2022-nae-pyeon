@@ -13,7 +13,7 @@ import { divideArrayByIndexRemainder } from "@/util";
 import useParamValidate from "@/hooks/useParamValidate";
 import SecretMessage from "@/pages/RollingpaperPage/components/SecretMessage";
 import useCreateMessage from "@/pages/RollingpaperPage/hooks/useCreateMessage";
-import useNewMessage from "@/pages/RollingpaperPage/hooks/useNewMessage";
+import useMessage from "@/pages/RollingpaperPage/hooks/useMessage";
 
 interface LetterPaperProp {
   to: string;
@@ -27,28 +27,28 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
   const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
 
   const {
-    writeNewMessage,
-    content,
+    isEdit,
     color,
+    content,
     anonymous,
     secret,
-    handleMessageWriteButtonClick,
+    handleWriteButtonClick,
     handleMessageChange,
     handleColorClick,
     handleAnonymousCheckBoxChange,
     handleSecretCheckBoxChange,
-    messageInit,
-  } = useNewMessage();
+    initMessage,
+  } = useMessage({});
   const { createMessage } = useCreateMessage(+rollingpaperId);
 
   const handleMessageSubmit = () => {
     createMessage({ content, color, anonymous, secret });
-    messageInit();
+    initMessage();
   };
 
   const handleMessageCancel = () => {
     if (confirm("메시지 작성을 취소하시겠습니까?")) {
-      messageInit();
+      initMessage();
     }
   };
 
@@ -84,8 +84,8 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
     <StyledLetterPaper>
       <StyledLetterPaperTop>
         <StyledTo>To. {to}</StyledTo>
-        {!writeNewMessage && (
-          <IconButton size="small" onClick={handleMessageWriteButtonClick}>
+        {!isEdit && (
+          <IconButton size="small" onClick={handleWriteButtonClick}>
             <PencilIcon />
           </IconButton>
         )}
@@ -93,7 +93,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
       <StyledSlicedMessageLists>
         {slicedMessageLists.map((messageList, index) => (
           <StyledMessageList key={index}>
-            {index === 0 && writeNewMessage && (
+            {index === 0 && isEdit && (
               <MessageForm
                 onSubmit={handleMessageSubmit}
                 onCancel={handleMessageCancel}

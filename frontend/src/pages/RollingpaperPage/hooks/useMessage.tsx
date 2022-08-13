@@ -1,21 +1,24 @@
 import React, { useState } from "react";
 
+import { COLORS } from "@/constants";
 import useCheckBox from "@/hooks/useCheckBox";
 
+const INIT_COLOR = COLORS.YELLOW;
+
 interface UseUpdateMessageProp {
-  initContent: string;
-  initColor: string;
-  initAnonymous: boolean;
-  initSecret: boolean;
+  initContent?: string;
+  initColor?: string;
+  initAnonymous?: boolean;
+  initSecret?: boolean;
 }
 
 const usePrevMessage = ({
-  initContent,
-  initColor,
-  initAnonymous,
-  initSecret,
+  initContent = "",
+  initColor = INIT_COLOR,
+  initAnonymous = false,
+  initSecret = false,
 }: UseUpdateMessageProp) => {
-  const [isWrite, setIsWrite] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const [content, setContent] = useState(initContent);
   const [color, setColor] = useState(initColor);
 
@@ -24,8 +27,10 @@ const usePrevMessage = ({
   const { checked: secret, handleChange: handleSecretCheckBoxChange } =
     useCheckBox({ initialCheckedState: initSecret });
 
-  const handleEditButtonClick = () => {
-    setIsWrite(true);
+  const handleWriteButtonClick: React.MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
+    setIsEdit(true);
   };
 
   const handleMessageChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
@@ -38,22 +43,24 @@ const usePrevMessage = ({
     setColor(color);
   };
 
-  const messageInit = () => {
-    setIsWrite(false);
+  const initMessage = () => {
+    setIsEdit(false);
+    setContent("");
+    setColor(INIT_COLOR);
   };
 
   return {
-    isWrite,
+    isEdit,
     color,
     content,
     anonymous,
     secret,
+    handleWriteButtonClick,
     handleMessageChange,
-    handleEditButtonClick,
     handleColorClick,
     handleAnonymousCheckBoxChange,
     handleSecretCheckBoxChange,
-    messageInit,
+    initMessage,
   };
 };
 
