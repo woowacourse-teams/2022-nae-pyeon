@@ -46,7 +46,7 @@ const TeamJoinSection = ({ isSecretTeam }: TeamJoinSectionProps) => {
       <p>
         🔒 비공개 모임입니다.
         <br />
-        관리자에게 초대링크를 요청하세요.
+        모임 참여자에게 초대링크를 요청하세요.
       </p>
     </StyledTeamJoinModal>
   );
