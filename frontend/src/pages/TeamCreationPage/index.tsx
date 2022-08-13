@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 
 import useInput from "@/hooks/useInput";
 import useSwitch from "@/hooks/useSwitch";
+import useTextArea from "@/hooks/useTextArea";
 
 import LabeledInput from "@/components/LabeledInput";
 import LabeledRadio from "@/components/LabeledRadio";
@@ -32,7 +33,8 @@ const colors = Object.values(COLORS).map((value, index) => ({
 const TeamCreationPage = () => {
   const { value: teamName, handleInputChange: handleTeamNameChange } =
     useInput("");
-  const [teamDescription, setTeamDescription] = useState("");
+  const { value: teamDescription, handleChange: handleTeamDescriptionChange } =
+    useTextArea({ initialValue: "" });
   const [emoji, setEmoji] = useState("");
   const [color, setColor] = useState("");
   const { value: nickname, handleInputChange: handleNicknameChange } =
@@ -84,7 +86,7 @@ const TeamCreationPage = () => {
         <LabeledTextArea
           labelText="모임 설명"
           value={teamDescription}
-          setValue={setTeamDescription}
+          onChange={handleTeamDescriptionChange}
           minLength={1}
           maxLength={100}
           placeholder="최대 100자까지 입력 가능합니다"
