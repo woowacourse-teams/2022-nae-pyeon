@@ -5,6 +5,7 @@ import axios from "axios";
 
 import useParamValidate from "@/hooks/useParamValidate";
 import { useSnackbar } from "@/context/SnackbarContext";
+import useCheckBox from "@/hooks/useCheckBox";
 
 import { queryClient } from "@/api";
 import { postMessage } from "@/api/message";
@@ -17,9 +18,11 @@ const useCreateMessage = () => {
   const [writeNewMessage, setWriteNewMessage] = useState(false);
   const [content, setContent] = useState("");
   const [color, setColor] = useState(INIT_COLOR);
-  const [anonymous, setAnonymous] = useState(false);
-  const [secret, setSecret] = useState(false);
 
+  const { checked: anonymous, handleChange: handleAnonymousCheckBoxChange } =
+    useCheckBox({ initialCheckedState: false });
+  const { checked: secret, handleChange: handleSecretCheckBoxChange } =
+    useCheckBox({ initialCheckedState: false });
   const { openSnackbar } = useSnackbar();
   const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
 
@@ -30,7 +33,13 @@ const useCreateMessage = () => {
       anonymous,
       secret,
     }: Pick<Message, "content" | "color" | "anonymous" | "secret">) => {
-      return postMessage({ rollingpaperId: +rollingpaperId, content, color });
+      return postMessage({
+        rollingpaperId: +rollingpaperId,
+        content,
+        color,
+        anonymous,
+        secret,
+      });
     },
     {
       onSuccess: () => {
@@ -79,13 +88,17 @@ const useCreateMessage = () => {
 
   return {
     writeNewMessage,
+    content,
+    color,
+    anonymous,
+    secret,
     handleMessageWriteButtonClick,
     handleMessageChange,
     handleMessageSubmit,
     handleMessageCancel,
     handleColorClick,
-    content,
-    color,
+    handleAnonymousCheckBoxChange,
+    handleSecretCheckBoxChange,
   };
 };
 

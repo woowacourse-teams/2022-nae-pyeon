@@ -32,12 +32,16 @@ const RollingpaperMessage = ({
     isWrite,
     color: newColor,
     content: newContent,
+    anonymous: newAnonymous,
+    secret: newSecret,
     handleMessageChange,
     handleMessageSubmit,
     handleMessageCancel,
     handleEditButtonClick,
     handleDeleteButtonClick,
     handleColorClick,
+    handleAnonymousCheckBoxChange,
+    handleSecretCheckBoxChange,
   } = useUpdateMessage({
     id: messageId,
     initContent: content,
@@ -55,9 +59,14 @@ const RollingpaperMessage = ({
         content={newContent}
         color={newColor}
         onClickColor={handleColorClick}
+        onClickAnonymous={handleAnonymousCheckBoxChange}
+        onClickSecret={handleSecretCheckBoxChange}
+        anonymous={newAnonymous}
+        secret={newSecret}
       />
     );
   }
+
   return (
     <StyledMessage color={color}>
       <StyledMessageContent>{content}</StyledMessageContent>

@@ -5,8 +5,6 @@ import MessageColorPicker from "@/pages/RollingpaperPage/components/MessageColor
 
 import LabeledCheckBox from "@/components/LabeledCheckBox";
 
-import useCheckBox from "@/hooks/useCheckBox";
-
 import CheckIcon from "@/assets/icons/bx-check.svg";
 import XIcon from "@/assets/icons/bx-x.svg";
 
@@ -17,6 +15,10 @@ type MessageFormProps = {
   onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
   color: string;
   onClickColor: (value: string) => void;
+  onClickAnonymous: React.ChangeEventHandler<HTMLInputElement>;
+  onClickSecret: React.ChangeEventHandler<HTMLInputElement>;
+  anonymous: boolean;
+  secret: boolean;
 };
 
 type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -46,15 +48,11 @@ export const MessageForm = ({
   onChange,
   color,
   onClickColor,
+  onClickAnonymous,
+  onClickSecret,
+  anonymous,
+  secret,
 }: MessageFormProps) => {
-  const {
-    checked: anonymousChecked,
-    handleChange: handleAnonymousCheckBoxChange,
-  } = useCheckBox({ initialCheckedState: false });
-
-  const { checked: secretChecked, handleChange: handleSecretCheckBoxChange } =
-    useCheckBox({ initialCheckedState: false });
-
   const handleTextAreaChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
     e
   ) => {
@@ -78,13 +76,13 @@ export const MessageForm = ({
           <StyledCheckBoxContainer>
             <LabeledCheckBox
               labeledText="익명"
-              checked={anonymousChecked}
-              onChange={handleAnonymousCheckBoxChange}
+              checked={anonymous}
+              onChange={onClickAnonymous}
             />
             <LabeledCheckBox
               labeledText="비밀글"
-              checked={secretChecked}
-              onChange={handleSecretCheckBoxChange}
+              checked={secret}
+              onChange={onClickSecret}
             />
           </StyledCheckBoxContainer>
           <StyledTextLength>{content.length}/500</StyledTextLength>

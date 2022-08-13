@@ -30,8 +30,12 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
     handleMessageSubmit,
     handleMessageCancel,
     handleColorClick,
+    handleAnonymousCheckBoxChange,
+    handleSecretCheckBoxChange,
     content,
     color,
+    anonymous,
+    secret,
   } = useCreateMessage();
 
   const updateSlicedMessageListByWindowWidth = () => {
@@ -81,8 +85,12 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
                 onCancel={handleMessageCancel}
                 onChange={handleMessageChange}
                 onClickColor={handleColorClick}
+                onClickAnonymous={handleAnonymousCheckBoxChange}
+                onClickSecret={handleSecretCheckBoxChange}
                 content={content}
                 color={color}
+                anonymous={anonymous}
+                secret={secret}
               />
             )}
             {messageList.map((message) => {

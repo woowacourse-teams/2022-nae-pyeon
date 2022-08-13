@@ -5,13 +5,11 @@ import axios from "axios";
 
 import useParamValidate from "@/hooks/useParamValidate";
 import { useSnackbar } from "@/context/SnackbarContext";
+import useCheckBox from "@/hooks/useCheckBox";
 
 import { queryClient } from "@/api";
 import { putMessage, deleteMessage } from "@/api/message";
 import { Message, CustomError } from "@/types";
-import { COLORS } from "@/constants";
-
-const INIT_COLOR = COLORS.YELLOW;
 
 interface UseUpdateMessageProp {
   id: number;
@@ -31,9 +29,11 @@ const useUpdateMessage = ({
   const [isWrite, setIsWrite] = useState(false);
   const [content, setContent] = useState(initContent);
   const [color, setColor] = useState(initColor);
-  const [anonymous, setAnonymous] = useState(initAnonymous);
-  const [secret, setSecret] = useState(initSecret);
 
+  const { checked: anonymous, handleChange: handleAnonymousCheckBoxChange } =
+    useCheckBox({ initialCheckedState: initAnonymous });
+  const { checked: secret, handleChange: handleSecretCheckBoxChange } =
+    useCheckBox({ initialCheckedState: initSecret });
   const { openSnackbar } = useSnackbar();
   const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
 
@@ -118,12 +118,16 @@ const useUpdateMessage = ({
     isWrite,
     color,
     content,
+    anonymous,
+    secret,
     handleEditButtonClick,
     handleMessageChange,
     handleMessageSubmit,
     handleMessageCancel,
     handleDeleteButtonClick,
     handleColorClick,
+    handleAnonymousCheckBoxChange,
+    handleSecretCheckBoxChange,
   };
 };
 
