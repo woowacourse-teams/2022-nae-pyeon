@@ -1,17 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import styled from "@emotion/styled";
 
-import useCreateTeam from "@/pages/TeamCreationPage/hooks/useCreateTeam";
-import useTeamCreationForm from "@/pages/TeamCreationPage/hooks/useTeamCreationForm";
+import useInput from "@/hooks/useInput";
 
 import LabeledInput from "@/components/LabeledInput";
 import LabeledRadio from "@/components/LabeledRadio";
 import LabeledTextArea from "@/components/LabeledTextArea";
 import Button from "@/components/Button";
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
-import LabeledSwitch from "@/components/LabeledSwitch";
 
 import { COLORS, REGEX } from "@/constants";
+import { CustomError } from "@/types";
+import { postTeam } from "@/api/team";
+
+import LabeledSwitch from "@/pages/TeamCreationPage/components/LabeledSwitch";
+import useSwitch from "@/pages/TeamCreationPage/hooks/useSwitch";
 
 const emojis = [
   { id: 1, value: "🐶" },
@@ -28,22 +34,39 @@ const colors = Object.values(COLORS).map((value, index) => ({
 }));
 
 const TeamCreationPage = () => {
-  const {
-    teamName,
-    teamDescription,
-    emoji,
-    color,
-    nickname,
-    isSecretTeam,
-    handleTeamNameChange,
-    handleTeamDescriptionChange,
-    setEmoji,
-    setColor,
-    handleNicknameChange,
-    handleSwitchClick,
-  } = useTeamCreationForm();
+  const [teamDescription, setTeamDescription] = useState("");
+  const [emoji, setEmoji] = useState("");
+  const [color, setColor] = useState("");
+  const { value: teamName, handleInputChange: handleTeamNameChange } =
+    useInput("");
+  const { value: nickname, handleInputChange: handleNicknameChange } =
+    useInput("");
 
-  const createTeam = useCreateTeam();
+  const navigate = useNavigate();
+  const { isChecked: isPrivateTeam, handleSwitchClick } = useSwitch();
+
+  const { mutate: createTeam } = useMutation(
+    () => {
+      return postTeam({
+        name: teamName,
+        description: teamDescription,
+        emoji,
+        color,
+        nickname,
+      });
+    },
+    {
+      onSuccess: () => {
+        navigate("/");
+      },
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response) {
+          const customError = error.response.data as CustomError;
+          alert(customError.message);
+        }
+      },
+    }
+  );
 
   const handleTeamCreationSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -64,14 +87,7 @@ const TeamCreationPage = () => {
       return alert("모임 색상을 선택해주세요");
     }
 
-    createTeam({
-      name: teamName,
-      description: teamDescription,
-      emoji,
-      color,
-      nickname,
-      secret: isSecretTeam,
-    });
+    createTeam();
   };
 
   return (
@@ -88,7 +104,7 @@ const TeamCreationPage = () => {
         <LabeledTextArea
           labelText="모임 설명"
           value={teamDescription}
-          onChange={handleTeamDescriptionChange}
+          setValue={setTeamDescription}
           minLength={1}
           maxLength={100}
           placeholder="최대 100자까지 입력 가능합니다"
@@ -112,7 +128,7 @@ const TeamCreationPage = () => {
         />
         <LabeledSwitch
           labelText="비공개로 만들기"
-          isChecked={isSecretTeam}
+          isChecked={isPrivateTeam}
           onClick={handleSwitchClick}
         />
         <Button

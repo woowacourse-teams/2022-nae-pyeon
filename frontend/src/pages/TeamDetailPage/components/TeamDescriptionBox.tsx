@@ -19,7 +19,7 @@ const TeamDescriptionBox = ({
   emoji,
   color,
   joined,
-}: Omit<Team, "id" | "nickname" | "secret">) => {
+}: Omit<Team, "id" | "nickname">) => {
   const {
     isOpen: isTeamNicknameOpen,
     handleModalClose: handleTeamNicknameClose,

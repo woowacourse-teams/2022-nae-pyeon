@@ -6,7 +6,6 @@ export interface Team {
   color: string;
   nickname: string;
   joined: boolean;
-  secret: boolean;
 }
 
 export interface Message {
