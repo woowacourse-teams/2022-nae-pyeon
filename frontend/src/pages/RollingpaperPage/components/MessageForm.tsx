@@ -53,15 +53,6 @@ export const MessageForm = ({
   anonymous,
   secret,
 }: MessageFormProps) => {
-  const handleTextAreaChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
-    e
-  ) => {
-    if (e.target.value.length > 500) {
-      return;
-    }
-    onChange(e);
-  };
-
   return (
     <>
       <StyledBackground />
@@ -69,7 +60,7 @@ export const MessageForm = ({
         <MessageTextArea
           placeholder="메시지를 입력해보세요!"
           value={content}
-          onChange={handleTextAreaChange}
+          onChange={onChange}
           backgroundColor={color}
         />
         <StyledMessageFormBottom>
