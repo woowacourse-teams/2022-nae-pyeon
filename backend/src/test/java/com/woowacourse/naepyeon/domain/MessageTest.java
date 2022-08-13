@@ -12,6 +12,26 @@ import org.junit.jupiter.api.Test;
 class MessageTest {
 
     @Test
+    @DisplayName("모임에게 작성하는 메시지일 경우 비밀 옵션은 무조건 false이다.")
+    void saveMessageToTeam() {
+        final Team team = new Team(
+                "nae-pyeon",
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
+        final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
+        final Member author = new Member("author", "a@hello.com", Platform.KAKAO, "2");
+        final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", Recipient.TEAM, team, member);
+        final Message message = new Message("헬로우", "green", author, rollingpaper, false, true);
+        final String expected = "낫 헬로우";
+
+        message.changeContent(expected);
+
+        assertThat(message.isSecret()).isFalse();
+    }
+
+    @Test
     @DisplayName("메시지 내용을 변경한다.")
     void changeContent() {
         final Team team = new Team(

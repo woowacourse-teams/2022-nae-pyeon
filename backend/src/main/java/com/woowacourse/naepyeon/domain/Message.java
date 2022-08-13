@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.domain;
 
+import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.ExceedMessageContentLengthException;
 import javax.persistence.Column;
@@ -57,6 +58,9 @@ public class Message extends BaseEntity {
         this.rollingpaper = rollingpaper;
         this.anonymous = anonymous;
         this.secret = secret;
+        if (rollingpaper.checkSameRecipient(Recipient.TEAM)) {
+            this.secret = false;
+        }
     }
 
     public void changeContent(final String newContent) {
