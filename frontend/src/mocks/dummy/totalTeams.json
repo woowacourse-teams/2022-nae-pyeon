@@ -2,171 +2,192 @@
   "totalTeams": [
     {
       "id": 1,
-      "name": "우테코 4기",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "1우테코 4기",
+      "description": "1우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
-      "color": "#C5FF98",
-      "joined": true
+      "color": "#FF8181",
+      "joined": false,
+      "secret": false
     },
     {
       "id": 2,
-      "name": "우테코 4기 FE",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "2우테코 4기 FE 비밀",
+      "description": "2우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
       "color": "#C5FF98",
-      "joined": true
+      "joined": true,
+      "secret": true
     },
     {
       "id": 3,
-      "name": "우테코 4기 입니다",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "3우테코 4기 입니다",
+      "description": "3우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
-      "color": "#C5FF98",
-      "joined": true
+      "color": "#FFF598",
+      "joined": false,
+      "secret": true
     },
     {
       "id": 4,
-      "name": "우테코 4기 에요",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "4우테코 4기 에요",
+      "description": "4우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
-      "color": "#C5FF98",
-      "joined": true
+      "color": "#98DAFF",
+      "joined": false,
+      "secret": false
     },
     {
       "id": 5,
-      "name": "우테코 4기기기기기",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "5우테코 4기기기기기",
+      "description": "5우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
-      "color": "#C5FF98",
-      "joined": true
+      "color": "#FF8181",
+      "joined": false,
+      "secret": false
     },
     {
       "id": 6,
-      "name": "우테코 4기",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "6우테코 4기",
+      "description": "6우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
-      "color": "#C5FF98",
-      "joined": true
+      "color": "#FF8181",
+      "joined": true,
+      "secret": false
     },
     {
       "id": 7,
-      "name": "우테코 4기 BE",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "7우테코 4기 BE 비밀",
+      "description": "7우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
-      "color": "#C5FF98",
-      "joined": true
+      "color": "#98DAFF",
+      "joined": false,
+      "secret": true
     },
     {
       "id": 8,
-      "name": "우테코 4기 아아아",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "8우테코 4기 아아아 비밀",
+      "description": "8우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
       "color": "#C5FF98",
-      "joined": true
+      "joined": false,
+      "secret": true
     },
     {
       "id": 9,
-      "name": "우테코 4기 아",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "9우테코 4기 아",
+      "description": "9우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
-      "color": "#C5FF98",
-      "joined": true
+      "color": "#FF8181",
+      "joined": false,
+      "secret": false
     },
     {
       "id": 10,
-      "name": "테스트",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "10테스트",
+      "description": "10우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
-      "color": "#C5FF98",
-      "joined": true
+      "color": "#FFF598",
+      "joined": true,
+      "secret": false
     },
     {
       "id": 11,
-      "name": "테스트2",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "11테스트2",
+      "description": "11우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
       "color": "#C5FF98",
-      "joined": true
+      "joined": false,
+      "secret": false
     },
     {
       "id": 12,
-      "name": "테테테테테스트",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "12테테테테테스트",
+      "description": "12우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
-      "color": "#C5FF98",
-      "joined": true
+      "color": "#98DAFF",
+      "joined": true,
+      "secret": false
     },
     {
       "id": 13,
-      "name": "텟스트",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "13텟스트",
+      "description": "13우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
-      "color": "#C5FF98",
-      "joined": true
+      "color": "#FF8181",
+      "joined": false,
+      "secret": false
     },
     {
       "id": 14,
-      "name": "테스스스슷트",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "14테스스스슷트",
+      "description": "14우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
-      "color": "#C5FF98",
-      "joined": true
+      "color": "#FFF598",
+      "joined": false,
+      "secret": false
     },
     {
       "id": 15,
-      "name": "우테코 4기",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "15우테코 4기 비밀",
+      "description": "15우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
-      "color": "#C5FF98",
-      "joined": true
+      "color": "#98DAFF",
+      "joined": false,
+      "secret": true
     },
     {
       "id": 16,
-      "name": "우테코 4기",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "16우테코 4기",
+      "description": "16우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
-      "color": "#C5FF98",
-      "joined": true
+      "color": "#FF8181",
+      "joined": false,
+      "secret": false
     },
     {
       "id": 17,
-      "name": "우테코 4기",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "17우테코 4기",
+      "description": "17우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
       "color": "#C5FF98",
-      "joined": true
+      "joined": true,
+      "secret": false
     },
     {
       "id": 18,
-      "name": "우테코 4기",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "18우테코 4기",
+      "description": "18우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
-      "color": "#C5FF98",
-      "joined": true
+      "color": "#98DAFF",
+      "joined": false,
+      "secret": false
     },
     {
       "id": 19,
-      "name": "우테코 4기",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "19우테코 4기",
+      "description": "19우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
-      "color": "#C5FF98",
-      "joined": true
+      "color": "#FF8181",
+      "joined": true,
+      "secret": false
     },
     {
       "id": 20,
-      "name": "우테코 4기",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "20우테코 4기 쉿 비밀",
+      "description": "20우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
       "color": "#C5FF98",
-      "joined": true
+      "joined": false,
+      "secret": true
     },
     {
       "id": 21,
-      "name": "우테코 4기",
-      "description": "우아한테크코스 4기 프론트앤드와 백엔드 모임입니다.",
+      "name": "21우테코 4기",
+      "description": "21우아한테크코스 4기 프론트엔드와 백엔드 모임입니다.",
       "emoji": "😀",
-      "color": "#C5FF98",
-      "joined": true
+      "color": "#FF8181",
+      "joined": false,
+      "secret": false
     }
   ]
 }

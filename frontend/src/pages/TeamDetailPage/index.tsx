@@ -46,7 +46,11 @@ const TeamDetailPage = () => {
         color={teamDetail.color}
         joined={teamDetail.joined}
       />
-      {teamDetail.joined ? <RollingpaperList /> : <TeamJoinSection />}
+      {teamDetail.joined ? (
+        <RollingpaperList />
+      ) : (
+        <TeamJoinSection isSecretTeam={teamDetail.secret} />
+      )}
     </StyledMain>
   );
 };

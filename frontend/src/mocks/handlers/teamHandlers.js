@@ -1,16 +1,15 @@
 import { raw } from "@storybook/react";
 import { rest } from "msw";
 
-import myTeamsDummy from "../dummy/myTeams.json";
 import totalTeamsDummy from "../dummy/totalTeams.json";
 
-const myTeams = myTeamsDummy.teams;
 const totalTeams = totalTeamsDummy.totalTeams;
+const myTeams = totalTeams.filter((team) => team.joined);
 
 const teamHandlers = [
   // 모임 생성
   rest.post("/api/v1/teams", (req, res, ctx) => {
-    const { name, description, emoji, color } = req.body;
+    const { name, description, emoji, color, nickname, secret } = req.body;
     const accessToken = req.headers.headers.authorization;
 
     const result = { id: 1 };
@@ -40,9 +39,16 @@ const teamHandlers = [
     const page = +req.url.searchParams.get("page");
     const count = +req.url.searchParams.get("count");
 
-    const keywordTeam = totalTeams.filter((team) =>
-      team.name.includes(keyword)
-    );
+    const keywordTeam = totalTeams
+      .filter((team) => team.name.includes(keyword))
+      .map(({ id, name, description, emoji, color, joined }) => ({
+        id,
+        name,
+        description,
+        emoji,
+        color,
+        joined,
+      }));
 
     const result = {
       totalCount: keywordTeam.length,
@@ -57,7 +63,11 @@ const teamHandlers = [
   rest.get("/api/v1/teams/:teamId", (req, res, ctx) => {
     const { teamId } = req.params;
 
-    const result = myTeams.find((team) => team.id === +teamId);
+    const result = totalTeams.find((team) => team.id === +teamId);
+
+    if (!result) {
+      return res(ctx.status(404));
+    }
 
     return res(ctx.status(200), ctx.json(result));
   }),
