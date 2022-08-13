@@ -1,5 +1,6 @@
 import { appClient } from "@/api";
 import { Team } from "@/types";
+
 interface SearchRequest {
   keyword: string;
   count: number;
@@ -34,6 +35,11 @@ const getTeamRollingpapers = (id: number) =>
     return response.data;
   });
 
+const getTeamWithInviteToken = (inviteToken: string) =>
+  appClient
+    .get(`/teams/invite/inviteToken=${inviteToken}`)
+    .then((response) => response.data);
+
 const postTeam = ({
   name,
   description,
@@ -53,14 +59,25 @@ const postTeam = ({
     })
     .then((response) => response.data);
 
-const postTeamNickname = ({ id, nickname }: Pick<Team, "id" | "nickname">) =>
-  appClient
-    .post(`/teams/${id}`, { nickname })
-    .then((response) => response.data);
+const postTeamInviteToken = ({ id }: Pick<Team, "id">) =>
+  appClient.post(`/teams/${id}/invite`).then((response) => response.data);
 
 const putTeamNickname = ({ id, nickname }: Pick<Team, "id" | "nickname">) =>
   appClient
     .put(`/teams/${id}/me`, { nickname })
+    .then((response) => response.data);
+
+const postTeamMember = ({ id, nickname }: Pick<Team, "id" | "nickname">) =>
+  appClient
+    .post(`/teams/${id}`, { nickname })
+    .then((response) => response.data);
+
+const postTeamMemberWithInviteToken = ({
+  inviteToken,
+  nickname,
+}: Pick<Team, "nickname"> & { inviteToken: string }) =>
+  appClient
+    .post(`/teams/invite/join`, { inviteToken, nickname })
     .then((response) => response.data);
 
 export {
@@ -69,7 +86,10 @@ export {
   getTeam,
   getTeamMembers,
   getTeamRollingpapers,
+  getTeamWithInviteToken,
   postTeam,
-  postTeamNickname,
+  postTeamMember,
+  postTeamMemberWithInviteToken,
+  postTeamInviteToken,
   putTeamNickname,
 };
