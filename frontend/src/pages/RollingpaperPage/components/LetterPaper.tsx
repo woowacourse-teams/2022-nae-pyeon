@@ -11,7 +11,6 @@ import PencilIcon from "@/assets/icons/bx-pencil.svg";
 import { divideArrayByIndexRemainder } from "@/util";
 
 import useParamValidate from "@/hooks/useParamValidate";
-import SecretMessage from "@/pages/RollingpaperPage/components/SecretMessage";
 import useCreateMessage from "@/pages/RollingpaperPage/hooks/useCreateMessage";
 import useMessage from "@/pages/RollingpaperPage/hooks/useMessage";
 
@@ -108,22 +107,19 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
               />
             )}
             {messageList.map((message) => {
-              if (message.visible) {
-                return (
-                  <RollingpaperMessage
-                    key={message.id}
-                    content={message.content}
-                    author={message.from}
-                    color={message.color}
-                    messageId={message.id}
-                    editable={message.editable}
-                    anonymous={message.anonymous}
-                    secret={message.secret}
-                  />
-                );
-              }
-
-              return <SecretMessage key={message.id} author={message.from} />;
+              return (
+                <RollingpaperMessage
+                  key={message.id}
+                  content={message.content}
+                  author={message.from}
+                  color={message.color}
+                  messageId={message.id}
+                  editable={message.editable}
+                  anonymous={message.anonymous}
+                  secret={message.secret}
+                  isVisible={message.visible}
+                />
+              );
             })}
           </StyledMessageList>
         ))}

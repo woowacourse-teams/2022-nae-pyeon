@@ -11,6 +11,7 @@ import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 import useMessage from "@/pages/RollingpaperPage/hooks/useMessage";
 import useDeleteMessage from "@/pages/RollingpaperPage/hooks/useDeleteMessage";
 import useUpdateMessage from "@/pages/RollingpaperPage/hooks/useUpdateMessage";
+import SecretMessage from "./SecretMessage";
 
 interface RollingpaperMessageProp {
   content: string;
@@ -20,6 +21,7 @@ interface RollingpaperMessageProp {
   editable: boolean;
   anonymous: boolean;
   secret: boolean;
+  isVisible: boolean;
 }
 
 const RollingpaperMessage = ({
@@ -30,6 +32,7 @@ const RollingpaperMessage = ({
   editable,
   anonymous,
   secret,
+  isVisible,
 }: RollingpaperMessageProp) => {
   const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
   const {
@@ -73,6 +76,10 @@ const RollingpaperMessage = ({
       initMessage();
     }
   };
+
+  if (!isVisible) {
+    return <SecretMessage author={author} />;
+  }
 
   if (isEdit) {
     return (
