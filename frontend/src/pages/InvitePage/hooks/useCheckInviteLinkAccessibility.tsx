@@ -25,6 +25,7 @@ const useCheckInviteLinkAccessibility = ({
     }
 
     if (teamDetail && teamDetail.joined) {
+      alert("이미 가입한 모임입니다.");
       navigate(`/team/${teamDetail.id}`, {
         replace: true,
       });
