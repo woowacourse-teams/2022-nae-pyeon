@@ -58,6 +58,18 @@ const teamHandlers = [
     return res(ctx.json(result));
   }),
 
+  // 초대토큰으로 모임 정보 조회
+  rest.get("/api/v1/teams/invite", (req, res, ctx) => {
+    const inviteToken = req.url.searchParams.get("inviteToken");
+
+    const team = totalTeams.find((team) => team.secret);
+    const result = {
+      ...team,
+    };
+
+    return res(ctx.json(result));
+  }),
+
   // 모임 상세정보 조회
   rest.get("/api/v1/teams/:teamId", (req, res, ctx) => {
     const { teamId } = req.params;
@@ -124,18 +136,6 @@ const teamHandlers = [
 
     const result = {
       inviteToken: "testInviteToken",
-    };
-
-    return res(ctx.json(result));
-  }),
-
-  // 초대토큰으로 모임 정보 조회
-  rest.get("/api/v1/teams/invite", (req, res, ctx) => {
-    const inviteToken = +req.url.searchParams.get("inviteToken");
-
-    const team = totalTeams.find((team) => team.secret);
-    const result = {
-      ...team,
     };
 
     return res(ctx.json(result));
