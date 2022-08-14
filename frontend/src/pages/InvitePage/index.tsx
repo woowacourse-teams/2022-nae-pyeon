@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "@emotion/styled";
 
 import useParamValidate from "@/hooks/useParamValidate";
 import useInput from "@/hooks/useInput";
+import useCheckInviteLinkAccessibility from "@/pages/InvitePage/hooks/useCheckInviteLinkAccessibility";
 import useJoinTeamWithInviteToken from "@/pages/InvitePage/hooks/useJoinTeamWithInviteToken";
+import useTeamDetailWithInviteToken from "@/pages/InvitePage/hooks/useTeamDetailWithInviteToken";
 
 import UnderlineInput from "@/components/UnderlineInput";
 import LineButton from "@/components/LineButton";
@@ -14,8 +16,14 @@ import { REGEX } from "@/constants";
 
 const InvitePage = () => {
   const { inviteToken } = useParamValidate(["inviteToken"]);
-  const { value: nickname, handleInputChange } = useInput("");
+  const checkAccessibility = useCheckInviteLinkAccessibility({ inviteToken });
+
   const joinTeamWithInviteToken = useJoinTeamWithInviteToken();
+  const { data: teamDetail } = useTeamDetailWithInviteToken({
+    inviteToken,
+  });
+
+  const { value: nickname, handleInputChange } = useInput("");
 
   const handleTeamJoinSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -26,13 +34,21 @@ const InvitePage = () => {
     });
   };
 
+  useEffect(() => {
+    checkAccessibility(teamDetail);
+  }, [teamDetail]);
+
+  if (!teamDetail) {
+    return <div>로딩 중</div>;
+  }
+
   return (
     <StyledPage>
       <TeamDescriptionBox
-        color="#98DAFF"
-        emoji="❤️"
-        name="우테코 4기"
-        description="설명입니다 설명입니다"
+        color={teamDetail.color}
+        emoji={teamDetail.emoji}
+        name={teamDetail.name}
+        description={teamDetail.description}
       />
       <StyledJoinForm onSubmit={handleTeamJoinSubmit}>
         <p>모임에서 사용할 닉네임을 입력해주세요. (1 ~ 20자)</p>
