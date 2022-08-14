@@ -37,7 +37,7 @@ const getTeamRollingpapers = (id: number) =>
 
 const getTeamWithInviteToken = (inviteToken: string) =>
   appClient
-    .get(`/teams/invite/inviteToken=${inviteToken}`)
+    .get(`/teams/invite?inviteToken=${inviteToken}`)
     .then((response) => response.data);
 
 const postTeam = ({
