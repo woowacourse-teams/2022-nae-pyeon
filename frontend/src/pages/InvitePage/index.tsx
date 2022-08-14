@@ -18,10 +18,10 @@ const InvitePage = () => {
   const { inviteToken } = useParamValidate(["inviteToken"]);
   const checkAccessibility = useCheckInviteLinkAccessibility({ inviteToken });
 
-  const joinTeamWithInviteToken = useJoinTeamWithInviteToken();
   const { data: teamDetail } = useTeamDetailWithInviteToken({
     inviteToken,
   });
+  const joinTeamWithInviteToken = useJoinTeamWithInviteToken(teamDetail?.id);
 
   const { value: nickname, handleInputChange } = useInput("");
 
