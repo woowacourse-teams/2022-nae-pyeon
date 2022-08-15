@@ -30,7 +30,8 @@ const SOCIAL_LOGIN_PLATFORM = {
 } as const;
 
 const KAKAO_OAUTH_URL = {
-  AUTHORIZE_CODE: `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.KAKAO_REST_API_KEY}&redirect_uri=${process.env.KAKAO_REDIRECT_URL}&response_type=code`,
+  AUTHORIZE_CODE: (inviteToken = "") =>
+    `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.KAKAO_REST_API_KEY}&redirect_uri=${process.env.KAKAO_REDIRECT_URL}&response_type=code&state=${inviteToken}`,
   TOKEN: (authorize_code: string) =>
     `https://kauth.kakao.com/oauth/token?client_id=${process.env.KAKAO_REST_API_KEY}&redirect_uri=${process.env.KAKAO_REDIRECT_URL}&grant_type=authorization_code&client_secret=${process.env.KAKAO_CLIENT_SECRET}&code=${authorize_code}`,
   USER_INFO:
