@@ -1,4 +1,4 @@
-import React, { SetStateAction } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import MessageTextArea from "@/pages/RollingpaperPage/components/MessageTextArea";
 import MessageColorPicker from "@/pages/RollingpaperPage/components/MessageColorPicker";
@@ -13,7 +13,7 @@ import useCreateMessage from "@/pages/RollingpaperPage/hooks/useCreateMessage";
 import useParamValidate from "@/hooks/useParamValidate";
 
 type MessageCreateFormProps = {
-  onEditEnd: React.Dispatch<SetStateAction<boolean>>;
+  onEditEnd: () => void;
 };
 
 type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -55,13 +55,13 @@ export const MessageCreateForm = ({ onEditEnd }: MessageCreateFormProps) => {
   const handleMessageSubmit = () => {
     createMessage({ content, color, anonymous, secret });
     initMessage();
-    onEditEnd(false);
+    onEditEnd();
   };
 
   const handleMessageCancel = () => {
     if (confirm("메시지 작성을 취소하시겠습니까?")) {
       initMessage();
-      onEditEnd(false);
+      onEditEnd();
     }
   };
 
