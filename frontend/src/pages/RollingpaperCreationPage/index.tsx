@@ -4,17 +4,12 @@ import styled from "@emotion/styled";
 import { RecipientBox } from "@/pages/RollingpaperCreationPage/components/RecipientBox";
 import TeamRollingpaperCreateForm from "@/pages/RollingpaperCreationPage/components/TeamRollingpaperCreateForm";
 import MemberRollingpaperCreateForm from "@/pages/RollingpaperCreationPage/components/MemberRollingpaperCreateForm";
-import { ValueOf } from "@/types";
 
-const RECIPIENT = {
-  TEAM: "team",
-  MEMBER: "member",
-} as const;
-
-export type RecipientType = ValueOf<typeof RECIPIENT>;
+import { RECIPIENT } from "@/constants";
+import { Recipient } from "@/types";
 
 const RollingpaperCreationPage = () => {
-  const [recipient, setRecipient] = useState<RecipientType | null>(null);
+  const [recipient, setRecipient] = useState<Recipient | null>(null);
 
   const handleTeamRollingpaperCreateClick = () => {
     setRecipient(RECIPIENT.TEAM);

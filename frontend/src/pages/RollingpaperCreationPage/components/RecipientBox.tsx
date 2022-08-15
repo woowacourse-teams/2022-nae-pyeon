@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import { RecipientType } from "@/pages/RollingpaperCreationPage/index";
+import { Recipient } from "@/types";
 
 const boxInput = {
   team: {
@@ -15,12 +15,12 @@ const boxInput = {
 };
 
 interface RecipientBoxProps {
-  type: RecipientType;
+  type: Recipient;
   onClick: VoidFunction;
 }
 
 interface StyledRecipientBoxProps {
-  type: RecipientType;
+  type: Recipient;
 }
 
 export const RecipientBox = ({ type, onClick }: RecipientBoxProps) => {
