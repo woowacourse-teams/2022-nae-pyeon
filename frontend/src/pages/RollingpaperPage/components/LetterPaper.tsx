@@ -9,7 +9,7 @@ import PencilIcon from "@/assets/icons/bx-pencil.svg";
 import { divideArrayByIndexRemainder } from "@/util";
 
 import useParamValidate from "@/hooks/useParamValidate";
-import useMessage from "@/pages/RollingpaperPage/hooks/useMessage";
+import useMessageBox from "@/pages/RollingpaperPage/hooks/useMessageBox";
 import MessageCreateForm from "@/pages/RollingpaperPage/components/MessageCreateForm";
 import MessageBox from "@/pages/RollingpaperPage/components/MessageBox";
 
@@ -24,7 +24,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
   );
   const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
 
-  const { isEdit, handleWriteButtonClick, setIsEdit } = useMessage({
+  const { isEdit, handleWriteButtonClick, setIsEdit } = useMessageBox({
     rollingpaperId: +rollingpaperId,
   });
 

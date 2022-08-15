@@ -8,7 +8,7 @@ import Pencil from "@/assets/icons/bx-pencil.svg";
 
 import useParamValidate from "@/hooks/useParamValidate";
 import MessageUpdateForm from "@/pages/RollingpaperPage/components/MessageUpdateForm";
-import useMessage from "@/pages/RollingpaperPage/hooks/useMessage";
+import useMessageBox from "@/pages/RollingpaperPage/hooks/useMessageBox";
 import SecretMessage from "@/pages/RollingpaperPage/components/SecretMessage";
 
 interface MessageBoxProp {
@@ -34,7 +34,7 @@ const MessageBox = ({
 }: MessageBoxProp) => {
   const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
   const { isEdit, handleWriteButtonClick, handleDeleteButtonClick, setIsEdit } =
-    useMessage({ id, rollingpaperId: +rollingpaperId });
+    useMessageBox({ id, rollingpaperId: +rollingpaperId });
 
   if (!visible) {
     return <SecretMessage from={from} />;
