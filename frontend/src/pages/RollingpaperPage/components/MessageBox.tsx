@@ -24,8 +24,12 @@ const MessageBox = ({
   visible,
 }: Message) => {
   const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
-  const { isEdit, handleWriteButtonClick, handleDeleteButtonClick, setIsEdit } =
-    useMessageBox({ id, rollingpaperId: +rollingpaperId });
+  const {
+    isEdit,
+    handleWriteButtonClick,
+    handleDeleteButtonClick,
+    handleEditEnd,
+  } = useMessageBox({ id, rollingpaperId: +rollingpaperId });
 
   if (!visible) {
     return <SecretMessage from={from} />;
@@ -39,7 +43,7 @@ const MessageBox = ({
         color={color}
         anonymous={anonymous}
         secret={secret}
-        setIsEdit={setIsEdit}
+        onEditEnd={handleEditEnd}
       />
     );
   }

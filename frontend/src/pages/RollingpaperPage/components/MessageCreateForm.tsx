@@ -13,7 +13,7 @@ import useCreateMessage from "@/pages/RollingpaperPage/hooks/useCreateMessage";
 import useParamValidate from "@/hooks/useParamValidate";
 
 type MessageCreateFormProps = {
-  setIsEdit: React.Dispatch<SetStateAction<boolean>>;
+  onEditEnd: React.Dispatch<SetStateAction<boolean>>;
 };
 
 type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -36,7 +36,7 @@ const MessageCancelButton = ({ onClick }: ButtonAttributes) => {
   );
 };
 
-export const MessageCreateForm = ({ setIsEdit }: MessageCreateFormProps) => {
+export const MessageCreateForm = ({ onEditEnd }: MessageCreateFormProps) => {
   const {
     content,
     color,
@@ -55,13 +55,13 @@ export const MessageCreateForm = ({ setIsEdit }: MessageCreateFormProps) => {
   const handleMessageSubmit = () => {
     createMessage({ content, color, anonymous, secret });
     initMessage();
-    setIsEdit(false);
+    onEditEnd(false);
   };
 
   const handleMessageCancel = () => {
     if (confirm("메시지 작성을 취소하시겠습니까?")) {
       initMessage();
-      setIsEdit(false);
+      onEditEnd(false);
     }
   };
 

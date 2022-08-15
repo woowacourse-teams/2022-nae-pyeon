@@ -22,11 +22,15 @@ const useMessage = ({ id, rollingpaperId }: UseMessageProps) => {
     }
   };
 
+  const handleEditEnd = () => {
+    setIsEdit(false);
+  };
+
   return {
     isEdit,
     handleWriteButtonClick,
     handleDeleteButtonClick,
-    setIsEdit,
+    handleEditEnd,
   };
 };
 

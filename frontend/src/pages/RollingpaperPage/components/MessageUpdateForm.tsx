@@ -16,7 +16,7 @@ type MessageUpdateFormProps = {
   color: string;
   anonymous: boolean;
   secret?: boolean;
-  setIsEdit: React.Dispatch<SetStateAction<boolean>>;
+  onEditEnd: React.Dispatch<SetStateAction<boolean>>;
 };
 
 type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -45,7 +45,7 @@ export const MessageUpdateForm = ({
   color,
   anonymous,
   secret,
-  setIsEdit,
+  onEditEnd,
 }: MessageUpdateFormProps) => {
   const { updateMessage } = useUpdateMessage(id);
   const {
@@ -73,13 +73,13 @@ export const MessageUpdateForm = ({
       secret: newSecret,
     });
     initMessage();
-    setIsEdit(false);
+    onEditEnd(false);
   };
 
   const handleMessageCancel = () => {
     if (confirm("메시지 작성을 취소하시겠습니까?")) {
       initMessage();
-      setIsEdit(false);
+      onEditEnd(false);
     }
   };
 

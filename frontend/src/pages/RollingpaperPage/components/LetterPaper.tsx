@@ -24,7 +24,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
   );
   const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
 
-  const { isEdit, handleWriteButtonClick, setIsEdit } = useMessageBox({
+  const { isEdit, handleWriteButtonClick, handleEditEnd } = useMessageBox({
     rollingpaperId: +rollingpaperId,
   });
 
@@ -70,7 +70,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
         {slicedMessageLists.map((messageList, index) => (
           <StyledMessageList key={index}>
             {index === 0 && isEdit && (
-              <MessageCreateForm setIsEdit={setIsEdit} />
+              <MessageCreateForm onEditEnd={handleEditEnd} />
             )}
             {messageList.map((message) => {
               return <MessageBox key={message.id} {...message} />;
