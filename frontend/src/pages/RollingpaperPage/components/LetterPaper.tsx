@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 
 import IconButton from "@components/IconButton";
-import RollingpaperMessage from "@/pages/RollingpaperPage/components/RollingpaperMessage";
 
 import { Message } from "@/types";
 
@@ -12,6 +11,7 @@ import { divideArrayByIndexRemainder } from "@/util";
 import useParamValidate from "@/hooks/useParamValidate";
 import useMessage from "@/pages/RollingpaperPage/hooks/useMessage";
 import MessageCreateForm from "@/pages/RollingpaperPage/components/MessageCreateForm";
+import MessageBox from "@/pages/RollingpaperPage/components/MessageBox";
 
 interface LetterPaperProp {
   to: string;
@@ -73,7 +73,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
               <MessageCreateForm setIsEdit={setIsEdit} />
             )}
             {messageList.map((message) => {
-              return <RollingpaperMessage key={message.id} {...message} />;
+              return <MessageBox key={message.id} {...message} />;
             })}
           </StyledMessageList>
         ))}
