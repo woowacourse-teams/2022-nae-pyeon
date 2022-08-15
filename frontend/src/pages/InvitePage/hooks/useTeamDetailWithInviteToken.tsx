@@ -5,19 +5,21 @@ import { getTeamWithInviteToken } from "@/api/team";
 
 import { Team } from "@/types";
 
-type RequestTeamDetailWithInviteToken = {
+type UseTeamDetailWithInviteTokenArgs = {
   inviteToken: string;
+  onSuccess?: ((data: Team) => void) | undefined;
+  onError?: ((err: unknown) => void) | undefined;
 };
 
 const useTeamDetailWithInviteToken = ({
   inviteToken,
-}: RequestTeamDetailWithInviteToken) => {
+  onSuccess,
+  onError,
+}: UseTeamDetailWithInviteTokenArgs) => {
   return useQuery<Team>(
     ["teamDetailWithInviteToken", inviteToken],
     () => getTeamWithInviteToken(inviteToken),
-    {
-      enabled: !!inviteToken,
-    }
+    { onSuccess, onError }
   );
 };
 

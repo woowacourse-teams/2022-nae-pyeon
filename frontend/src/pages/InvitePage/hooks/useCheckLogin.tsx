@@ -4,21 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "@/context/SnackbarContext";
 import { UserContext } from "@/context/UserContext";
 
-import { Team } from "@/types";
-
-type useCheckInviteLinkAccessibilityArgs = {
+type useCheckLoginArgs = {
   inviteToken: string;
 };
 
-const useCheckInviteLinkAccessibility = ({
-  inviteToken,
-}: useCheckInviteLinkAccessibilityArgs) => {
+const useCheckLogin = ({ inviteToken }: useCheckLoginArgs) => {
   const navigate = useNavigate();
 
   const { openSnackbar } = useSnackbar();
   const { isLoggedIn } = useContext(UserContext);
 
-  const checkAccessibility = (teamDetail: Team | undefined) => {
+  const checkLogin = () => {
     if (!isLoggedIn) {
       openSnackbar("로그인이 필요한 서비스입니다.");
       navigate("/login", {
@@ -26,16 +22,9 @@ const useCheckInviteLinkAccessibility = ({
         state: { inviteToken },
       });
     }
-
-    if (teamDetail && teamDetail.joined) {
-      openSnackbar("이미 가입한 모임입니다.");
-      navigate(`/team/${teamDetail.id}`, {
-        replace: true,
-      });
-    }
   };
 
-  return checkAccessibility;
+  return checkLogin;
 };
 
-export default useCheckInviteLinkAccessibility;
+export default useCheckLogin;

@@ -3,9 +3,11 @@ import styled from "@emotion/styled";
 
 import useParamValidate from "@/hooks/useParamValidate";
 import useInput from "@/hooks/useInput";
-import useCheckInviteLinkAccessibility from "@/pages/InvitePage/hooks/useCheckInviteLinkAccessibility";
-import useJoinTeamWithInviteToken from "@/pages/InvitePage/hooks/useJoinTeamWithInviteToken";
+import useCheckLogin from "@/pages/InvitePage/hooks/useCheckLogin";
+import useCheckTeamJoined from "@/pages/InvitePage/hooks/useCheckTeamJoined";
+
 import useTeamDetailWithInviteToken from "@/pages/InvitePage/hooks/useTeamDetailWithInviteToken";
+import useJoinTeamWithInviteToken from "@/pages/InvitePage/hooks/useJoinTeamWithInviteToken";
 
 import UnderlineInput from "@/components/UnderlineInput";
 import LineButton from "@/components/LineButton";
@@ -16,14 +18,17 @@ import { REGEX } from "@/constants";
 
 const InvitePage = () => {
   const { inviteToken } = useParamValidate(["inviteToken"]);
-  const checkAccessibility = useCheckInviteLinkAccessibility({ inviteToken });
+
+  const { value: nickname, handleInputChange } = useInput("");
+  const checkLogin = useCheckLogin({ inviteToken });
+  const handleTeamDetailWithInviteTokenSuccess = useCheckTeamJoined();
 
   const { data: teamDetail } = useTeamDetailWithInviteToken({
     inviteToken,
+    onSuccess: handleTeamDetailWithInviteTokenSuccess,
   });
-  const joinTeamWithInviteToken = useJoinTeamWithInviteToken(teamDetail?.id);
 
-  const { value: nickname, handleInputChange } = useInput("");
+  const joinTeamWithInviteToken = useJoinTeamWithInviteToken(teamDetail?.id);
 
   const handleTeamJoinSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -35,8 +40,8 @@ const InvitePage = () => {
   };
 
   useEffect(() => {
-    checkAccessibility(teamDetail);
-  }, [teamDetail]);
+    checkLogin();
+  }, []);
 
   if (!teamDetail) {
     return <div>로딩 중</div>;
