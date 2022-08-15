@@ -47,25 +47,43 @@ const MemberRollingpaperCreateForm = () => {
   };
 
   return (
-    <StyledForm onSubmit={handleRollingpaperCreateSubmit}>
-      <LabeledInput
-        labelText="롤링페이퍼 제목"
-        pattern={REGEX.ROLLINGPAPER_TITLE.source}
-      />
-      <AutoCompleteInput
-        labelText="받는 사람"
-        value={rollingpaperTo}
-        autoCompleteList={autoCompleteList}
-        isOpen={isOpen}
-        ref={ref}
-        onChange={handleAutoInputChange}
-        onFocus={handleAutoInputFocus}
-        onClickListItem={handleListItemClick}
-      />
-      <Button>완료</Button>
-    </StyledForm>
+    <StyledMain>
+      <StyledHeader>맴버에게 롤링페이퍼 작성</StyledHeader>
+      <StyledForm onSubmit={handleRollingpaperCreateSubmit}>
+        <LabeledInput
+          labelText="롤링페이퍼 제목"
+          pattern={REGEX.ROLLINGPAPER_TITLE.source}
+        />
+        <AutoCompleteInput
+          labelText="받는 사람"
+          value={rollingpaperTo}
+          autoCompleteList={autoCompleteList}
+          isOpen={isOpen}
+          ref={ref}
+          onChange={handleAutoInputChange}
+          onFocus={handleAutoInputFocus}
+          onClickListItem={handleListItemClick}
+        />
+        <Button>완료</Button>
+      </StyledForm>
+    </StyledMain>
   );
 };
+
+const StyledMain = styled.main`
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+
+  width: 100%;
+`;
+
+const StyledHeader = styled.h1`
+  font-size: 28px;
+  font-weight: 600;
+
+  align-self: center;
+`;
 
 const StyledForm = styled.form`
   width: 100%;
