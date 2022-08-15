@@ -23,7 +23,7 @@ const InvitePage = () => {
   const checkLogin = useCheckLogin({ inviteToken });
   const handleTeamDetailWithInviteTokenSuccess = useCheckTeamJoined();
 
-  const { data: teamDetail } = useTeamDetailWithInviteToken({
+  const { data: teamDetail, isLoading } = useTeamDetailWithInviteToken({
     inviteToken,
     onSuccess: handleTeamDetailWithInviteTokenSuccess,
   });
@@ -43,7 +43,7 @@ const InvitePage = () => {
     checkLogin();
   }, []);
 
-  if (!teamDetail) {
+  if (isLoading || !teamDetail) {
     return <div>로딩 중</div>;
   }
 
