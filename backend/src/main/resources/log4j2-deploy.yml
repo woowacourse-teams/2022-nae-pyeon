@@ -1,0 +1,42 @@
+Configutation:
+  name: Default
+  status: info
+
+  Properties:
+    Property:
+      name: log-path
+      value: "logs"
+
+  Appenders:
+    RollingFile:
+      - name: RollingFile_Appender
+        fileName: ${log-path}/rollingfile.log
+        filePattern: "${log-path}/archive/rollingfile.log_%d{yyyy-MM-dd}.gz"
+        PatternLayout:
+          pattern: "%style{%d{yyyy-MM-dd HH:mm:ss.SSS}}{cyan} %highlight{[%-5p]}{FATAL=bg_red,
+            ERROR=red, INFO=green, DEBUG=blue, TRACE=bg_yellow} [%C] %style{[%t]}{yellow}- %m%n"
+        Policies:
+          TimeBasedTriggeringPolicy:
+            Interval: 1
+            modulate: true
+        DefaultRollOverStrategy:
+          Delete:
+            basePath: "${log-path}/archive"
+            maxDepth: "1"
+            IfAccumulatedFileCount:
+              exceeds: 14
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        - ref: Console_Appender
+        - ref: File_Appender
+        - ref: RollingFile_Appender
+    Logger:
+      - name: com.woowacourse.naepyeon
+        additivity: false
+        level: info
+        AppenderRef:
+          - ref: Console_Appender
+          - ref: File_Appender
+          - ref: RollingFile_Appender
