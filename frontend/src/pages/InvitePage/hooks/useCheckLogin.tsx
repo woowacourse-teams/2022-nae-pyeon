@@ -4,11 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "@/context/SnackbarContext";
 import { UserContext } from "@/context/UserContext";
 
-type useCheckLoginArgs = {
-  inviteToken: string;
-};
 
-const useCheckLogin = ({ inviteToken }: useCheckLoginArgs) => {
+const useCheckLogin = (inviteToken: string) => {
   const navigate = useNavigate();
 
   const { openSnackbar } = useSnackbar();

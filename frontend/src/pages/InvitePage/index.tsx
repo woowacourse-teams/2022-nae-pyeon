@@ -20,7 +20,7 @@ const InvitePage = () => {
   const { inviteToken } = useParamValidate(["inviteToken"]);
 
   const { value: nickname, handleInputChange } = useInput("");
-  const checkLogin = useCheckLogin({ inviteToken });
+  const checkLogin = useCheckLogin(inviteToken);
   const handleTeamDetailWithInviteTokenSuccess = useCheckTeamJoined();
 
   const { data: teamDetail, isLoading } = useTeamDetailWithInviteToken({
