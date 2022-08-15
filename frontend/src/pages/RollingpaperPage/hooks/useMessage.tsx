@@ -12,7 +12,7 @@ interface UseUpdateMessageProp {
   initSecret?: boolean;
 }
 
-const usePrevMessage = ({
+const useMessage = ({
   initContent = "",
   initColor = INIT_COLOR,
   initAnonymous = false,
@@ -64,4 +64,4 @@ const usePrevMessage = ({
   };
 };
 
-export default usePrevMessage;
+export default useMessage;
