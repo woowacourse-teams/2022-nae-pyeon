@@ -9,15 +9,19 @@ import SocialLoginButton from "@/pages/LoginPage/components/SocialLoginButton";
 
 import { KAKAO_OAUTH_URL, SOCIAL_LOGIN_PLATFORM } from "@/constants";
 
+type LoginPageLocationState = {
+  inviteToken?: string;
+};
+
 const LoginPage = () => {
   const { openSnackbar } = useSnackbar();
-  const { state: locationState } = useLocation();
+  const { state } = useLocation();
 
   const handleKakaoLoginButtonClick: React.MouseEventHandler<
     HTMLButtonElement
   > = () => {
-    const inviteToken =
-      (locationState as { inviteToken?: string })?.inviteToken || "";
+    const locationState = state as LoginPageLocationState;
+    const inviteToken = locationState?.inviteToken || "";
 
     location.href = KAKAO_OAUTH_URL.AUTHORIZE_CODE(inviteToken);
   };
