@@ -9,6 +9,10 @@ import { deleteMessage } from "@/api/message";
 
 import { CustomError } from "@/types";
 
+interface UseDeleteMessageProp {
+  rollingpaperId: number;
+}
+
 const useDeleteMessage = (rollingpaperId: number) => {
   const { openSnackbar } = useSnackbar();
 
