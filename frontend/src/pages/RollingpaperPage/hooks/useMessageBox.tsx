@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import useDeleteMessage from "@/pages/RollingpaperPage/hooks/useDeleteMessage";
 
 interface UseMessageProps {
-  id?: number;
+  id: number;
   rollingpaperId: number;
 }
 
