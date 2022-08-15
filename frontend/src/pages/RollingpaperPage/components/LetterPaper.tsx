@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
 import IconButton from "@components/IconButton";
@@ -6,12 +6,11 @@ import IconButton from "@components/IconButton";
 import { Message } from "@/types";
 
 import PencilIcon from "@/assets/icons/bx-pencil.svg";
-import { divideArrayByIndexRemainder } from "@/util";
 
-import useParamValidate from "@/hooks/useParamValidate";
-import useMessageBox from "@/pages/RollingpaperPage/hooks/useMessageBox";
 import MessageCreateForm from "@/pages/RollingpaperPage/components/MessageCreateForm";
 import MessageBox from "@/pages/RollingpaperPage/components/MessageBox";
+import useMessageWrite from "@/pages/RollingpaperPage/hooks/useMessageWrite";
+import useSliceMessageList from "../hooks/useSliceMessageList";
 
 interface LetterPaperProp {
   to: string;
@@ -19,48 +18,15 @@ interface LetterPaperProp {
 }
 
 const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
-  const [slicedMessageLists, setSlicedMessageLists] = useState<Message[][]>(
-    Array.from(Array(4), () => [])
-  );
-  const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
+  const { isWrite, handleWriteButtonClick, handleWriteEnd } = useMessageWrite();
 
-  const { isEdit, handleWriteButtonClick, handleEditEnd } = useMessageBox({
-    rollingpaperId: +rollingpaperId,
-  });
-
-  const updateSlicedMessageListByWindowWidth = () => {
-    const width = window.innerWidth;
-
-    let newSlicedMessageList;
-    if (width < 960) {
-      newSlicedMessageList = [messageList];
-    } else if (width < 1280) {
-      newSlicedMessageList = divideArrayByIndexRemainder(messageList, 2);
-    } else {
-      newSlicedMessageList = divideArrayByIndexRemainder(messageList, 3);
-    }
-
-    setSlicedMessageLists(newSlicedMessageList);
-  };
-
-  useEffect(() => {
-    updateSlicedMessageListByWindowWidth();
-  }, [messageList]);
-
-  useEffect(() => {
-    window.addEventListener("resize", updateSlicedMessageListByWindowWidth);
-    return () =>
-      window.removeEventListener(
-        "resize",
-        updateSlicedMessageListByWindowWidth
-      );
-  }, []);
+  const slicedMessageLists = useSliceMessageList(messageList);
 
   return (
     <StyledLetterPaper>
       <StyledLetterPaperTop>
         <StyledTo>To. {to}</StyledTo>
-        {!isEdit && (
+        {!isWrite && (
           <IconButton size="small" onClick={handleWriteButtonClick}>
             <PencilIcon />
           </IconButton>
@@ -69,8 +35,8 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
       <StyledSlicedMessageLists>
         {slicedMessageLists.map((messageList, index) => (
           <StyledMessageList key={index}>
-            {index === 0 && isEdit && (
-              <MessageCreateForm onEditEnd={handleEditEnd} />
+            {index === 0 && isWrite && (
+              <MessageCreateForm onEditEnd={handleWriteEnd} />
             )}
             {messageList.map((message) => {
               return <MessageBox key={message.id} {...message} />;
