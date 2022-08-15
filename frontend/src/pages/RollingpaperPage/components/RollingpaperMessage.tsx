@@ -15,24 +15,24 @@ import SecretMessage from "./SecretMessage";
 
 interface RollingpaperMessageProp {
   content: string;
-  author: string;
+  from: string;
   color: string;
-  messageId: number;
+  id: number;
   editable: boolean;
   anonymous: boolean;
   secret: boolean;
-  isVisible: boolean;
+  visible: boolean;
 }
 
 const RollingpaperMessage = ({
   content,
-  author,
+  from,
   color,
-  messageId,
+  id,
   editable,
   anonymous,
   secret,
-  isVisible,
+  visible,
 }: RollingpaperMessageProp) => {
   const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
   const {
@@ -54,7 +54,7 @@ const RollingpaperMessage = ({
     initSecret: secret,
   });
 
-  const { updateMessage } = useUpdateMessage(messageId);
+  const { updateMessage } = useUpdateMessage(id);
   const { deleteRollingpaperMessage } = useDeleteMessage(+rollingpaperId);
 
   const handleMessageSubmit = () => {
@@ -68,7 +68,7 @@ const RollingpaperMessage = ({
   };
 
   const handleDeleteButtonClick = () => {
-    deleteRollingpaperMessage(messageId);
+    deleteRollingpaperMessage(id);
   };
 
   const handleMessageCancel = () => {
@@ -77,8 +77,8 @@ const RollingpaperMessage = ({
     }
   };
 
-  if (!isVisible) {
-    return <SecretMessage author={author} />;
+  if (!visible) {
+    return <SecretMessage from={from} />;
   }
 
   if (isEdit) {
@@ -112,7 +112,7 @@ const RollingpaperMessage = ({
             </IconButton>
           </StyledMessageButtonContainer>
         )}
-        <StyledMessageAuthor>{author}</StyledMessageAuthor>
+        <StyledMessageFrom>{from}</StyledMessageFrom>
       </StyledMessageBottom>
     </StyledMessage>
   );
@@ -164,7 +164,7 @@ const StyledMessageButtonContainer = styled.div`
   }
 `;
 
-const StyledMessageAuthor = styled.div`
+const StyledMessageFrom = styled.div`
   width: 50%;
   text-align: right;
   margin-left: auto;

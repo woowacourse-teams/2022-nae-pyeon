@@ -107,19 +107,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
               />
             )}
             {messageList.map((message) => {
-              return (
-                <RollingpaperMessage
-                  key={message.id}
-                  content={message.content}
-                  author={message.from}
-                  color={message.color}
-                  messageId={message.id}
-                  editable={message.editable}
-                  anonymous={message.anonymous}
-                  secret={message.secret}
-                  isVisible={message.visible}
-                />
-              );
+              return <RollingpaperMessage key={message.id} {...message} />;
             })}
           </StyledMessageList>
         ))}

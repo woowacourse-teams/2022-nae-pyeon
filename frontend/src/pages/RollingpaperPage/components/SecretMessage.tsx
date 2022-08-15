@@ -2,10 +2,10 @@ import React from "react";
 import styled from "@emotion/styled";
 
 interface SecretMessageProp {
-  author: string;
+  from: string;
 }
 
-const SecretMessage = ({ author }: SecretMessageProp) => {
+const SecretMessage = ({ from }: SecretMessageProp) => {
   return (
     <StyledSecretMessageContainer>
       <StyledContent>
@@ -14,7 +14,7 @@ const SecretMessage = ({ author }: SecretMessageProp) => {
           작성자와 받은 사람만 확인할 수 있어요.
         </StyledGuideText>
       </StyledContent>
-      <StyledMessageAuthor>{author}</StyledMessageAuthor>
+      <StyledMessageFrom>{from}</StyledMessageFrom>
     </StyledSecretMessageContainer>
   );
 };
@@ -46,7 +46,7 @@ const StyledGuideTextTitle = styled.h3`
   margin-bottom: 10px;
 `;
 
-const StyledMessageAuthor = styled.div`
+const StyledMessageFrom = styled.div`
   width: 50%;
   text-align: right;
   margin-left: auto;
