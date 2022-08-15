@@ -67,8 +67,4 @@ public class TeamParticipation extends BaseEntity {
     public Long findMemberId() {
         return member.getId();
     }
-
-    public Long findTeamId() {
-        return team.getId();
-    }
 }

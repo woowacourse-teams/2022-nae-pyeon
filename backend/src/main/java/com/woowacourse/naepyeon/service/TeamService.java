@@ -54,6 +54,7 @@ public class TeamService {
 
     @Transactional
     public Long joinMember(final Long teamId, final Long memberId, final String nickname) {
+        validateDuplicateNickname(teamId, nickname);
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
         final Member member = memberRepository.findById(memberId)
@@ -145,10 +146,14 @@ public class TeamService {
     @Transactional
     public void updateMyInfo(final Long teamId, final Long memberId, final String newNickname) {
         checkMemberNotIncludedTeam(teamId, memberId);
-        if (teamParticipationRepository.findAllNicknamesByTeamId(teamId).contains(newNickname)) {
-            throw new DuplicateNicknameException(newNickname);
-        }
+        validateDuplicateNickname(teamId, newNickname);
         teamParticipationRepository.updateNickname(newNickname, memberId, teamId);
+    }
+
+    private void validateDuplicateNickname(final Long teamId, final String nickname) {
+        if (teamParticipationRepository.findAllNicknamesByTeamId(teamId).contains(nickname)) {
+            throw new DuplicateNicknameException(nickname);
+        }
     }
 
     private void checkMemberNotIncludedTeam(final Long teamId, final Long memberId) {

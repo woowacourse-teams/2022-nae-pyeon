@@ -279,6 +279,17 @@ class TeamAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    @DisplayName("이미 존재하는 닉네임으로 모임에 가입신청할 경우 예외를 발생시킨다.")
+    void joinMemberWithDuplicateNickname() {
+        final Long teamId = 모임_생성(alex);
+
+        final ExtractableResponse<Response> response =
+                모임_가입(kei, teamId, new JoinTeamMemberRequest("나는야모임장"));
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
     @DisplayName("회원이 가입한 모임을 조회한다.")
     void getJoinedTeams() {
         final TeamRequest teamRequest1 = new TeamRequest(
