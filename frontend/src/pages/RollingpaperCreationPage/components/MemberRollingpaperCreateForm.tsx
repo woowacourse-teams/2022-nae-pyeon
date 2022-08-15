@@ -24,10 +24,10 @@ const MemberRollingpaperCreateForm = () => {
     setKeywordList,
   } = useAutoCompleteInput();
 
-  const { data: teamMemberResponse, isSuccess } = useReadTeamMembers(+teamId);
-  if (isSuccess) {
-    setKeywordList(teamMemberResponse.members.map((member) => member.nickname));
-  }
+  const { data: teamMemberResponse } = useReadTeamMembers(
+    +teamId,
+    setKeywordList
+  );
 
   const findReceiverWithNickName = (nickName: string) => {
     return teamMemberResponse?.members.find(

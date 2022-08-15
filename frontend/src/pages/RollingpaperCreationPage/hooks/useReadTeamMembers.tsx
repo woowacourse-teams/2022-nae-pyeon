@@ -12,8 +12,17 @@ interface TeamMemberResponse {
   members: TeamMember[];
 }
 
-export const useReadTeamMembers = (teamId: number) => {
-  return useQuery<TeamMemberResponse>(["team-member", teamId], () =>
-    getTeamMembers(+teamId)
+export const useReadTeamMembers = (
+  teamId: number,
+  setKeywordList: React.Dispatch<React.SetStateAction<string[]>>
+) => {
+  return useQuery<TeamMemberResponse>(
+    ["team-member", teamId],
+    () => getTeamMembers(+teamId),
+    {
+      onSuccess: (data) => {
+        setKeywordList(data.members.map((member) => member.nickname));
+      },
+    }
   );
 };
