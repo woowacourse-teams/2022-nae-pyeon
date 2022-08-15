@@ -1,22 +1,25 @@
 import React from "react";
 import styled from "@emotion/styled";
 
+import { RECIPIENT } from "@/constants";
 import { Recipient } from "@/types";
 
 const boxInput = {
   team: {
+    recipient: RECIPIENT.TEAM,
     to: "모임",
     description: "모임을 대상으로 한 롤링페이퍼 작성하기",
   },
   member: {
-    to: "개인",
+    recipient: RECIPIENT.MEMBER,
+    to: "멤버",
     description: "모임 내의 멤버에게 롤링페이퍼 작성하기",
   },
 };
 
 interface RecipientBoxProps {
   type: Recipient;
-  onClick: VoidFunction;
+  onClick: (type: Recipient) => React.MouseEventHandler<HTMLDivElement>;
 }
 
 interface StyledRecipientBoxProps {
@@ -24,10 +27,10 @@ interface StyledRecipientBoxProps {
 }
 
 export const RecipientBox = ({ type, onClick }: RecipientBoxProps) => {
-  const { to, description } = boxInput[type];
+  const { recipient, to, description } = boxInput[type];
 
   return (
-    <StyledRecipientBox type={type} onClick={onClick}>
+    <StyledRecipientBox type={type} onClick={onClick(recipient)}>
       <StyledTo>{to}</StyledTo>
       <StyledDescription>{description}</StyledDescription>
     </StyledRecipientBox>

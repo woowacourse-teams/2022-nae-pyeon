@@ -11,12 +11,8 @@ import { Recipient } from "@/types";
 const RollingpaperCreationPage = () => {
   const [recipient, setRecipient] = useState<Recipient | null>(null);
 
-  const handleTeamRollingpaperCreateClick = () => {
-    setRecipient(RECIPIENT.TEAM);
-  };
-
-  const handleMemberRollingpaperCreateClick = () => {
-    setRecipient(RECIPIENT.MEMBER);
+  const handleRollingpaperCreateClick = (recipient: Recipient) => () => {
+    setRecipient(recipient);
   };
 
   if (recipient === RECIPIENT.TEAM) {
@@ -39,11 +35,11 @@ const RollingpaperCreationPage = () => {
     <StyledMain>
       <RecipientBox
         type={RECIPIENT.TEAM}
-        onClick={handleTeamRollingpaperCreateClick}
+        onClick={handleRollingpaperCreateClick}
       />
       <RecipientBox
         type={RECIPIENT.MEMBER}
-        onClick={handleMemberRollingpaperCreateClick}
+        onClick={handleRollingpaperCreateClick}
       />
     </StyledMain>
   );
