@@ -1,31 +1,14 @@
 import React, { useState } from "react";
+import useDeleteMessage from "@/pages/RollingpaperPage/hooks/useDeleteMessage";
 
-import { COLORS } from "@/constants";
-import useCheckBox from "@/hooks/useCheckBox";
-
-const INIT_COLOR = COLORS.YELLOW;
-
-interface UseUpdateMessageProp {
-  initContent?: string;
-  initColor?: string;
-  initAnonymous?: boolean;
-  initSecret?: boolean;
+interface UseMessageProps {
+  id?: number;
+  rollingpaperId: number;
 }
 
-const useMessage = ({
-  initContent = "",
-  initColor = INIT_COLOR,
-  initAnonymous = false,
-  initSecret = false,
-}: UseUpdateMessageProp) => {
+const useMessage = ({ id, rollingpaperId }: UseMessageProps) => {
   const [isEdit, setIsEdit] = useState(false);
-  const [content, setContent] = useState(initContent);
-  const [color, setColor] = useState(initColor);
-
-  const { checked: anonymous, handleChange: handleAnonymousCheckBoxChange } =
-    useCheckBox({ initialCheckedState: initAnonymous });
-  const { checked: secret, handleChange: handleSecretCheckBoxChange } =
-    useCheckBox({ initialCheckedState: initSecret });
+  const { deleteRollingpaperMessage } = useDeleteMessage(rollingpaperId);
 
   const handleWriteButtonClick: React.MouseEventHandler<
     HTMLButtonElement
@@ -33,34 +16,17 @@ const useMessage = ({
     setIsEdit(true);
   };
 
-  const handleMessageChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
-    e
-  ) => {
-    setContent(e.target.value);
-  };
-
-  const handleColorClick = (color: string) => {
-    setColor(color);
-  };
-
-  const initMessage = () => {
-    setIsEdit(false);
-    setContent("");
-    setColor(INIT_COLOR);
+  const handleDeleteButtonClick = () => {
+    if (id) {
+      deleteRollingpaperMessage(id);
+    }
   };
 
   return {
     isEdit,
-    color,
-    content,
-    anonymous,
-    secret,
     handleWriteButtonClick,
-    handleMessageChange,
-    handleColorClick,
-    handleAnonymousCheckBoxChange,
-    handleSecretCheckBoxChange,
-    initMessage,
+    handleDeleteButtonClick,
+    setIsEdit,
   };
 };
 

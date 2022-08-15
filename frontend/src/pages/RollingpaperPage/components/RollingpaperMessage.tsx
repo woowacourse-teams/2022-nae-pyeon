@@ -7,11 +7,9 @@ import TrashIcon from "@/assets/icons/bx-trash.svg";
 import Pencil from "@/assets/icons/bx-pencil.svg";
 
 import useParamValidate from "@/hooks/useParamValidate";
-import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
+import MessageUpdateForm from "@/pages/RollingpaperPage/components/MessageUpdateForm";
 import useMessage from "@/pages/RollingpaperPage/hooks/useMessage";
-import useDeleteMessage from "@/pages/RollingpaperPage/hooks/useDeleteMessage";
-import useUpdateMessage from "@/pages/RollingpaperPage/hooks/useUpdateMessage";
-import SecretMessage from "./SecretMessage";
+import SecretMessage from "@/pages/RollingpaperPage/components/SecretMessage";
 
 interface RollingpaperMessageProp {
   content: string;
@@ -35,47 +33,8 @@ const RollingpaperMessage = ({
   visible,
 }: RollingpaperMessageProp) => {
   const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
-  const {
-    isEdit,
-    color: newColor,
-    content: newContent,
-    anonymous: newAnonymous,
-    secret: newSecret,
-    handleWriteButtonClick,
-    handleMessageChange,
-    handleColorClick,
-    handleAnonymousCheckBoxChange,
-    handleSecretCheckBoxChange,
-    initMessage,
-  } = useMessage({
-    initContent: content,
-    initColor: color,
-    initAnonymous: anonymous,
-    initSecret: secret,
-  });
-
-  const { updateMessage } = useUpdateMessage(id);
-  const { deleteRollingpaperMessage } = useDeleteMessage(+rollingpaperId);
-
-  const handleMessageSubmit = () => {
-    updateMessage({
-      color: newColor,
-      content: newContent,
-      anonymous: newAnonymous,
-      secret: newSecret,
-    });
-    initMessage();
-  };
-
-  const handleDeleteButtonClick = () => {
-    deleteRollingpaperMessage(id);
-  };
-
-  const handleMessageCancel = () => {
-    if (confirm("메시지 작성을 취소하시겠습니까?")) {
-      initMessage();
-    }
-  };
+  const { isEdit, handleWriteButtonClick, handleDeleteButtonClick, setIsEdit } =
+    useMessage({ id, rollingpaperId: +rollingpaperId });
 
   if (!visible) {
     return <SecretMessage from={from} />;
@@ -83,17 +42,13 @@ const RollingpaperMessage = ({
 
   if (isEdit) {
     return (
-      <MessageForm
-        onSubmit={handleMessageSubmit}
-        onCancel={handleMessageCancel}
-        onChange={handleMessageChange}
-        content={newContent}
-        color={newColor}
-        onClickColor={handleColorClick}
-        onClickAnonymous={handleAnonymousCheckBoxChange}
-        onClickSecret={handleSecretCheckBoxChange}
-        anonymous={newAnonymous}
-        secret={newSecret}
+      <MessageUpdateForm
+        id={id}
+        content={content}
+        color={color}
+        anonymous={anonymous}
+        secret={secret}
+        setIsEdit={setIsEdit}
       />
     );
   }

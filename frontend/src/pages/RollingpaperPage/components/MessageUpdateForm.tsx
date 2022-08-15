@@ -1,4 +1,4 @@
-import React from "react";
+import React, { SetStateAction } from "react";
 import styled from "@emotion/styled";
 import MessageTextArea from "@/pages/RollingpaperPage/components/MessageTextArea";
 import MessageColorPicker from "@/pages/RollingpaperPage/components/MessageColorPicker";
@@ -7,18 +7,16 @@ import LabeledCheckBox from "@/components/LabeledCheckBox";
 
 import CheckIcon from "@/assets/icons/bx-check.svg";
 import XIcon from "@/assets/icons/bx-x.svg";
+import useUpdateMessage from "@/pages/RollingpaperPage/hooks/useUpdateMessage";
+import useMessageForm from "@/pages/RollingpaperPage/hooks/useMessageForm";
 
-type MessageFormProps = {
-  onSubmit: () => void;
-  onCancel: () => void;
+type MessageUpdateFormProps = {
+  id: number;
   content: string;
-  onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
   color: string;
-  onClickColor: (value: string) => void;
-  onClickAnonymous: React.ChangeEventHandler<HTMLInputElement>;
-  onClickSecret: React.ChangeEventHandler<HTMLInputElement>;
   anonymous: boolean;
-  secret: boolean;
+  secret?: boolean;
+  setIsEdit: React.Dispatch<SetStateAction<boolean>>;
 };
 
 type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -41,49 +39,84 @@ const MessageCancelButton = ({ onClick }: ButtonAttributes) => {
   );
 };
 
-export const MessageForm = ({
-  onSubmit,
-  onCancel,
+export const MessageUpdateForm = ({
+  id,
   content,
-  onChange,
   color,
-  onClickColor,
-  onClickAnonymous,
-  onClickSecret,
   anonymous,
   secret,
-}: MessageFormProps) => {
+  setIsEdit,
+}: MessageUpdateFormProps) => {
+  const { updateMessage } = useUpdateMessage(id);
+  const {
+    content: newContent,
+    color: newColor,
+    anonymous: newAnonymous,
+    secret: newSecret,
+    handleMessageChange,
+    handleColorClick,
+    handleAnonymousCheckBoxChange,
+    handleSecretCheckBoxChange,
+    initMessage,
+  } = useMessageForm({
+    initContent: content,
+    initColor: color,
+    initAnonymous: anonymous,
+    initSecret: secret,
+  });
+
+  const handleMessageSubmit = () => {
+    updateMessage({
+      color: newColor,
+      content: newContent,
+      anonymous: newAnonymous,
+      secret: newSecret,
+    });
+    initMessage();
+    setIsEdit(false);
+  };
+
+  const handleMessageCancel = () => {
+    if (confirm("메시지 작성을 취소하시겠습니까?")) {
+      initMessage();
+      setIsEdit(false);
+    }
+  };
+
   return (
     <>
       <StyledBackground />
       <StyledMessageForm>
         <MessageTextArea
           placeholder="메시지를 입력해보세요!"
-          value={content}
-          onChange={onChange}
-          backgroundColor={color}
+          value={newContent}
+          onChange={handleMessageChange}
+          backgroundColor={newColor}
         />
         <StyledMessageFormBottom>
           <StyledCheckBoxContainer>
             <LabeledCheckBox
               labeledText="익명"
-              checked={anonymous}
-              onChange={onClickAnonymous}
+              checked={newAnonymous}
+              onChange={handleAnonymousCheckBoxChange}
             />
             <LabeledCheckBox
               labeledText="비밀글"
-              checked={secret}
-              onChange={onClickSecret}
+              checked={newSecret}
+              onChange={handleSecretCheckBoxChange}
             />
           </StyledCheckBoxContainer>
-          <StyledTextLength>{content.length}/500</StyledTextLength>
+          <StyledTextLength>{newContent.length}/500</StyledTextLength>
         </StyledMessageFormBottom>
         <StyledMessageColorPickerWrapper>
-          <MessageColorPicker onClickRadio={onClickColor} color={color} />
+          <MessageColorPicker
+            onClickRadio={handleColorClick}
+            color={newColor}
+          />
         </StyledMessageColorPickerWrapper>
         <StyledIconButtonContainer>
-          <MessageSubmitButton onClick={onSubmit} />
-          <MessageCancelButton onClick={onCancel} />
+          <MessageSubmitButton onClick={handleMessageSubmit} />
+          <MessageCancelButton onClick={handleMessageCancel} />
         </StyledIconButtonContainer>
       </StyledMessageForm>
     </>
@@ -195,4 +228,4 @@ const StyledMessageFormButton = styled.button`
   }
 `;
 
-export default MessageForm;
+export default MessageUpdateForm;

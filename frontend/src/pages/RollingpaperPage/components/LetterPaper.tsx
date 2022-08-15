@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 
 import IconButton from "@components/IconButton";
-import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 import RollingpaperMessage from "@/pages/RollingpaperPage/components/RollingpaperMessage";
 
 import { Message } from "@/types";
@@ -11,8 +10,8 @@ import PencilIcon from "@/assets/icons/bx-pencil.svg";
 import { divideArrayByIndexRemainder } from "@/util";
 
 import useParamValidate from "@/hooks/useParamValidate";
-import useCreateMessage from "@/pages/RollingpaperPage/hooks/useCreateMessage";
 import useMessage from "@/pages/RollingpaperPage/hooks/useMessage";
+import MessageCreateForm from "@/pages/RollingpaperPage/components/MessageCreateForm";
 
 interface LetterPaperProp {
   to: string;
@@ -25,31 +24,9 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
   );
   const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
 
-  const {
-    isEdit,
-    color,
-    content,
-    anonymous,
-    secret,
-    handleWriteButtonClick,
-    handleMessageChange,
-    handleColorClick,
-    handleAnonymousCheckBoxChange,
-    handleSecretCheckBoxChange,
-    initMessage,
-  } = useMessage({});
-  const { createMessage } = useCreateMessage(+rollingpaperId);
-
-  const handleMessageSubmit = () => {
-    createMessage({ content, color, anonymous, secret });
-    initMessage();
-  };
-
-  const handleMessageCancel = () => {
-    if (confirm("메시지 작성을 취소하시겠습니까?")) {
-      initMessage();
-    }
-  };
+  const { isEdit, handleWriteButtonClick, setIsEdit } = useMessage({
+    rollingpaperId: +rollingpaperId,
+  });
 
   const updateSlicedMessageListByWindowWidth = () => {
     const width = window.innerWidth;
@@ -93,18 +70,7 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
         {slicedMessageLists.map((messageList, index) => (
           <StyledMessageList key={index}>
             {index === 0 && isEdit && (
-              <MessageForm
-                onSubmit={handleMessageSubmit}
-                onCancel={handleMessageCancel}
-                onChange={handleMessageChange}
-                onClickColor={handleColorClick}
-                onClickAnonymous={handleAnonymousCheckBoxChange}
-                onClickSecret={handleSecretCheckBoxChange}
-                content={content}
-                color={color}
-                anonymous={anonymous}
-                secret={secret}
-              />
+              <MessageCreateForm setIsEdit={setIsEdit} />
             )}
             {messageList.map((message) => {
               return <RollingpaperMessage key={message.id} {...message} />;
