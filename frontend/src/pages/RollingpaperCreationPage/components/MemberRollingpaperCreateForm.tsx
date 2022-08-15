@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { useQuery } from "@tanstack/react-query";
 
 import LabeledInput from "@/components/LabeledInput";
 import Button from "@/components/Button";
@@ -10,16 +9,7 @@ import { REGEX } from "@/constants";
 import useParamValidate from "@/hooks/useParamValidate";
 import useAutoCompleteInput from "@/hooks/useAutoCompleteInput";
 
-import { getTeamMembers } from "@/api/team";
-
-interface TeamMemberResponse {
-  members: TeamMember[];
-}
-
-interface TeamMember {
-  id: number;
-  nickname: string;
-}
+import { useReadTeamMembers } from "@/pages/RollingpaperCreationPage/hooks/useReadTeamMembers";
 
 const MemberRollingpaperCreateForm = () => {
   const { teamId } = useParamValidate(["teamId"]);
@@ -34,20 +24,10 @@ const MemberRollingpaperCreateForm = () => {
     setKeywordList,
   } = useAutoCompleteInput();
 
-  const {
-    isLoading,
-    isError,
-    data: teamMemberResponse,
-  } = useQuery<TeamMemberResponse>(
-    ["team-member", teamId],
-    () => getTeamMembers(+teamId),
-    {
-      onSuccess: (data) => {
-        const keywordList = data.members.map((item) => item.nickname);
-        setKeywordList(keywordList);
-      },
-    }
-  );
+  const { data: teamMemberResponse, isSuccess } = useReadTeamMembers(+teamId);
+  if (isSuccess) {
+    setKeywordList(teamMemberResponse.members.map((member) => member.nickname));
+  }
 
   const findReceiverWithNickName = (nickName: string) => {
     return teamMemberResponse?.members.find(
