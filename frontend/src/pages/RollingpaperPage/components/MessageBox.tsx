@@ -11,16 +11,7 @@ import MessageUpdateForm from "@/pages/RollingpaperPage/components/MessageUpdate
 import useMessageBox from "@/pages/RollingpaperPage/hooks/useMessageBox";
 import SecretMessage from "@/pages/RollingpaperPage/components/SecretMessage";
 
-interface MessageBoxProp {
-  content: string;
-  from: string;
-  color: string;
-  id: number;
-  editable: boolean;
-  anonymous: boolean;
-  secret: boolean;
-  visible: boolean;
-}
+import { Message } from "@/types";
 
 const MessageBox = ({
   content,
@@ -31,7 +22,7 @@ const MessageBox = ({
   anonymous,
   secret,
   visible,
-}: MessageBoxProp) => {
+}: Message) => {
   const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
   const { isEdit, handleWriteButtonClick, handleDeleteButtonClick, setIsEdit } =
     useMessageBox({ id, rollingpaperId: +rollingpaperId });
