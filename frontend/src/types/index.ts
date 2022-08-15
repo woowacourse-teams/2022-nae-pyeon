@@ -1,3 +1,5 @@
+import { RECIPIENT } from "@/constants";
+
 export interface Team {
   id: number;
   name: string;
@@ -69,3 +71,5 @@ export type CustomError = {
 };
 
 export type ValueOf<T> = T[keyof T];
+
+export type Recipient = ValueOf<typeof RECIPIENT>;

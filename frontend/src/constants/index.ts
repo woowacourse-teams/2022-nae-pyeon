@@ -38,6 +38,11 @@ const KAKAO_OAUTH_URL = {
     'https://kapi.kakao.com/v2/user/me?secure_resource=true&property_keys=["kakao_account.profile","kakao_account.email"]',
 };
 
+const RECIPIENT = {
+  TEAM: "team",
+  MEMBER: "member",
+} as const;
+
 export {
   REGEX,
   COLORS,
@@ -46,4 +51,5 @@ export {
   MYPAGE_MESSAGE_PAGING_COUNT,
   SOCIAL_LOGIN_PLATFORM,
   KAKAO_OAUTH_URL,
+  RECIPIENT,
 };
