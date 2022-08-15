@@ -8,7 +8,7 @@ interface TeamMember {
   nickname: string;
 }
 
-interface TeamMemberResponse {
+interface ResponseTeamMember {
   members: TeamMember[];
 }
 
@@ -16,7 +16,7 @@ export const useReadTeamMembers = (
   teamId: number,
   setKeywordList: React.Dispatch<React.SetStateAction<string[]>>
 ) => {
-  return useQuery<TeamMemberResponse>(
+  return useQuery<ResponseTeamMember>(
     ["team-member", teamId],
     () => getTeamMembers(+teamId),
     {
