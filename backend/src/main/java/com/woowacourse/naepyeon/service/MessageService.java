@@ -48,8 +48,9 @@ public class MessageService {
         return messageRepository.save(message);
     }
 
-    private void validateCanSecret(final MessageRequestDto messageRequestDto, final Long rollingpaperId,
-                                   final Rollingpaper rollingpaper) {
+    private void validateCanSecret(
+            final MessageRequestDto messageRequestDto, final Long rollingpaperId, final Rollingpaper rollingpaper
+    ) {
         if (rollingpaper.checkSameRecipient(Recipient.TEAM) && messageRequestDto.isSecret()) {
             throw new InvalidSecretMessageToTeam(rollingpaperId);
         }
