@@ -76,8 +76,9 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final String teamDescription = "테스트 모임입니다.";
         final String teamEmoji = "testEmoji";
         final String teamColor = "#123456";
+        final boolean teameScret = false;
         final TeamRequest teamRequest =
-                new TeamRequest(teamName, teamDescription, teamEmoji, teamColor, "나는야모임장", false);
+                new TeamRequest(teamName, teamDescription, teamEmoji, teamColor, "나는야모임장", teameScret);
         final Long teamId = 모임_추가(alex, teamRequest)
                 .as(CreateResponse.class)
                 .getId();
@@ -85,8 +86,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final ExtractableResponse<Response> response = 모임_단건_조회(alex, teamId);
         final TeamResponseDto teamResponse = response.as(TeamResponseDto.class);
 
-        assertThat(teamResponse).extracting("id", "name", "description", "emoji", "color")
-                .containsExactly(teamId, teamName, teamDescription, teamEmoji, teamColor);
+        final TeamResponseDto expected = new TeamResponseDto(teamId, teamName, teamDescription, teamEmoji, teamColor,
+                true, teameScret);
+
+        assertThat(teamResponse)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
     }
 
     @Test
