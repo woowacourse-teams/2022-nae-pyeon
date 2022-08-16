@@ -2,6 +2,7 @@ package com.woowacourse.naepyeon.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
@@ -60,5 +61,24 @@ class RollingpaperTest {
 
         assertThatThrownBy(() -> new Rollingpaper("seungpang seungpang seungpang", Recipient.MEMBER, team, member))
                 .isInstanceOf(ExceedRollingpaperNameLengthException.class);
+    }
+
+    @Test
+    @DisplayName("롤링페이퍼 대상이 회원일 때만 비밀 메시지를 보유할 수 있다.")
+    void canContainSecretMessage() {
+        final Team team = new Team(
+                "nae-pyeon",
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456"
+        );
+        final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
+        final Rollingpaper rollingpaperToMember = new Rollingpaper("알고리즘이좋아요", Recipient.MEMBER, team, member);
+        final Rollingpaper rollingpaperToTeam = new Rollingpaper("알고리즘이좋아요", Recipient.TEAM, team, null);
+
+        assertAll(
+                () -> assertThat(rollingpaperToMember.canContainSecretMessage()).isTrue(),
+                () -> assertThat(rollingpaperToTeam.canContainSecretMessage()).isFalse()
+        );
     }
 }

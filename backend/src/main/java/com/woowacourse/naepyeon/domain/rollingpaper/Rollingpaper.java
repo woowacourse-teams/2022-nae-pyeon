@@ -83,6 +83,10 @@ public class Rollingpaper extends BaseEntity {
         return this.recipient.equals(recipient);
     }
 
+    public boolean canContainSecretMessage() {
+        return recipient == Recipient.MEMBER;
+    }
+
     public String getTeamName() {
         return team.getName();
     }

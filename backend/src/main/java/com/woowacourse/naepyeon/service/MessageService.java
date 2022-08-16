@@ -3,7 +3,6 @@ package com.woowacourse.naepyeon.service;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Message;
 import com.woowacourse.naepyeon.domain.Team;
-import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.InvalidSecretMessageToTeam;
 import com.woowacourse.naepyeon.exception.NotAuthorException;
@@ -51,7 +50,7 @@ public class MessageService {
     private void validateCanSecret(
             final MessageRequestDto messageRequestDto, final Long rollingpaperId, final Rollingpaper rollingpaper
     ) {
-        if (rollingpaper.checkSameRecipient(Recipient.TEAM) && messageRequestDto.isSecret()) {
+        if (!rollingpaper.canContainSecretMessage() && messageRequestDto.isSecret()) {
             throw new InvalidSecretMessageToTeam(rollingpaperId);
         }
     }
