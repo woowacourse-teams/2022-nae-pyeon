@@ -53,7 +53,7 @@ public class Message extends BaseEntity {
     public Message(final String content, final String color, final Member author, final Rollingpaper rollingpaper,
                    final boolean anonymous, final boolean secret) {
         validateContentLength(content);
-        validateCanSecret(rollingpaper);
+        validateCanSecret(rollingpaper, secret);
         this.content = content;
         this.color = color;
         this.author = author;
@@ -63,7 +63,7 @@ public class Message extends BaseEntity {
 
     }
 
-    private void validateCanSecret(final Rollingpaper rollingpaper) {
+    private void validateCanSecret(final Rollingpaper rollingpaper, final boolean secret) {
         if (rollingpaper.checkSameRecipient(Recipient.TEAM) && secret) {
             throw new InvalidSecretMessageToTeam(rollingpaper.getId());
         }

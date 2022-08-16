@@ -6,14 +6,15 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.ExceedMessageContentLengthException;
+import com.woowacourse.naepyeon.exception.InvalidSecretMessageToTeam;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class MessageTest {
 
     @Test
-    @DisplayName("모임에게 작성하는 메시지일 경우 비밀 옵션은 무조건 false이다.")
-    void saveMessageToTeam() {
+    @DisplayName("모임에게 작성하는 메시지일 경우 비밀 옵션이 false이면 예외를 발생시킨다.")
+    void saveSecretMessageToTeam() {
         final Team team = new Team(
                 "nae-pyeon",
                 "테스트 모임입니다.",
@@ -23,12 +24,8 @@ class MessageTest {
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
         final Member author = new Member("author", "a@hello.com", Platform.KAKAO, "2");
         final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", Recipient.TEAM, team, member);
-        final Message message = new Message("헬로우", "green", author, rollingpaper, false, true);
-        final String expected = "낫 헬로우";
-
-        message.changeContent(expected);
-
-        assertThat(message.isSecret()).isFalse();
+        assertThatThrownBy(() -> new Message("헬로우", "green", author, rollingpaper, false, true))
+                .isInstanceOf(InvalidSecretMessageToTeam.class);
     }
 
     @Test
