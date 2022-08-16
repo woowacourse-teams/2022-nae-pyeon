@@ -16,12 +16,14 @@ const AutoCompleteInput = React.forwardRef<
   AutoCompleteInputProps
 >(({ labelText, autoCompleteList, isOpen, onClickListItem, ...prop }, ref) => {
   return (
-    <StyledLabel>
-      {labelText}
-      <StyledInputContainer>
-        <SearchIcon />
-        <input ref={ref} {...prop} />
-      </StyledInputContainer>
+    <StyledAutocompleteInput>
+      <StyledLabel>
+        {labelText}
+        <StyledInputContainer>
+          <SearchIcon />
+          <input ref={ref} {...prop} />
+        </StyledInputContainer>
+      </StyledLabel>
       {isOpen && autoCompleteList.length > 0 && (
         <StyledAutocompleteList>
           {autoCompleteList.map((autocompleteListItem) => (
@@ -34,12 +36,15 @@ const AutoCompleteInput = React.forwardRef<
           ))}
         </StyledAutocompleteList>
       )}
-    </StyledLabel>
+    </StyledAutocompleteInput>
   );
 });
 
-const StyledLabel = styled.label`
+const StyledAutocompleteInput = styled.div`
   position: relative;
+`;
+
+const StyledLabel = styled.label`
   display: flex;
   flex-direction: column;
 

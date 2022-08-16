@@ -46,8 +46,6 @@ const useAutoCompleteInput = () => {
     };
 
   const handleDocumentClick = (e: MouseEvent) => {
-    e.preventDefault();
-
     if (ref.current === e.target) {
       return;
     }
