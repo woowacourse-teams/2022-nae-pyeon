@@ -73,7 +73,8 @@ class RollingpaperTest {
                 "nae-pyeon",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                false
         );
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
         final Rollingpaper rollingpaperToMember = new Rollingpaper("알고리즘이좋아요", Recipient.MEMBER, team, member);
