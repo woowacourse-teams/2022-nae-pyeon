@@ -17,7 +17,7 @@ const NaverRedirectPage = () => {
   const authorizationCode = params.get("code");
   const inviteToken = params.get("state");
 
-  const state = inviteToken ? inviteToken : "";
+  const state = inviteToken ? inviteToken : Math.random().toString();
 
   const { mutate: naverOauthLogin } = useMutation(
     ({ authorizationCode, redirectUri }: RequesNaverOauthBody) =>
@@ -29,6 +29,11 @@ const NaverRedirectPage = () => {
     {
       onSuccess: (data) => {
         login(data.accessToken, data.id);
+
+        if (inviteToken) {
+          navigate(`/invite/${inviteToken}`, { replace: true });
+          return;
+        }
 
         navigate("/", { replace: true });
       },
