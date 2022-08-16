@@ -45,7 +45,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         final ExtractableResponse<Response> response = 모임_추가(alex, teamRequest);
 
@@ -75,8 +76,9 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final String teamDescription = "테스트 모임입니다.";
         final String teamEmoji = "testEmoji";
         final String teamColor = "#123456";
+        final boolean teameScret = false;
         final TeamRequest teamRequest =
-                new TeamRequest(teamName, teamDescription, teamEmoji, teamColor, "나는야모임장");
+                new TeamRequest(teamName, teamDescription, teamEmoji, teamColor, "나는야모임장", teameScret);
         final Long teamId = 모임_추가(alex, teamRequest)
                 .as(CreateResponse.class)
                 .getId();
@@ -84,8 +86,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final ExtractableResponse<Response> response = 모임_단건_조회(alex, teamId);
         final TeamResponseDto teamResponse = response.as(TeamResponseDto.class);
 
-        assertThat(teamResponse).extracting("id", "name", "description", "emoji", "color")
-                .containsExactly(teamId, teamName, teamDescription, teamEmoji, teamColor);
+        final TeamResponseDto expected = new TeamResponseDto(teamId, teamName, teamDescription, teamEmoji, teamColor,
+                true, teameScret);
+
+        assertThat(teamResponse)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -104,7 +110,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         모임_추가(alex, teamRequest);
 
@@ -121,13 +128,14 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         final Long team1Id = 모임_추가(alex, teamRequest1).as(CreateResponse.class)
                 .getId();
         //모임 생성
         final TeamRequest teamRequest2 =
-                new TeamRequest("내편아니야", ".", "a", "#123456", "테스트");
+                new TeamRequest("내편아니야", ".", "a", "#123456", "테스트", false);
         final Long team2Id = 모임_추가(alex, teamRequest2).as(CreateResponse.class)
                 .getId();
 
@@ -138,8 +146,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final List<TeamResponseDto> actual = response.as(TeamsResponseDto.class)
                 .getTeams();
         final List<TeamResponseDto> expected = List.of(
-                TeamResponseDto.byRequest(team1Id, teamRequest1, true),
-                TeamResponseDto.byRequest(team2Id, teamRequest2, true)
+                createTeamResponse(team1Id, teamRequest1, true),
+                createTeamResponse(team2Id, teamRequest2, true)
         );
 
         assertThat(actual)
@@ -156,7 +164,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         final Long team1Id = 모임_추가(alex, teamRequest1).as(CreateResponse.class)
                 .getId();
@@ -167,7 +176,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         모임_추가(alex, teamRequest2).as(CreateResponse.class);
 
@@ -203,7 +213,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                masterNickname
+                masterNickname,
+                false
         );
         final Long team1Id = 모임_추가(alex, teamRequest1).as(CreateResponse.class)
                 .getId();
@@ -233,7 +244,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                true
         );
         final ExtractableResponse<Response> response = 모임_이름_수정(alex, teamId, changeTeamRequest);
         모임이름이_수정됨(response);
@@ -286,7 +298,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         final Long team1Id = 모임_추가(alex, teamRequest1).as(CreateResponse.class)
                 .getId();
@@ -295,7 +308,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         모임_추가(alex, teamRequest2).as(CreateResponse.class);
         final TeamRequest teamRequest3 = new TeamRequest(
@@ -303,7 +317,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         final Long team3Id = 모임_추가(alex, teamRequest3).as(CreateResponse.class)
                 .getId();
@@ -331,7 +346,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         final ExtractableResponse<Response> response = 모임_이름_수정(alex, teamId, changeTeamRequest);
 
@@ -449,6 +465,18 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
                 () -> assertThat(errorResponse).extracting("errorCode", "message")
                         .containsExactly("4017", "토큰의 유효기간이 만료됐습니다.")
+        );
+    }
+
+    private TeamResponseDto createTeamResponse(final Long teamId, final TeamRequest teamRequest, final boolean joined) {
+        return new TeamResponseDto(
+                teamId,
+                teamRequest.getName(),
+                teamRequest.getDescription(),
+                teamRequest.getEmoji(),
+                teamRequest.getColor(),
+                joined,
+                teamRequest.isSecret()
         );
     }
 

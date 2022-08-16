@@ -12,6 +12,5 @@ public final class ExceedTeamNameLengthException extends NaePyeonException {
                 HttpStatus.BAD_REQUEST,
                 "4002"
         );
-
     }
 }

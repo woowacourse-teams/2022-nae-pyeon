@@ -28,7 +28,7 @@ import org.springframework.http.HttpStatus;
 class MessageAcceptanceTest extends AcceptanceTest {
 
     private final TeamRequest teamRequest = new TeamRequest(
-            "woowacourse", "테스트 모임입니다.", "testEmoji", "#123456", "마스터다"
+            "woowacourse", "테스트 모임입니다.", "testEmoji", "#123456", "마스터다", false
     );
 
     @Test
