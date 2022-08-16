@@ -10,7 +10,17 @@ const getRollingpaper = (teamId: number, id: number) =>
     .get(`/teams/${teamId}/rollingpapers/${id}`)
     .then((response) => response.data);
 
-const postRollingpaper = ({
+const postTeamRollingpaper = ({
+  teamId,
+  title,
+}: Omit<PostRollingpaperRequest, "addresseeId">) =>
+  appClient
+    .post(`/teams/${teamId}/team-rollingpapers`, {
+      title,
+    })
+    .then((response) => response.data);
+
+const postMemberRollingpaper = ({
   teamId,
   title,
   addresseeId,
@@ -22,4 +32,4 @@ const postRollingpaper = ({
     })
     .then((response) => response.data);
 
-export { getRollingpaper, postRollingpaper };
+export { getRollingpaper, postTeamRollingpaper, postMemberRollingpaper };
