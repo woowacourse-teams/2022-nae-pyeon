@@ -3,6 +3,7 @@ package com.woowacourse.naepyeon.domain;
 import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.ExceedMessageContentLengthException;
+import com.woowacourse.naepyeon.exception.InvalidSecretMessageToTeam;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -52,14 +53,19 @@ public class Message extends BaseEntity {
     public Message(final String content, final String color, final Member author, final Rollingpaper rollingpaper,
                    final boolean anonymous, final boolean secret) {
         validateContentLength(content);
+        validateCanSecret(rollingpaper);
         this.content = content;
         this.color = color;
         this.author = author;
         this.rollingpaper = rollingpaper;
         this.anonymous = anonymous;
         this.secret = secret;
-        if (rollingpaper.checkSameRecipient(Recipient.TEAM)) {
-            this.secret = false;
+
+    }
+
+    private void validateCanSecret(final Rollingpaper rollingpaper) {
+        if (rollingpaper.checkSameRecipient(Recipient.TEAM) && secret) {
+            throw new InvalidSecretMessageToTeam(rollingpaper.getId());
         }
     }
 
