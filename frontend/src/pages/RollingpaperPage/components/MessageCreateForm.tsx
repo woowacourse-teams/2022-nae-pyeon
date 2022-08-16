@@ -1,22 +1,19 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import MessageTextArea from "@/pages/RollingpaperPage/components/MessageTextArea";
 import MessageColorPicker from "@/pages/RollingpaperPage/components/MessageColorPicker";
 
 import LabeledCheckBox from "@/components/LabeledCheckBox";
 
-import useCheckBox from "@/hooks/useCheckBox";
-
 import CheckIcon from "@/assets/icons/bx-check.svg";
 import XIcon from "@/assets/icons/bx-x.svg";
 
-type MessageFormProps = {
-  onSubmit: () => void;
-  onCancel: () => void;
-  content: string;
-  onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
-  color: string;
-  onClickColor: Dispatch<SetStateAction<string>>;
+import useMessageForm from "@/pages/RollingpaperPage/hooks/useMessageForm";
+import useCreateMessage from "@/pages/RollingpaperPage/hooks/useCreateMessage";
+import useParamValidate from "@/hooks/useParamValidate";
+
+type MessageCreateFormProps = {
+  onEditEnd: () => void;
 };
 
 type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -39,29 +36,33 @@ const MessageCancelButton = ({ onClick }: ButtonAttributes) => {
   );
 };
 
-export const MessageForm = ({
-  onSubmit,
-  onCancel,
-  content,
-  onChange,
-  color,
-  onClickColor,
-}: MessageFormProps) => {
+export const MessageCreateForm = ({ onEditEnd }: MessageCreateFormProps) => {
   const {
-    checked: anonymousChecked,
-    handleChange: handleAnonymousCheckBoxChange,
-  } = useCheckBox({ initialCheckedState: false });
+    content,
+    color,
+    anonymous,
+    secret,
+    handleMessageChange,
+    handleColorClick,
+    handleAnonymousCheckBoxChange,
+    handleSecretCheckBoxChange,
+    initMessage,
+  } = useMessageForm({});
 
-  const { checked: secretChecked, handleChange: handleSecretCheckBoxChange } =
-    useCheckBox({ initialCheckedState: false });
+  const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
+  const { createMessage } = useCreateMessage(+rollingpaperId);
 
-  const handleTextAreaChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
-    e
-  ) => {
-    if (e.target.value.length > 500) {
-      return;
+  const handleMessageSubmit = () => {
+    createMessage({ content, color, anonymous, secret });
+    initMessage();
+    onEditEnd();
+  };
+
+  const handleMessageCancel = () => {
+    if (confirm("메시지 작성을 취소하시겠습니까?")) {
+      initMessage();
+      onEditEnd();
     }
-    onChange(e);
   };
 
   return (
@@ -71,30 +72,30 @@ export const MessageForm = ({
         <MessageTextArea
           placeholder="메시지를 입력해보세요!"
           value={content}
-          onChange={handleTextAreaChange}
+          onChange={handleMessageChange}
           backgroundColor={color}
         />
         <StyledMessageFormBottom>
           <StyledCheckBoxContainer>
             <LabeledCheckBox
               labeledText="익명"
-              checked={anonymousChecked}
+              checked={anonymous}
               onChange={handleAnonymousCheckBoxChange}
             />
             <LabeledCheckBox
               labeledText="비밀글"
-              checked={secretChecked}
+              checked={secret}
               onChange={handleSecretCheckBoxChange}
             />
           </StyledCheckBoxContainer>
           <StyledTextLength>{content.length}/500</StyledTextLength>
         </StyledMessageFormBottom>
         <StyledMessageColorPickerWrapper>
-          <MessageColorPicker onClickRadio={onClickColor} color={color} />
+          <MessageColorPicker onClickRadio={handleColorClick} color={color} />
         </StyledMessageColorPickerWrapper>
         <StyledIconButtonContainer>
-          <MessageSubmitButton onClick={onSubmit} />
-          <MessageCancelButton onClick={onCancel} />
+          <MessageSubmitButton onClick={handleMessageSubmit} />
+          <MessageCancelButton onClick={handleMessageCancel} />
         </StyledIconButtonContainer>
       </StyledMessageForm>
     </>
@@ -206,4 +207,4 @@ const StyledMessageFormButton = styled.button`
   }
 `;
 
-export default MessageForm;
+export default MessageCreateForm;

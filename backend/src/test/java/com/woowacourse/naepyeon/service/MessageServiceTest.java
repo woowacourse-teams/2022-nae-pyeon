@@ -39,7 +39,8 @@ class MessageServiceTest {
             TEAM_NAME,
             "테스트 모임입니다.",
             "testEmoji",
-            "#123456");
+            "#123456",
+            false);
     private final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
     private final Member author = new Member("author", "au@hello.com", Platform.KAKAO, "2");
     private final Member otherAuthor = new Member("author2", "aut@hello.com", Platform.KAKAO, "3");

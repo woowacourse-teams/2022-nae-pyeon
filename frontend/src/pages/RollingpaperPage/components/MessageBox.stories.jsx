@@ -1,14 +1,12 @@
 import React from "react";
-import RollingpaperMessage from "@/pages/RollingpaperPage/components/RollingpaperMessage";
+import MessageBox from "@/pages/RollingpaperPage/components/MessageBox";
 
 export default {
-  component: RollingpaperMessage,
-  title: "components/RollingpaperPage/RollingpaperMessage",
+  component: MessageBox,
+  title: "components/RollingpaperPage/MessageBox",
 };
 
-const Template = (args) => (
-  <RollingpaperMessage {...args}></RollingpaperMessage>
-);
+const Template = (args) => <MessageBox {...args}></MessageBox>;
 
 export const Default = Template.bind({});
 Default.args = {

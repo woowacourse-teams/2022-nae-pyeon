@@ -45,7 +45,8 @@ class RollingpaperRepositoryTest {
             "nae-pyeon",
             "테스트 모임입니다.",
             "testEmoji",
-            "#123456"
+            "#123456",
+            false
     );
     private final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
 

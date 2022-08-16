@@ -1,6 +1,5 @@
 package com.woowacourse.naepyeon.service;
 
-import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
@@ -15,6 +14,7 @@ import com.woowacourse.naepyeon.service.dto.AllTeamsResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
+import com.woowacourse.naepyeon.service.dto.TeamRequestDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import com.woowacourse.naepyeon.support.InviteTokenProvider;
@@ -38,17 +38,18 @@ public class TeamService {
     private final InviteTokenProvider inviteTokenProvider;
 
     @Transactional
-    public Long save(final TeamRequest teamRequest, final Long memberId) {
+    public Long save(final TeamRequestDto teamRequestDto, final Long memberId) {
         final Team team = new Team(
-                teamRequest.getName(),
-                teamRequest.getDescription(),
-                teamRequest.getEmoji(),
-                teamRequest.getColor()
+                teamRequestDto.getName(),
+                teamRequestDto.getDescription(),
+                teamRequestDto.getEmoji(),
+                teamRequestDto.getColor(),
+                teamRequestDto.isSecret()
         );
         final Long createdTeamId = teamRepository.save(team);
         final Member owner = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException(memberId));
-        teamParticipationRepository.save(new TeamParticipation(team, owner, teamRequest.getNickname()));
+        teamParticipationRepository.save(new TeamParticipation(team, owner, teamRequestDto.getNickname()));
         return createdTeamId;
     }
 
@@ -65,7 +66,7 @@ public class TeamService {
     public TeamResponseDto findById(final Long teamId, final Long memberId) {
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
-        return TeamResponseDto.of(team, teamParticipationRepository.isJoinedMember(memberId, teamId));
+        return TeamResponseDto.of(team, teamParticipationRepository.isJoinedMember(memberId, teamId), team.isSecret());
     }
 
     @Transactional
@@ -87,7 +88,7 @@ public class TeamService {
         final List<Team> joinedTeams = teamParticipationRepository.findTeamsByMemberId(memberId);
 
         final List<TeamResponseDto> teamResponseDtos = teams.stream()
-                .map(team -> TeamResponseDto.of(team, joinedTeams.contains(team)))
+                .map(team -> TeamResponseDto.of(team, joinedTeams.contains(team), team.isSecret()))
                 .collect(Collectors.toList());
 
         return new TeamsResponseDto(
@@ -102,7 +103,7 @@ public class TeamService {
         final List<Team> joinedTeams = teamParticipationRepository.findTeamsByMemberId(memberId);
 
         final List<TeamResponseDto> teamResponseDtos = teams.stream()
-                .map(team -> TeamResponseDto.of(team, joinedTeams.contains(team)))
+                .map(team -> TeamResponseDto.of(team, joinedTeams.contains(team), team.isSecret()))
                 .collect(Collectors.toList());
 
         return new AllTeamsResponseDto(teamResponseDtos);
@@ -112,7 +113,7 @@ public class TeamService {
         final Pageable pageRequest = PageRequest.of(page, count);
         final Page<Team> teams = teamParticipationRepository.findTeamsByMemberIdAndPageRequest(memberId, pageRequest);
         final List<TeamResponseDto> teamResponseDtos = teams.stream()
-                .map(team -> TeamResponseDto.of(team, true))
+                .map(team -> TeamResponseDto.of(team, true, team.isSecret()))
                 .collect(Collectors.toList());
 
         return new TeamsResponseDto(
@@ -177,7 +178,7 @@ public class TeamService {
         final Long teamId = inviteTokenProvider.getTeamId(inviteToken);
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
-        return TeamResponseDto.of(team, teamParticipationRepository.isJoinedMember(memberId, teamId));
+        return TeamResponseDto.of(team, teamParticipationRepository.isJoinedMember(memberId, teamId), team.isSecret());
     }
 
     public Long inviteJoin(final String inviteToken, final Long memberId, final String nickname) {

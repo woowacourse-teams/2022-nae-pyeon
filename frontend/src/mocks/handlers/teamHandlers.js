@@ -1,4 +1,3 @@
-import { raw } from "@storybook/react";
 import { rest } from "msw";
 
 import totalTeamsDummy from "../dummy/totalTeams.json";
@@ -59,6 +58,18 @@ const teamHandlers = [
     return res(ctx.json(result));
   }),
 
+  // 초대토큰으로 모임 정보 조회
+  rest.get("/api/v1/teams/invite", (req, res, ctx) => {
+    const inviteToken = req.url.searchParams.get("inviteToken");
+
+    const team = totalTeams.find((team) => team.secret);
+    const result = {
+      ...team,
+    };
+
+    return res(ctx.json(result));
+  }),
+
   // 모임 상세정보 조회
   rest.get("/api/v1/teams/:teamId", (req, res, ctx) => {
     const { teamId } = req.params;
@@ -72,7 +83,7 @@ const teamHandlers = [
     return res(ctx.status(200), ctx.json(result));
   }),
 
-  // 모임 가입
+  // 모임 가입 (일반)
   rest.post("/api/v1/teams/:teamId", (req, res, ctx) => {
     const { teamId } = req.params;
     const { nickname } = req.body;
@@ -117,6 +128,24 @@ const teamHandlers = [
     };
 
     return res(ctx.json(result));
+  }),
+
+  // 모임 초대토큰 생성하기
+  rest.post("/api/v1/teams/:teamId/invite", (req, res, ctx) => {
+    const { teamId } = req.params;
+
+    const result = {
+      inviteToken: "testInviteToken",
+    };
+
+    return res(ctx.json(result));
+  }),
+
+  // 모임 가입 (초대토큰)
+  rest.post("/api/v1/teams/invite/join", (req, res, ctx) => {
+    const { inviteToken, nickname } = req.body;
+
+    return res(ctx.status(204));
   }),
 ];
 

@@ -13,7 +13,7 @@ import { useSnackbar } from "@/context/SnackbarContext";
 
 import useInput from "@/hooks/useInput";
 
-import { postTeamNickname } from "@/api/team";
+import { postTeamMember } from "@/api/team";
 import useParamValidate from "@/hooks/useParamValidate";
 
 interface NicknameCreateModalFormProp {
@@ -30,7 +30,7 @@ const NicknameCreateModalForm = ({
 
   const { mutate: joinTeam } = useMutation(
     async (nickname: string) => {
-      postTeamNickname({ id: +teamId, nickname });
+      postTeamMember({ id: +teamId, nickname });
     },
     {
       onSuccess: () => {

@@ -89,7 +89,8 @@ public class AcceptanceFixture {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         return 모임_추가(tokenResponseDto, teamRequest).as(CreateResponse.class)
                 .getId();

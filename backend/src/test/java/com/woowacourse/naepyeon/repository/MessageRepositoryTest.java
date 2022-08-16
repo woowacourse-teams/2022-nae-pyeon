@@ -52,7 +52,8 @@ class MessageRepositoryTest {
             "nae-pyeon",
             "테스트 모임입니다.",
             "testEmoji",
-            "#123456"
+            "#123456",
+            false
     );
     private final Member member = new Member("member", "email1@email.com", Platform.KAKAO, "1");
     private final Member author = new Member("author", "email2@email.com", Platform.KAKAO, "2");

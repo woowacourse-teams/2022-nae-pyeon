@@ -35,7 +35,8 @@ class MessageTest {
                 "nae-pyeon",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                false
         );
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
         final Member author = new Member("author", "a@hello.com", Platform.KAKAO, "2");
@@ -55,7 +56,8 @@ class MessageTest {
                 "nae-pyeon",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                false
         );
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
         final Member author = new Member("author", "a@hello.com", Platform.KAKAO, "2");
@@ -71,7 +73,8 @@ class MessageTest {
                 "nae-pyeon",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                false
         );
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
         final Member author = new Member("author", "a@hello.com", Platform.KAKAO, "2");

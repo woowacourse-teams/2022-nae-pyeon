@@ -18,26 +18,17 @@ public class TeamResponseDto {
     private String emoji;
     private String color;
     private boolean joined;
+    private boolean secret;
 
-    public static TeamResponseDto of(final Team team, final boolean joined) {
+    public static TeamResponseDto of(final Team team, final boolean joined, final boolean secret) {
         return new TeamResponseDto(
                 team.getId(),
                 team.getName(),
                 team.getDescription(),
                 team.getEmoji(),
                 team.getColor(),
-                joined
-        );
-    }
-
-    public static TeamResponseDto byRequest(final Long teamId, final TeamRequest teamRequest, final boolean joined) {
-        return new TeamResponseDto(
-                teamId,
-                teamRequest.getName(),
-                teamRequest.getDescription(),
-                teamRequest.getEmoji(),
-                teamRequest.getColor(),
-                joined
+                joined,
+                secret
         );
     }
 }

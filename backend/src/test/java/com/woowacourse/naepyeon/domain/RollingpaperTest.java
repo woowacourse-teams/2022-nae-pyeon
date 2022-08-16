@@ -19,7 +19,8 @@ class RollingpaperTest {
                 "nae-pyeon",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                false
         );
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
         final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", Recipient.MEMBER, team, member);
@@ -37,7 +38,8 @@ class RollingpaperTest {
                 "nae-pyeon",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                false
         );
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
         final Rollingpaper rollingpaper = new Rollingpaper("seungpang", Recipient.MEMBER, team, member);
@@ -55,7 +57,8 @@ class RollingpaperTest {
                 "nae-pyeon",
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                false
         );
         final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
 

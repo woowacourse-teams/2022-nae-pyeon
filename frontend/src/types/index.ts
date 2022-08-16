@@ -1,3 +1,5 @@
+import { RECIPIENT } from "@/constants";
+
 export interface Team {
   id: number;
   name: string;
@@ -13,8 +15,11 @@ export interface Message {
   id: number;
   content: string;
   from: string;
-  authorId: number;
   color: string;
+  anonymous: boolean;
+  secret: boolean;
+  editable: boolean;
+  visible: boolean;
 }
 
 export interface Rollingpaper {
@@ -66,3 +71,5 @@ export type CustomError = {
 };
 
 export type ValueOf<T> = T[keyof T];
+
+export type Recipient = ValueOf<typeof RECIPIENT>;
