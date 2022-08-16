@@ -17,7 +17,7 @@ const NaverRedirectPage = () => {
   const authorizationCode = params.get("code");
   const inviteToken = params.get("state");
 
-  const state = inviteToken ? inviteToken : Math.random().toString();
+  const state = Math.random().toString(); //
 
   const { mutate: naverOauthLogin } = useMutation(
     ({ authorizationCode, redirectUri }: RequesNaverOauthBody) =>
