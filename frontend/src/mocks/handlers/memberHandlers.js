@@ -22,6 +22,15 @@ const memberHandlers = [
     return res(ctx.status(200), ctx.json(result));
   }),
 
+  // 네이버 OAuth
+  rest.post("/api/v1/oauth/naver", (req, res, ctx) => {
+    const { authorizationCode, redirectUri } = req.body;
+
+    const result = { accessToken: "accessToken2", id: 1 };
+
+    return res(ctx.status(200), ctx.json(result));
+  }),
+
   // 내 정보 조회
   rest.get("/api/v1/members/me", (req, res, ctx) => {
     const accessToken = req.headers.headers.authorization.split(" ")[1];
