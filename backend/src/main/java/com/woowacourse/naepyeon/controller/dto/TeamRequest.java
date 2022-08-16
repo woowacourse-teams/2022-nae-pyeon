@@ -26,6 +26,7 @@ public class TeamRequest {
 
     @NotBlank(message = "4009:닉네임은 공백일 수 없습니다.")
     private String nickname;
+
     private boolean secret;
 
     public TeamRequestDto toServiceDto() {
