@@ -38,6 +38,15 @@ const KAKAO_OAUTH_URL = {
     'https://kapi.kakao.com/v2/user/me?secure_resource=true&property_keys=["kakao_account.profile","kakao_account.email"]',
 };
 
+const NAVER_OAUTH_URL = {
+  AUTHORIZE_CODE: (inviteToken: string) =>
+    `https://nid.naver.com/oauth2.0/authorize?client_id=${process.env.NAVER_REST_API_KEY}&redirect_uri=${process.env.NAVER_REDIRECT_URL}&response_type=code&state=${inviteToken}`,
+  TOKEN: (authorize_code: string) =>
+    `https://nid.naver.com/oauth2.0/token?client_id=${process.env.NAVER_REST_API_KEY}&redirect_uri=${process.env.NAVER_REDIRECT_URL}&grant_type=authorization_code&client_secret=${process.env.KAKAO_CLIENT_SECRET}&code=${authorize_code}`,
+  USER_INFO:
+    'https://openapi.naver.com/v1/nid/me?secure_resource=true&property_keys=["kakao_account.profile","kakao_account.email"]',
+};
+
 const RECIPIENT = {
   TEAM: "team",
   MEMBER: "member",
@@ -51,5 +60,6 @@ export {
   MYPAGE_MESSAGE_PAGING_COUNT,
   SOCIAL_LOGIN_PLATFORM,
   KAKAO_OAUTH_URL,
+  NAVER_OAUTH_URL,
   RECIPIENT,
 };

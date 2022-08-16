@@ -7,7 +7,11 @@ import { useSnackbar } from "@/context/SnackbarContext";
 import Logo from "@/pages/LoginPage/components/Logo";
 import SocialLoginButton from "@/pages/LoginPage/components/SocialLoginButton";
 
-import { KAKAO_OAUTH_URL, SOCIAL_LOGIN_PLATFORM } from "@/constants";
+import {
+  KAKAO_OAUTH_URL,
+  NAVER_OAUTH_URL,
+  SOCIAL_LOGIN_PLATFORM,
+} from "@/constants";
 
 type LoginPageLocationState = {
   inviteToken?: string;
@@ -29,7 +33,10 @@ const LoginPage = () => {
   const handleNaverLoginButtonClick: React.MouseEventHandler<
     HTMLButtonElement
   > = () => {
-    openSnackbar("준비 중! 🤗");
+    const locationState = state as LoginPageLocationState;
+    const inviteToken = locationState?.inviteToken || "";
+
+    location.href = NAVER_OAUTH_URL.AUTHORIZE_CODE(inviteToken);
   };
 
   const handleGoogleLoginButtonClick: React.MouseEventHandler<
