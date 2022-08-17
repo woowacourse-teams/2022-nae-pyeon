@@ -1,19 +1,14 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 
-const useParamValidate = (requireParams: string[]) => {
-  const params = useParams();
-  const result: { [key: string]: string } = {};
+const useParamValidate = <T,>(requireParams: string): T => {
+  const param = useParams();
 
-  for (const requireParam of requireParams) {
-    const param = params[requireParam];
-    if (!param) {
-      throw new Error("올바르지 않은 파라미터 값");
-    }
-    result[requireParam] = param;
+  if (!param) {
+    throw new Error("올바르지 않은 파라미터 값");
   }
 
-  return result;
+  return param[requireParams] as unknown as T;
 };
 
 export default useParamValidate;
