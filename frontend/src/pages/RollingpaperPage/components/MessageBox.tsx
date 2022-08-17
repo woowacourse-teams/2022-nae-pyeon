@@ -23,7 +23,8 @@ const MessageBox = ({
   secret,
   editable,
   visible,
-}: Message) => {
+  enableSecretMessage,
+}: Message & { enableSecretMessage: boolean }) => {
   const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
 
   const {
@@ -46,6 +47,7 @@ const MessageBox = ({
         anonymous={anonymous}
         secret={secret}
         onEditEnd={handleEditEnd}
+        enableSecretMessage={enableSecretMessage}
       />
     );
   }

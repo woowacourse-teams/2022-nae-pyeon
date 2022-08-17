@@ -8,10 +8,12 @@ import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 import { Message } from "@/types";
 
 type MessageUpdateFormProps = {
+  enableSecretMessage: boolean;
   onEditEnd: () => void;
 } & Pick<Message, "id" | "content" | "color" | "anonymous" | "secret">;
 
 export const MessageUpdateForm = ({
+  enableSecretMessage,
   id,
   content,
   color,
@@ -43,7 +45,7 @@ export const MessageUpdateForm = ({
       color: newColor,
       content: newContent,
       anonymous: newAnonymous,
-      secret: newSecret,
+      secret: enableSecretMessage && newSecret,
     });
     initMessage();
     onEditEnd();
@@ -58,6 +60,7 @@ export const MessageUpdateForm = ({
 
   return (
     <MessageForm
+      enableSecretMessage={enableSecretMessage}
       content={newContent}
       color={newColor}
       anonymous={newAnonymous}

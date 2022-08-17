@@ -2,12 +2,13 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
+import useParamValidate from "@/hooks/useParamValidate";
+
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
 
 import { Rollingpaper, CustomError } from "@/types";
 import { getRollingpaper } from "@/api/rollingpaper";
-import useParamValidate from "@/hooks/useParamValidate";
 
 const RollingpaperPage = () => {
   const { teamId, rollingpaperId } = useParamValidate([
@@ -46,6 +47,7 @@ const RollingpaperPage = () => {
       <main>
         <LetterPaper
           to={rollingpaper.to}
+          recipientType={rollingpaper.recipient}
           messageList={[...rollingpaper.messages].reverse()}
         />
       </main>

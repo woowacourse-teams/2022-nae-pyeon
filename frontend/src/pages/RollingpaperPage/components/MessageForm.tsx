@@ -11,6 +11,8 @@ import XIcon from "@/assets/icons/bx-x.svg";
 import { Message } from "@/types";
 
 type MessageFormProps = {
+  enableSecretMessage: boolean;
+
   handleColorClick: (color: string) => void;
   handleMessageChange: React.ChangeEventHandler<HTMLTextAreaElement>;
   handleAnonymousCheckBoxChange: React.ChangeEventHandler<HTMLInputElement>;
@@ -41,6 +43,7 @@ const MessageCancelButton = ({ onClick }: ButtonAttributes) => {
 };
 
 export const MessageForm = ({
+  enableSecretMessage,
   content,
   color,
   anonymous,
@@ -69,11 +72,13 @@ export const MessageForm = ({
               checked={anonymous}
               onChange={handleAnonymousCheckBoxChange}
             />
-            <LabeledCheckBox
-              labeledText="비밀글"
-              checked={secret}
-              onChange={handleSecretCheckBoxChange}
-            />
+            {enableSecretMessage && (
+              <LabeledCheckBox
+                labeledText="비밀글"
+                checked={secret}
+                onChange={handleSecretCheckBoxChange}
+              />
+            )}
           </StyledCheckBoxContainer>
           <StyledTextLength>{content.length}/500</StyledTextLength>
         </StyledMessageFormBottom>

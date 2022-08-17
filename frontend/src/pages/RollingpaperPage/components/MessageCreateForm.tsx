@@ -7,10 +7,14 @@ import useCreateMessage from "@/pages/RollingpaperPage/hooks/useCreateMessage";
 import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 
 type MessageCreateFormProps = {
+  enableSecretMessage: boolean;
   onEditEnd: () => void;
 };
 
-export const MessageCreateForm = ({ onEditEnd }: MessageCreateFormProps) => {
+export const MessageCreateForm = ({
+  enableSecretMessage,
+  onEditEnd,
+}: MessageCreateFormProps) => {
   const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
 
   const {
@@ -28,7 +32,12 @@ export const MessageCreateForm = ({ onEditEnd }: MessageCreateFormProps) => {
   const { createMessage } = useCreateMessage(+rollingpaperId);
 
   const handleMessageSubmit = () => {
-    createMessage({ content, color, anonymous, secret });
+    createMessage({
+      content,
+      color,
+      anonymous,
+      secret: enableSecretMessage && secret,
+    });
     initMessage();
     onEditEnd();
   };
@@ -42,6 +51,7 @@ export const MessageCreateForm = ({ onEditEnd }: MessageCreateFormProps) => {
 
   return (
     <MessageForm
+      enableSecretMessage={enableSecretMessage}
       content={content}
       color={content}
       anonymous={anonymous}
