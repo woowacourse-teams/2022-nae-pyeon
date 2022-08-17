@@ -2,7 +2,9 @@ plugins {
 	id 'org.springframework.boot' version '2.6.9'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'org.asciidoctor.jvm.convert' version '3.3.2'
+	id 'org.sonarqube' version '3.4.0.2513'
 	id 'java'
+	id 'jacoco'
 }
 
 group = 'com.woowacourse'
@@ -52,6 +54,19 @@ dependencies {
 tasks.named('test') {
 	outputs.dir snippetsDir
 	useJUnitPlatform()
+	finalizedBy 'jacocoTestReport'
+}
+
+jacoco {
+	toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+		csv.enabled false
+		html.enabled false
+	}
 }
 
 tasks.named('asciidoctor') {
@@ -76,4 +91,17 @@ bootJar {
     from("${asciidoctor.outputDir}") {
         into 'static/docs'
     }
+}
+
+sonarqube {
+	properties {
+		property "sonar.projectKey", "naepyeon"
+		property "sonar.sources", "src" // 소스 경로
+		property "sonar.language", "java" // 언어
+		property "sonar.sourceEncoding", "UTF-8"
+		property "sonar.profile", "Sonar way" // SonarQube 에서 분석할 때 적용할 프로필(분석할 수준 설정)
+		property "sonar.java.binaries", "${buildDir}/classes" // 자바 클래스 파일위치
+		property "sonar.test.inclusions", "**/*Test.java" // 코드 분석에 사용할 테스트 소스
+		property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml" // jacoco 플러그인의 결과 파일
+	}
 }
