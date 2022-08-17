@@ -3,7 +3,6 @@ package com.woowacourse.naepyeon.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.NotFoundRollingpaperException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamMemberException;
@@ -15,6 +14,7 @@ import com.woowacourse.naepyeon.service.dto.ReceivedRollingpapersResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperPreviewResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpapersResponseDto;
+import com.woowacourse.naepyeon.service.dto.TeamRequestDto;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,8 +31,8 @@ class RollingpaperServiceTest {
     private static final String MEMBER_NICKNAME = "마스터";
     private static final String TEAM_NAME = "nae-pyeon";
 
-    private final TeamRequest teamRequest =
-            new TeamRequest(TEAM_NAME, "테스트 모임입니다.", "testEmoji", "#123456", MEMBER_NICKNAME);
+    private final TeamRequestDto teamRequestDto =
+            new TeamRequestDto("nae-pyeon", "테스트 모임입니다.", "testEmoji", "#123456", MEMBER_NICKNAME, true);
     private Long teamId;
     private Long memberId;
     private Long member2Id;
@@ -46,15 +46,13 @@ class RollingpaperServiceTest {
     private RollingpaperService rollingpaperService;
     @Autowired
     private RollingpaperRepository rollingpaperRepository;
-    @Autowired
-    private TeamParticipationRepository teamParticipationRepository;
 
     @BeforeEach
     void setUp() {
         memberId = memberService.save("member", "m@hello.com", "KAKAO", "1");
         member2Id = memberService.save("writer", "w@hello.com", "KAKAO", "2");
         member3Id = memberService.save("anonymous", "a@hello.com", "KAKAO", "3");
-        teamId = teamService.save(teamRequest, memberId);
+        teamId = teamService.save(teamRequestDto, memberId);
         teamService.joinMember(teamId, member2Id, "안뇽안뇽");
     }
 
@@ -180,8 +178,8 @@ class RollingpaperServiceTest {
                 rollingpaperService.findReceivedRollingpapers(memberId, 0, 2);
         final List<ReceivedRollingpaperResponseDto> actual = receivedRollingpapersResponseDto.getRollingpapers();
         final List<ReceivedRollingpaperResponseDto> expected = List.of(
-                new ReceivedRollingpaperResponseDto(rollingpaperId1, ROLLINGPAPER_TITLE, teamId, teamRequest.getName()),
-                new ReceivedRollingpaperResponseDto(rollingpaperId2, ROLLINGPAPER_TITLE, teamId, teamRequest.getName())
+                new ReceivedRollingpaperResponseDto(rollingpaperId1, ROLLINGPAPER_TITLE, teamId, teamRequestDto.getName()),
+                new ReceivedRollingpaperResponseDto(rollingpaperId2, ROLLINGPAPER_TITLE, teamId, teamRequestDto.getName())
         );
 
         // then

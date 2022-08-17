@@ -2,12 +2,12 @@ package com.woowacourse.naepyeon.document;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.MessageService;
 import com.woowacourse.naepyeon.service.RollingpaperService;
 import com.woowacourse.naepyeon.service.TeamService;
 import com.woowacourse.naepyeon.service.dto.MessageRequestDto;
+import com.woowacourse.naepyeon.service.dto.TeamRequestDto;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -88,7 +88,8 @@ public abstract class TestSupport {
         memberId2 = memberService.save("이순신", "email2@email.com", "KAKAO", "2");
         memberId3 = memberService.save("아이유", "email3@email.com", "KAKAO", "3");
 
-        teamId = teamService.save(new TeamRequest("우테코 4기", "우테코 4기 크루원들 모임입니다.", "\\uD83D\\uDE00", "#212121", "길동이"),
+        teamId = teamService.save(
+                new TeamRequestDto("우테코 4기", "우테코 4기 크루원들 모임입니다.", "\\uD83D\\uDE00", "#212121", "길동이", false),
                 memberId1);
         teamService.joinMember(teamId, memberId2, "순신이");
 

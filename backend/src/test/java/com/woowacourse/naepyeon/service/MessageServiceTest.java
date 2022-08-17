@@ -11,6 +11,7 @@ import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
+import com.woowacourse.naepyeon.exception.InvalidSecretMessageToTeam;
 import com.woowacourse.naepyeon.exception.NotAuthorException;
 import com.woowacourse.naepyeon.exception.NotFoundMessageException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
@@ -38,7 +39,8 @@ class MessageServiceTest {
             TEAM_NAME,
             "테스트 모임입니다.",
             "testEmoji",
-            "#123456");
+            "#123456",
+            false);
     private final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
     private final Member author = new Member("author", "au@hello.com", Platform.KAKAO, "2");
     private final Member otherAuthor = new Member("author2", "aut@hello.com", Platform.KAKAO, "3");
@@ -86,6 +88,17 @@ class MessageServiceTest {
 
         assertThat(messageResponse).extracting("content", "from", "authorId")
                 .containsExactly(messageRequest.getContent(), "이케이", author.getId());
+    }
+
+    @Test
+    @DisplayName("모임에게 비밀 메시지로 작성할 경우 예외를 발생시킨다.")
+    void saveMessageWithSecretToTeam() {
+        final MessageRequest messageRequest = createMessageRequest();
+
+        assertThatThrownBy(() -> messageService.saveMessage(
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, true),
+                teamRollingpaper.getId(), author.getId()
+        )).isInstanceOf(InvalidSecretMessageToTeam.class);
     }
 
     @Test

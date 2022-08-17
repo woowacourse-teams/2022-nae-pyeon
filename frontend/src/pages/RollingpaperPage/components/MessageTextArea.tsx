@@ -1,5 +1,6 @@
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import styled from "@emotion/styled";
+import { useMessageTextArea } from "@/pages/RollingpaperPage/hooks/useMessageTextArea";
 
 type MessageTextAreaProps = {
   backgroundColor: string;
@@ -17,25 +18,7 @@ export const MessageTextArea = ({
   placeholder,
   backgroundColor,
 }: MessageTextAreaProps) => {
-  const textareaRef = useRef(null);
-
-  const handleTextAreaChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
-    e
-  ) => {
-    if (onChange) {
-      onChange(e);
-    }
-
-    const textarea = textareaRef.current as unknown as HTMLTextAreaElement;
-    textarea.style.height = "auto";
-    textarea.style.height = `${textarea.scrollHeight}px`;
-  };
-
-  useEffect(() => {
-    const textarea = textareaRef.current as unknown as HTMLTextAreaElement;
-    textarea.style.height = "auto";
-    textarea.style.height = `${textarea.scrollHeight}px`;
-  }, []);
+  const { textareaRef, handleTextAreaChange } = useMessageTextArea(onChange);
 
   return (
     <StyledMessageContainer backgroundColor={backgroundColor}>

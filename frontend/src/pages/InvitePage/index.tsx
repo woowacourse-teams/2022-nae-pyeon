@@ -1,28 +1,59 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "@emotion/styled";
+
+import useParamValidate from "@/hooks/useParamValidate";
+import useInput from "@/hooks/useInput";
+import useCheckLogin from "@/pages/InvitePage/hooks/useCheckLogin";
+import useCheckTeamJoined from "@/pages/InvitePage/hooks/useCheckTeamJoined";
+
+import useTeamDetailWithInviteToken from "@/pages/InvitePage/hooks/useTeamDetailWithInviteToken";
+import useJoinTeamWithInviteToken from "@/pages/InvitePage/hooks/useJoinTeamWithInviteToken";
 
 import UnderlineInput from "@/components/UnderlineInput";
 import LineButton from "@/components/LineButton";
 
-import { REGEX } from "@/constants";
 import TeamDescriptionBox from "@/pages/InvitePage/components/TeamDescriptionBox";
 
-import useInput from "@/hooks/useInput";
+import { REGEX } from "@/constants";
 
 const InvitePage = () => {
-  const { value: nickname, handleInputChange } = useInput("");
+  const { inviteToken } = useParamValidate(["inviteToken"]);
 
-  const handleTeamJoinSubmit = () => {
-    console.log("team join logic");
+  const { value: nickname, handleInputChange } = useInput("");
+  const checkLogin = useCheckLogin(inviteToken);
+  const handleTeamDetailWithInviteTokenSuccess = useCheckTeamJoined();
+
+  const { data: teamDetail, isLoading } = useTeamDetailWithInviteToken({
+    inviteToken,
+    onSuccess: handleTeamDetailWithInviteTokenSuccess,
+  });
+
+  const joinTeamWithInviteToken = useJoinTeamWithInviteToken(teamDetail?.id);
+
+  const handleTeamJoinSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+
+    joinTeamWithInviteToken({
+      nickname,
+      inviteToken,
+    });
   };
+
+  useEffect(() => {
+    checkLogin();
+  }, []);
+
+  if (isLoading || !teamDetail) {
+    return <div>로딩 중</div>;
+  }
 
   return (
     <StyledPage>
       <TeamDescriptionBox
-        color="#98DAFF"
-        emoji="❤️"
-        name="우테코 4기"
-        description="설명입니다 설명입니다"
+        color={teamDetail.color}
+        emoji={teamDetail.emoji}
+        name={teamDetail.name}
+        description={teamDetail.description}
       />
       <StyledJoinForm onSubmit={handleTeamJoinSubmit}>
         <p>모임에서 사용할 닉네임을 입력해주세요. (1 ~ 20자)</p>

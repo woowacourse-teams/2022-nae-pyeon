@@ -36,12 +36,17 @@ public class Team extends BaseEntity {
     @Column(name = "color", length = 15, nullable = false)
     private String color;
 
-    public Team(final String name, final String description, final String emoji, final String color) {
+    @Column(name = "secret", nullable = false)
+    private boolean secret;
+
+    public Team(final String name, final String description, final String emoji, final String color,
+                final boolean secret) {
         validateTeam(name);
         this.name = name;
         this.description = description;
         this.emoji = emoji;
         this.color = color;
+        this.secret = secret;
     }
 
     public void changeName(final String name) {
