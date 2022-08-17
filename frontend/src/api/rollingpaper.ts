@@ -1,6 +1,6 @@
 import { appClient } from "@/api";
 
-interface PostRollingpaperRequest {
+interface RequestPostRollingpaper {
   teamId: number;
   title: string;
   addresseeId: number;
@@ -14,7 +14,7 @@ const postRollingpaper = ({
   teamId,
   title,
   addresseeId,
-}: PostRollingpaperRequest) =>
+}: RequestPostRollingpaper) =>
   appClient
     .post(`/teams/${teamId}/rollingpapers`, {
       title,
