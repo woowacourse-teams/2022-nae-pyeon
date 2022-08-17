@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
 import LockIcon from "@/assets/icons/bx-lock-alt.svg";
@@ -9,11 +9,7 @@ interface SearchResultProp {
   name: string;
 }
 
-const SearchResultItem = ({
-  onClick,
-  secret,
-  name,
-}: PropsWithChildren<SearchResultProp>) => {
+const SearchResultItem = ({ onClick, secret, name }: SearchResultProp) => {
   return (
     <StyledItem onClick={onClick}>
       {secret && (
