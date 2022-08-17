@@ -5,6 +5,7 @@ import IconButton from "@/components/IconButton";
 
 import TrashIcon from "@/assets/icons/bx-trash.svg";
 import Pencil from "@/assets/icons/bx-pencil.svg";
+import LockIcon from "@/assets/icons/bx-lock-alt.svg";
 
 import useParamValidate from "@/hooks/useParamValidate";
 import MessageUpdateForm from "@/pages/RollingpaperPage/components/MessageUpdateForm";
@@ -62,7 +63,10 @@ const MessageBox = ({
             </IconButton>
           </StyledMessageButtonContainer>
         )}
-        <StyledMessageFrom>{from}</StyledMessageFrom>
+        <StyledMessageFrom>
+          {secret && <LockIcon />}
+          {from}
+        </StyledMessageFrom>
       </StyledMessageBottom>
     </StyledMessage>
   );
@@ -115,12 +119,23 @@ const StyledMessageButtonContainer = styled.div`
 `;
 
 const StyledMessageFrom = styled.div`
-  width: 50%;
-  text-align: right;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  align-self: flex-end;
   margin-left: auto;
+
+  max-width: 50%;
 
   font-size: 16px;
   color: ${({ theme }) => theme.colors.GRAY_700};
+
+  svg {
+    top: 4px;
+    font-size: 18px;
+    fill: ${({ theme }) => theme.colors.GRAY_700};
+  }
 `;
 
 export default MessageBox;
