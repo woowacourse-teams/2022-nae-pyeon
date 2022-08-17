@@ -10,7 +10,7 @@ import useParamValidate from "@/hooks/useParamValidate";
 import useAutoCompleteInput from "@/hooks/useAutoCompleteInput";
 import useInput from "@/hooks/useInput";
 
-import { useReadTeamMembers } from "@/pages/RollingpaperCreationPage/hooks/useReadTeamMembers";
+import useReadTeamMembers from "@/pages/RollingpaperCreationPage/hooks/useReadTeamMembers";
 import useCreateMemberRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateMemberRolliingpaper";
 
 const MemberRollingpaperCreateForm = () => {
