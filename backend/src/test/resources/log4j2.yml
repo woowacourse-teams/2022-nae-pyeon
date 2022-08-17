@@ -23,6 +23,6 @@ Configutation:
     Logger:
       - name: com.woowacourse.naepyeon
         additivity: false
-        level: debug
+        level: error
         AppenderRef:
           - ref: Console_Appender

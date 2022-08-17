@@ -9,6 +9,8 @@ import com.woowacourse.naepyeon.controller.dto.RollingpaperUpdateRequest;
 import com.woowacourse.naepyeon.service.RollingpaperService;
 import com.woowacourse.naepyeon.service.dto.RollingpaperResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpapersResponseDto;
+import java.net.URI;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,9 +21,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
-import java.net.URI;
 
 @RequiredArgsConstructor
 @RestController
@@ -35,7 +34,8 @@ public class RollingpaperController {
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long teamId,
             @RequestBody @Valid final CreateMemberRollingpaperRequest createMemberRollingpaperRequest) {
-        final Long rollingpaperId = rollingpaperService.createMemberRollingpaper(createMemberRollingpaperRequest.getTitle(), teamId,
+        final Long rollingpaperId = rollingpaperService.createMemberRollingpaper(
+                createMemberRollingpaperRequest.getTitle(), teamId,
                 loginMemberRequest.getId(), createMemberRollingpaperRequest.getAddresseeId());
         return ResponseEntity.created(URI.create("/api/v1/teams/" + teamId + "/rollingpapers/" + rollingpaperId))
                 .body(new CreateResponse(rollingpaperId));
@@ -46,7 +46,8 @@ public class RollingpaperController {
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long teamId,
             @RequestBody @Valid final CreateTeamRollingpaperRequest createTeamRollingpaperRequest) {
-        final Long rollingpaperId = rollingpaperService.createTeamRollingpaper(createTeamRollingpaperRequest.getTitle(), teamId,
+        final Long rollingpaperId = rollingpaperService.createTeamRollingpaper(createTeamRollingpaperRequest.getTitle(),
+                teamId,
                 loginMemberRequest.getId());
         return ResponseEntity.created(URI.create("/api/v1/teams/" + teamId + "/rollingpapers/" + rollingpaperId))
                 .body(new CreateResponse(rollingpaperId));
