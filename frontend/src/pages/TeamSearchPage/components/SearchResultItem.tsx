@@ -17,7 +17,7 @@ const SearchResultItem = ({
     <StyledItem onClick={onClick}>
       {secret && (
         <StyledSecret>
-          <LockIcon /> 비밀 모임
+          <LockIcon /> 비공개 모임
         </StyledSecret>
       )}
       {children}
