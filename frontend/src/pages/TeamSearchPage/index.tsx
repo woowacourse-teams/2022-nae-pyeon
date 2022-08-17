@@ -119,6 +119,7 @@ const TeamSearch = () => {
               onClick={() => {
                 handleSearchResultItemClick(team.id);
               }}
+              secret={team.secret}
             >
               {team.name}
             </SearchResultItem>
@@ -161,10 +162,9 @@ const StyledTeamList = styled.ul`
   flex-direction: column;
 
   height: 75vh;
-  margin-top: 10px;
   padding: 20px;
 
-  gap: 24px;
+  gap: 16px;
 
   overflow-y: scroll;
 `;
