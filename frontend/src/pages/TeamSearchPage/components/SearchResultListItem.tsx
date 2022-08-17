@@ -6,12 +6,13 @@ import LockIcon from "@/assets/icons/bx-lock-alt.svg";
 interface SearchResultProp {
   onClick: () => void;
   secret: boolean;
+  name: string;
 }
 
 const SearchResultItem = ({
-  children,
   onClick,
   secret,
+  name,
 }: PropsWithChildren<SearchResultProp>) => {
   return (
     <StyledItem onClick={onClick}>
@@ -20,7 +21,7 @@ const SearchResultItem = ({
           <LockIcon /> 비공개 모임
         </StyledSecret>
       )}
-      {children}
+      {name}
     </StyledItem>
   );
 };

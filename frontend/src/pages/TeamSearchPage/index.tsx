@@ -8,7 +8,7 @@ import useIntersect from "@/hooks/useIntersect";
 import { getTeamSearchResult } from "@/api/team";
 
 import SearchInput from "@/components/SearchInput";
-import SearchResultItem from "@/pages/TeamSearchPage/components/SearchResultItem";
+import SearchResultListItem from "@/pages/TeamSearchPage/components/SearchResultListItem";
 
 import EmptyStateImg from "@/assets/images/empty-state.svg";
 import { TOTAL_TEAMS_PAGING_COUNT } from "@/constants";
@@ -114,15 +114,14 @@ const TeamSearch = () => {
       <StyledTeamList>
         {totalTeamResponse.pages.map((page) =>
           page.teams.map((team: Team) => (
-            <SearchResultItem
+            <SearchResultListItem
               key={team.id}
               onClick={() => {
                 handleSearchResultItemClick(team.id);
               }}
               secret={team.secret}
-            >
-              {team.name}
-            </SearchResultItem>
+              name={team.name}
+            />
           ))
         )}
         <div ref={ref} />
