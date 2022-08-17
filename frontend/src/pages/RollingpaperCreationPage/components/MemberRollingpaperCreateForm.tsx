@@ -14,9 +14,8 @@ import useReadTeamMembers from "@/pages/RollingpaperCreationPage/hooks/useReadTe
 import useCreateMemberRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateMemberRolliingpaper";
 
 const MemberRollingpaperCreateForm = () => {
-  const { value: title, handleInputChange } = useInput("");
   const { teamId } = useParamValidate(["teamId"]);
-
+  const { value: title, handleInputChange } = useInput("");
   const {
     value: rollingpaperTo,
     autoCompleteList,
