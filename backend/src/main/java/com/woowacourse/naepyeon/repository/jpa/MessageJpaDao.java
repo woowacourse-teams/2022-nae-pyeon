@@ -26,7 +26,7 @@ public interface MessageJpaDao extends JpaRepository<Message, Long> {
             + "and r.team.id = t.id "
             + "and p.team.id = t.id "
             + "and m.author.id = :authorId "
-            + "and p.member.id = r.member.id")
+            + "and (p.member.id = r.member.id or r.member.id is null)")
     Page<WrittenMessageResponseDto> findAllByAuthorId(
             @Param("authorId") final Long authorId, final Pageable pageRequest);
 }
