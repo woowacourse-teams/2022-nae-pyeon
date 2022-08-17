@@ -15,16 +15,17 @@ import SecretMessage from "@/pages/RollingpaperPage/components/SecretMessage";
 import { Message } from "@/types";
 
 const MessageBox = ({
+  id,
   content,
   from,
   color,
-  id,
-  editable,
   anonymous,
   secret,
+  editable,
   visible,
 }: Message) => {
   const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
+
   const {
     isEdit,
     handleWriteButtonClick,
@@ -65,7 +66,7 @@ const MessageBox = ({
         )}
         <StyledMessageFrom>
           {secret && <LockIcon />}
-          {from}
+          {!anonymous && from}
         </StyledMessageFrom>
       </StyledMessageBottom>
     </StyledMessage>
