@@ -40,13 +40,14 @@ const teamHandlers = [
 
     const keywordTeam = totalTeams
       .filter((team) => team.name.includes(keyword))
-      .map(({ id, name, description, emoji, color, joined }) => ({
+      .map(({ id, name, description, emoji, color, joined, secret }) => ({
         id,
         name,
         description,
         emoji,
         color,
         joined,
+        secret,
       }));
 
     const result = {
