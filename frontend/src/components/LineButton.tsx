@@ -6,10 +6,11 @@ type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
 const LineButton = ({
   type = "button",
   onClick,
+  disabled,
   children,
 }: ButtonAttributes) => {
   return (
-    <StyledLineButton type={type} onClick={onClick}>
+    <StyledLineButton type={type} onClick={onClick} disabled={disabled}>
       {children}
     </StyledLineButton>
   );
@@ -25,7 +26,13 @@ const StyledLineButton = styled.button`
   font-weight: 600;
 
   &:hover {
+    border: 1px solid ${({ theme }) => theme.colors.SKY_BLUE_400};
     color: ${({ theme }) => theme.colors.SKY_BLUE_400};
+  }
+
+  &:disabled {
+    border: 1px solid ${({ theme }) => theme.colors.GRAY_400};
+    color: ${({ theme }) => theme.colors.GRAY_400};
   }
 `;
 
