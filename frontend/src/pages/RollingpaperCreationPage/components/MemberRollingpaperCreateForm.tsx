@@ -76,6 +76,7 @@ const MemberRollingpaperCreateForm = () => {
           pattern={REGEX.ROLLINGPAPER_TITLE.source}
           value={title}
           onChange={handleInputChange}
+          errorMessage={"1~20자 사이의 제목을 입력해주세요"}
         />
         <AutoCompleteInput
           labelText="받는 사람"

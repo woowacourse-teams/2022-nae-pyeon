@@ -35,6 +35,7 @@ const TeamRollingpaperCreateForm = () => {
         <LabeledInput
           labelText="롤링페이퍼 제목"
           pattern={REGEX.ROLLINGPAPER_TITLE.source}
+          errorMessage={"1~20자 사이의 제목을 입력해주세요"}
           value={title}
           onChange={handleInputChange}
         />
