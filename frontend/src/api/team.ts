@@ -8,21 +8,17 @@ interface SearchRequest {
 
 const getMyTeams =
   (teamPageCount = 5) =>
-  async ({ pageParam = 0 }) => {
-    const data = appClient
+  async ({ pageParam = 0 }) =>
+    appClient
       .get(`teams/me?page=${pageParam}&count=${teamPageCount}`)
       .then((response) => response.data);
-    return data;
-  };
 
 const getTeamSearchResult =
   ({ keyword, count }: SearchRequest) =>
-  async ({ pageParam = 0 }) => {
-    const data = appClient
+  async ({ pageParam = 0 }) =>
+    appClient
       .get(`teams?keyword=${keyword}&page=${pageParam}&count=${count}`)
       .then((response) => response.data);
-    return data;
-  };
 
 const getTeam = (id: number) =>
   appClient.get(`/teams/${id}`).then((response) => response.data);
