@@ -24,6 +24,10 @@ const TeamRollingpaperCreateForm = () => {
     createTeamRollingpaper({ title });
   };
 
+  const isValidRollingpaperTitle = (title: string) => {
+    return REGEX.ROLLINGPAPER_TITLE.test(title);
+  };
+
   return (
     <StyledMain>
       <StyledHeader>모임에게 롤링페이퍼 작성</StyledHeader>
@@ -34,7 +38,9 @@ const TeamRollingpaperCreateForm = () => {
           value={title}
           onChange={handleInputChange}
         />
-        <Button type="submit">완료</Button>
+        <Button type="submit" disabled={!isValidRollingpaperTitle(title)}>
+          완료
+        </Button>
       </StyledForm>
     </StyledMain>
   );
