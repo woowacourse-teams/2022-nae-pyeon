@@ -196,6 +196,16 @@ class TeamServiceTest {
     }
 
     @Test
+    @DisplayName("이미 존재하는 닉네임으로 모임에 가입신청할 경우 예외를 발생시킨다.")
+    void joinMemberWithDuplicateNickname() {
+        final String nickname = "닉네임";
+        teamService.joinMember(team1.getId(), member.getId(), nickname);
+
+        assertThatThrownBy(() -> teamService.joinMember(team1.getId(), member2.getId(), nickname))
+                .isInstanceOf(DuplicateNicknameException.class);
+    }
+
+    @Test
     @DisplayName("이름에 특정 키워드가 포함된 모임들을 조회한다.")
     void findTeamsByContainingTeamName() {
         final List<TeamResponseDto> actual =
