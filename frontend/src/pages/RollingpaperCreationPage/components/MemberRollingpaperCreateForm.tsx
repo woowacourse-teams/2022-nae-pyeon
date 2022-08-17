@@ -6,7 +6,7 @@ import Button from "@/components/Button";
 import AutoCompleteInput from "@/components/AutoCompleteInput";
 
 import { REGEX } from "@/constants";
-import useParamValidate from "@/hooks/useParamValidate";
+import useValidatedParam from "@/hooks/useValidatedParam";
 import useAutoCompleteInput from "@/hooks/useAutoCompleteInput";
 import useInput from "@/hooks/useInput";
 
@@ -14,7 +14,7 @@ import useReadTeamMembers from "@/pages/RollingpaperCreationPage/hooks/useReadTe
 import useCreateMemberRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateMemberRolliingpaper";
 
 const MemberRollingpaperCreateForm = () => {
-  const teamId = useParamValidate<number>("teamId");
+  const teamId = useValidatedParam<number>("teamId");
   const { value: title, handleInputChange } = useInput("");
   const {
     value: rollingpaperTo,

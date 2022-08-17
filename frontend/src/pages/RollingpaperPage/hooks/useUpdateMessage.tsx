@@ -2,7 +2,7 @@ import React from "react";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
-import useParamValidate from "@/hooks/useParamValidate";
+import useValidatedParam from "@/hooks/useValidatedParam";
 import { useSnackbar } from "@/context/SnackbarContext";
 
 import { queryClient } from "@/api";
@@ -11,7 +11,7 @@ import { Message, CustomError } from "@/types";
 
 const useUpdateMessage = (id: number) => {
   const { openSnackbar } = useSnackbar();
-  const rollingpaperId = useParamValidate<number>("rollingpaperId");
+  const rollingpaperId = useValidatedParam<number>("rollingpaperId");
 
   const { mutate: updateMessage } = useMutation(
     ({

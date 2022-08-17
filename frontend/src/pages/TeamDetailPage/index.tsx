@@ -9,10 +9,10 @@ import TeamJoinSection from "@/pages/TeamDetailPage/components/TeamJoinSection";
 
 import { Team, CustomError } from "@/types";
 import { getTeam } from "@/api/team";
-import useParamValidate from "@/hooks/useParamValidate";
+import useValidatedParam from "@/hooks/useValidatedParam";
 
 const TeamDetailPage = () => {
-  const teamId = useParamValidate<number>("teamId");
+  const teamId = useValidatedParam<number>("teamId");
 
   const {
     isLoading: isLoadingTeamDetail,

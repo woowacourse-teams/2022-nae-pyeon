@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 
-const useParamValidate = <T,>(requireParams: string): T => {
+const useValidatedParam = <T,>(requireParams: string): T => {
   const param = useParams();
 
   if (!param) {
@@ -11,4 +11,4 @@ const useParamValidate = <T,>(requireParams: string): T => {
   return param[requireParams] as unknown as T;
 };
 
-export default useParamValidate;
+export default useValidatedParam;

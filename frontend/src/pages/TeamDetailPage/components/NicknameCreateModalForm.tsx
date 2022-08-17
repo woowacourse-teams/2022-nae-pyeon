@@ -14,7 +14,7 @@ import { useSnackbar } from "@/context/SnackbarContext";
 import useInput from "@/hooks/useInput";
 
 import { postTeamMember } from "@/api/team";
-import useParamValidate from "@/hooks/useParamValidate";
+import useValidatedParam from "@/hooks/useValidatedParam";
 
 interface NicknameCreateModalFormProp {
   onClickCloseButton: () => void;
@@ -26,7 +26,7 @@ const NicknameCreateModalForm = ({
   const { openSnackbar } = useSnackbar();
   const { value: nickname, handleInputChange: handleNicknameChange } =
     useInput("");
-  const teamId = useParamValidate<number>("teamId");
+  const teamId = useValidatedParam<number>("teamId");
 
   const { mutate: joinTeam } = useMutation(
     async (nickname: string) => {

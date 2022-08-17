@@ -7,11 +7,11 @@ import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
 
 import { Rollingpaper, CustomError } from "@/types";
 import { getRollingpaper } from "@/api/rollingpaper";
-import useParamValidate from "@/hooks/useParamValidate";
+import useValidatedParam from "@/hooks/useValidatedParam";
 
 const RollingpaperPage = () => {
-  const teamId = useParamValidate<number>("teamId");
-  const rollingpaperId = useParamValidate<number>("rollingpaperId");
+  const teamId = useValidatedParam<number>("teamId");
+  const rollingpaperId = useValidatedParam<number>("rollingpaperId");
 
   const {
     isLoading,

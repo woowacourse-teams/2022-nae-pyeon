@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import LabeledInput from "@/components/LabeledInput";
 import Button from "@/components/Button";
 
-import useParamValidate from "@/hooks/useParamValidate";
+import useValidatedParam from "@/hooks/useValidatedParam";
 import useInput from "@/hooks/useInput";
 
 import useCreateTeamRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateTeamRollingpaper";
@@ -13,7 +13,7 @@ import { REGEX } from "@/constants";
 
 const TeamRollingpaperCreateForm = () => {
   const { value: title, handleInputChange } = useInput("");
-  const teamId = useParamValidate<number>("teamId");
+  const teamId = useValidatedParam<number>("teamId");
 
   const createTeamRollingpaper = useCreateTeamRollingpaper(teamId);
 

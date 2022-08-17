@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 
 import { useSnackbar } from "@/context/SnackbarContext";
 
-import useParamValidate from "@/hooks/useParamValidate";
+import useValidatedParam from "@/hooks/useValidatedParam";
 import useCreateInviteLink from "@/pages/TeamDetailPage/hooks/useCreateInviteLink";
 
 import Modal from "@/components/Modal";
@@ -18,7 +18,7 @@ interface InviteModalProp {
 
 const InviteModal = ({ onClickClose }: InviteModalProp) => {
   const { openSnackbar } = useSnackbar();
-  const teamId = useParamValidate<number>("teamId");
+  const teamId = useValidatedParam<number>("teamId");
   const { createInviteLink, isError, data } = useCreateInviteLink();
 
   const handleCopyButton =

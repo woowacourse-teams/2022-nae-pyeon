@@ -8,7 +8,7 @@ import LineButton from "@/components/LineButton";
 import Modal from "@/components/Modal";
 import UnderlineInput from "@/components/UnderlineInput";
 
-import useParamValidate from "@/hooks/useParamValidate";
+import useValidatedParam from "@/hooks/useValidatedParam";
 import useInput from "@/hooks/useInput";
 
 import { REGEX } from "@/constants";
@@ -24,7 +24,7 @@ const NicknameEditModalForm = ({
   onClickCloseButton,
 }: NicknameEditModalForm) => {
   const { openSnackbar } = useSnackbar();
-  const teamId = useParamValidate<number>("teamId");
+  const teamId = useValidatedParam<number>("teamId");
   const { value: nickname, handleInputChange: handleNicknameChange } =
     useInput("");
 
