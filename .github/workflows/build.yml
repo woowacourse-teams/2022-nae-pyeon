@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - master # or the name of your main branch
+      - develop
+    paths:
+      - backend/**
+      - .github/**
 
 jobs:
   build:
