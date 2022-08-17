@@ -53,7 +53,7 @@ export const MessageCreateForm = ({
     <MessageForm
       enableSecretMessage={enableSecretMessage}
       content={content}
-      color={content}
+      color={color}
       anonymous={anonymous}
       secret={secret}
       handleColorClick={handleColorClick}
