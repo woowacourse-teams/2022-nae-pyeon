@@ -16,10 +16,7 @@ interface ResponseTeamMember {
   members: TeamMember[];
 }
 
-export const useReadTeamMembers = ({
-  teamId,
-  onSuccess,
-}: UseReadTeamMembersArgs) => {
+const useReadTeamMembers = ({ teamId, onSuccess }: UseReadTeamMembersArgs) => {
   return useQuery<ResponseTeamMember>(
     ["team-member", teamId],
     () => getTeamMembers(+teamId),
@@ -28,3 +25,5 @@ export const useReadTeamMembers = ({
     }
   );
 };
+
+export default useReadTeamMembers;

@@ -5,7 +5,19 @@ import rollingPaperDummy from "../dummy/rollingpapers.json";
 const rollingpapers = rollingPaperDummy.rollingpapers;
 
 const rollingpaperHandlers = [
-  // 개인 롤링페이퍼 생성
+  // 팀 롤링페이퍼 생성
+  rest.post("/api/v1/teams/:teamId/team-rollingpapers", (req, res, ctx) => {
+    const { teamId } = req.params;
+    const { title } = req.body;
+
+    const result = {
+      id: 123,
+    };
+
+    return res(ctx.status(201), ctx.json(result));
+  }),
+
+  // 멤버 롤링페이퍼 생성
   rest.post("/api/v1/teams/:teamId/rollingpapers", (req, res, ctx) => {
     const { teamId } = req.params;
     const { title, addresseeId } = req.body;

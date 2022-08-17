@@ -8,11 +8,14 @@ import AutoCompleteInput from "@/components/AutoCompleteInput";
 import { REGEX } from "@/constants";
 import useParamValidate from "@/hooks/useParamValidate";
 import useAutoCompleteInput from "@/hooks/useAutoCompleteInput";
+import useInput from "@/hooks/useInput";
 
-import { useReadTeamMembers } from "@/pages/RollingpaperCreationPage/hooks/useReadTeamMembers";
+import useReadTeamMembers from "@/pages/RollingpaperCreationPage/hooks/useReadTeamMembers";
+import useCreateMemberRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateMemberRolliingpaper";
 
 const MemberRollingpaperCreateForm = () => {
   const { teamId } = useParamValidate(["teamId"]);
+  const { value: title, handleInputChange } = useInput("");
   const {
     value: rollingpaperTo,
     autoCompleteList,
@@ -23,6 +26,8 @@ const MemberRollingpaperCreateForm = () => {
     handleListItemClick,
     setKeywordList,
   } = useAutoCompleteInput();
+
+  const createMemberRollingpaper = useCreateMemberRollingpaper(+teamId);
 
   const { data: teamMemberResponse } = useReadTeamMembers({
     teamId: +teamId,
@@ -41,10 +46,25 @@ const MemberRollingpaperCreateForm = () => {
     return !!receiver;
   };
 
+  const isValidRollingpaperTitle = (title: string) => {
+    return REGEX.ROLLINGPAPER_TITLE.test(title);
+  };
+
   const handleRollingpaperCreateSubmit: React.FormEventHandler<
     HTMLFormElement
-  > = () => {
-    console.log("생성되었음");
+  > = (e) => {
+    e.preventDefault();
+
+    if (!isValidRollingpaperTitle(title)) {
+      return alert("롤링페이퍼 제목은 1 ~ 20자여야 합니다.");
+    }
+
+    const receiver = findReceiverWithNickName(rollingpaperTo);
+    if (!receiver) {
+      return alert("받는 사람은 모임원 중 한 명이어야 합니다.");
+    }
+
+    createMemberRollingpaper({ title, addresseeId: receiver.id });
   };
 
   return (
@@ -54,6 +74,9 @@ const MemberRollingpaperCreateForm = () => {
         <LabeledInput
           labelText="롤링페이퍼 제목"
           pattern={REGEX.ROLLINGPAPER_TITLE.source}
+          value={title}
+          onChange={handleInputChange}
+          errorMessage={"1~20자 사이의 제목을 입력해주세요"}
         />
         <AutoCompleteInput
           labelText="받는 사람"
@@ -65,7 +88,15 @@ const MemberRollingpaperCreateForm = () => {
           onFocus={handleAutoInputFocus}
           onClickListItem={handleListItemClick}
         />
-        <Button>완료</Button>
+        <Button
+          type="submit"
+          disabled={
+            !isValidRollingpaperTitle(title) ||
+            !isValidReceiverNickName(rollingpaperTo)
+          }
+        >
+          완료
+        </Button>
       </StyledForm>
     </StyledMain>
   );

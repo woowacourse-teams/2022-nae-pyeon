@@ -4,13 +4,28 @@ import styled from "@emotion/styled";
 import LabeledInput from "@/components/LabeledInput";
 import Button from "@/components/Button";
 
+import useParamValidate from "@/hooks/useParamValidate";
+import useInput from "@/hooks/useInput";
+
+import useCreateTeamRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateTeamRollingpaper";
+
 import { REGEX } from "@/constants";
 
 const TeamRollingpaperCreateForm = () => {
+  const { value: title, handleInputChange } = useInput("");
+  const { teamId } = useParamValidate(["teamId"]);
+
+  const createTeamRollingpaper = useCreateTeamRollingpaper(+teamId);
+
   const handleRollingpaperCreateSubmit: React.FormEventHandler<
     HTMLFormElement
-  > = () => {
-    console.log("생성되었음");
+  > = (e) => {
+    e.preventDefault();
+    createTeamRollingpaper({ title });
+  };
+
+  const isValidRollingpaperTitle = (title: string) => {
+    return REGEX.ROLLINGPAPER_TITLE.test(title);
   };
 
   return (
@@ -20,8 +35,13 @@ const TeamRollingpaperCreateForm = () => {
         <LabeledInput
           labelText="롤링페이퍼 제목"
           pattern={REGEX.ROLLINGPAPER_TITLE.source}
+          errorMessage={"1~20자 사이의 제목을 입력해주세요"}
+          value={title}
+          onChange={handleInputChange}
         />
-        <Button>완료</Button>
+        <Button type="submit" disabled={!isValidRollingpaperTitle(title)}>
+          완료
+        </Button>
       </StyledForm>
     </StyledMain>
   );
