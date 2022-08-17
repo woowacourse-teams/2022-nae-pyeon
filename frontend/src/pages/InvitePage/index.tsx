@@ -17,7 +17,7 @@ import TeamDescriptionBox from "@/pages/InvitePage/components/TeamDescriptionBox
 import { REGEX } from "@/constants";
 
 const InvitePage = () => {
-  const { inviteToken } = useParamValidate(["inviteToken"]);
+  const inviteToken = useParamValidate<string>("inviteToken");
 
   const { value: nickname, handleInputChange } = useInput("");
   const checkLogin = useCheckLogin(inviteToken);

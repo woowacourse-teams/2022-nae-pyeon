@@ -11,7 +11,7 @@ import { Message, CustomError } from "@/types";
 
 const useUpdateMessage = (id: number) => {
   const { openSnackbar } = useSnackbar();
-  const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
+  const rollingpaperId = useParamValidate<number>("rollingpaperId");
 
   const { mutate: updateMessage } = useMutation(
     ({
@@ -21,7 +21,7 @@ const useUpdateMessage = (id: number) => {
       secret,
     }: Pick<Message, "content" | "color" | "anonymous" | "secret">) => {
       return putMessage({
-        rollingpaperId: +rollingpaperId,
+        rollingpaperId: rollingpaperId,
         id,
         content,
         color,

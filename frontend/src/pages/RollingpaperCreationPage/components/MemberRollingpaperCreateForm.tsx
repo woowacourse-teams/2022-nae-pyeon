@@ -14,7 +14,7 @@ import useReadTeamMembers from "@/pages/RollingpaperCreationPage/hooks/useReadTe
 import useCreateMemberRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateMemberRolliingpaper";
 
 const MemberRollingpaperCreateForm = () => {
-  const { teamId } = useParamValidate(["teamId"]);
+  const teamId = useParamValidate<number>("teamId");
   const { value: title, handleInputChange } = useInput("");
   const {
     value: rollingpaperTo,
@@ -27,10 +27,10 @@ const MemberRollingpaperCreateForm = () => {
     setKeywordList,
   } = useAutoCompleteInput();
 
-  const createMemberRollingpaper = useCreateMemberRollingpaper(+teamId);
+  const createMemberRollingpaper = useCreateMemberRollingpaper(teamId);
 
   const { data: teamMemberResponse } = useReadTeamMembers({
-    teamId: +teamId,
+    teamId: teamId,
     onSuccess: (data) =>
       setKeywordList(data.members.map((member) => member.nickname)),
   });

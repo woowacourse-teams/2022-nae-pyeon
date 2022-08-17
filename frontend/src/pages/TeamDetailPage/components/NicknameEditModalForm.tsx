@@ -24,12 +24,12 @@ const NicknameEditModalForm = ({
   onClickCloseButton,
 }: NicknameEditModalForm) => {
   const { openSnackbar } = useSnackbar();
-  const { teamId } = useParamValidate(["teamId"]);
+  const teamId = useParamValidate<number>("teamId");
   const { value: nickname, handleInputChange: handleNicknameChange } =
     useInput("");
 
   const { mutate: editTeamNickname } = useMutation(
-    async (nickname: string) => putTeamNickname({ id: +teamId, nickname }),
+    async (nickname: string) => putTeamNickname({ id: teamId, nickname }),
     {
       onSuccess: () => {
         onClickCloseButton();

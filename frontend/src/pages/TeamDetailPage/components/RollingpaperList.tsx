@@ -19,7 +19,7 @@ interface RollingpaperListResponse {
 
 const RollingpaperList = () => {
   const navigate = useNavigate();
-  const { teamId } = useParamValidate(["teamId"]);
+  const teamId = useParamValidate<number>("teamId");
 
   const {
     isLoading: isLoadingGetTeamRollingpaperList,
@@ -27,7 +27,7 @@ const RollingpaperList = () => {
     error: getTeamRollingpaperListError,
     data: teamRollinpaperListResponse,
   } = useQuery<RollingpaperListResponse>(["rollingpaperList", teamId], () =>
-    getTeamRollingpapers(+teamId)
+    getTeamRollingpapers(teamId)
   );
 
   if (isLoadingGetTeamRollingpaperList) {

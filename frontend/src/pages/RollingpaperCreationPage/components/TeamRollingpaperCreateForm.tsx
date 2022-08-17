@@ -13,9 +13,9 @@ import { REGEX } from "@/constants";
 
 const TeamRollingpaperCreateForm = () => {
   const { value: title, handleInputChange } = useInput("");
-  const { teamId } = useParamValidate(["teamId"]);
+  const teamId = useParamValidate<number>("teamId");
 
-  const createTeamRollingpaper = useCreateTeamRollingpaper(+teamId);
+  const createTeamRollingpaper = useCreateTeamRollingpaper(teamId);
 
   const handleRollingpaperCreateSubmit: React.FormEventHandler<
     HTMLFormElement

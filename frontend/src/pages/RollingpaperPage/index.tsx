@@ -10,10 +10,8 @@ import { getRollingpaper } from "@/api/rollingpaper";
 import useParamValidate from "@/hooks/useParamValidate";
 
 const RollingpaperPage = () => {
-  const { teamId, rollingpaperId } = useParamValidate([
-    "teamId",
-    "rollingpaperId",
-  ]);
+  const teamId = useParamValidate<number>("teamId");
+  const rollingpaperId = useParamValidate<number>("rollingpaperId");
 
   const {
     isLoading,
@@ -21,7 +19,7 @@ const RollingpaperPage = () => {
     error: rollingpaperError,
     data: rollingpaper,
   } = useQuery<Rollingpaper>(["rollingpaper", rollingpaperId], () =>
-    getRollingpaper(+teamId, +rollingpaperId)
+    getRollingpaper(teamId, rollingpaperId)
   );
 
   if (isLoading) {

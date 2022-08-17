@@ -18,7 +18,7 @@ interface InviteModalProp {
 
 const InviteModal = ({ onClickClose }: InviteModalProp) => {
   const { openSnackbar } = useSnackbar();
-  const { teamId } = useParamValidate(["teamId"]);
+  const teamId = useParamValidate<number>("teamId");
   const { createInviteLink, isError, data } = useCreateInviteLink();
 
   const handleCopyButton =
@@ -34,8 +34,7 @@ const InviteModal = ({ onClickClose }: InviteModalProp) => {
     };
 
   useEffect(() => {
-    const typedTeamId = Number(teamId);
-    createInviteLink({ id: typedTeamId });
+    createInviteLink({ id: teamId });
   }, []);
 
   if (isError) {

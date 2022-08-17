@@ -12,14 +12,14 @@ import { getTeam } from "@/api/team";
 import useParamValidate from "@/hooks/useParamValidate";
 
 const TeamDetailPage = () => {
-  const { teamId } = useParamValidate(["teamId"]);
+  const teamId = useParamValidate<number>("teamId");
 
   const {
     isLoading: isLoadingTeamDetail,
     isError: isErrorTeamDetail,
     error: TeamDetailError,
     data: teamDetail,
-  } = useQuery<Team>(["team", teamId], () => getTeam(+teamId));
+  } = useQuery<Team>(["team", teamId], () => getTeam(teamId));
 
   if (isLoadingTeamDetail) {
     return <div>로딩중</div>;

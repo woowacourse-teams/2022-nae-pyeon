@@ -49,8 +49,8 @@ export const MessageCreateForm = ({ onEditEnd }: MessageCreateFormProps) => {
     initMessage,
   } = useMessageForm({});
 
-  const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
-  const { createMessage } = useCreateMessage(+rollingpaperId);
+  const rollingpaperId = useParamValidate<number>("rollingpaperId");
+  const { createMessage } = useCreateMessage(rollingpaperId);
 
   const handleMessageSubmit = () => {
     createMessage({ content, color, anonymous, secret });

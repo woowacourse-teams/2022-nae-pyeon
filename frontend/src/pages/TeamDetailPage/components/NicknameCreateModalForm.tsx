@@ -26,11 +26,11 @@ const NicknameCreateModalForm = ({
   const { openSnackbar } = useSnackbar();
   const { value: nickname, handleInputChange: handleNicknameChange } =
     useInput("");
-  const { teamId } = useParamValidate(["teamId"]);
+  const teamId = useParamValidate<number>("teamId");
 
   const { mutate: joinTeam } = useMutation(
     async (nickname: string) => {
-      postTeamMember({ id: +teamId, nickname });
+      postTeamMember({ id: teamId, nickname });
     },
     {
       onSuccess: () => {
