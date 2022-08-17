@@ -30,8 +30,16 @@ const InvitePage = () => {
 
   const joinTeamWithInviteToken = useJoinTeamWithInviteToken(teamDetail?.id);
 
+  const isValidTeaNickname = (nickname: string) => {
+    return REGEX.TEAM_NICKNAME.test(nickname);
+  };
+
   const handleTeamJoinSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+
+    if (!isValidTeaNickname(nickname)) {
+      return;
+    }
 
     joinTeamWithInviteToken({
       nickname,
@@ -63,7 +71,9 @@ const InvitePage = () => {
           errorMessage="1 ~ 20자 사이의 닉네임을 입력해주세요"
           onChange={handleInputChange}
         />
-        <LineButton type="submit">모임 가입하기</LineButton>
+        <LineButton type="submit" disabled={!isValidTeaNickname(nickname)}>
+          모임 가입하기
+        </LineButton>
       </StyledJoinForm>
     </StyledPage>
   );
