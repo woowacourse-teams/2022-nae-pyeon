@@ -1,6 +1,6 @@
 import { appClient } from "@/api";
 
-interface PostRollingpaperRequest {
+interface RequestPostRollingpaper {
   teamId: number;
   title: string;
   addresseeId: number;
@@ -13,7 +13,7 @@ const getRollingpaper = (teamId: number, id: number) =>
 const postTeamRollingpaper = ({
   teamId,
   title,
-}: Omit<PostRollingpaperRequest, "addresseeId">) =>
+}: Omit<RequestPostRollingpaper, "addresseeId">) =>
   appClient
     .post(`/teams/${teamId}/team-rollingpapers`, {
       title,
@@ -24,7 +24,7 @@ const postMemberRollingpaper = ({
   teamId,
   title,
   addresseeId,
-}: PostRollingpaperRequest) =>
+}: RequestPostRollingpaper) =>
   appClient
     .post(`/teams/${teamId}/rollingpapers`, {
       title,
