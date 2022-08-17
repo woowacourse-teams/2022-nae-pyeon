@@ -8,7 +8,6 @@ import com.woowacourse.naepyeon.exception.NotFoundRollingpaperException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamMemberException;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
 import com.woowacourse.naepyeon.repository.RollingpaperRepository;
-import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.ReceivedRollingpaperResponseDto;
 import com.woowacourse.naepyeon.service.dto.ReceivedRollingpapersResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperPreviewResponseDto;
@@ -178,8 +177,10 @@ class RollingpaperServiceTest {
                 rollingpaperService.findReceivedRollingpapers(memberId, 0, 2);
         final List<ReceivedRollingpaperResponseDto> actual = receivedRollingpapersResponseDto.getRollingpapers();
         final List<ReceivedRollingpaperResponseDto> expected = List.of(
-                new ReceivedRollingpaperResponseDto(rollingpaperId1, ROLLINGPAPER_TITLE, teamId, teamRequestDto.getName()),
-                new ReceivedRollingpaperResponseDto(rollingpaperId2, ROLLINGPAPER_TITLE, teamId, teamRequestDto.getName())
+                new ReceivedRollingpaperResponseDto(rollingpaperId1, ROLLINGPAPER_TITLE, teamId,
+                        teamRequestDto.getName()),
+                new ReceivedRollingpaperResponseDto(rollingpaperId2, ROLLINGPAPER_TITLE, teamId,
+                        teamRequestDto.getName())
         );
 
         // then

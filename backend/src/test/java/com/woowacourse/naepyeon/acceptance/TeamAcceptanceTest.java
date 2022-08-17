@@ -448,22 +448,6 @@ class TeamAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("시크릿 키가 변조된 초대코드로 모임 정보를 요청시 예외가 발생한다.")
-    void findTeamByInviteTokenWithInvalidSecretKey() {
-        final Long teamId = 모임_생성(alex);
-        final String invalidSecretKeyInviteToken = invalidSecretKeyInviteTokenProvider.createInviteToken(teamId);
-
-        final ExtractableResponse<Response> response = 초대_토큰으로_팀_상세_조회(alex, invalidSecretKeyInviteToken);
-        final ErrorResponse errorResponse = response.as(ErrorResponse.class);
-
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
-                () -> assertThat(errorResponse).extracting("errorCode", "message")
-                        .containsExactly("4016", "토큰의 secret key가 변조됐습니다. 해킹의 우려가 존재합니다.")
-        );
-    }
-
-    @Test
     @DisplayName("유효시간이 지난 초대코드로 모임 정보를 요청시 예외가 발생한다.")
     void findTeamByInviteTokenWithExpiredToken() {
         final Long teamId = 모임_생성(alex);
