@@ -4,6 +4,7 @@ import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Message;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
+import com.woowacourse.naepyeon.exception.InvalidSecretMessageToTeam;
 import com.woowacourse.naepyeon.exception.NotAuthorException;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundMessageException;
@@ -38,11 +39,20 @@ public class MessageService {
     public Long saveMessage(final MessageRequestDto messageRequestDto, final Long rollingpaperId, final Long authorId) {
         final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
                 .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
+        validateCanSecret(messageRequestDto, rollingpaperId, rollingpaper);
         final Member author = memberRepository.findById(authorId)
                 .orElseThrow(() -> new NotFoundMemberException(authorId));
         final Message message = new Message(messageRequestDto.getContent(), messageRequestDto.getColor(),
                 author, rollingpaper, messageRequestDto.isAnonymous(), messageRequestDto.isSecret());
         return messageRepository.save(message);
+    }
+
+    private void validateCanSecret(
+            final MessageRequestDto messageRequestDto, final Long rollingpaperId, final Rollingpaper rollingpaper
+    ) {
+        if (!rollingpaper.canContainSecretMessage() && messageRequestDto.isSecret()) {
+            throw new InvalidSecretMessageToTeam(rollingpaperId);
+        }
     }
 
     @Transactional(readOnly = true)

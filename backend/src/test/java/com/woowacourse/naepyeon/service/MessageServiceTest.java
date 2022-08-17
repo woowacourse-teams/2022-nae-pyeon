@@ -11,6 +11,7 @@ import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
+import com.woowacourse.naepyeon.exception.InvalidSecretMessageToTeam;
 import com.woowacourse.naepyeon.exception.NotAuthorException;
 import com.woowacourse.naepyeon.exception.NotFoundMessageException;
 import com.woowacourse.naepyeon.repository.MemberRepository;
@@ -87,6 +88,17 @@ class MessageServiceTest {
 
         assertThat(messageResponse).extracting("content", "from", "authorId")
                 .containsExactly(messageRequest.getContent(), "이케이", author.getId());
+    }
+
+    @Test
+    @DisplayName("모임에게 비밀 메시지로 작성할 경우 예외를 발생시킨다.")
+    void saveMessageWithSecretToTeam() {
+        final MessageRequest messageRequest = createMessageRequest();
+
+        assertThatThrownBy(() -> messageService.saveMessage(
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, true),
+                teamRollingpaper.getId(), author.getId()
+        )).isInstanceOf(InvalidSecretMessageToTeam.class);
     }
 
     @Test
