@@ -38,17 +38,9 @@ const teamHandlers = [
     const page = +req.url.searchParams.get("page");
     const count = +req.url.searchParams.get("count");
 
-    const keywordTeam = totalTeams
-      .filter((team) => team.name.includes(keyword))
-      .map(({ id, name, description, emoji, color, joined, secret }) => ({
-        id,
-        name,
-        description,
-        emoji,
-        color,
-        joined,
-        secret,
-      }));
+    const keywordTeam = totalTeams.filter((team) =>
+      team.name.includes(keyword)
+    );
 
     const result = {
       totalCount: keywordTeam.length,
