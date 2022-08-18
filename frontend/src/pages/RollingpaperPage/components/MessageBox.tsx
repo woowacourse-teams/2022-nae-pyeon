@@ -7,12 +7,12 @@ import TrashIcon from "@/assets/icons/bx-trash.svg";
 import Pencil from "@/assets/icons/bx-pencil.svg";
 import LockIcon from "@/assets/icons/bx-lock-alt.svg";
 
-import useValidatedParam from "@/hooks/useValidatedParam";
 import MessageUpdateForm from "@/pages/RollingpaperPage/components/MessageUpdateForm";
 import useMessageBox from "@/pages/RollingpaperPage/hooks/useMessageBox";
 import SecretMessage from "@/pages/RollingpaperPage/components/SecretMessage";
 
 import { Message } from "@/types";
+import useValidatedParam from "@/hooks/useValidatedParam";
 
 const MessageBox = ({
   id,
@@ -25,7 +25,7 @@ const MessageBox = ({
   visible,
   enableSecretMessage,
 }: Message & { enableSecretMessage: boolean }) => {
-  const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
+  const rollingpaperId = useValidatedParam<number>("rollingpaperId");
 
   const {
     isEdit,
