@@ -51,6 +51,7 @@ beforeAll(() => {
   });
   window.IntersectionObserver = mockIntersectionObserver;
 });
+
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 

@@ -8,7 +8,8 @@
     "build": "webpack --config webpack.prod.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",

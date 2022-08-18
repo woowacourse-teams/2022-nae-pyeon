@@ -1,0 +1,28 @@
+name: Create Cypress report
+on: [push]
+
+defaults:
+  run:
+    working-directory: frontend
+
+jobs:
+  cypress-e2e-chrome88:
+    name: Run on Chrome 88
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: yarn install, build
+        run: |
+          yarn install
+          yarn build
+
+      - name: Run Jest tests
+        run: |
+          yarn test
