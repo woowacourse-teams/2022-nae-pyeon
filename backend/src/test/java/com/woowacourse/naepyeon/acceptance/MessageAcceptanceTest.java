@@ -155,7 +155,8 @@ class MessageAcceptanceTest extends AcceptanceTest {
 
         final MessageResponseDto actual = 메시지_조회(seungpang, rollingpaperId, messageId)
                 .as(MessageResponseDto.class);
-        final MessageResponseDto expected = new MessageResponseDto(actual.getId(), messageRequest.getContent(), actual.getFrom(),
+        final MessageResponseDto expected = new MessageResponseDto(actual.getId(), messageRequest.getContent(),
+                actual.getFrom(),
                 actual.getAuthorId(), messageRequest.getColor(), true, false, true, true);
 
         assertAll(
