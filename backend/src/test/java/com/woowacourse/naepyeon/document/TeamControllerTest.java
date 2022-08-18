@@ -10,7 +10,7 @@ import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
-import com.woowacourse.naepyeon.support.InviteTokenProvider;
+import com.woowacourse.naepyeon.support.invitetoken.InviteTokenProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

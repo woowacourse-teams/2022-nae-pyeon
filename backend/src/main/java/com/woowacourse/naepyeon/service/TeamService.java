@@ -17,7 +17,7 @@ import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamRequestDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
-import com.woowacourse.naepyeon.support.InviteTokenProvider;
+import com.woowacourse.naepyeon.support.invitetoken.InviteTokenProvider;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;

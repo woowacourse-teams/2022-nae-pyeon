@@ -1,6 +1,5 @@
 package com.woowacourse.naepyeon.service.dto;
 
-import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.domain.Team;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
