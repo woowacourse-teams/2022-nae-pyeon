@@ -1,8 +1,9 @@
 import React from "react";
 
-import useParamValidate from "@/hooks/useParamValidate";
 import useMessageForm from "@/pages/RollingpaperPage/hooks/useMessageForm";
 import useCreateMessage from "@/pages/RollingpaperPage/hooks/useCreateMessage";
+
+import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 
 import useValidatedParam from "@/hooks/useValidatedParam";
 
@@ -15,8 +16,6 @@ export const MessageCreateForm = ({
   enableSecretMessage,
   onEditEnd,
 }: MessageCreateFormProps) => {
-  const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
-
   const {
     content,
     color,
