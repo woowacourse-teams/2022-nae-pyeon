@@ -191,7 +191,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
                         .getId();
 
         //내가 작성한 메시지 조회
-        final WrittenMessagesResponseDto writtenMessagesResponseDto = 나의_메시지_조회(kei, 0, 2)
+        final WrittenMessagesResponseDto writtenMessagesResponseDto = 나의_메시지_조회(kei, 0, 10)
                 .as(WrittenMessagesResponseDto.class);
         final List<WrittenMessageResponseDto> actual = writtenMessagesResponseDto.getMessages();
         final List<WrittenMessageResponseDto> expected = List.of(
