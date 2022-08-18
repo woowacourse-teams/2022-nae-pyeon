@@ -1,6 +1,9 @@
 package com.woowacourse.naepyeon.service.dto;
 
-import com.woowacourse.naepyeon.domain.Rollingpaper;
+import static com.woowacourse.naepyeon.domain.rollingpaper.Recipient.TEAM;
+
+import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,12 +17,24 @@ public class RollingpaperPreviewResponseDto {
     private Long id;
     private String title;
     private String to;
+    private Recipient recipient;
 
-    public static RollingpaperPreviewResponseDto from(final Rollingpaper rollingpaper, final String nickname) {
+    public static RollingpaperPreviewResponseDto createPreviewRollingpaper(final Rollingpaper rollingpaper,
+                                                                           final String to) {
+        if (rollingpaper.checkSameRecipient(TEAM)) {
+            return getRollingpaperPreviewResponseDto(rollingpaper, rollingpaper.getTeamName());
+        }
+
+        return getRollingpaperPreviewResponseDto(rollingpaper, to);
+    }
+
+    private static RollingpaperPreviewResponseDto getRollingpaperPreviewResponseDto(final Rollingpaper rollingpaper,
+                                                                                    final String to) {
         return new RollingpaperPreviewResponseDto(
                 rollingpaper.getId(),
                 rollingpaper.getTitle(),
-                nickname
+                to,
+                rollingpaper.getRecipient()
         );
     }
 }

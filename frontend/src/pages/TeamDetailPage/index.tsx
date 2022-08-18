@@ -1,36 +1,25 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
 import styled from "@emotion/styled";
 import axios from "axios";
-
-import { appClient } from "@/api";
 
 import TeamDescriptionBox from "@/pages/TeamDetailPage/components/TeamDescriptionBox";
 import RollingpaperList from "@/pages/TeamDetailPage/components/RollingpaperList";
 import TeamJoinSection from "@/pages/TeamDetailPage/components/TeamJoinSection";
 
-import { CustomError } from "@/types";
-interface Team {
-  id: number;
-  name: string;
-  description: string;
-  emoji: string;
-  color: string;
-  joined: boolean;
-}
+import { Team, CustomError } from "@/types";
+import { getTeam } from "@/api/team";
+import useValidatedParam from "@/hooks/useValidatedParam";
 
 const TeamDetailPage = () => {
-  const { teamId } = useParams();
+  const teamId = useValidatedParam<number>("teamId");
 
   const {
     isLoading: isLoadingTeamDetail,
     isError: isErrorTeamDetail,
     error: TeamDetailError,
     data: teamDetail,
-  } = useQuery<Team>(["team", teamId], () =>
-    appClient.get(`/teams/${teamId}`).then((response) => response.data)
-  );
+  } = useQuery<Team>(["team", teamId], () => getTeam(teamId));
 
   if (isLoadingTeamDetail) {
     return <div>로딩중</div>;
@@ -57,7 +46,11 @@ const TeamDetailPage = () => {
         color={teamDetail.color}
         joined={teamDetail.joined}
       />
-      {teamDetail.joined ? <RollingpaperList /> : <TeamJoinSection />}
+      {teamDetail.joined ? (
+        <RollingpaperList />
+      ) : (
+        <TeamJoinSection isSecretTeam={teamDetail.secret} />
+      )}
     </StyledMain>
   );
 };

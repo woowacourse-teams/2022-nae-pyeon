@@ -2,11 +2,12 @@ package com.woowacourse.naepyeon.document;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.MessageService;
 import com.woowacourse.naepyeon.service.RollingpaperService;
 import com.woowacourse.naepyeon.service.TeamService;
+import com.woowacourse.naepyeon.service.dto.MessageRequestDto;
+import com.woowacourse.naepyeon.service.dto.TeamRequestDto;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -86,17 +87,26 @@ public abstract class TestSupport {
         memberId2 = memberService.save("이순신", "email2@email.com", "KAKAO", "2");
         memberId3 = memberService.save("아이유", "email3@email.com", "KAKAO", "3");
 
-        teamId = teamService.save(new TeamRequest("우테코 4기", "우테코 4기 크루원들 모임입니다.", "\\uD83D\\uDE00", "#212121", "길동이"),
+        teamId = teamService.save(
+                new TeamRequestDto("우테코 4기", "우테코 4기 크루원들 모임입니다.", "\\uD83D\\uDE00", "#212121", "길동이", false),
                 memberId1);
         teamService.joinMember(teamId, memberId2, "순신이");
 
-        rollingpaperId1 = rollingpaperService.createRollingpaper("이순신 환영해", teamId, memberId1, memberId2);
-        rollingpaperId2 = rollingpaperService.createRollingpaper("홍길동 반가워", teamId, memberId2, memberId1);
+        rollingpaperId1 = rollingpaperService.createMemberRollingpaper("이순신 환영해", teamId, memberId1, memberId2);
+        rollingpaperId2 = rollingpaperService.createMemberRollingpaper("홍길동 반가워", teamId, memberId2, memberId1);
 
-        messageId = messageService.saveMessage("생일축하해!", "#123456", rollingpaperId1, memberId2);
-        messageService.saveMessage("환영합니다", "#123456", rollingpaperId1, memberId1);
-        messageService.saveMessage("감사합니다!", "#123456", rollingpaperId2, memberId1);
-        messageService.saveMessage("많은 가르침 받았습니다.", "#123456", rollingpaperId2, memberId2);
+        messageId = messageService.saveMessage(
+                new MessageRequestDto("생일축하해!", "#123456", false, false), rollingpaperId1, memberId2
+        );
+        messageService.saveMessage(
+                new MessageRequestDto("환영합니다", "#123456", false, false), rollingpaperId1, memberId1
+        );
+        messageService.saveMessage(
+                new MessageRequestDto("감사합니다!", "#123456", false, false), rollingpaperId2, memberId1
+        );
+        messageService.saveMessage(
+                new MessageRequestDto("많은 가르침 받았습니다.", "#123456", false, false), rollingpaperId2, memberId2
+        );
     }
 
     protected String readJson(final String path) throws IOException {

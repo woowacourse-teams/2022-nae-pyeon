@@ -17,7 +17,8 @@ public interface MessageRepository {
 
     Page<WrittenMessageResponseDto> findAllByAuthorId(final Long memberId, final Pageable pageRequest);
 
-    void update(final Long id, final String newColor, final String newContent);
+    void update(final Long id, final String newColor, final String newContent, final boolean anonymous,
+                final boolean secret);
 
     void delete(final Long id);
 }

@@ -18,7 +18,8 @@ class TeamTest {
                         teamName,
                         "테스트 모임입니다.",
                         "testEmoji",
-                        "#123456"
+                        "#123456",
+                        false
                 )
         )
                 .isInstanceOf(ExceedTeamNameLengthException.class);
@@ -32,7 +33,8 @@ class TeamTest {
                 currentTeamName,
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                false
         );
         final String updateTeamName = "abcdefghi12345678912";
 
@@ -49,7 +51,8 @@ class TeamTest {
                 currentTeamName,
                 "테스트 모임입니다.",
                 "testEmoji",
-                "#123456"
+                "#123456",
+                false
         );
         final String updateTeamName = "abcdefghi123456789123";
 

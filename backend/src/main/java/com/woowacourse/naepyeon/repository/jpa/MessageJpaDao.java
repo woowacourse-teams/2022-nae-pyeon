@@ -13,8 +13,11 @@ public interface MessageJpaDao extends JpaRepository<Message, Long> {
 
     List<Message> findByRollingpaperId(final Long rollingpaperId);
 
-    @Query(value = "select new com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto"
-            + "(m.id, r.id, r.title, t.id, t.name, p.nickname, m.content, m.color) "
+    @Query(value = "select distinct new com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto"
+            + "(m.id, r.id, r.title, t.id, t.name, m.content, m.color, "
+            + "case when r.recipient = com.woowacourse.naepyeon.domain.rollingpaper.Recipient.MEMBER then p.nickname "
+            + "when r.recipient = com.woowacourse.naepyeon.domain.rollingpaper.Recipient.TEAM then t.name "
+            + "else '' end) "
             + "from Message m"
             + ", Rollingpaper r"
             + ", Team t"
@@ -23,7 +26,7 @@ public interface MessageJpaDao extends JpaRepository<Message, Long> {
             + "and r.team.id = t.id "
             + "and p.team.id = t.id "
             + "and m.author.id = :authorId "
-            + "and p.member.id = r.member.id")
+            + "and (p.member.id = r.member.id or r.member.id is null)")
     Page<WrittenMessageResponseDto> findAllByAuthorId(
             @Param("authorId") final Long authorId, final Pageable pageRequest);
 }

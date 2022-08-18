@@ -7,9 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Message;
 import com.woowacourse.naepyeon.domain.Platform;
-import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
+import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -51,11 +52,12 @@ class MessageRepositoryTest {
             "nae-pyeon",
             "테스트 모임입니다.",
             "testEmoji",
-            "#123456"
+            "#123456",
+            false
     );
     private final Member member = new Member("member", "email1@email.com", Platform.KAKAO, "1");
     private final Member author = new Member("author", "email2@email.com", Platform.KAKAO, "2");
-    private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", team, member);
+    private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", Recipient.MEMBER, team, member);
 
     @BeforeEach
     void setUp() {
@@ -126,15 +128,15 @@ class MessageRepositoryTest {
 
     @Test
     @DisplayName("본인이 작성한 메시지 내용과 색상을 변경한다.")
-    void update() {
+    void updateMessageContentAndColor() {
         final Member member = memberRepository.findByEmail(author.getEmail())
                 .orElseThrow();
-        final Message message = new Message(content, "green", member, rollingpaper);
+        final Message message = new Message(content, "green", member, rollingpaper, false, false);
         final Long messageId = messageRepository.save(message);
         final String newContent = "알고리즘이 좋아요";
         final String newColor = "red";
 
-        messageRepository.update(messageId, newColor, newContent);
+        messageRepository.update(messageId, newColor, newContent, false, false);
         final Message updateMessage = messageRepository.findById(messageId)
                 .orElseThrow();
 
@@ -142,11 +144,46 @@ class MessageRepositoryTest {
     }
 
     @Test
+    @DisplayName("본인이 작성한 메시지 익명 옵션을 변경한다.")
+    void updateMessageAnonymous() {
+        final Member member = memberRepository.findByEmail(author.getEmail())
+                .orElseThrow();
+        final String color = "green";
+        final Message message = new Message(content, color, member, rollingpaper, false, false);
+        final Long messageId = messageRepository.save(message);
+
+        final boolean expected = true;
+
+        messageRepository.update(messageId, color, content, expected, false);
+        final Message updateMessage = messageRepository.findById(messageId)
+                .orElseThrow();
+
+        assertThat(updateMessage.isAnonymous()).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("본인이 작성한 메시지 내용과 색상을 변경한다.")
+    void updateMessageSecret() {
+        final Member member = memberRepository.findByEmail(author.getEmail())
+                .orElseThrow();
+        final String color = "green";
+        final Message message = new Message(content, color, member, rollingpaper, false, false);
+        final Long messageId = messageRepository.save(message);
+        final boolean expected = true;
+
+        messageRepository.update(messageId, color, content, false, expected);
+        final Message updateMessage = messageRepository.findById(messageId)
+                .orElseThrow();
+
+        assertThat(updateMessage.isSecret()).isEqualTo(expected);
+    }
+
+    @Test
     @DisplayName("메시지를 id값을 통해 삭제한다.")
     void delete() {
         final Member member = memberRepository.findByEmail(author.getEmail())
                 .orElseThrow();
-        final Message message = new Message(content, "green", member, rollingpaper);
+        final Message message = new Message(content, "green", member, rollingpaper, false, false);
         final Long messageId = messageRepository.save(message);
 
         messageRepository.delete(messageId);
@@ -182,6 +219,6 @@ class MessageRepositoryTest {
     }
 
     private Message createMessage() {
-        return new Message(content, "green", author, rollingpaper);
+        return new Message(content, "green", author, rollingpaper, false, false);
     }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import styled from "@emotion/styled";
 
@@ -11,16 +11,22 @@ import EmptyStateImg from "@/assets/images/empty-state.svg";
 import { MYPAGE_ROLLINGPAPER_PAGING_COUNT } from "@/constants";
 
 import { ResponseReceivedRollingpapers } from "@/types";
+import usePaging from "@/hooks/usePaging";
 
-const RollingpaperList = () => {
-  const [pageNumber, setPageNumber] = useState(0);
+interface RollingpaperListProp {
+  lastPage: number;
+}
+
+const RollingpaperList = ({ lastPage }: RollingpaperListProp) => {
+  const { currentPage, handleNumberClick, handleNextClick, handlePrevClick } =
+    usePaging(lastPage);
 
   const { isLoading, isError, error, data } =
     useQuery<ResponseReceivedRollingpapers>(
-      ["received-rollingpapers", pageNumber],
+      ["received-rollingpapers", currentPage],
       () =>
         getMyReceivedRollingpapers(
-          pageNumber,
+          currentPage,
           MYPAGE_ROLLINGPAPER_PAGING_COUNT
         ),
       { keepPreviousData: true }
@@ -35,7 +41,7 @@ const RollingpaperList = () => {
   }
 
   return (
-    <>
+    <StyledListWithPaging>
       <StyledRollingpaperList>
         {data.rollingpapers.map((rollingpaper) => (
           <RollingpaperListItem {...rollingpaper} />
@@ -43,14 +49,14 @@ const RollingpaperList = () => {
       </StyledRollingpaperList>
       <StyledPaging>
         <Paging
-          maxPage={Math.ceil(
-            data.totalCount / MYPAGE_ROLLINGPAPER_PAGING_COUNT
-          )}
-          currentPage={pageNumber}
-          setCurrentPage={setPageNumber}
+          currentPage={currentPage}
+          lastPage={lastPage}
+          handleNumberClick={handleNumberClick}
+          handleNextClick={handleNextClick}
+          handlePrevClick={handlePrevClick}
         />
       </StyledPaging>
-    </>
+    </StyledListWithPaging>
   );
 };
 
@@ -62,6 +68,14 @@ const EmptyState = () => {
     </StyledEmpty>
   );
 };
+
+const StyledListWithPaging = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+  height: 580px;
+`;
 
 const StyledEmpty = styled.div`
   display: flex;

@@ -4,6 +4,7 @@ import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.나의_롤�
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.나의_메시지_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_작성;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_롤링페이퍼_생성;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_생성;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_롤링페이퍼_생성;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_삭제;
@@ -11,11 +12,12 @@ import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_유�
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_조회;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.woowacourse.naepyeon.controller.dto.CreateMemberRollingpaperRequest;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
+import com.woowacourse.naepyeon.controller.dto.CreateTeamRollingpaperRequest;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
-import com.woowacourse.naepyeon.controller.dto.RollingpaperCreateRequest;
 import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.ReceivedRollingpaperResponseDto;
 import com.woowacourse.naepyeon.service.dto.ReceivedRollingpapersResponseDto;
@@ -66,12 +68,12 @@ class MemberAcceptanceTest extends AcceptanceTest {
 
         final String rollingpaperTitle1 = "알렉스가좋아요";
         final Long rollingpaperId1 = 회원_롤링페이퍼_생성(zero, teamId,
-                new RollingpaperCreateRequest(rollingpaperTitle1, alex.getId()))
+                new CreateMemberRollingpaperRequest(rollingpaperTitle1, alex.getId()))
                 .as(CreateResponse.class)
                 .getId();
         final String rollingpaperTitle2 = "영환이형도좋아요";
         final Long rollingpaperId2 = 회원_롤링페이퍼_생성(zero, teamId,
-                new RollingpaperCreateRequest(rollingpaperTitle2, alex.getId()))
+                new CreateMemberRollingpaperRequest(rollingpaperTitle2, alex.getId()))
                 .as(CreateResponse.class)
                 .getId();
 
@@ -91,7 +93,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("내가 작성한 메시지 목록을 조회한다.")
+    @DisplayName("내가 작성한 메시지 목록만 조회한다.")
     void findWrittenMessages() {
         // 모임 생성 및 가입시키기
         final Long teamId = 모임_생성(seungpang);
@@ -99,11 +101,11 @@ class MemberAcceptanceTest extends AcceptanceTest {
 
         final String rollingpaperTitle1 = "알렉스가좋아요";
         final Long rollingpaperId1 = 회원_롤링페이퍼_생성(kei, teamId,
-                new RollingpaperCreateRequest(rollingpaperTitle1, seungpang.getId()))
+                new CreateMemberRollingpaperRequest(rollingpaperTitle1, seungpang.getId()))
                 .as(CreateResponse.class)
                 .getId();
         final Long rollingpaperId2 = 회원_롤링페이퍼_생성(kei, teamId,
-                new RollingpaperCreateRequest("영환이형도좋아요", seungpang.getId()))
+                new CreateMemberRollingpaperRequest("영환이형도좋아요", seungpang.getId()))
                 .as(CreateResponse.class)
                 .getId();
 
@@ -112,15 +114,15 @@ class MemberAcceptanceTest extends AcceptanceTest {
         final String messageContent3 = "테스트";
         final String messageColor1 = "green";
         final String messageColor2 = "red";
-        final Long messageId1 = 메시지_작성(kei, rollingpaperId1, new MessageRequest(messageContent1, messageColor1))
-                .as(CreateResponse.class)
-                .getId();
-        final Long messageId2 = 메시지_작성(kei, rollingpaperId1, new MessageRequest(messageContent2, messageColor2))
-                .as(CreateResponse.class)
-                .getId();
-        메시지_작성(kei, rollingpaperId2, new MessageRequest(messageContent3, "yellow"))
-                .as(CreateResponse.class)
-                .getId();
+        final Long messageId1 =
+                메시지_작성(kei, rollingpaperId1, new MessageRequest(messageContent1, messageColor1, false, false))
+                        .as(CreateResponse.class)
+                        .getId();
+        final Long messageId2 =
+                메시지_작성(kei, rollingpaperId1, new MessageRequest(messageContent2, messageColor2, false, false))
+                        .as(CreateResponse.class)
+                        .getId();
+        메시지_작성(kei, rollingpaperId2, new MessageRequest(messageContent3, "yellow", false, false));
 
         //내가 작성한 메시지를 2개만 조회
         final WrittenMessagesResponseDto writtenMessagesResponseDto = 나의_메시지_조회(kei, 0, 2)
@@ -133,9 +135,9 @@ class MemberAcceptanceTest extends AcceptanceTest {
                         rollingpaperTitle1,
                         teamId,
                         "woowacourse-4th",
-                        "나는야모임장",
                         messageContent1,
-                        messageColor1
+                        messageColor1,
+                        "나는야모임장"
                 ),
                 new WrittenMessageResponseDto(
                         messageId2,
@@ -143,9 +145,74 @@ class MemberAcceptanceTest extends AcceptanceTest {
                         rollingpaperTitle1,
                         teamId,
                         "woowacourse-4th",
-                        "나는야모임장",
                         messageContent2,
-                        messageColor2
+                        messageColor2,
+                        "나는야모임장"
+                )
+        );
+
+        assertThat(actual)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("내가 작성한 멤버, 팀 대상 메시지 목록을 조회한다.")
+    void findMemberAndTeamWrittenMessages() {
+        // 모임 생성 및 가입시키기
+        final Long teamId = 모임_생성(seungpang);
+        모임_가입(kei, teamId, new JoinTeamMemberRequest("알고리즘이좋아요"));
+
+        final String rollingpaperTitle1 = "알렉스가좋아요";
+        final Long rollingpaperId1 = 회원_롤링페이퍼_생성(kei, teamId,
+                new CreateMemberRollingpaperRequest(rollingpaperTitle1, seungpang.getId()))
+                .as(CreateResponse.class)
+                .getId();
+        final Long rollingpaperId2 = 모임_롤링페이퍼_생성(kei, teamId,
+                new CreateTeamRollingpaperRequest("영환이형도좋아요"))
+                .as(CreateResponse.class)
+                .getId();
+
+        final String messageContent1 = "좋아";
+        final String messageContent2 = "ㅋㅋ";
+
+        final String messageColor1 = "green";
+        final String messageColor2 = "red";
+
+        // 메시지 작성
+        final Long messageId1 =
+                메시지_작성(kei, rollingpaperId1, new MessageRequest(messageContent1, messageColor1, false, false))
+                        .as(CreateResponse.class)
+                        .getId();
+        final Long messageId2 =
+                메시지_작성(kei, rollingpaperId2, new MessageRequest(messageContent2, messageColor2, false, false))
+                        .as(CreateResponse.class)
+                        .getId();
+
+        //내가 작성한 메시지 조회
+        final WrittenMessagesResponseDto writtenMessagesResponseDto = 나의_메시지_조회(kei, 0, 10)
+                .as(WrittenMessagesResponseDto.class);
+        final List<WrittenMessageResponseDto> actual = writtenMessagesResponseDto.getMessages();
+        final List<WrittenMessageResponseDto> expected = List.of(
+                new WrittenMessageResponseDto(
+                        messageId1,
+                        rollingpaperId1,
+                        rollingpaperTitle1,
+                        teamId,
+                        "woowacourse-4th",
+                        messageContent1,
+                        messageColor1,
+                        "나는야모임장"
+                ),
+                new WrittenMessageResponseDto(
+                        messageId2,
+                        rollingpaperId2,
+                        "영환이형도좋아요",
+                        teamId,
+                        "woowacourse-4th",
+                        messageContent2,
+                        messageColor2,
+                        "woowacourse-4th"
                 )
         );
 

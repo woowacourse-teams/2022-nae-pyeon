@@ -8,20 +8,12 @@ import useIntersect from "@/hooks/useIntersect";
 import { getTeamSearchResult } from "@/api/team";
 
 import SearchInput from "@/components/SearchInput";
-import SearchResultItem from "@/pages/TeamSearchPage/components/SearchResultItem";
+import SearchResultListItem from "@/pages/TeamSearchPage/components/SearchResultListItem";
 
 import EmptyStateImg from "@/assets/images/empty-state.svg";
 import { TOTAL_TEAMS_PAGING_COUNT } from "@/constants";
 
-import { CustomError } from "@/types";
-
-interface Team {
-  id: number;
-  name: string;
-  description: string;
-  emoji: string;
-  color: string;
-}
+import { Team, CustomError } from "@/types";
 
 const TeamSearch = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -122,14 +114,14 @@ const TeamSearch = () => {
       <StyledTeamList>
         {totalTeamResponse.pages.map((page) =>
           page.teams.map((team: Team) => (
-            <SearchResultItem
+            <SearchResultListItem
               key={team.id}
               onClick={() => {
                 handleSearchResultItemClick(team.id);
               }}
-            >
-              {team.name}
-            </SearchResultItem>
+              secret={team.secret}
+              name={team.name}
+            />
           ))
         )}
         <div ref={ref} />
@@ -169,10 +161,9 @@ const StyledTeamList = styled.ul`
   flex-direction: column;
 
   height: 75vh;
-  margin-top: 10px;
   padding: 20px;
 
-  gap: 24px;
+  gap: 16px;
 
   overflow-y: scroll;
 `;

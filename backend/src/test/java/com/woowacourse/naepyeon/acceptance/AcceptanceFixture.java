@@ -1,11 +1,12 @@
 package com.woowacourse.naepyeon.acceptance;
 
+import com.woowacourse.naepyeon.controller.dto.CreateMemberRollingpaperRequest;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
+import com.woowacourse.naepyeon.controller.dto.CreateTeamRollingpaperRequest;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
-import com.woowacourse.naepyeon.controller.dto.MessageUpdateContentRequest;
-import com.woowacourse.naepyeon.controller.dto.RollingpaperCreateRequest;
+import com.woowacourse.naepyeon.controller.dto.MessageUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.RollingpaperUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.TokenRequest;
@@ -82,18 +83,14 @@ public class AcceptanceFixture {
                 .extract();
     }
 
-    public static TokenResponseDto 회원가입_후_로그인(final TokenRequest tokenRequest) {
-        return 로그인_응답(tokenRequest)
-                .as(TokenResponseDto.class);
-    }
-
     public static Long 모임_생성(final TokenResponseDto tokenResponseDto) {
         final TeamRequest teamRequest = new TeamRequest(
                 "woowacourse-4th",
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         return 모임_추가(tokenResponseDto, teamRequest).as(CreateResponse.class)
                 .getId();
@@ -161,26 +158,26 @@ public class AcceptanceFixture {
         return get(tokenResponseDto, "/api/v1/teams/" + teamId + "/me");
     }
 
-    public static ExtractableResponse<Response> 모임_내_닉네임_변경(final TokenResponseDto tokenResponseDto,
-                                                            final Long teamId,
+    public static ExtractableResponse<Response> 모임_내_닉네임_변경(final TokenResponseDto tokenResponseDto, final Long teamId,
                                                             final UpdateTeamParticipantRequest updateTeamParticipantRequest) {
         return put(tokenResponseDto, updateTeamParticipantRequest, "/api/v1/teams/" + teamId + "/me");
     }
 
     public static ExtractableResponse<Response> 회원_롤링페이퍼_생성(final TokenResponseDto tokenResponseDto,
                                                             final Long teamId,
-                                                            final RollingpaperCreateRequest rollingpaperCreateRequest) {
-        return post(tokenResponseDto, rollingpaperCreateRequest, "/api/v1/teams/" + teamId + "/rollingpapers");
+                                                            final CreateMemberRollingpaperRequest createMemberRollingpaperRequest) {
+        return post(tokenResponseDto, createMemberRollingpaperRequest, "/api/v1/teams/" + teamId + "/rollingpapers");
+    }
+
+    public static ExtractableResponse<Response> 모임_롤링페이퍼_생성(final TokenResponseDto tokenResponseDto,
+                                                            final Long teamId,
+                                                            final CreateTeamRollingpaperRequest createTeamRollingpaperRequest) {
+        return post(tokenResponseDto, createTeamRollingpaperRequest, "/api/v1/teams/" + teamId + "/team-rollingpapers");
     }
 
     public static ExtractableResponse<Response> 나의_롤링페이퍼_조회(
             final TokenResponseDto tokenResponseDto, final int page, final int count) {
         return get_search(tokenResponseDto, "/api/v1/members/me/rollingpapers/received", "", page, count);
-    }
-
-    public static ExtractableResponse<Response> 회원의_롤링페이퍼_조회(final TokenResponseDto tokenResponseDto,
-                                                             final Long teamId) {
-        return get(tokenResponseDto, "/api/v1/teams/" + teamId + "/rollingpapers/me");
     }
 
     public static ExtractableResponse<Response> 롤링페이퍼_특정_조회(final TokenResponseDto tokenResponseDto,
@@ -208,8 +205,8 @@ public class AcceptanceFixture {
     public static ExtractableResponse<Response> 메시지_수정(final TokenResponseDto tokenResponseDto,
                                                        final Long rollingpaperId,
                                                        final Long messageId,
-                                                       final MessageUpdateContentRequest messageUpdateContentRequest) {
-        return put(tokenResponseDto, messageUpdateContentRequest,
+                                                       final MessageUpdateRequest messageUpdateRequest) {
+        return put(tokenResponseDto, messageUpdateRequest,
                 "/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId);
     }
 
@@ -228,5 +225,15 @@ public class AcceptanceFixture {
     public static ExtractableResponse<Response> 나의_메시지_조회(
             final TokenResponseDto tokenResponseDto, final int page, final int count) {
         return get_search(tokenResponseDto, "/api/v1/members/me/messages/written", "", page, count);
+    }
+
+    public static ExtractableResponse<Response> 초대_토큰_생성(
+            final TokenResponseDto tokenResponseDto, final Long teamId) {
+        return post(tokenResponseDto, "", "/api/v1/teams/" + teamId + "/invite");
+    }
+
+    public static ExtractableResponse<Response> 초대_토큰으로_팀_상세_조회(
+            final TokenResponseDto tokenResponseDto, final String inviteToken) {
+        return get(tokenResponseDto, "/api/v1/teams/invite?inviteToken=" + inviteToken);
     }
 }

@@ -1,15 +1,34 @@
+import { RECIPIENT } from "@/constants";
+
+export interface Team {
+  id: number;
+  name: string;
+  description: string;
+  emoji: string;
+  color: string;
+  nickname: string;
+  joined: boolean;
+  secret: boolean;
+}
+
 export interface Message {
   id: number;
   content: string;
   from: string;
-  authorId: number;
   color: string;
+  anonymous: boolean;
+  secret: boolean;
+  editable: boolean;
+  visible: boolean;
 }
+
+export type RollingpaperRecipient = "MEMBER" | "TEAM";
 
 export interface Rollingpaper {
   id: number;
   title: string;
   to: string;
+  recipient: RollingpaperRecipient;
   messages: Message[];
 }
 
@@ -55,3 +74,5 @@ export type CustomError = {
 };
 
 export type ValueOf<T> = T[keyof T];
+
+export type Recipient = ValueOf<typeof RECIPIENT>;

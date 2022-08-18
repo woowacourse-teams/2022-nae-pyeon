@@ -1,17 +1,18 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-
-import { appClient } from "@/api";
 
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
 
 import { Rollingpaper, CustomError } from "@/types";
+import { getRollingpaper } from "@/api/rollingpaper";
+
+import useValidatedParam from "@/hooks/useValidatedParam";
 
 const RollingpaperPage = () => {
-  const { teamId, rollingpaperId } = useParams();
+  const teamId = useValidatedParam<number>("teamId");
+  const rollingpaperId = useValidatedParam<number>("rollingpaperId");
 
   const {
     isLoading,
@@ -19,9 +20,7 @@ const RollingpaperPage = () => {
     error: rollingpaperError,
     data: rollingpaper,
   } = useQuery<Rollingpaper>(["rollingpaper", rollingpaperId], () =>
-    appClient
-      .get(`/teams/${teamId}/rollingpapers/${rollingpaperId}`)
-      .then((response) => response.data)
+    getRollingpaper(teamId, rollingpaperId)
   );
 
   if (isLoading) {
@@ -46,6 +45,7 @@ const RollingpaperPage = () => {
       <main>
         <LetterPaper
           to={rollingpaper.to}
+          recipientType={rollingpaper.recipient}
           messageList={[...rollingpaper.messages].reverse()}
         />
       </main>

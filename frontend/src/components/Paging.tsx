@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
 import IconButton from "@/components/IconButton";
@@ -8,76 +8,78 @@ import RightIcon from "@/assets/icons/bx-chevron-right.svg";
 
 interface PagingProp {
   currentPage: number;
-  maxPage: number;
-  setCurrentPage: Dispatch<SetStateAction<number>>;
+  lastPage: number;
+  handleNumberClick: (number: number) => React.MouseEventHandler;
+  handleNextClick: React.MouseEventHandler;
+  handlePrevClick: React.MouseEventHandler;
 }
 
 type StyledPaging = {
   isCurrent: boolean;
 };
 
-const Paging = ({ currentPage, maxPage, setCurrentPage }: PagingProp) => {
-  const handleNumberClick = (number: number) => {
-    setCurrentPage(number);
-  };
+const MAX_PAGE_COUNT = 5;
 
-  const handleMinusClick = () => {
-    if (currentPage <= 0) {
-      return;
-    }
-    setCurrentPage((prev) => prev - 1);
-  };
-
-  const handlePlusClick = () => {
-    if (currentPage + 1 >= maxPage) {
-      return;
-    }
-    setCurrentPage((prev) => prev + 1);
-  };
-
+const Paging = ({
+  currentPage,
+  lastPage,
+  handleNumberClick,
+  handleNextClick,
+  handlePrevClick,
+}: PagingProp) => {
   return (
     <StyledPaging>
-      <IconButton onClick={handleMinusClick}>
+      <IconButton onClick={handlePrevClick}>
         <LeftIcon />
       </IconButton>
-      {currentPage < 3 || maxPage <= 5 ? (
+      {currentPage < Math.ceil(MAX_PAGE_COUNT / 2) ||
+      lastPage <= MAX_PAGE_COUNT ? (
         <StyledPageButtons>
-          {[...Array(maxPage > 5 ? 5 : maxPage).keys()].map((num) => (
+          {[
+            ...Array(
+              lastPage > MAX_PAGE_COUNT ? MAX_PAGE_COUNT : lastPage
+            ).keys(),
+          ].map((num) => (
             <StyledPage
               isCurrent={currentPage === num}
               key={num}
-              onClick={() => handleNumberClick(num)}
+              onClick={handleNumberClick(num)}
             >
               {num + 1}
             </StyledPage>
           ))}
         </StyledPageButtons>
-      ) : currentPage > maxPage - 3 ? (
+      ) : currentPage > lastPage - Math.ceil(MAX_PAGE_COUNT / 2) ? (
         <StyledPageButtons>
-          {[...Array(5).keys()].reverse().map((num) => (
+          {[...Array(MAX_PAGE_COUNT).keys()].reverse().map((num) => (
             <StyledPage
-              isCurrent={currentPage === maxPage - num - 1}
+              isCurrent={currentPage === lastPage - num - 1}
               key={num}
-              onClick={() => handleNumberClick(maxPage - num - 1)}
+              onClick={handleNumberClick(lastPage - num - 1)}
             >
-              {maxPage - num}
+              {lastPage - num}
             </StyledPage>
           ))}
         </StyledPageButtons>
       ) : (
         <StyledPageButtons>
-          {[...Array(5).keys()].map((num) => (
+          {[...Array(MAX_PAGE_COUNT).keys()].map((num) => (
             <StyledPage
-              isCurrent={currentPage === currentPage - (2 - num)}
+              isCurrent={
+                currentPage ===
+                currentPage - (Math.floor(MAX_PAGE_COUNT / 2) - num)
+              }
               key={num}
-              onClick={() => handleNumberClick(currentPage - (2 - num))}
+              onClick={handleNumberClick(
+                currentPage - (Math.floor(MAX_PAGE_COUNT / 2) - num)
+              )}
             >
-              {currentPage - (2 - num) + 1}
+              {currentPage - (Math.floor(MAX_PAGE_COUNT / 2) - num) + 1}
             </StyledPage>
           ))}
         </StyledPageButtons>
       )}
-      <IconButton onClick={handlePlusClick}>
+      <IconButton onClick={handleNextClick}>
         <RightIcon />
       </IconButton>
     </StyledPaging>

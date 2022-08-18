@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
 import RollingpaperListItem from "@/pages/TeamDetailPage/components/RollingpaperListItem";
 import IconButton from "@/components/IconButton";
 import LineButton from "@/components/LineButton";
-import TeamNicknameModalForm from "@/pages/TeamDetailPage/components/TeamNicknameModalForm";
+import NicknameCreateModalForm from "@/pages/TeamDetailPage/components/NicknameCreateModalForm";
 
 import PlusIcon from "@/assets/icons/bx-plus.svg";
+import useModal from "@/hooks/useModal";
 
 const dummyRollingpapers = [
   {
@@ -26,26 +27,34 @@ const dummyRollingpapers = [
   },
 ];
 
-const TeamJoinSection = () => {
-  const [isOpenJoinForm, setIsOpenJoinForm] = useState(false);
+type TeamJoinSectionProps = {
+  isSecretTeam: boolean;
+};
 
-  const handleJoinFormCloseButtonClick = () => {
-    setIsOpenJoinForm(false);
-  };
+const TeamJoinSection = ({ isSecretTeam }: TeamJoinSectionProps) => {
+  const { isOpen, handleModalClose, handleModalOpen } = useModal();
+
+  const PublicTeamModal = () => (
+    <StyledTeamJoinModal>
+      <p>롤링페이퍼를 확인하려면 모임에 참여해주세요</p>
+      <LineButton onClick={handleModalOpen}>참여 요청하기</LineButton>
+    </StyledTeamJoinModal>
+  );
+
+  const PrivateTeamModal = () => (
+    <StyledTeamJoinModal>
+      <p>
+        🔒 비공개 모임입니다.
+        <br />
+        모임 참여자에게 초대링크를 요청하세요.
+      </p>
+    </StyledTeamJoinModal>
+  );
 
   return (
     <StyledRollingpaperListContainer>
       <StyledDimmer />
-      <StyledTeamJoinModal>
-        <p>롤링페이퍼를 확인하려면 모임에 참여해주세요</p>
-        <LineButton
-          onClick={() => {
-            setIsOpenJoinForm(true);
-          }}
-        >
-          참여 요청하기
-        </LineButton>
-      </StyledTeamJoinModal>
+      {isSecretTeam ? <PrivateTeamModal /> : <PublicTeamModal />}
       <StyledRollingpaperListHead>
         <h4>롤링페이퍼 목록</h4>
         <IconButton size="small">
@@ -57,11 +66,8 @@ const TeamJoinSection = () => {
           <RollingpaperListItem key={rollingpaper.id} {...rollingpaper} />
         ))}
       </StyledRollingpaperList>
-      {isOpenJoinForm && (
-        <TeamNicknameModalForm
-          mode="join"
-          onClickCloseButton={handleJoinFormCloseButtonClick}
-        />
+      {isOpen && (
+        <NicknameCreateModalForm onClickCloseButton={handleModalClose} />
       )}
     </StyledRollingpaperListContainer>
   );

@@ -4,7 +4,7 @@ import com.woowacourse.naepyeon.controller.auth.AuthenticationPrincipal;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
-import com.woowacourse.naepyeon.controller.dto.MessageUpdateContentRequest;
+import com.woowacourse.naepyeon.controller.dto.MessageUpdateRequest;
 import com.woowacourse.naepyeon.service.MessageService;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import java.net.URI;
@@ -28,11 +28,12 @@ public class MessageController {
     private final MessageService messageService;
 
     @PostMapping
-    public ResponseEntity<CreateResponse> createMessage(@AuthenticationPrincipal LoginMemberRequest loginMemberRequest,
-                                                        @RequestBody @Valid final MessageRequest messageRequest,
-                                                        @PathVariable final Long rollingpaperId) {
+    public ResponseEntity<CreateResponse> createMessage(
+            @AuthenticationPrincipal final LoginMemberRequest loginMemberRequest,
+            @RequestBody @Valid final MessageRequest messageRequest,
+            @PathVariable final Long rollingpaperId) {
         final Long messageId = messageService.saveMessage(
-                messageRequest.getContent(), messageRequest.getColor(), rollingpaperId, loginMemberRequest.getId()
+                messageRequest.toServiceDto(), rollingpaperId, loginMemberRequest.getId()
         );
         return ResponseEntity.created(
                 URI.create("/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId)
@@ -41,30 +42,30 @@ public class MessageController {
 
     @GetMapping("/{messageId}")
     public ResponseEntity<MessageResponseDto> findMessage(
-            @AuthenticationPrincipal LoginMemberRequest loginMemberRequest,
+            @AuthenticationPrincipal final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long rollingpaperId,
             @PathVariable final Long messageId) {
-        final MessageResponseDto messageResponse = messageService.findMessage(messageId, rollingpaperId);
+        final MessageResponseDto messageResponse =
+                messageService.findMessage(messageId, rollingpaperId, loginMemberRequest.getId());
         return ResponseEntity.ok(messageResponse);
     }
 
     @PutMapping("/{messageId}")
     public ResponseEntity<Void> updateMessage(
-            @AuthenticationPrincipal LoginMemberRequest loginMemberRequest,
-            @RequestBody @Valid final MessageUpdateContentRequest messageUpdateContentRequest,
+            @AuthenticationPrincipal final LoginMemberRequest loginMemberRequest,
+            @RequestBody @Valid final MessageUpdateRequest messageUpdateRequest,
             @PathVariable final Long rollingpaperId,
             @PathVariable final Long messageId) {
         messageService.updateMessage(
                 messageId,
-                messageUpdateContentRequest.getContent(),
-                messageUpdateContentRequest.getColor(),
+                messageUpdateRequest.toServiceDto(),
                 loginMemberRequest.getId()
         );
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{messageId}")
-    public ResponseEntity<Void> deleteMessage(@AuthenticationPrincipal LoginMemberRequest loginMemberRequest,
+    public ResponseEntity<Void> deleteMessage(@AuthenticationPrincipal final LoginMemberRequest loginMemberRequest,
                                               @PathVariable final Long rollingpaperId,
                                               @PathVariable final Long messageId) {
         messageService.deleteMessage(messageId, loginMemberRequest.getId());

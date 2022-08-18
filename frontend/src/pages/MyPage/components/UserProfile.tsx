@@ -12,8 +12,11 @@ import UnderlineInput from "@/components/UnderlineInput";
 
 import { REGEX } from "@/constants";
 import { CustomError, ValueOf } from "@/types";
-import { appClient, queryClient } from "@/api";
+import { queryClient } from "@/api";
 import Pencil from "@/assets/icons/bx-pencil.svg";
+
+import useInput from "@/hooks/useInput";
+import { putMyNickname } from "@/api/member";
 
 const MODE = {
   NORMAL: "normal",
@@ -28,15 +31,15 @@ type UserProfileMode = ValueOf<typeof MODE>;
 
 const UserProfile = ({ username, email }: UserProfileProp) => {
   const [mode, setMode] = useState<UserProfileMode>(MODE.NORMAL);
-  const [editName, setEditName] = useState(username);
+  const { value: editName, handleInputChange: handleEditNameChange } =
+    useInput(username);
   const { openSnackbar } = useSnackbar();
 
   const { logout } = useContext(UserContext);
 
   const { mutate: updateUserProfile } = useMutation(
     async ({ username }: Pick<UserProfileProp, "username">) => {
-      const response = await appClient.put("/members/me", { username });
-      return response.data;
+      return putMyNickname(username);
     },
     {
       onSuccess: () => {
@@ -92,9 +95,9 @@ const UserProfile = ({ username, email }: UserProfileProp) => {
         <StyledUserProfileEditForm>
           <UnderlineInput
             value={editName}
-            setValue={setEditName}
             pattern={REGEX.USERNAME.source}
             errorMessage="1 ~ 64자 사이의 이름을 입력해주세요"
+            onChange={handleEditNameChange}
           />
           <StyledEditLineButtonContainer>
             <LineButton onClick={handleEditCancelButtonClick}>취소</LineButton>

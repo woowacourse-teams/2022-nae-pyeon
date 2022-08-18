@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.controller.dto;
 
+import com.woowacourse.naepyeon.service.dto.MessageRequestDto;
 import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,4 +16,12 @@ public class MessageRequest {
     private String content;
 
     private String color;
+
+    private boolean anonymous;
+
+    private boolean secret;
+
+    public MessageRequestDto toServiceDto() {
+        return new MessageRequestDto(content, color, anonymous, secret);
+    }
 }

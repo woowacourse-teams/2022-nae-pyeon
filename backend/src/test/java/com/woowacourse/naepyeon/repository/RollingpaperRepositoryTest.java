@@ -6,8 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
-import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
 import com.woowacourse.naepyeon.repository.jpa.TeamJpaDao;
 import java.time.LocalDateTime;
@@ -44,7 +45,8 @@ class RollingpaperRepositoryTest {
             "nae-pyeon",
             "테스트 모임입니다.",
             "testEmoji",
-            "#123456"
+            "#123456",
+            false
     );
     private final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
 
@@ -177,6 +179,6 @@ class RollingpaperRepositoryTest {
     }
 
     private Rollingpaper createRollingPaper() {
-        return new Rollingpaper(rollingPaperTitle, team, member);
+        return new Rollingpaper(rollingPaperTitle, Recipient.MEMBER, team, member);
     }
 }

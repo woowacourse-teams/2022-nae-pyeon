@@ -15,6 +15,7 @@ const KakaoRedirectPage = () => {
   const { login } = useContext(UserContext);
   const params = new URLSearchParams(useLocation().search);
   const authorizationCode = params.get("code");
+  const inviteToken = params.get("state");
 
   const { mutate: kakaoOauthLogin } = useMutation(
     ({ authorizationCode, redirectUri }: RequestKakaoOauthBody) =>
@@ -25,7 +26,13 @@ const KakaoRedirectPage = () => {
     {
       onSuccess: (data) => {
         login(data.accessToken, data.id);
-        navigate(`/`, { replace: true });
+
+        if (inviteToken) {
+          navigate(`/invite/${inviteToken}`, { replace: true });
+          return;
+        }
+
+        navigate("/", { replace: true });
       },
       onError: (error) => {
         if (axios.isAxiosError(error) && error.response) {

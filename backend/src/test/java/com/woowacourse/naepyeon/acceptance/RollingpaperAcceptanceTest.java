@@ -3,15 +3,16 @@ package com.woowacourse.naepyeon.acceptance;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.롤링페이퍼_제목_수정;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.롤링페이퍼_특정_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_롤링페이퍼_생성;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_모든_회원들_롤링페이퍼_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_추가;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_롤링페이퍼_생성;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원의_롤링페이퍼_조회;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.woowacourse.naepyeon.controller.dto.CreateMemberRollingpaperRequest;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
+import com.woowacourse.naepyeon.controller.dto.CreateTeamRollingpaperRequest;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
-import com.woowacourse.naepyeon.controller.dto.RollingpaperCreateRequest;
 import com.woowacourse.naepyeon.controller.dto.RollingpaperUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.service.dto.RollingpaperPreviewResponseDto;
@@ -28,7 +29,7 @@ import org.springframework.http.HttpStatus;
 class RollingpaperAcceptanceTest extends AcceptanceTest {
 
     private final TeamRequest teamRequest = new TeamRequest(
-            "woowacourse", "테스트 모임입니다.", "testEmoji", "#123456", "나는야모임장"
+            "woowacourse", "테스트 모임입니다.", "testEmoji", "#123456", "나는야모임장", false
     );
 
     @Test
@@ -39,48 +40,40 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
         모임_가입(seungpang, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
 
         // when: seungpang이 yxxnghwan에게 롤링페이퍼 작성
-        final RollingpaperCreateRequest rollingpaperCreateRequest =
-                new RollingpaperCreateRequest("하이알렉스", alex.getId());
+        final CreateMemberRollingpaperRequest rollingpaperCreateRequest =
+                new CreateMemberRollingpaperRequest("하이알렉스", alex.getId());
         final Long rollingpaperId = 회원_롤링페이퍼_생성(seungpang, teamId, rollingpaperCreateRequest)
                 .as(CreateResponse.class)
                 .getId();
 
         // then: yxxnghwan이 받은 롤링페이퍼 조회
-        final List<Long> actual = 회원의_롤링페이퍼_조회(alex, teamId).as(RollingpapersResponseDto.class)
-                .getRollingpapers()
-                .stream()
-                .map(RollingpaperPreviewResponseDto::getId)
-                .collect(Collectors.toUnmodifiableList());
+        Long actual = 롤링페이퍼_특정_조회(alex, teamId, rollingpaperId)
+                .as(RollingpaperResponseDto.class)
+                .getId();
 
-        assertThat(actual).contains(rollingpaperId);
+        assertThat(actual).isEqualTo(rollingpaperId);
     }
 
     @Test
-    @DisplayName("특정 회원에게 롤링페이퍼를 여러 번 생성할 수 있다.")
-    void createRollingpapersToMember() {
+    @DisplayName("특정 모임에게 롤링페이퍼를 생성하고 조회한다.")
+    void createRollingpaperToTeam() {
         final Long teamId = 모임_추가(alex, teamRequest).as(CreateResponse.class)
                 .getId();
+        모임_가입(zero, teamId, new JoinTeamMemberRequest("닉네임"));
 
-        모임_가입(seungpang, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
-
-        final RollingpaperCreateRequest rollingpaperCreateRequest1 =
-                new RollingpaperCreateRequest("하이알렉스", seungpang.getId());
-        final Long rollingpaperId1 = 회원_롤링페이퍼_생성(alex, teamId, rollingpaperCreateRequest1)
-                .as(CreateResponse.class)
-                .getId();
-        final RollingpaperCreateRequest rollingpaperCreateRequest2 =
-                new RollingpaperCreateRequest("반가워", seungpang.getId());
-        final Long rollingpaperId2 = 회원_롤링페이퍼_생성(alex, teamId, rollingpaperCreateRequest2)
+        // when: zero가 모임에게 롤링페이퍼 작성
+        final CreateTeamRollingpaperRequest rollingpaperCreateRequest =
+                new CreateTeamRollingpaperRequest("알사모에 대한 글");
+        final Long rollingpaperId = 모임_롤링페이퍼_생성(zero, teamId, rollingpaperCreateRequest)
                 .as(CreateResponse.class)
                 .getId();
 
-        final List<Long> actual = 회원의_롤링페이퍼_조회(seungpang, teamId).as(RollingpapersResponseDto.class)
-                .getRollingpapers()
-                .stream()
-                .map(RollingpaperPreviewResponseDto::getId)
-                .collect(Collectors.toUnmodifiableList());
+        // then: 모임 롤링페이퍼 조회
+        Long actual = 롤링페이퍼_특정_조회(alex, teamId, rollingpaperId)
+                .as(RollingpaperResponseDto.class)
+                .getId();
 
-        assertThat(actual).contains(rollingpaperId1, rollingpaperId2);
+        assertThat(actual).isEqualTo(rollingpaperId);
     }
 
     @Test
@@ -89,22 +82,46 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
         final Long teamId = 모임_추가(kei, teamRequest).as(CreateResponse.class)
                 .getId();
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest =
-                new RollingpaperCreateRequest("하이알렉스", alex.getId());
-        final ExtractableResponse<Response> response = 회원_롤링페이퍼_생성(kei, teamId, rollingpaperCreateRequest);
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이알렉스", alex.getId());
+        final ExtractableResponse<Response> response = 회원_롤링페이퍼_생성(kei, teamId, createMemberRollingpaperRequest);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
     }
 
     @Test
-    @DisplayName("모임에 속하지 않은 사람이 해당 모임에서 롤링페이퍼를 생성하는 경우 예외를 발생시킨다.")
-    void createRollingpaperWithAnonymous() {
+    @DisplayName("존재하지 않는 모임에게 롤링페이퍼를 생성하는 경우 예외를 발생시킨다.")
+    void createRollingpaperWithNotFoundTeam() {
+        final CreateTeamRollingpaperRequest rollingpaperCreateRequest =
+                new CreateTeamRollingpaperRequest("알사모에 대한 글");
+
+        ExtractableResponse<Response> response = 모임_롤링페이퍼_생성(zero, 123456L, rollingpaperCreateRequest);
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+    }
+
+    @Test
+    @DisplayName("모임에 속하지 않은 사람이 모임의 멤버에게 롤링페이퍼를 생성하는 경우 예외를 발생시킨다.")
+    void createMemberRollingpaperWithAnonymous() {
         final Long teamId = 모임_추가(alex, teamRequest).as(CreateResponse.class)
                 .getId();
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest =
-                new RollingpaperCreateRequest("하이승팡", alex.getId());
-        final ExtractableResponse<Response> response = 회원_롤링페이퍼_생성(zero, teamId, rollingpaperCreateRequest);
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이승팡", alex.getId());
+        final ExtractableResponse<Response> response = 회원_롤링페이퍼_생성(zero, teamId, createMemberRollingpaperRequest);
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+    }
+
+    @Test
+    @DisplayName("모임에 속하지 않은 사람이 모임 롤링페이퍼를 생성하는 경우 예외를 발생시킨다.")
+    void createTeamRollingpaperWithAnonymous() {
+        final Long teamId = 모임_추가(alex, teamRequest).as(CreateResponse.class)
+                .getId();
+
+        final CreateTeamRollingpaperRequest rollingpaperCreateRequest =
+                new CreateTeamRollingpaperRequest("알사모에 대한 글");
+        final ExtractableResponse<Response> response = 모임_롤링페이퍼_생성(zero, teamId, rollingpaperCreateRequest);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
     }
@@ -119,14 +136,14 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
         모임_가입(kei, teamId, new JoinTeamMemberRequest("알고리즘이좋아요"));
 
         // when: seungpang이 yxxnghwan, kth990303에게 각각 롤링페이퍼 작성
-        final RollingpaperCreateRequest rollingpaperCreateRequest1 =
-                new RollingpaperCreateRequest("하이알렉스", alex.getId());
-        final Long rollingpaperId1 = 회원_롤링페이퍼_생성(seungpang, teamId, rollingpaperCreateRequest1)
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest1 =
+                new CreateMemberRollingpaperRequest("하이알렉스", alex.getId());
+        final Long rollingpaperId1 = 회원_롤링페이퍼_생성(seungpang, teamId, createMemberRollingpaperRequest1)
                 .as(CreateResponse.class)
                 .getId();
-        final RollingpaperCreateRequest rollingpaperCreateRequest2 =
-                new RollingpaperCreateRequest("알고리즘좀그만해!", kei.getId());
-        final Long rollingpaperId2 = 회원_롤링페이퍼_생성(seungpang, teamId, rollingpaperCreateRequest2)
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest2 =
+                new CreateMemberRollingpaperRequest("알고리즘좀그만해!", kei.getId());
+        final Long rollingpaperId2 = 회원_롤링페이퍼_생성(seungpang, teamId, createMemberRollingpaperRequest2)
                 .as(CreateResponse.class)
                 .getId();
 
@@ -148,9 +165,9 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
 
         모임_가입(kei, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest =
-                new RollingpaperCreateRequest("하이케이", kei.getId());
-        final Long rollingpaperId = 회원_롤링페이퍼_생성(seungpang, teamId, rollingpaperCreateRequest)
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이케이", kei.getId());
+        final Long rollingpaperId = 회원_롤링페이퍼_생성(seungpang, teamId, createMemberRollingpaperRequest)
                 .as(CreateResponse.class)
                 .getId();
 
@@ -167,9 +184,9 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
 
         모임_가입(alex, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest =
-                new RollingpaperCreateRequest("하이알렉스", alex.getId());
-        final Long rollingpaperId = 회원_롤링페이퍼_생성(seungpang, teamId, rollingpaperCreateRequest)
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이알렉스", alex.getId());
+        final Long rollingpaperId = 회원_롤링페이퍼_생성(seungpang, teamId, createMemberRollingpaperRequest)
                 .as(CreateResponse.class)
                 .getId();
 
@@ -190,9 +207,9 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
 
         모임_가입(alex, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest =
-                new RollingpaperCreateRequest("하이알렉스", alex.getId());
-        final Long rollingpaperId = 회원_롤링페이퍼_생성(seungpang, teamId, rollingpaperCreateRequest)
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이알렉스", alex.getId());
+        final Long rollingpaperId = 회원_롤링페이퍼_생성(seungpang, teamId, createMemberRollingpaperRequest)
                 .as(CreateResponse.class)
                 .getId();
 
@@ -211,9 +228,9 @@ class RollingpaperAcceptanceTest extends AcceptanceTest {
                 .getId();
         모임_가입(alex, teamId, new JoinTeamMemberRequest("영환이형도좋아요"));
 
-        final RollingpaperCreateRequest rollingpaperCreateRequest =
-                new RollingpaperCreateRequest("하이알렉스", alex.getId());
-        final Long rollingpaperId = 회원_롤링페이퍼_생성(seungpang, teamId, rollingpaperCreateRequest)
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이알렉스", alex.getId());
+        final Long rollingpaperId = 회원_롤링페이퍼_생성(seungpang, teamId, createMemberRollingpaperRequest)
                 .as(CreateResponse.class)
                 .getId();
 

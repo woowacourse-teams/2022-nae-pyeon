@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.repository;
 
-import com.woowacourse.naepyeon.domain.Rollingpaper;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;

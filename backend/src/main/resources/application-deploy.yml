@@ -25,6 +25,9 @@ security:
     token:
       expire-length: ${JWT_EXPIRE_LENGTH}
       secret-key: ${JWT_SECRET_KEY}
+  aes256:
+    key: ${AES256_KEY}
+  invite-expire-length: 86400000
 
 kakao:
   admin-key: ${KAKAO_ADMIN_KEY}
@@ -32,4 +35,4 @@ kakao:
   client-secret: ${KAKAO_CLIENT_SECRET}
 
 logging:
-  config: classpath:log4j2-develop.yml
+  config: classpath:log4j2-deploy.yml

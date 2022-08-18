@@ -9,7 +9,7 @@ import RollingpaperList from "@/pages/MyPage/components/RollingpaperList";
 import MessageList from "@/pages/MyPage/components/MessageList";
 
 import {
-  getMyUserInfo,
+  getMyInfo,
   getMyReceivedRollingpapers,
   getMySentMessage,
 } from "@/api/member";
@@ -42,7 +42,7 @@ const MyPage = () => {
     isError: isErrorGetUserProfile,
     error: getUserProfileError,
     data: userProfile,
-  } = useQuery<UserInfo>(["user-profile"], () => getMyUserInfo());
+  } = useQuery<UserInfo>(["user-profile"], () => getMyInfo());
 
   const {
     isLoading: isLoadingGetReceivedRollingpapers,
@@ -134,7 +134,20 @@ const MyPage = () => {
         />
       </StyledTabs>
 
-      {tab === TAB.RECEIVED_PAPER ? <RollingpaperList /> : <MessageList />}
+      {tab === TAB.RECEIVED_PAPER ? (
+        <RollingpaperList
+          lastPage={Math.ceil(
+            responseReceivedRollingpapers.totalCount /
+              MYPAGE_ROLLINGPAPER_PAGING_COUNT
+          )}
+        />
+      ) : (
+        <MessageList
+          lastPage={Math.ceil(
+            responseSentMessages.totalCount / MYPAGE_ROLLINGPAPER_PAGING_COUNT
+          )}
+        />
+      )}
     </>
   );
 };
@@ -147,14 +160,6 @@ const StyledTabs = styled.div`
 
   padding: 12px;
   gap: 20px;
-`;
-
-const StyledListWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  height: 600px;
 `;
 
 export default MyPage;

@@ -1,23 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
 import Dropdown from "@/components/Dropdown";
+import NicknameEditModalForm from "@/pages/TeamDetailPage/components/NicknameEditModalForm";
+import InviteModal from "@/pages/TeamDetailPage/components/InviteModal";
 
-import TeamNicknameModalForm from "@/pages/TeamDetailPage/components/TeamNicknameModalForm";
+import useModal from "@/hooks/useModal";
 
 import MeatballIcon from "@/assets/icons/bx-dots-horizontal-rounded.svg";
-interface TeamDescriptionBoxProps {
-  name: string;
-  description: string;
-  emoji: string;
-  color: string;
-  joined: boolean;
-}
 
-type StyledTeamDescriptionContainerProps = Pick<
-  TeamDescriptionBoxProps,
-  "color"
->;
+import { Team } from "@/types";
+
+type StyledTeamDescriptionContainerProps = Pick<Team, "color">;
 
 const TeamDescriptionBox = ({
   name,
@@ -25,21 +19,26 @@ const TeamDescriptionBox = ({
   emoji,
   color,
   joined,
-}: TeamDescriptionBoxProps) => {
-  const [isNicknameEditOpen, setIsNicknameEditOpen] = useState(false);
+}: Omit<Team, "id" | "nickname" | "secret">) => {
+  const {
+    isOpen: isTeamNicknameOpen,
+    handleModalClose: handleTeamNicknameClose,
+    handleModalOpen: handleTeamNicknameOpen,
+  } = useModal();
+  const {
+    isOpen: isInviteOpen,
+    handleModalClose: handleInviteClose,
+    handleModalOpen: handleInviteOpen,
+  } = useModal();
 
   const teamMoreOption = [
     {
       option: "초대하기",
-      callback: () => {
-        console.log("초대하기");
-      },
+      callback: handleInviteOpen,
     },
     {
       option: "모임 프로필 설정",
-      callback: () => {
-        setIsNicknameEditOpen(true);
-      },
+      callback: handleTeamNicknameOpen,
     },
   ];
 
@@ -55,12 +54,10 @@ const TeamDescriptionBox = ({
         )}
       </StyledHeader>
       <p>{description}</p>
-      {isNicknameEditOpen && (
-        <TeamNicknameModalForm
-          mode="edit"
-          onClickCloseButton={() => setIsNicknameEditOpen(false)}
-        />
+      {isTeamNicknameOpen && (
+        <NicknameEditModalForm onClickCloseButton={handleTeamNicknameClose} />
       )}
+      {isInviteOpen && <InviteModal onClickClose={handleInviteClose} />}
     </StyledTeamDescriptionContainer>
   );
 };
@@ -68,11 +65,9 @@ const TeamDescriptionBox = ({
 const StyledTeamDescriptionContainer = styled.div<StyledTeamDescriptionContainerProps>`
   width: 90%;
   min-height: 150px;
-
   padding: 20px 16px;
   border-radius: 8px;
   background-color: ${({ color }) => `${color}AB`};
-
   h3 {
     font-size: 32px;
     margin-bottom: 10px;

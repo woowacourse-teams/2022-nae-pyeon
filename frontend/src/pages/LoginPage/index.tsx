@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import { useSnackbar } from "@/context/SnackbarContext";
@@ -8,13 +9,21 @@ import SocialLoginButton from "@/pages/LoginPage/components/SocialLoginButton";
 
 import { KAKAO_OAUTH_URL, SOCIAL_LOGIN_PLATFORM } from "@/constants";
 
+type LoginPageLocationState = {
+  inviteToken?: string;
+};
+
 const LoginPage = () => {
   const { openSnackbar } = useSnackbar();
+  const { state } = useLocation();
 
   const handleKakaoLoginButtonClick: React.MouseEventHandler<
     HTMLButtonElement
   > = () => {
-    location.href = KAKAO_OAUTH_URL.AUTHORIZE_CODE;
+    const locationState = state as LoginPageLocationState;
+    const inviteToken = locationState?.inviteToken || "";
+
+    location.href = KAKAO_OAUTH_URL.AUTHORIZE_CODE(inviteToken);
   };
 
   const handleNaverLoginButtonClick: React.MouseEventHandler<

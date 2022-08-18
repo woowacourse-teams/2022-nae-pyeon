@@ -1,6 +1,9 @@
 package com.woowacourse.naepyeon.domain;
 
+import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.ExceedMessageContentLengthException;
+import com.woowacourse.naepyeon.exception.InvalidSecretMessageToTeam;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,12 +44,29 @@ public class Message extends BaseEntity {
     @JoinColumn(name = "rollingpaper_id", nullable = false)
     private Rollingpaper rollingpaper;
 
-    public Message(final String content, final String color, final Member author, final Rollingpaper rollingpaper) {
+    @Column(name = "anonymous", nullable = false)
+    private boolean anonymous;
+
+    @Column(name = "secret", nullable = false)
+    private boolean secret;
+
+    public Message(final String content, final String color, final Member author, final Rollingpaper rollingpaper,
+                   final boolean anonymous, final boolean secret) {
         validateContentLength(content);
+        validateCanSecret(rollingpaper, secret);
         this.content = content;
         this.color = color;
         this.author = author;
         this.rollingpaper = rollingpaper;
+        this.anonymous = anonymous;
+        this.secret = secret;
+
+    }
+
+    private void validateCanSecret(final Rollingpaper rollingpaper, final boolean secret) {
+        if (rollingpaper.checkSameRecipient(Recipient.TEAM) && secret) {
+            throw new InvalidSecretMessageToTeam(rollingpaper.getId());
+        }
     }
 
     public void changeContent(final String newContent) {
@@ -56,6 +76,14 @@ public class Message extends BaseEntity {
 
     public void changeColor(final String newColor) {
         this.color = newColor;
+    }
+
+    public void changeAnonymous(final boolean anonymous) {
+        this.anonymous = anonymous;
+    }
+
+    public void changeSecret(final boolean secret) {
+        this.secret = secret;
     }
 
     private void validateContentLength(final String content) {

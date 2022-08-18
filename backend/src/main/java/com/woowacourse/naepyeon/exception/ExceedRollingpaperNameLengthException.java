@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.exception;
 
-import com.woowacourse.naepyeon.domain.Rollingpaper;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import org.springframework.http.HttpStatus;
 
 public final class ExceedRollingpaperNameLengthException extends NaePyeonException {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import styled from "@emotion/styled";
 
@@ -11,13 +11,19 @@ import EmptyStateImg from "@/assets/images/empty-state.svg";
 import { MYPAGE_MESSAGE_PAGING_COUNT } from "@/constants";
 
 import { ResponseSentMessages } from "@/types";
+import usePaging from "@/hooks/usePaging";
 
-const MessageList = () => {
-  const [pageNumber, setPageNumber] = useState(0);
+interface MessageListProp {
+  lastPage: number;
+}
+
+const MessageList = ({ lastPage }: MessageListProp) => {
+  const { currentPage, handleNumberClick, handleNextClick, handlePrevClick } =
+    usePaging(lastPage);
 
   const { isLoading, isError, error, data } = useQuery<ResponseSentMessages>(
-    ["sent-messages", pageNumber],
-    () => getMySentMessage(pageNumber, MYPAGE_MESSAGE_PAGING_COUNT),
+    ["sent-messages", currentPage],
+    () => getMySentMessage(currentPage, MYPAGE_MESSAGE_PAGING_COUNT),
     { keepPreviousData: true }
   );
 
@@ -30,7 +36,7 @@ const MessageList = () => {
   }
 
   return (
-    <>
+    <StyledListWithPaging>
       <StyledMessageList>
         {data.messages.map((message) => (
           <MessageListItem {...message} />
@@ -38,12 +44,14 @@ const MessageList = () => {
       </StyledMessageList>
       <StyledPaging>
         <Paging
-          maxPage={Math.ceil(data.totalCount / MYPAGE_MESSAGE_PAGING_COUNT)}
-          currentPage={pageNumber}
-          setCurrentPage={setPageNumber}
+          currentPage={currentPage}
+          lastPage={lastPage}
+          handleNumberClick={handleNumberClick}
+          handleNextClick={handleNextClick}
+          handlePrevClick={handlePrevClick}
         />
       </StyledPaging>
-    </>
+    </StyledListWithPaging>
   );
 };
 
@@ -55,6 +63,14 @@ const EmptyState = () => {
     </StyledEmpty>
   );
 };
+
+const StyledListWithPaging = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+  height: 580px;
+`;
 
 const StyledEmpty = styled.div`
   display: flex;

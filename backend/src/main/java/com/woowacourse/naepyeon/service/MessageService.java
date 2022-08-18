@@ -2,8 +2,9 @@ package com.woowacourse.naepyeon.service;
 
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Message;
-import com.woowacourse.naepyeon.domain.Rollingpaper;
 import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
+import com.woowacourse.naepyeon.exception.InvalidSecretMessageToTeam;
 import com.woowacourse.naepyeon.exception.NotAuthorException;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundMessageException;
@@ -12,7 +13,9 @@ import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.repository.MessageRepository;
 import com.woowacourse.naepyeon.repository.RollingpaperRepository;
 import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
+import com.woowacourse.naepyeon.service.dto.MessageRequestDto;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
+import com.woowacourse.naepyeon.service.dto.MessageUpdateRequestDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
 import java.util.List;
@@ -34,27 +37,42 @@ public class MessageService {
     private final MemberRepository memberRepository;
     private final TeamParticipationRepository teamParticipationRepository;
 
-    public Long saveMessage(final String content, final String color, final Long rollingpaperId, final Long authorId) {
+    public Long saveMessage(final MessageRequestDto messageRequestDto, final Long rollingpaperId, final Long authorId) {
         final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
                 .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
+        validateCanSecret(messageRequestDto, rollingpaperId, rollingpaper);
         final Member author = memberRepository.findById(authorId)
                 .orElseThrow(() -> new NotFoundMemberException(authorId));
-        final Message message = new Message(content, color, author, rollingpaper);
+        final Message message = new Message(messageRequestDto.getContent(), messageRequestDto.getColor(),
+                author, rollingpaper, messageRequestDto.isAnonymous(), messageRequestDto.isSecret());
         return messageRepository.save(message);
     }
 
+    private void validateCanSecret(
+            final MessageRequestDto messageRequestDto, final Long rollingpaperId, final Rollingpaper rollingpaper
+    ) {
+        if (!rollingpaper.canContainSecretMessage() && messageRequestDto.isSecret()) {
+            throw new InvalidSecretMessageToTeam(rollingpaperId);
+        }
+    }
+
     @Transactional(readOnly = true)
-    public List<MessageResponseDto> findMessages(final Long rollingpaperId, final Long teamId) {
+    public List<MessageResponseDto> findMessages(
+            final Long rollingpaperId, final Long teamId, final Long loginMemberId) {
+        final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
+                .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
         return messageRepository.findAllByRollingpaperId(rollingpaperId)
                 .stream()
                 .map(message -> {
                     final Member author = message.getAuthor();
-                    return new MessageResponseDto(
-                            message.getId(),
-                            message.getContent(),
-                            message.getColor(),
-                            findMessageWriterNickname(teamId, message),
-                            author.getId()
+                    final String nickname = findMessageWriterNickname(teamId, message);
+                    return MessageResponseDto.of(
+                            message,
+                            hideContentWhenSecret(message, rollingpaper, message.getContent(), loginMemberId),
+                            hideAuthorNicknameWhenAnonymous(message, nickname),
+                            author.getId(),
+                            checkVisibleToLoginMember(message, rollingpaper, loginMemberId),
+                            checkEditableToLoginMember(message, loginMemberId)
                     );
                 })
                 .collect(Collectors.toUnmodifiableList());
@@ -79,7 +97,7 @@ public class MessageService {
     }
 
     @Transactional(readOnly = true)
-    public MessageResponseDto findMessage(final Long messageId, final Long rollingpaperId) {
+    public MessageResponseDto findMessage(final Long messageId, final Long rollingpaperId, final Long loginMemberId) {
         final Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new NotFoundMessageException(messageId));
         final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
@@ -87,15 +105,56 @@ public class MessageService {
         final Team team = rollingpaper.getTeam();
         final Member author = message.getAuthor();
         final String nickname = findMessageWriterNickname(team.getId(), message);
-        return new MessageResponseDto(messageId, message.getContent(), message.getColor(), nickname, author.getId());
+        final String responseNickname = hideAuthorNicknameWhenAnonymous(message, nickname);
+        final String responseContent = hideContentWhenSecret(message, rollingpaper, message.getContent(),
+                loginMemberId);
+        final boolean visible = checkVisibleToLoginMember(message, rollingpaper, loginMemberId);
+        final boolean editable = checkEditableToLoginMember(message, loginMemberId);
+        return MessageResponseDto.of(message, responseContent, responseNickname, author.getId(), visible, editable);
     }
 
-    public void updateMessage(final Long messageId, final String newContent, final String newColor,
+    private String hideAuthorNicknameWhenAnonymous(final Message message, final String nickname) {
+        if (message.isAnonymous()) {
+            return "";
+        }
+        return nickname;
+    }
+
+    private String hideContentWhenSecret(final Message message, final Rollingpaper rollingpaper,
+                                         final String content, final Long loginMemberId) {
+        if (!message.isSecret()) {
+            return content;
+        }
+        if (message.isAuthor(loginMemberId) || rollingpaper.isAddressee(loginMemberId)) {
+            return content;
+        }
+        return "";
+    }
+
+    private boolean checkVisibleToLoginMember(
+            final Message message, final Rollingpaper rollingpaper, final Long loginMemberId) {
+        if (!message.isSecret()) {
+            return true;
+        }
+        return message.isAuthor(loginMemberId) || rollingpaper.isAddressee(loginMemberId);
+    }
+
+    private boolean checkEditableToLoginMember(final Message message, final Long loginMemberId) {
+        return message.isAuthor(loginMemberId);
+    }
+
+    public void updateMessage(final Long messageId, final MessageUpdateRequestDto messageUpdateRequestDto,
                               final Long memberId) {
         final Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new NotFoundMessageException(messageId));
         validateAuthor(memberId, message);
-        messageRepository.update(messageId, newColor, newContent);
+        messageRepository.update(
+                messageId,
+                messageUpdateRequestDto.getColor(),
+                messageUpdateRequestDto.getContent(),
+                messageUpdateRequestDto.isAnonymous(),
+                messageUpdateRequestDto.isSecret()
+        );
     }
 
     public void deleteMessage(final Long messageId, final Long memberId) {

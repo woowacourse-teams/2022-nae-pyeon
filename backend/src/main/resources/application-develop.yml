@@ -1,0 +1,39 @@
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MYSQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 1000 #최적화 옵션
+        dialect: org.hibernate.dialect.MySQL5Dialect
+    open-in-view: false
+  flyway:
+    enabled: false
+    baseline-on-migrate: true
+
+security:
+  jwt:
+    token:
+      secret-key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.ih1aovtQShabQ7l0cINw4k1fagApg3qLWiB8Kt59Lno
+      expire-length: 3600000
+  aes256:
+    key: ${AES256_KEY}
+  invite-expire-length: 86400000
+
+kakao:
+  admin-key: ${KAKAO_ADMIN_KEY}
+  client-id: ${KAKAO_CLIENT_ID}
+  client-secret: ${KAKAO_CLIENT_SECRET}
+
+logging:
+  config: classpath:log4j2-develop.yml

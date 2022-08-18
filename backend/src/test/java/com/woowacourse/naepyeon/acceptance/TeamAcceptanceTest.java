@@ -10,11 +10,15 @@ import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_생�
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_이름_수정;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_추가;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임에_가입한_회원_목록_조회;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.초대_토큰_생성;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.초대_토큰으로_팀_상세_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.키워드로_모든_모임_조회;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
+import com.woowacourse.naepyeon.controller.dto.ErrorResponse;
+import com.woowacourse.naepyeon.controller.dto.InviteTokenResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
@@ -41,7 +45,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         final ExtractableResponse<Response> response = 모임_추가(alex, teamRequest);
 
@@ -71,8 +76,9 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final String teamDescription = "테스트 모임입니다.";
         final String teamEmoji = "testEmoji";
         final String teamColor = "#123456";
+        final boolean teameScret = false;
         final TeamRequest teamRequest =
-                new TeamRequest(teamName, teamDescription, teamEmoji, teamColor, "나는야모임장");
+                new TeamRequest(teamName, teamDescription, teamEmoji, teamColor, "나는야모임장", teameScret);
         final Long teamId = 모임_추가(alex, teamRequest)
                 .as(CreateResponse.class)
                 .getId();
@@ -80,8 +86,12 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final ExtractableResponse<Response> response = 모임_단건_조회(alex, teamId);
         final TeamResponseDto teamResponse = response.as(TeamResponseDto.class);
 
-        assertThat(teamResponse).extracting("id", "name", "description", "emoji", "color")
-                .containsExactly(teamId, teamName, teamDescription, teamEmoji, teamColor);
+        final TeamResponseDto expected = new TeamResponseDto(teamId, teamName, teamDescription, teamEmoji, teamColor,
+                true, teameScret);
+
+        assertThat(teamResponse)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -100,7 +110,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         모임_추가(alex, teamRequest);
 
@@ -117,13 +128,14 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         final Long team1Id = 모임_추가(alex, teamRequest1).as(CreateResponse.class)
                 .getId();
         //모임 생성
         final TeamRequest teamRequest2 =
-                new TeamRequest("내편아니야", ".", "a", "#123456", "테스트");
+                new TeamRequest("내편아니야", ".", "a", "#123456", "테스트", false);
         final Long team2Id = 모임_추가(alex, teamRequest2).as(CreateResponse.class)
                 .getId();
 
@@ -134,8 +146,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final List<TeamResponseDto> actual = response.as(TeamsResponseDto.class)
                 .getTeams();
         final List<TeamResponseDto> expected = List.of(
-                TeamResponseDto.byRequest(team1Id, teamRequest1, true),
-                TeamResponseDto.byRequest(team2Id, teamRequest2, true)
+                createTeamResponse(team1Id, teamRequest1, true),
+                createTeamResponse(team2Id, teamRequest2, true)
         );
 
         assertThat(actual)
@@ -152,7 +164,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         final Long team1Id = 모임_추가(alex, teamRequest1).as(CreateResponse.class)
                 .getId();
@@ -163,7 +176,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         모임_추가(alex, teamRequest2).as(CreateResponse.class);
 
@@ -199,7 +213,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                masterNickname
+                masterNickname,
+                false
         );
         final Long team1Id = 모임_추가(alex, teamRequest1).as(CreateResponse.class)
                 .getId();
@@ -229,7 +244,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                true
         );
         final ExtractableResponse<Response> response = 모임_이름_수정(alex, teamId, changeTeamRequest);
         모임이름이_수정됨(response);
@@ -275,6 +291,17 @@ class TeamAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    @DisplayName("이미 존재하는 닉네임으로 모임에 가입신청할 경우 예외를 발생시킨다.")
+    void joinMemberWithDuplicateNickname() {
+        final Long teamId = 모임_생성(alex);
+
+        final ExtractableResponse<Response> response =
+                모임_가입(kei, teamId, new JoinTeamMemberRequest("나는야모임장"));
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
     @DisplayName("회원이 가입한 모임을 조회한다.")
     void getJoinedTeams() {
         final TeamRequest teamRequest1 = new TeamRequest(
@@ -282,7 +309,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         final Long team1Id = 모임_추가(alex, teamRequest1).as(CreateResponse.class)
                 .getId();
@@ -291,7 +319,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         모임_추가(alex, teamRequest2).as(CreateResponse.class);
         final TeamRequest teamRequest3 = new TeamRequest(
@@ -299,7 +328,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         final Long team3Id = 모임_추가(alex, teamRequest3).as(CreateResponse.class)
                 .getId();
@@ -327,7 +357,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 "테스트 모임입니다.",
                 "testEmoji",
                 "#123456",
-                "나는야모임장"
+                "나는야모임장",
+                false
         );
         final ExtractableResponse<Response> response = 모임_이름_수정(alex, teamId, changeTeamRequest);
 
@@ -381,6 +412,67 @@ class TeamAcceptanceTest extends AcceptanceTest {
                 new UpdateTeamParticipantRequest("나는야모임장");
         final ExtractableResponse<Response> response = 모임_내_닉네임_변경(seungpang, teamId, updateTeamParticipantRequest);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    @DisplayName("모임의 초대 코드를 생성하고 모임 정보를 얻는다.")
+    void findTeamByInviteToken() {
+        final Long teamId = 모임_생성(alex);
+        final String inviteToken = 초대_토큰_생성(alex, teamId).as(InviteTokenResponse.class)
+                .getInviteToken();
+
+        final ExtractableResponse<Response> response = 초대_토큰으로_팀_상세_조회(alex, inviteToken);
+        final Long findTeamId = response.as(TeamResponseDto.class)
+                .getId();
+
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(findTeamId).isEqualTo(teamId)
+        );
+    }
+
+    @Test
+    @DisplayName("형식에 맞지 않는 초대코드로 모임 정보를 요청시 예외가 발생한다.")
+    void findTeamByInviteTokenWithInvalidToken() {
+        final String invalidFormInviteToken = "invalidInviteTokeninvalidInviteTokeninvalidInviteToken"
+                + "invalidInviteTokeninvalidInviteTokeninvalidInviteToken";
+
+        final ExtractableResponse<Response> response = 초대_토큰으로_팀_상세_조회(alex, invalidFormInviteToken);
+        final ErrorResponse errorResponse = response.as(ErrorResponse.class);
+
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
+                () -> assertThat(errorResponse).extracting("errorCode", "message")
+                        .containsExactly("4015", "올바르지 않은 토큰입니다.")
+        );
+    }
+
+    @Test
+    @DisplayName("유효시간이 지난 초대코드로 모임 정보를 요청시 예외가 발생한다.")
+    void findTeamByInviteTokenWithExpiredToken() {
+        final Long teamId = 모임_생성(alex);
+        final String expiredInviteToken = expiredTokenInviteTokenProvider.createInviteToken(teamId);
+
+        final ExtractableResponse<Response> response = 초대_토큰으로_팀_상세_조회(alex, expiredInviteToken);
+        final ErrorResponse errorResponse = response.as(ErrorResponse.class);
+
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
+                () -> assertThat(errorResponse).extracting("errorCode", "message")
+                        .containsExactly("4017", "토큰의 유효기간이 만료됐습니다.")
+        );
+    }
+
+    private TeamResponseDto createTeamResponse(final Long teamId, final TeamRequest teamRequest, final boolean joined) {
+        return new TeamResponseDto(
+                teamId,
+                teamRequest.getName(),
+                teamRequest.getDescription(),
+                teamRequest.getEmoji(),
+                teamRequest.getColor(),
+                joined,
+                teamRequest.isSecret()
+        );
     }
 
     private void 모임_삭제됨(ExtractableResponse<Response> response) {

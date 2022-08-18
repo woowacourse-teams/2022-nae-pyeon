@@ -5,7 +5,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.naepyeon.controller.dto.RollingpaperCreateRequest;
+import com.woowacourse.naepyeon.controller.dto.CreateMemberRollingpaperRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
@@ -17,7 +17,8 @@ class RollingpaperControllerTest extends TestSupport {
                         post("/api/v1/teams/{teamId}/rollingpapers", teamId)
                                 .header("Authorization", "Bearer " + accessToken)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(new RollingpaperCreateRequest("어서오세요", memberId2)))
+                                .content(objectMapper.writeValueAsString(
+                                        new CreateMemberRollingpaperRequest("어서오세요", memberId2)))
                 )
                 .andExpect(status().isCreated())
                 .andDo(restDocs.document());
@@ -37,16 +38,6 @@ class RollingpaperControllerTest extends TestSupport {
     void findRollingpapersByTeamId() throws Exception {
         mockMvc.perform(
                         get("/api/v1/teams/{teamId}/rollingpapers", teamId)
-                                .header("Authorization", "Bearer " + accessToken)
-                )
-                .andExpect(status().isOk())
-                .andDo(restDocs.document());
-    }
-
-    @Test
-    void findRollingpapersByMemberId() throws Exception {
-        mockMvc.perform(
-                        get("/api/v1/teams/{teamId}/rollingpapers/me", teamId)
                                 .header("Authorization", "Bearer " + accessToken)
                 )
                 .andExpect(status().isOk())
