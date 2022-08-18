@@ -1,5 +1,12 @@
 name: sonarqube
 on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - backend/**
+      - .github/**
   pull_request:
     branches:
       - main # or the name of your main branch
