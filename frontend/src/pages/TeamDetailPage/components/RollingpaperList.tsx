@@ -11,7 +11,7 @@ import { Rollingpaper, CustomError } from "@/types";
 
 import PlusIcon from "@/assets/icons/bx-plus.svg";
 import { getTeamRollingpapers } from "@/api/team";
-import useParamValidate from "@/hooks/useParamValidate";
+import useValidatedParam from "@/hooks/useValidatedParam";
 
 interface RollingpaperListResponse {
   rollingpapers: Omit<Rollingpaper, "messages">[];
@@ -19,7 +19,7 @@ interface RollingpaperListResponse {
 
 const RollingpaperList = () => {
   const navigate = useNavigate();
-  const { teamId } = useParamValidate(["teamId"]);
+  const teamId = useValidatedParam<number>("teamId");
 
   const {
     isLoading: isLoadingGetTeamRollingpaperList,
@@ -27,7 +27,7 @@ const RollingpaperList = () => {
     error: getTeamRollingpaperListError,
     data: teamRollinpaperListResponse,
   } = useQuery<RollingpaperListResponse>(["rollingpaperList", teamId], () =>
-    getTeamRollingpapers(+teamId)
+    getTeamRollingpapers(teamId)
   );
 
   if (isLoadingGetTeamRollingpaperList) {

@@ -10,7 +10,7 @@ import XIcon from "@/assets/icons/bx-x.svg";
 
 import useMessageForm from "@/pages/RollingpaperPage/hooks/useMessageForm";
 import useCreateMessage from "@/pages/RollingpaperPage/hooks/useCreateMessage";
-import useParamValidate from "@/hooks/useParamValidate";
+import useValidatedParam from "@/hooks/useValidatedParam";
 
 type MessageCreateFormProps = {
   onEditEnd: () => void;
@@ -49,8 +49,8 @@ export const MessageCreateForm = ({ onEditEnd }: MessageCreateFormProps) => {
     initMessage,
   } = useMessageForm({});
 
-  const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
-  const { createMessage } = useCreateMessage(+rollingpaperId);
+  const rollingpaperId = useValidatedParam<number>("rollingpaperId");
+  const { createMessage } = useCreateMessage(rollingpaperId);
 
   const handleMessageSubmit = () => {
     createMessage({ content, color, anonymous, secret });
