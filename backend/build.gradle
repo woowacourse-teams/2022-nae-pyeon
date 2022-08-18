@@ -2,7 +2,9 @@ plugins {
 	id 'org.springframework.boot' version '2.6.9'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'org.asciidoctor.jvm.convert' version '3.3.2'
+	id 'org.sonarqube' version '3.4.0.2513'
 	id 'java'
+	id 'jacoco'
 }
 
 group = 'com.woowacourse'
@@ -34,6 +36,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.flywaydb:flyway-core:6.4.2'
+	implementation 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2:1.4.200'
 	runtimeOnly 'mysql:mysql-connector-java'
@@ -52,6 +55,19 @@ dependencies {
 tasks.named('test') {
 	outputs.dir snippetsDir
 	useJUnitPlatform()
+	finalizedBy 'jacocoTestReport'
+}
+
+jacoco {
+	toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+		csv.enabled false
+		html.enabled false
+	}
 }
 
 tasks.named('asciidoctor') {
@@ -66,14 +82,20 @@ asciidoctor.doFirst {
 }
 
 task createDocument(type: Copy) {
-    dependsOn asciidoctor
-    from file("build/docs/asciidoc")
-    into file("src/main/resources/static")
+	dependsOn asciidoctor
+	from file("build/docs/asciidoc")
+	into file("src/main/resources/static")
 }
 
 bootJar {
-    dependsOn createDocument
-    from("${asciidoctor.outputDir}") {
-        into 'static/docs'
-    }
+	dependsOn createDocument
+	from("${asciidoctor.outputDir}") {
+		into 'static/docs'
+	}
+}
+
+sonarqube {
+	properties {
+		property "sonar.projectKey", "woowacourse-teams_2022-nae-pyeon_AYKuzmWfelLz0D2BhgWj"
+	}
 }
