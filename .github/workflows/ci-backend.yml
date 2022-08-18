@@ -1,0 +1,33 @@
+name: CI-BackEnd
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - backend/**
+      - .github/**
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    defaults:
+      run:
+        working-directory: ./backend
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: "11"
+          distribution: "temurin"
+
+      - name: Grant execute permisson for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew clean build

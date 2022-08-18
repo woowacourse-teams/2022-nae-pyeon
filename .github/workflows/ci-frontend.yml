@@ -1,0 +1,32 @@
+name: CI-FrontEnd
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - frontend/**
+      - .github/**
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Istall dependencies
+        run: yarn
+
+      - name: Build page
+        run: yarn build
