@@ -41,7 +41,7 @@ const RollingpaperList = ({ lastPage }: RollingpaperListProp) => {
   }
 
   return (
-    <>
+    <StyledListWithPaging>
       <StyledRollingpaperList>
         {data.rollingpapers.map((rollingpaper) => (
           <RollingpaperListItem {...rollingpaper} />
@@ -56,7 +56,7 @@ const RollingpaperList = ({ lastPage }: RollingpaperListProp) => {
           handlePrevClick={handlePrevClick}
         />
       </StyledPaging>
-    </>
+    </StyledListWithPaging>
   );
 };
 
@@ -68,6 +68,14 @@ const EmptyState = () => {
     </StyledEmpty>
   );
 };
+
+const StyledListWithPaging = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+  height: 580px;
+`;
 
 const StyledEmpty = styled.div`
   display: flex;
