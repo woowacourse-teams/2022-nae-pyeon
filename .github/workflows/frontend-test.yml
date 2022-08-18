@@ -18,10 +18,9 @@ jobs:
         with:
           node-version: 16
 
-      - name: yarn install, build
+      - name: yarn install
         run: |
           yarn install
-          yarn build
 
       - name: Run Jest tests
         run: |
