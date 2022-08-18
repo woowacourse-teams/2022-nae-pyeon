@@ -186,6 +186,7 @@ public class TeamService {
         return TeamResponseDto.of(team, teamParticipationRepository.isJoinedMember(memberId, teamId), team.isSecret());
     }
 
+    @Transactional
     public Long inviteJoin(final String inviteToken, final Long memberId, final String nickname) {
         final Long teamId = inviteTokenProvider.getTeamId(inviteToken);
 
