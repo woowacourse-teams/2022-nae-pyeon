@@ -12,8 +12,8 @@ import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
 import com.woowacourse.naepyeon.support.invitetoken.InviteTokenProvider;
-import com.woowacourse.naepyeon.support.invitetoken.des.DesInviteTokenProvider;
-import com.woowacourse.naepyeon.support.invitetoken.des.DesSupporter;
+import com.woowacourse.naepyeon.support.invitetoken.aes.Aes256InviteTokenProvider;
+import com.woowacourse.naepyeon.support.invitetoken.aes.Aes256Supporter;
 import com.woowacourse.naepyeon.support.oauth.kakao.KakaoPlatformUserProvider;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +41,7 @@ public class AcceptanceTest {
     protected MemberService memberService;
     protected AuthService authService;
     @Autowired
-    protected DesSupporter desSupporter;
+    protected Aes256Supporter aes256Supporter;
     @Autowired
     protected ObjectMapper objectMapper;
 
@@ -83,6 +83,6 @@ public class AcceptanceTest {
                 .thenReturn(new PlatformUserDto(zeroName, "email4@email.com", "KAKAO", "4"));
         zero = authService.createTokenWithKakaoOauth(new TokenRequestDto(zeroName, "https://..."));
 
-        expiredTokenInviteTokenProvider = new DesInviteTokenProvider(desSupporter, objectMapper, 0);
+        expiredTokenInviteTokenProvider = new Aes256InviteTokenProvider(aes256Supporter, objectMapper, 0);
     }
 }

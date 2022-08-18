@@ -1,4 +1,4 @@
-package com.woowacourse.naepyeon.support.invitetoken.des;
+package com.woowacourse.naepyeon.support.invitetoken.aes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,17 +11,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DesInviteTokenProvider implements InviteTokenProvider {
+public class Aes256InviteTokenProvider implements InviteTokenProvider {
 
-    private final DesSupporter desSupporter;
+    private final com.woowacourse.naepyeon.support.invitetoken.aes.Aes256Supporter aes256Supporter;
     private final ObjectMapper objectMapper;
     private final long validityInMilliseconds;
 
-    public DesInviteTokenProvider(final DesSupporter desSupporter,
-                                  final ObjectMapper objectMapper,
-                                  @Value("${security.invite-expire-length}") final long validityInMilliseconds
+    public Aes256InviteTokenProvider(final Aes256Supporter aes256Supporter,
+                                     final ObjectMapper objectMapper,
+                                     @Value("${security.invite-expire-length}") final long validityInMilliseconds
     ) {
-        this.desSupporter = desSupporter;
+        this.aes256Supporter = aes256Supporter;
         this.objectMapper = objectMapper;
         this.validityInMilliseconds = validityInMilliseconds;
     }
@@ -33,7 +33,7 @@ public class DesInviteTokenProvider implements InviteTokenProvider {
 
         try {
             final String rawPayload = objectMapper.writeValueAsString(payload);
-            return desSupporter.encrypt(rawPayload);
+            return aes256Supporter.encrypt(rawPayload);
         } catch (final JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -41,7 +41,7 @@ public class DesInviteTokenProvider implements InviteTokenProvider {
 
     @Override
     public Long getTeamId(final String token) {
-        final String rawPayload = desSupporter.decrypt(token);
+        final String rawPayload = aes256Supporter.decrypt(token);
 
         try {
             final InviteTokenPayload payload = objectMapper.readValue(rawPayload, InviteTokenPayload.class);
