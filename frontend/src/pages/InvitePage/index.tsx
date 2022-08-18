@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "@emotion/styled";
 
-import useParamValidate from "@/hooks/useParamValidate";
+import useValidatedParam from "@/hooks/useValidatedParam";
 import useInput from "@/hooks/useInput";
 import useCheckLogin from "@/pages/InvitePage/hooks/useCheckLogin";
 import useCheckTeamJoined from "@/pages/InvitePage/hooks/useCheckTeamJoined";
@@ -17,7 +17,7 @@ import TeamDescriptionBox from "@/pages/InvitePage/components/TeamDescriptionBox
 import { REGEX } from "@/constants";
 
 const InvitePage = () => {
-  const { inviteToken } = useParamValidate(["inviteToken"]);
+  const inviteToken = useValidatedParam<string>("inviteToken");
 
   const { value: nickname, handleInputChange } = useInput("");
   const checkLogin = useCheckLogin(inviteToken);

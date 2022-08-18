@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import styled from "@emotion/styled";
 
@@ -36,7 +36,7 @@ const MessageList = ({ lastPage }: MessageListProp) => {
   }
 
   return (
-    <>
+    <StyledListWithPaging>
       <StyledMessageList>
         {data.messages.map((message) => (
           <MessageListItem {...message} />
@@ -51,7 +51,7 @@ const MessageList = ({ lastPage }: MessageListProp) => {
           handlePrevClick={handlePrevClick}
         />
       </StyledPaging>
-    </>
+    </StyledListWithPaging>
   );
 };
 
@@ -63,6 +63,14 @@ const EmptyState = () => {
     </StyledEmpty>
   );
 };
+
+const StyledListWithPaging = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+  height: 580px;
+`;
 
 const StyledEmpty = styled.div`
   display: flex;

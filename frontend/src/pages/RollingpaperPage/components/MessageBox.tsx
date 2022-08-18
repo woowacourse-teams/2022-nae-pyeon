@@ -7,7 +7,7 @@ import TrashIcon from "@/assets/icons/bx-trash.svg";
 import Pencil from "@/assets/icons/bx-pencil.svg";
 import LockIcon from "@/assets/icons/bx-lock-alt.svg";
 
-import useParamValidate from "@/hooks/useParamValidate";
+import useValidatedParam from "@/hooks/useValidatedParam";
 import MessageUpdateForm from "@/pages/RollingpaperPage/components/MessageUpdateForm";
 import useMessageBox from "@/pages/RollingpaperPage/hooks/useMessageBox";
 import SecretMessage from "@/pages/RollingpaperPage/components/SecretMessage";
@@ -32,7 +32,7 @@ const MessageBox = ({
     handleWriteButtonClick,
     handleDeleteButtonClick,
     handleEditEnd,
-  } = useMessageBox({ id, rollingpaperId: +rollingpaperId });
+  } = useMessageBox({ id, rollingpaperId: rollingpaperId });
 
   if (!visible) {
     return <SecretMessage from={from} />;

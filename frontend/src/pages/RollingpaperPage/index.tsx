@@ -10,11 +10,11 @@ import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
 import { Rollingpaper, CustomError } from "@/types";
 import { getRollingpaper } from "@/api/rollingpaper";
 
+import useValidatedParam from "@/hooks/useValidatedParam";
+
 const RollingpaperPage = () => {
-  const { teamId, rollingpaperId } = useParamValidate([
-    "teamId",
-    "rollingpaperId",
-  ]);
+  const teamId = useValidatedParam<number>("teamId");
+  const rollingpaperId = useValidatedParam<number>("rollingpaperId");
 
   const {
     isLoading,
@@ -22,7 +22,7 @@ const RollingpaperPage = () => {
     error: rollingpaperError,
     data: rollingpaper,
   } = useQuery<Rollingpaper>(["rollingpaper", rollingpaperId], () =>
-    getRollingpaper(+teamId, +rollingpaperId)
+    getRollingpaper(teamId, rollingpaperId)
   );
 
   if (isLoading) {
