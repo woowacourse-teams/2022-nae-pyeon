@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 
 import IconButton from "@components/IconButton";
 
-import { Message } from "@/types";
+import { Message, RollingpaperRecipient } from "@/types";
 
 import PencilIcon from "@/assets/icons/bx-pencil.svg";
 
@@ -14,10 +14,11 @@ import useSliceMessageList from "../hooks/useSliceMessageList";
 
 interface LetterPaperProp {
   to: string;
+  recipientType: RollingpaperRecipient;
   messageList: Message[];
 }
 
-const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
+const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProp) => {
   const { isWrite, handleWriteButtonClick, handleWriteEnd } = useMessageWrite();
 
   const slicedMessageLists = useSliceMessageList(messageList);
@@ -36,10 +37,19 @@ const LetterPaper = ({ to, messageList }: LetterPaperProp) => {
         {slicedMessageLists.map((messageList, index) => (
           <StyledMessageList key={index}>
             {index === 0 && isWrite && (
-              <MessageCreateForm onEditEnd={handleWriteEnd} />
+              <MessageCreateForm
+                enableSecretMessage={recipientType === "MEMBER"}
+                onEditEnd={handleWriteEnd}
+              />
             )}
             {messageList.map((message) => {
-              return <MessageBox key={message.id} {...message} />;
+              return (
+                <MessageBox
+                  key={message.id}
+                  enableSecretMessage={recipientType === "MEMBER"}
+                  {...message}
+                />
+              );
             })}
           </StyledMessageList>
         ))}

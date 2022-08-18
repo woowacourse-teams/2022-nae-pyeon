@@ -15,16 +15,18 @@ import SecretMessage from "@/pages/RollingpaperPage/components/SecretMessage";
 import { Message } from "@/types";
 
 const MessageBox = ({
+  id,
   content,
   from,
   color,
-  id,
-  editable,
   anonymous,
   secret,
+  editable,
   visible,
-}: Message) => {
-  const rollingpaperId = useValidatedParam<number>("rollingpaperId");
+  enableSecretMessage,
+}: Message & { enableSecretMessage: boolean }) => {
+  const { rollingpaperId } = useParamValidate(["rollingpaperId"]);
+
   const {
     isEdit,
     handleWriteButtonClick,
@@ -45,6 +47,7 @@ const MessageBox = ({
         anonymous={anonymous}
         secret={secret}
         onEditEnd={handleEditEnd}
+        enableSecretMessage={enableSecretMessage}
       />
     );
   }
@@ -65,7 +68,7 @@ const MessageBox = ({
         )}
         <StyledMessageFrom>
           {secret && <LockIcon />}
-          {from}
+          {!anonymous && from}
         </StyledMessageFrom>
       </StyledMessageBottom>
     </StyledMessage>
