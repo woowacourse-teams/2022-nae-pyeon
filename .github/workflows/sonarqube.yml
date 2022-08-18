@@ -6,14 +6,12 @@ on:
       - develop
     paths:
       - backend/**
-      - .github/**
   pull_request:
     branches:
       - main # or the name of your main branch
       - develop
     paths:
       - backend/**
-      - .github/**
     types: [opened, synchronize]
 
 jobs:
