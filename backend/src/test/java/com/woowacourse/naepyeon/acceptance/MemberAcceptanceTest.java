@@ -1,5 +1,17 @@
 package com.woowacourse.naepyeon.acceptance;
 
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.나의_롤링페이퍼_조회;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.나의_메시지_조회;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_작성;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_롤링페이퍼_생성;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_생성;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_롤링페이퍼_생성;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_삭제;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_유저네임_수정;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_조회;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.woowacourse.naepyeon.controller.dto.CreateMemberRollingpaperRequest;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.CreateTeamRollingpaperRequest;
@@ -14,23 +26,10 @@ import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-
-import java.util.List;
-
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.나의_롤링페이퍼_조회;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.나의_메시지_조회;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_작성;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_롤링페이퍼_생성;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_생성;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_롤링페이퍼_생성;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_삭제;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_유저네임_수정;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_조회;
-import static org.assertj.core.api.Assertions.assertThat;
 
 class MemberAcceptanceTest extends AcceptanceTest {
 
