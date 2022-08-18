@@ -6,7 +6,7 @@ import com.woowacourse.naepyeon.controller.dto.CreateTeamRollingpaperRequest;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MemberUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
-import com.woowacourse.naepyeon.controller.dto.MessageUpdateContentRequest;
+import com.woowacourse.naepyeon.controller.dto.MessageUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.RollingpaperUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.TokenRequest;
@@ -205,8 +205,8 @@ public class AcceptanceFixture {
     public static ExtractableResponse<Response> 메시지_수정(final TokenResponseDto tokenResponseDto,
                                                        final Long rollingpaperId,
                                                        final Long messageId,
-                                                       final MessageUpdateContentRequest messageUpdateContentRequest) {
-        return put(tokenResponseDto, messageUpdateContentRequest,
+                                                       final MessageUpdateRequest messageUpdateRequest) {
+        return put(tokenResponseDto, messageUpdateRequest,
                 "/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId);
     }
 

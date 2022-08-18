@@ -15,6 +15,7 @@ import com.woowacourse.naepyeon.repository.RollingpaperRepository;
 import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.MessageRequestDto;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
+import com.woowacourse.naepyeon.service.dto.MessageUpdateRequestDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
 import java.util.List;
@@ -142,12 +143,18 @@ public class MessageService {
         return message.isAuthor(loginMemberId);
     }
 
-    public void updateMessage(final Long messageId, final String newContent, final String newColor,
+    public void updateMessage(final Long messageId, final MessageUpdateRequestDto messageUpdateRequestDto,
                               final Long memberId) {
         final Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new NotFoundMessageException(messageId));
         validateAuthor(memberId, message);
-        messageRepository.update(messageId, newColor, newContent);
+        messageRepository.update(
+                messageId,
+                messageUpdateRequestDto.getColor(),
+                messageUpdateRequestDto.getContent(),
+                messageUpdateRequestDto.isAnonymous(),
+                messageUpdateRequestDto.isSecret()
+        );
     }
 
     public void deleteMessage(final Long messageId, final Long memberId) {

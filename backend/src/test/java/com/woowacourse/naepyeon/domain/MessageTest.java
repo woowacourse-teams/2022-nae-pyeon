@@ -51,6 +51,48 @@ class MessageTest {
     }
 
     @Test
+    @DisplayName("메시지 익명 옵션을 수정한다.")
+    void changeMessageAnonymous() {
+        final Team team = new Team(
+                "nae-pyeon",
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456",
+                false
+        );
+        final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
+        final Member author = new Member("author", "a@hello.com", Platform.KAKAO, "2");
+        final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", Recipient.MEMBER, team, member);
+        final Message message = new Message("헬로우", "green", author, rollingpaper, false, false);
+        final boolean expected = true;
+
+        message.changeAnonymous(true);
+
+        assertThat(message.isAnonymous()).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("메시지 비밀 옵션을 수정한다.")
+    void changeMessageSecret() {
+        final Team team = new Team(
+                "nae-pyeon",
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456",
+                false
+        );
+        final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
+        final Member author = new Member("author", "a@hello.com", Platform.KAKAO, "2");
+        final Rollingpaper rollingpaper = new Rollingpaper("alexAndKei", Recipient.MEMBER, team, member);
+        final Message message = new Message("헬로우", "green", author, rollingpaper, false, false);
+        final boolean expected = true;
+
+        message.changeSecret(expected);
+
+        assertThat(message.isSecret()).isEqualTo(expected);
+    }
+
+    @Test
     @DisplayName("500자 이상의 내용이 입력되면 예외가 발생한다.")
     void exceedLength() {
         final Team team = new Team(

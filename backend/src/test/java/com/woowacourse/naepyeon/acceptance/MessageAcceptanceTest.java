@@ -17,7 +17,7 @@ import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.CreateTeamRollingpaperRequest;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
-import com.woowacourse.naepyeon.controller.dto.MessageUpdateContentRequest;
+import com.woowacourse.naepyeon.controller.dto.MessageUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperResponseDto;
@@ -116,12 +116,92 @@ class MessageAcceptanceTest extends AcceptanceTest {
                         .getId();
 
         final ExtractableResponse<Response> response = 메시지_수정(seungpang, rollingpaperId, messageId,
-                new MessageUpdateContentRequest("오늘 뭐해??", "red"));
+                new MessageUpdateRequest("오늘 뭐해??", "red", false, false));
 
         final MessageResponseDto actual = 메시지_조회(seungpang, rollingpaperId, messageId)
                 .as(MessageResponseDto.class);
         final MessageResponseDto expected = new MessageResponseDto(actual.getId(), "오늘 뭐해??", actual.getFrom(),
                 actual.getAuthorId(), "red", false, false, true, true);
+
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value()),
+                () -> assertThat(actual)
+                        .usingRecursiveComparison()
+                        .isEqualTo(expected)
+        );
+    }
+
+    @Test
+    @DisplayName("작성한 메시지의 익명옵션을 수정한다.")
+    void updateMessageAnonymous() {
+        final Long teamId = 모임_추가(seungpang, teamRequest).as(CreateResponse.class)
+                .getId();
+        모임_가입(alex, teamId, new JoinTeamMemberRequest("알렉스당"));
+
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이알렉스", alex.getId());
+        final Long rollingpaperId = 회원_롤링페이퍼_생성(seungpang, teamId, createMemberRollingpaperRequest)
+                .as(CreateResponse.class)
+                .getId();
+
+        final MessageRequest messageRequest = new MessageRequest("환영해 알렉스!!!", "green", false, false);
+        final Long messageId =
+                메시지_작성(seungpang, rollingpaperId, messageRequest)
+                        .as(CreateResponse.class)
+                        .getId();
+
+        final ExtractableResponse<Response> response = 메시지_수정(seungpang, rollingpaperId, messageId,
+                new MessageUpdateRequest(messageRequest.getContent(), messageRequest.getColor(), true, false));
+
+        final MessageResponseDto actual = 메시지_조회(seungpang, rollingpaperId, messageId)
+                .as(MessageResponseDto.class);
+        final MessageResponseDto expected = new MessageResponseDto(actual.getId(), messageRequest.getContent(), actual.getFrom(),
+                actual.getAuthorId(), messageRequest.getColor(), true, false, true, true);
+
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value()),
+                () -> assertThat(actual)
+                        .usingRecursiveComparison()
+                        .isEqualTo(expected)
+        );
+    }
+
+    @Test
+    @DisplayName("작성한 메시지의 비밀글 옵션을 수정한다.")
+    void updateMessageSecret() {
+        final Long teamId = 모임_추가(seungpang, teamRequest).as(CreateResponse.class)
+                .getId();
+        모임_가입(alex, teamId, new JoinTeamMemberRequest("알렉스당"));
+
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이알렉스", alex.getId());
+        final Long rollingpaperId = 회원_롤링페이퍼_생성(seungpang, teamId, createMemberRollingpaperRequest)
+                .as(CreateResponse.class)
+                .getId();
+
+        final MessageRequest messageRequest = new MessageRequest("환영해 알렉스!!!", "green", false, false);
+        final Long messageId =
+                메시지_작성(seungpang, rollingpaperId, messageRequest)
+                        .as(CreateResponse.class)
+                        .getId();
+
+        final ExtractableResponse<Response> response = 메시지_수정(seungpang, rollingpaperId, messageId,
+                new MessageUpdateRequest(messageRequest.getContent(), messageRequest.getColor(), false, true));
+
+        final MessageResponseDto actual = 메시지_조회(seungpang, rollingpaperId, messageId)
+                .as(MessageResponseDto.class);
+        final MessageResponseDto expected =
+                new MessageResponseDto(
+                        actual.getId(),
+                        messageRequest.getContent(),
+                        actual.getFrom(),
+                        actual.getAuthorId(),
+                        messageRequest.getColor(),
+                        false,
+                        true,
+                        true,
+                        true
+                );
 
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value()),
@@ -150,7 +230,8 @@ class MessageAcceptanceTest extends AcceptanceTest {
                         .getId();
 
         final ExtractableResponse<Response> response =
-                메시지_수정(zero, rollingpaperId, messageId, new MessageUpdateContentRequest("a".repeat(501), "green"));
+                메시지_수정(zero, rollingpaperId, messageId,
+                        new MessageUpdateRequest("a".repeat(501), "green", false, false));
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
@@ -174,7 +255,7 @@ class MessageAcceptanceTest extends AcceptanceTest {
                         .getId();
 
         final ExtractableResponse<Response> response = 메시지_수정(seungpang, rollingpaperId, messageId,
-                new MessageUpdateContentRequest("수정할 때 예외 발생", "green"));
+                new MessageUpdateRequest("수정할 때 예외 발생", "green", false, false));
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
     }

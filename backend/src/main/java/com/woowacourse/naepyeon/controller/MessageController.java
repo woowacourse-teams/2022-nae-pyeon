@@ -4,7 +4,7 @@ import com.woowacourse.naepyeon.controller.auth.AuthenticationPrincipal;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
-import com.woowacourse.naepyeon.controller.dto.MessageUpdateContentRequest;
+import com.woowacourse.naepyeon.controller.dto.MessageUpdateRequest;
 import com.woowacourse.naepyeon.service.MessageService;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import java.net.URI;
@@ -53,13 +53,12 @@ public class MessageController {
     @PutMapping("/{messageId}")
     public ResponseEntity<Void> updateMessage(
             @AuthenticationPrincipal final LoginMemberRequest loginMemberRequest,
-            @RequestBody @Valid final MessageUpdateContentRequest messageUpdateContentRequest,
+            @RequestBody @Valid final MessageUpdateRequest messageUpdateRequest,
             @PathVariable final Long rollingpaperId,
             @PathVariable final Long messageId) {
         messageService.updateMessage(
                 messageId,
-                messageUpdateContentRequest.getContent(),
-                messageUpdateContentRequest.getColor(),
+                messageUpdateRequest.toServiceDto(),
                 loginMemberRequest.getId()
         );
         return ResponseEntity.noContent().build();

@@ -1,18 +1,17 @@
-package com.woowacourse.naepyeon.controller.dto;
+package com.woowacourse.naepyeon.service.dto;
 
-import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Getter
-public class MessageUpdateContentRequest {
+public class MessageUpdateRequestDto {
 
-    @NotBlank(message = "2001:메시지는 공백일 수 없습니다.")
     private String content;
-
     private String color;
+    private boolean anonymous;
+    private boolean secret;
 }

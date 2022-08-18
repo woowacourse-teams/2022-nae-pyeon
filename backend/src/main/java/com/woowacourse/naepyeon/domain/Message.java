@@ -78,6 +78,14 @@ public class Message extends BaseEntity {
         this.color = newColor;
     }
 
+    public void changeAnonymous(final boolean anonymous) {
+        this.anonymous = anonymous;
+    }
+
+    public void changeSecret(final boolean secret) {
+        this.secret = secret;
+    }
+
     private void validateContentLength(final String content) {
         if (content.length() > MAX_CONTENT_LENGTH) {
             throw new ExceedMessageContentLengthException(content);

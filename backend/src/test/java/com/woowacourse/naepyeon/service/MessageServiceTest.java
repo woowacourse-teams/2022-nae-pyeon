@@ -20,6 +20,7 @@ import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.TeamRepository;
 import com.woowacourse.naepyeon.service.dto.MessageRequestDto;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
+import com.woowacourse.naepyeon.service.dto.MessageUpdateRequestDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
 import java.util.List;
@@ -112,7 +113,7 @@ class MessageServiceTest {
         final MessageResponseDto messageResponse =
                 messageService.findMessage(messageId, memberRollingpaper.getId(), author.getId());
 
-        assertThat(messageResponse.getFrom()).isEqualTo("");
+        assertThat(messageResponse.getFrom()).isEmpty();
     }
 
     @Test
@@ -154,7 +155,7 @@ class MessageServiceTest {
         final MessageResponseDto messageResponse =
                 messageService.findMessage(messageId, memberRollingpaper.getId(), otherAuthor.getId());
 
-        assertThat(messageResponse.getContent()).isEqualTo("");
+        assertThat(messageResponse.getContent()).isEmpty();
     }
 
     @Test
@@ -260,7 +261,7 @@ class MessageServiceTest {
 
     @Test
     @DisplayName("메시지 내용과 색상을 수정한다.")
-    void updateContent() {
+    void updateMessageContentAndColor() {
         final MessageRequest messageRequest = createMessageRequest();
         final Long messageId = messageService.saveMessage(
                 new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
@@ -268,14 +269,79 @@ class MessageServiceTest {
         );
         final String expectedContent = "안녕하지 못합니다.";
         final String expectedColor = "red";
+        final MessageUpdateRequestDto messageUpdateRequestDto =
+                new MessageUpdateRequestDto(
+                        expectedContent,
+                        expectedColor,
+                        false,
+                        false
+                );
 
-        messageService.updateMessage(messageId, expectedContent, expectedColor, author.getId());
+        messageService.updateMessage(messageId, messageUpdateRequestDto, author.getId());
 
         final MessageResponseDto actual = messageService.findMessage(messageId, memberRollingpaper.getId(),
                 author.getId());
         final MessageResponseDto expected =
                 new MessageResponseDto(messageId, expectedContent, "이케이", author.getId(),
                         expectedColor, false, false, true, true);
+        assertThat(actual)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("메시지 익명 옵션을 수정한다.")
+    void updateMessageAnonymous() {
+        final MessageRequest messageRequest = createMessageRequest();
+        final Long messageId = messageService.saveMessage(
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
+                memberRollingpaper.getId(), author.getId()
+        );
+        final boolean expectedAnonymous = true;
+        final MessageUpdateRequestDto messageUpdateRequestDto =
+                new MessageUpdateRequestDto(
+                        messageRequest.getContent(),
+                        messageRequest.getColor(),
+                        expectedAnonymous,
+                        false
+                );
+
+        messageService.updateMessage(messageId, messageUpdateRequestDto, author.getId());
+
+        final MessageResponseDto actual = messageService.findMessage(messageId, memberRollingpaper.getId(),
+                author.getId());
+        final MessageResponseDto expected =
+                new MessageResponseDto(messageId, messageRequest.getContent(), "", author.getId(),
+                        messageRequest.getColor(), expectedAnonymous, false, true, true);
+        assertThat(actual)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("메시지 비밀글 옵션을 수정한다.")
+    void updateMessageSecret() {
+        final MessageRequest messageRequest = createMessageRequest();
+        final Long messageId = messageService.saveMessage(
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
+                memberRollingpaper.getId(), author.getId()
+        );
+        final boolean expectedSecret = true;
+        final MessageUpdateRequestDto messageUpdateRequestDto =
+                new MessageUpdateRequestDto(
+                        messageRequest.getContent(),
+                        messageRequest.getColor(),
+                        false,
+                        expectedSecret
+                );
+
+        messageService.updateMessage(messageId, messageUpdateRequestDto, author.getId());
+
+        final MessageResponseDto actual = messageService.findMessage(messageId, memberRollingpaper.getId(),
+                author.getId());
+        final MessageResponseDto expected =
+                new MessageResponseDto(messageId, messageRequest.getContent(), "이케이", author.getId(),
+                        messageRequest.getColor(), false, expectedSecret, true, true);
         assertThat(actual)
                 .usingRecursiveComparison()
                 .isEqualTo(expected);
@@ -290,8 +356,15 @@ class MessageServiceTest {
                 memberRollingpaper.getId(), author.getId()
         );
         final String expected = "안녕하지 못합니다.";
+        final MessageUpdateRequestDto messageUpdateRequestDto =
+                new MessageUpdateRequestDto(
+                        expected,
+                        messageRequest.getColor(),
+                        false,
+                        false
+                );
 
-        assertThatThrownBy(() -> messageService.updateMessage(messageId, expected, "green", 9999L))
+        assertThatThrownBy(() -> messageService.updateMessage(messageId, messageUpdateRequestDto, 9999L))
                 .isInstanceOf(NotAuthorException.class);
     }
 
