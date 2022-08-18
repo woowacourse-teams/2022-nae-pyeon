@@ -36,6 +36,8 @@ const NicknameCreateModalForm = ({
       onSuccess: () => {
         onClickCloseButton();
         openSnackbar("모임 가입 완료");
+        queryClient.invalidateQueries(["team", teamId]);
+        queryClient.invalidateQueries(["rollingpaperList", teamId]);
         queryClient.refetchQueries(["team", teamId]);
         queryClient.refetchQueries(["rollingpaperList", teamId]);
       },
