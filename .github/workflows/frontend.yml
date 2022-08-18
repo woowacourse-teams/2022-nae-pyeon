@@ -1,4 +1,4 @@
-name: Create Cypress report
+name: Jest Test
 on: [push]
 
 defaults:
