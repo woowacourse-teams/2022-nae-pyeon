@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.util.ContentCachingRequestWrapper;
 
 @Slf4j
 @Component
@@ -20,25 +19,19 @@ public class LoggingInterceptor implements HandlerInterceptor {
     private final ObjectMapper objectMapper;
 
     @Override
-    public void afterCompletion(
-            final HttpServletRequest request,
-            final HttpServletResponse response,
-            final Object handler,
-            final Exception ex
-    ) throws Exception {
-        final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
-
-        if (isFailed(response.getStatus())) {
-            return;
-        }
+    public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler)
+            throws Exception {
+        final CustomCachingRequestWrapper cachingRequest = (CustomCachingRequestWrapper) request;
 
         log.info(
                 LogForm.SUCCESS_REQUEST_FORM,
                 request.getMethod(),
                 request.getRequestURI(),
                 StringUtils.hasText(request.getHeader(HttpHeaders.AUTHORIZATION)),
-                objectMapper.readTree(cachingRequest.getContentAsByteArray())
+                objectMapper.readTree(cachingRequest.getInputStream())
         );
+
+        return true;
     }
 
     private boolean isFailed(final int statusCode) {
