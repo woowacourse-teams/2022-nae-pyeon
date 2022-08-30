@@ -33,9 +33,4 @@ public class LoggingInterceptor implements HandlerInterceptor {
 
         return true;
     }
-
-    private boolean isFailed(final int statusCode) {
-        return HttpStatus.valueOf(statusCode).is4xxClientError() ||
-                HttpStatus.valueOf(statusCode).is5xxServerError();
-    }
 }
