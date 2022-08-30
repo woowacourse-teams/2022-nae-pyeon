@@ -17,6 +17,7 @@ function useAutoLogin() {
   return useQuery<UserInfo>(
     ["memberId"],
     () => getMyInfoWithAccessToken(accessTokenCookie),
+
     {
       enabled: !!accessTokenCookie,
       onSuccess: () => {
