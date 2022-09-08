@@ -48,7 +48,8 @@ public class RollingpaperService {
                 .orElseThrow(() -> new NotFoundMemberException(addresseeId));
         validateTeamAndMember(teamId, loginMemberId, addresseeId);
         final Rollingpaper rollingpaper = new Rollingpaper(title, MEMBER, team, member);
-        return rollingpaperRepository.save(rollingpaper);
+        return rollingpaperRepository.save(rollingpaper)
+                .getId();
     }
 
     private void validateTeamAndMember(final Long teamId, final Long loginMemberId, final Long memberId) {
@@ -67,7 +68,8 @@ public class RollingpaperService {
             throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
         final Rollingpaper rollingpaper = new Rollingpaper(title, Recipient.TEAM, team, null);
-        return rollingpaperRepository.save(rollingpaper);
+        return rollingpaperRepository.save(rollingpaper)
+                .getId();
     }
 
     @Transactional(readOnly = true)
@@ -134,14 +136,16 @@ public class RollingpaperService {
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
             throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
-        rollingpaperRepository.update(rollingpaperId, newTitle);
+        final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
+                .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
+        rollingpaper.changeTitle(newTitle);
     }
 
     public void deleteRollingpaper(final Long rollingpaperId, final Long teamId, final Long loginMemberId) {
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
             throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
-        rollingpaperRepository.delete(rollingpaperId);
+        rollingpaperRepository.deleteById(rollingpaperId);
     }
 
     private boolean checkMemberNotIncludedTeam(final Long teamId, final Long memberId) {

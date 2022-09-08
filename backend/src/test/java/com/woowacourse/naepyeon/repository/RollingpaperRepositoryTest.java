@@ -9,8 +9,6 @@ import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
-import com.woowacourse.naepyeon.repository.jpa.MemberJpaDao;
-import com.woowacourse.naepyeon.repository.jpa.TeamJpaDao;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -30,10 +28,10 @@ class RollingpaperRepositoryTest {
     private static final String rollingPaperTitle = "AlexAndKei";
 
     @Autowired
-    private TeamJpaDao teamJpaDao;
+    private TeamRepository teamRepository;
 
     @Autowired
-    private MemberJpaDao memberJpaDao;
+    private MemberRepository memberRepository;
 
     @Autowired
     private RollingpaperRepository rollingpaperRepository;
@@ -52,15 +50,16 @@ class RollingpaperRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        teamJpaDao.save(team);
-        memberJpaDao.save(member);
+        teamRepository.save(team);
+        memberRepository.save(member);
     }
 
     @Test
     @DisplayName("롤링페이퍼를 저장하고 id값으로 찾는다.")
     void saveAndFind() {
         final Rollingpaper rollingPaper = createRollingPaper();
-        final Long rollingPaperId = rollingpaperRepository.save(rollingPaper);
+        final Long rollingPaperId = rollingpaperRepository.save(rollingPaper)
+                .getId();
 
         final Rollingpaper findRollingPaper = rollingpaperRepository.findById(rollingPaperId)
                 .orElseThrow();
@@ -127,26 +126,13 @@ class RollingpaperRepositoryTest {
     }
 
     @Test
-    @DisplayName("롤링페이퍼 타이틀을 변경한다.")
-    void update() {
-        final Rollingpaper rollingPaper = createRollingPaper();
-        final Long rollingPaperId = rollingpaperRepository.save(rollingPaper);
-        final String newTitle = "HelloWorld";
-
-        rollingpaperRepository.update(rollingPaperId, newTitle);
-        final Rollingpaper updateRollingpaper = rollingpaperRepository.findById(rollingPaperId)
-                .orElseThrow();
-
-        assertThat(updateRollingpaper.getTitle()).isEqualTo(newTitle);
-    }
-
-    @Test
     @DisplayName("롤링페이퍼를 id값을 통해 삭제한다.")
     void delete() {
         final Rollingpaper rollingPaper = createRollingPaper();
-        final Long rollingPaperId = rollingpaperRepository.save(rollingPaper);
+        final Long rollingPaperId = rollingpaperRepository.save(rollingPaper)
+                .getId();
 
-        rollingpaperRepository.delete(rollingPaperId);
+        rollingpaperRepository.deleteById(rollingPaperId);
 
         assertThat(rollingpaperRepository.findById(rollingPaperId))
                 .isEmpty();
@@ -156,7 +142,8 @@ class RollingpaperRepositoryTest {
     @DisplayName("롤링페이퍼를 생성할 때 생성일자가 올바르게 나온다.")
     void createMemberWhen() {
         final Rollingpaper message = createRollingPaper();
-        final Long rollingpaperId = rollingpaperRepository.save(message);
+        final Long rollingpaperId = rollingpaperRepository.save(message)
+                .getId();
 
         final Rollingpaper actual = rollingpaperRepository.findById(rollingpaperId)
                 .orElseThrow();
@@ -167,7 +154,8 @@ class RollingpaperRepositoryTest {
     @DisplayName("롤링페이퍼를 수정할 때 수정일자가 올바르게 나온다.")
     void updateMemberWhen() throws InterruptedException {
         final Rollingpaper rollingpaper = createRollingPaper();
-        final Long rollingpaperId = rollingpaperRepository.save(rollingpaper);
+        final Long rollingpaperId = rollingpaperRepository.save(rollingpaper)
+                .getId();
 
         sleep(1);
         rollingpaper.changeTitle("updateupdate");

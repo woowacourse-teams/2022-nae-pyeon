@@ -28,10 +28,12 @@ class MemberRepositoryTest {
     void findById() {
         // given
         final Member member = new Member("seungpang", "email@email.com", Platform.KAKAO, "1");
-        final Long memberId = memberRepository.save(member);
+        final Long memberId = memberRepository.save(member)
+                .getId();
 
         // when
-        final Member findMember = memberRepository.findById(memberId).get();
+        final Member findMember = memberRepository.findById(memberId)
+                .orElseThrow();
 
         // then
         assertThat(findMember)
@@ -45,10 +47,11 @@ class MemberRepositoryTest {
     void delete() {
         // given
         final Member member = new Member("seungpang", "email@email.com", Platform.KAKAO, "1");
-        final Long memberId = memberRepository.save(member);
+        final Long memberId = memberRepository.save(member)
+                .getId();
 
         // when
-        memberRepository.delete(memberId);
+        memberRepository.deleteById(memberId);
 
         // then
         assertThat(memberRepository.findById(memberId))
@@ -59,7 +62,8 @@ class MemberRepositoryTest {
     @DisplayName("회원을 생성할 때 생성일자가 올바르게 나온다.")
     void createMemberWhen() {
         final Member member = new Member("alex", "alex@naepyeon.com", Platform.KAKAO, "1");
-        final Long memberId = memberRepository.save(member);
+        final Long memberId = memberRepository.save(member)
+                .getId();
 
         final Member actual = memberRepository.findById(memberId)
                 .orElseThrow();
@@ -70,7 +74,8 @@ class MemberRepositoryTest {
     @DisplayName("회원 정보를 수정할 때 수정일자가 올바르게 나온다.")
     void updateMemberWhen() throws InterruptedException {
         final Member member = new Member("alex", "alex@naepyeon.com", Platform.KAKAO, "1");
-        final Long memberId = memberRepository.save(member);
+        final Long memberId = memberRepository.save(member)
+                .getId();
 
         sleep(1);
         member.changeUsername("kth990303");

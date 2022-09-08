@@ -71,7 +71,8 @@ class MessageRepositoryTest {
     @DisplayName("메시지를 저장하고 id값으로 찾는다.")
     void save() {
         final Message message = createMessage();
-        final Long messageId = messageRepository.save(message);
+        final Long messageId = messageRepository.save(message)
+                .getId();
 
         final Message findMessage = messageRepository.findById(messageId)
                 .orElseThrow();
@@ -127,66 +128,15 @@ class MessageRepositoryTest {
     }
 
     @Test
-    @DisplayName("본인이 작성한 메시지 내용과 색상을 변경한다.")
-    void updateMessageContentAndColor() {
-        final Member member = memberRepository.findByEmail(author.getEmail())
-                .orElseThrow();
-        final Message message = new Message(content, "green", member, rollingpaper, false, false);
-        final Long messageId = messageRepository.save(message);
-        final String newContent = "알고리즘이 좋아요";
-        final String newColor = "red";
-
-        messageRepository.update(messageId, newColor, newContent, false, false);
-        final Message updateMessage = messageRepository.findById(messageId)
-                .orElseThrow();
-
-        assertThat(updateMessage.getContent()).isEqualTo(newContent);
-    }
-
-    @Test
-    @DisplayName("본인이 작성한 메시지 익명 옵션을 변경한다.")
-    void updateMessageAnonymous() {
-        final Member member = memberRepository.findByEmail(author.getEmail())
-                .orElseThrow();
-        final String color = "green";
-        final Message message = new Message(content, color, member, rollingpaper, false, false);
-        final Long messageId = messageRepository.save(message);
-
-        final boolean expected = true;
-
-        messageRepository.update(messageId, color, content, expected, false);
-        final Message updateMessage = messageRepository.findById(messageId)
-                .orElseThrow();
-
-        assertThat(updateMessage.isAnonymous()).isEqualTo(expected);
-    }
-
-    @Test
-    @DisplayName("본인이 작성한 메시지 내용과 색상을 변경한다.")
-    void updateMessageSecret() {
-        final Member member = memberRepository.findByEmail(author.getEmail())
-                .orElseThrow();
-        final String color = "green";
-        final Message message = new Message(content, color, member, rollingpaper, false, false);
-        final Long messageId = messageRepository.save(message);
-        final boolean expected = true;
-
-        messageRepository.update(messageId, color, content, false, expected);
-        final Message updateMessage = messageRepository.findById(messageId)
-                .orElseThrow();
-
-        assertThat(updateMessage.isSecret()).isEqualTo(expected);
-    }
-
-    @Test
     @DisplayName("메시지를 id값을 통해 삭제한다.")
     void delete() {
         final Member member = memberRepository.findByEmail(author.getEmail())
                 .orElseThrow();
         final Message message = new Message(content, "green", member, rollingpaper, false, false);
-        final Long messageId = messageRepository.save(message);
+        final Long messageId = messageRepository.save(message)
+                .getId();
 
-        messageRepository.delete(messageId);
+        messageRepository.deleteById(messageId);
 
         assertThat(messageRepository.findById(messageId))
                 .isEmpty();
@@ -196,7 +146,8 @@ class MessageRepositoryTest {
     @DisplayName("메시지를 생성할 때 생성일자가 올바르게 나온다.")
     void createMemberWhen() {
         final Message message = createMessage();
-        final Long messageId = messageRepository.save(message);
+        final Long messageId = messageRepository.save(message)
+                .getId();
 
         final Message actual = messageRepository.findById(messageId)
                 .orElseThrow();
@@ -207,7 +158,8 @@ class MessageRepositoryTest {
     @DisplayName("메시지를 수정할 때 수정일자가 올바르게 나온다.")
     void updateMemberWhen() throws InterruptedException {
         final Message message = createMessage();
-        final Long messageId = messageRepository.save(message);
+        final Long messageId = messageRepository.save(message)
+                .getId();
 
         sleep(1);
         message.changeContent("updateupdate");

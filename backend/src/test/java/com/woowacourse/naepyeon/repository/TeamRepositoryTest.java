@@ -2,11 +2,9 @@ package com.woowacourse.naepyeon.repository;
 
 import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.domain.Team;
-import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -33,7 +31,8 @@ class TeamRepositoryTest {
     void findById() {
         // given
         final Team team = new Team("woowacourse", "테스트 모임입니다.", "testEmoji", "#123456", false);
-        final Long teamId = teamRepository.save(team);
+        final Long teamId = teamRepository.save(team)
+                .getId();
 
         // when
         final Team findTeam = teamRepository.findById(teamId)
@@ -46,14 +45,27 @@ class TeamRepositoryTest {
     }
 
     @Test
+    @DisplayName("특정 이름의 모임이 있는지 확인한다.")
+    void existsByName() {
+        // given
+        final String teamName = "woowacourse";
+        final Team team = new Team(teamName, "테스트 모임입니다.", "testEmoji", "#123456", false);
+        teamRepository.save(team);
+
+        // when // then
+        assertThat(teamRepository.existsByName(teamName)).isTrue();
+    }
+
+    @Test
     @DisplayName("모임을 id로 제거한다.")
     void delete() {
         // given
         final Team team = new Team("woowacourse", "테스트 모임입니다.", "testEmoji", "#123456", false);
-        final Long teamId = teamRepository.save(team);
+        final Long teamId = teamRepository.save(team)
+                .getId();
 
         // when
-        teamRepository.delete(teamId);
+        teamRepository.deleteById(teamId);
 
         // then
         assertThat(teamRepository.findById(teamId))
@@ -70,7 +82,7 @@ class TeamRepositoryTest {
         teamRepository.save(team2);
         teamRepository.save(team3);
 
-        final Page<Team> teams = teamRepository.findTeamsByContainingTeamName("woowa", PageRequest.of(0, 5));
+        final Page<Team> teams = teamRepository.findTeamsByNameContaining("woowa", PageRequest.of(0, 5));
         assertAll(
                 () -> assertThat(teams).contains(team1, team2),
                 () -> assertThat(teams).doesNotContain(team3)
@@ -95,7 +107,7 @@ class TeamRepositoryTest {
         teamRepository.save(team6);
         teamRepository.save(team7);
 
-        final Page<Team> teams = teamRepository.findTeamsByContainingTeamName("woowa", PageRequest.of(1, 5));
+        final Page<Team> teams = teamRepository.findTeamsByNameContaining("woowa", PageRequest.of(1, 5));
         assertAll(
                 () -> assertThat(teams).contains(team6, team7),
                 () -> assertThat(teams).doesNotContain(team1, team2, team3, team4, team5)
@@ -119,22 +131,11 @@ class TeamRepositoryTest {
     }
 
     @Test
-    @DisplayName("존재하지 않는 모임을 삭제할 경우 예외를 발생시킨다.")
-    void deleteWithNotFoundTeam() {
-        // given
-        final Team team = new Team("woowacourse", "테스트 모임입니다.", "testEmoji", "#123456", false);
-        final Long teamId = teamRepository.save(team);
-
-        // when // then
-        assertThatThrownBy(() -> teamRepository.delete(teamId + 1L))
-                .isInstanceOf(NotFoundTeamException.class);
-    }
-
-    @Test
     @DisplayName("모임을 생성할 때 생성일자가 올바르게 나온다.")
     void createMemberWhen() {
         final Team team = new Team("woowacourse", "테스트 모임입니다.", "testEmoji", "#123456", false);
-        final Long teamId = teamRepository.save(team);
+        final Long teamId = teamRepository.save(team)
+                .getId();
 
         final Team actual = teamRepository.findById(teamId)
                 .orElseThrow();
@@ -145,7 +146,8 @@ class TeamRepositoryTest {
     @DisplayName("모임을 수정할 때 수정일자가 올바르게 나온다.")
     void updateMemberWhen() throws InterruptedException {
         final Team team = new Team("woowacourse", "테스트 모임입니다.", "testEmoji", "#123456", false);
-        final Long teamId = teamRepository.save(team);
+        final Long teamId = teamRepository.save(team)
+                .getId();
 
         sleep(1);
         team.changeName("updateupdate");
