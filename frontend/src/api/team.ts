@@ -36,6 +36,9 @@ const getTeamWithInviteToken = (inviteToken: string) =>
     .get(`/teams/invite?inviteToken=${inviteToken}`)
     .then((response) => response.data);
 
+const getTeamMyNickname = (id: number) =>
+  appClient.get(`/teams/${id}/me`).then((response) => response.data);
+
 const postTeam = ({
   name,
   description,
@@ -84,6 +87,7 @@ export {
   getTeamRollingpapers,
   getTeamWithInviteToken,
   postTeam,
+  getTeamMyNickname,
   postTeamMember,
   postTeamMemberWithInviteToken,
   postTeamInviteToken,
