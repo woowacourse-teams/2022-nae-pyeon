@@ -90,7 +90,7 @@ const StyledMessage = styled.div`
 
 const StyledMessageContent = styled.div`
   white-space: pre-wrap;
-  overflow: hidden;
+  word-break: break-all;
 
   font-size: 16px;
   line-height: 22px;
