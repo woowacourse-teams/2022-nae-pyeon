@@ -89,6 +89,7 @@ const StyledMessage = styled.div`
 `;
 
 const StyledMessageContent = styled.div`
+  white-space: pre-wrap;
   overflow: hidden;
 
   font-size: 16px;
