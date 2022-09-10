@@ -3,19 +3,33 @@ import styled from "@emotion/styled";
 
 interface LabeledTextAreaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  value: string;
   labelText: string;
+  showValueLength?: boolean;
 }
 
-const LabeledTextArea = ({ labelText, ...props }: LabeledTextAreaProps) => {
+const LabeledTextArea = ({
+  value,
+  maxLength,
+  labelText,
+  showValueLength = false,
+  ...props
+}: LabeledTextAreaProps) => {
   return (
     <StyledLabel>
       {labelText}
-      <StyledTextarea {...props} />
+      <StyledTextarea value={value} maxLength={maxLength} {...props} />
+      {showValueLength && (
+        <StyledValueLength>
+          {value.length}/{maxLength}
+        </StyledValueLength>
+      )}
     </StyledLabel>
   );
 };
 
 const StyledLabel = styled.label`
+  position: relative;
   display: flex;
   flex-direction: column;
 
@@ -29,9 +43,9 @@ const StyledLabel = styled.label`
 
 const StyledTextarea = styled.textarea`
   width: 100%;
-  height: 60px;
+  height: 100px;
   padding: 10px;
-  margin: 8px 0 28px 0;
+  margin: 12px 0 28px 0;
 
   font-size: 16px;
 
@@ -40,11 +54,15 @@ const StyledTextarea = styled.textarea`
   background-color: ${({ theme }) => theme.colors.GRAY_100};
 
   resize: none;
-  overflow: hidden;
 
   :focus {
     outline: none;
   }
+`;
+
+const StyledValueLength = styled.span`
+  position: absolute;
+  right: 0;
 `;
 
 export default LabeledTextArea;

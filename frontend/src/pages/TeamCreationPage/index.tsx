@@ -92,6 +92,7 @@ const TeamCreationPage = () => {
           minLength={1}
           maxLength={100}
           placeholder="최대 100자까지 입력 가능합니다"
+          showValueLength={true}
         />
         <LabeledInput
           labelText="나의 닉네임"
