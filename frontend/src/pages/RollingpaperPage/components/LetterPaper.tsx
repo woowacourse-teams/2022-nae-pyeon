@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 
 import IconButton from "@components/IconButton";
@@ -19,9 +19,38 @@ interface LetterPaperProp {
 }
 
 const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProp) => {
-  const { isWrite, handleWriteButtonClick, handleWriteEnd } = useMessageWrite();
+  const [elementList, setElementList] = useState(
+    messageList
+      .map((message) => (
+        <MessageBox
+          key={message.id}
+          enableSecretMessage={recipientType === "MEMBER"}
+          {...message}
+        />
+      ))
+      .reverse()
+  );
 
-  const slicedMessageLists = useSliceMessageList(messageList);
+  const { isWrite, handleWriteButtonClick, handleWriteEnd } = useMessageWrite({
+    onClickWriteButton: () =>
+      setElementList((prev) => {
+        return [messageForm, ...prev];
+      }),
+    onClickWriteEnd: () =>
+      setElementList((prev) => {
+        const newElementList = prev.slice(1);
+        return [...newElementList];
+      }),
+  });
+
+  const messageForm = (
+    <MessageCreateForm
+      enableSecretMessage={recipientType === "MEMBER"}
+      onEditEnd={handleWriteEnd}
+    />
+  );
+
+  const slicedMessageLists = useSliceMessageList(elementList);
 
   return (
     <StyledLetterPaper>
@@ -36,21 +65,7 @@ const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProp) => {
       <StyledSlicedMessageLists>
         {slicedMessageLists.map((messageList, index) => (
           <StyledMessageList key={index}>
-            {index === 0 && isWrite && (
-              <MessageCreateForm
-                enableSecretMessage={recipientType === "MEMBER"}
-                onEditEnd={handleWriteEnd}
-              />
-            )}
-            {messageList.map((message) => {
-              return (
-                <MessageBox
-                  key={message.id}
-                  enableSecretMessage={recipientType === "MEMBER"}
-                  {...message}
-                />
-              );
-            })}
+            <>{...messageList}</>
           </StyledMessageList>
         ))}
       </StyledSlicedMessageLists>
