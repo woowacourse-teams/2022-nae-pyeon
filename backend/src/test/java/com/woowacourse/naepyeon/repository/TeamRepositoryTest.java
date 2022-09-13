@@ -1,6 +1,5 @@
 package com.woowacourse.naepyeon.repository;
 
-import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -145,12 +144,11 @@ class TeamRepositoryTest {
 
     @Test
     @DisplayName("모임을 수정할 때 수정일자가 올바르게 나온다.")
-    void updateMemberWhen() throws InterruptedException {
+    void updateMemberWhen() {
         final Team team = new Team("woowacourse", "테스트 모임입니다.", "testEmoji", "#123456", false);
         final Long teamId = teamRepository.save(team)
                 .getId();
 
-        sleep(1);
         team.changeName("updateupdate");
         em.flush();
 

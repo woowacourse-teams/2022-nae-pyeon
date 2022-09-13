@@ -1,6 +1,5 @@
 package com.woowacourse.naepyeon.repository;
 
-import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -157,12 +156,11 @@ class MessageRepositoryTest {
 
     @Test
     @DisplayName("메시지를 수정할 때 수정일자가 올바르게 나온다.")
-    void updateMemberWhen() throws InterruptedException {
+    void updateMemberWhen() {
         final Message message = createMessage();
         final Long messageId = messageRepository.save(message)
                 .getId();
 
-        sleep(1);
         message.changeContent("updateupdate");
         em.flush();
 

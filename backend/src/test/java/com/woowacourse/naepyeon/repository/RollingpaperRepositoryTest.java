@@ -1,6 +1,5 @@
 package com.woowacourse.naepyeon.repository;
 
-import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -153,12 +152,11 @@ class RollingpaperRepositoryTest {
 
     @Test
     @DisplayName("롤링페이퍼를 수정할 때 수정일자가 올바르게 나온다.")
-    void updateMemberWhen() throws InterruptedException {
+    void updateMemberWhen() {
         final Rollingpaper rollingpaper = createRollingPaper();
         final Long rollingpaperId = rollingpaperRepository.save(rollingpaper)
                 .getId();
 
-        sleep(1);
         rollingpaper.changeTitle("updateupdate");
         em.flush();
 
