@@ -6,11 +6,11 @@ import com.woowacourse.naepyeon.config.JpaAuditingConfig;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
 import java.time.LocalDateTime;
-import javax.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
@@ -21,7 +21,7 @@ class MemberRepositoryTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private EntityManager em;
+    private TestEntityManager em;
 
     @Test
     @DisplayName("회원을 id값으로 찾는다.")

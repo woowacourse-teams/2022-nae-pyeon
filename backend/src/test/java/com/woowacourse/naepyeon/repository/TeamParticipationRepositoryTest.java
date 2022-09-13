@@ -10,12 +10,12 @@ import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import java.time.LocalDateTime;
 import java.util.List;
-import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +34,7 @@ class TeamParticipationRepositoryTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private EntityManager em;
+    private TestEntityManager em;
 
     private final Member member1 = new Member("내편이1", "naePyeon1@test.com", Platform.KAKAO, "1");
     private final Member member2 = new Member("내편이2", "naePyeon2@test.com", Platform.KAKAO, "2");

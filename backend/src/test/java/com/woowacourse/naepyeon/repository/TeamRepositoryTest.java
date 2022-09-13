@@ -7,11 +7,11 @@ import com.woowacourse.naepyeon.config.JpaAuditingConfig;
 import com.woowacourse.naepyeon.domain.Team;
 import java.time.LocalDateTime;
 import java.util.List;
-import javax.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +24,7 @@ class TeamRepositoryTest {
     private TeamRepository teamRepository;
 
     @Autowired
-    private EntityManager em;
+    private TestEntityManager em;
 
     @Test
     @DisplayName("모임을 id로 찾는다.")
