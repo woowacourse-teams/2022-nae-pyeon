@@ -1,6 +1,9 @@
 package com.woowacourse.naepyeon.support.oauth.naver;
 
 import com.woowacourse.naepyeon.domain.Platform;
+import com.woowacourse.naepyeon.exception.KakaoAuthorizationException;
+import com.woowacourse.naepyeon.exception.NaverAuthorizationException;
+import com.woowacourse.naepyeon.exception.NaverResourceException;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.support.oauth.dto.AccessTokenResponse;
 import com.woowacourse.naepyeon.support.oauth.naver.dto.NaverUserResponse;
@@ -37,7 +40,8 @@ public class NaverPlatformUserProvider {
         this.naverClientSecret = naverClientSecret;
     }
 
-    public PlatformUserDto getPlatformUser(final String authorizationCode, final String redirectUri, final String state) {
+    public PlatformUserDto getPlatformUser(final String authorizationCode, final String redirectUri,
+                                           final String state) {
         final AccessTokenResponse accessTokenResponse = requestAccessToken(authorizationCode, redirectUri, state);
         final NaverUserResponse naverUserResponse = requestPlatformUser(accessTokenResponse.getAccessToken());
         return new PlatformUserDto(
@@ -63,10 +67,8 @@ public class NaverPlatformUserProvider {
                     ).retrieve()
                     .bodyToMono(AccessTokenResponse.class)
                     .block();
-
         } catch (final RuntimeException e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException();
+            throw new NaverAuthorizationException(e);
         }
     }
 
@@ -80,8 +82,7 @@ public class NaverPlatformUserProvider {
                     .bodyToMono(NaverUserResponse.class)
                     .block();
         } catch (final RuntimeException e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException();
+            throw new NaverResourceException(e, accessToken);
         }
     }
 }
