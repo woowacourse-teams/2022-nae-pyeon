@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.support.oauth.kakao.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,15 +12,17 @@ import lombok.NoArgsConstructor;
 public class KakaoUserResponse {
 
     private Long id;
-    private KakaoAccount kakao_account;
+
+    @JsonProperty("kakao_account")
+    private KakaoAccount kakaoAccount;
 
     public String getNickname() {
-        return kakao_account.getProfile()
+        return kakaoAccount.getProfile()
                 .getNickname();
     }
 
     public String getEmail() {
-        return kakao_account.getEmail();
+        return kakaoAccount.getEmail();
     }
 
     @Getter
@@ -37,6 +40,8 @@ public class KakaoUserResponse {
     private static class KakaoProfile {
 
         private String nickname;
-        private String profile_image_url;
+
+        @JsonProperty("profile_image_url")
+        private String profileImageUrl;
     }
 }
