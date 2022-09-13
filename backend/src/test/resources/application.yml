@@ -40,5 +40,9 @@ kakao:
   client-id: client_id
   client-secret: client_secret
 
+naver:
+  client-id: client_id
+  client-secret: client_secret
+
 logging:
   config: classpath:log4j2.yml

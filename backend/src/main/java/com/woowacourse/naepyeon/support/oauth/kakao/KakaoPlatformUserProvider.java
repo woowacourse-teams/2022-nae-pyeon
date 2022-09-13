@@ -4,7 +4,7 @@ import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.exception.KakaoAuthorizationException;
 import com.woowacourse.naepyeon.exception.KakaoResourceException;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
-import com.woowacourse.naepyeon.support.oauth.kakao.dto.AccessTokenResponse;
+import com.woowacourse.naepyeon.support.oauth.dto.AccessTokenResponse;
 import com.woowacourse.naepyeon.support.oauth.kakao.dto.KakaoUserResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -44,7 +44,7 @@ public class KakaoPlatformUserProvider {
 
     public PlatformUserDto getPlatformUser(final String authorizationCode, final String redirectUri) {
         final AccessTokenResponse accessTokenResponse = requestAccessToken(authorizationCode, redirectUri);
-        final KakaoUserResponse kakaoUserResponse = requestPlatformUser(accessTokenResponse.getAccess_token());
+        final KakaoUserResponse kakaoUserResponse = requestPlatformUser(accessTokenResponse.getAccessToken());
         return new PlatformUserDto(
                 kakaoUserResponse.getNickname(),
                 kakaoUserResponse.getEmail(),

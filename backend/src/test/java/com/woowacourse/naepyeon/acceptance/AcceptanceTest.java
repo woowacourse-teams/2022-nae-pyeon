@@ -4,6 +4,7 @@ import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.naepyeon.controller.dto.NaverTokenRequest;
 import com.woowacourse.naepyeon.repository.MemberRepository;
 import com.woowacourse.naepyeon.service.AuthService;
 import com.woowacourse.naepyeon.service.MemberService;
@@ -16,6 +17,7 @@ import com.woowacourse.naepyeon.support.invitetoken.InviteTokenProvider;
 import com.woowacourse.naepyeon.support.invitetoken.aes.Aes256InviteTokenProvider;
 import com.woowacourse.naepyeon.support.invitetoken.aes.Aes256Supporter;
 import com.woowacourse.naepyeon.support.oauth.kakao.KakaoPlatformUserProvider;
+import com.woowacourse.naepyeon.support.oauth.naver.NaverPlatformUserProvider;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,8 @@ public class AcceptanceTest {
 
     @MockBean
     protected KakaoPlatformUserProvider kakaoPlatformUserProvider;
+    @MockBean
+    protected NaverPlatformUserProvider naverPlatformUserProvider;
     @Autowired
     protected MemberRepository memberRepository;
     @Autowired
@@ -62,7 +66,8 @@ public class AcceptanceTest {
     public void setUp() {
         RestAssured.port = port;
         databaseCleaner.execute();
-        authService = new AuthService(memberService, jwtTokenProvider, kakaoPlatformUserProvider);
+        authService = new AuthService(memberService, jwtTokenProvider, kakaoPlatformUserProvider,
+                naverPlatformUserProvider);
 
         final String alexName = "alex";
         when(kakaoPlatformUserProvider.getPlatformUser(anyString(), anyString()))
@@ -75,15 +80,24 @@ public class AcceptanceTest {
         kei = authService.createTokenWithKakaoOauth(new TokenRequestDto(keiName, "https://..."));
 
         final String seungpangName = "seungpang";
-        when(kakaoPlatformUserProvider.getPlatformUser(anyString(), anyString()))
-                .thenReturn(new PlatformUserDto(seungpangName, "email3@email.com", "KAKAO", "3"));
-        seungpang = authService.createTokenWithKakaoOauth(new TokenRequestDto(seungpangName, "https://..."));
+        when(naverPlatformUserProvider.getPlatformUser(anyString(), anyString(), anyString()))
+                .thenReturn(new PlatformUserDto(seungpangName, "email3@email.com", "NAVER", "1"));
+        final NaverTokenRequest seungpangNaverTokenRequest = new NaverTokenRequest(seungpangName, "https://...", "naepyeon");
+        seungpang = authService.createTokenWithNaverOauth(
+                seungpangNaverTokenRequest.getAuthorizationCode(),
+                seungpangNaverTokenRequest.getRedirectUri(),
+                seungpangNaverTokenRequest.getState()
+        );
 
         final String zeroName = "zero";
-        when(kakaoPlatformUserProvider.getPlatformUser(anyString(), anyString()))
-                .thenReturn(new PlatformUserDto(zeroName, "email4@email.com", "KAKAO", "4"));
-        zero = authService.createTokenWithKakaoOauth(new TokenRequestDto(zeroName, "https://..."));
-
+        when(naverPlatformUserProvider.getPlatformUser(anyString(), anyString(), anyString()))
+                .thenReturn(new PlatformUserDto(zeroName, "email4@email.com", "NAVER", "2"));
+        final NaverTokenRequest zeroNaverTokenRequest = new NaverTokenRequest(zeroName, "https://...", "naepyeon");
+        zero = authService.createTokenWithNaverOauth(
+                zeroNaverTokenRequest.getAuthorizationCode(),
+                zeroNaverTokenRequest.getRedirectUri(),
+                zeroNaverTokenRequest.getState()
+        );
         expiredTokenInviteTokenProvider = new Aes256InviteTokenProvider(aes256Supporter, objectMapper, 0);
     }
 }

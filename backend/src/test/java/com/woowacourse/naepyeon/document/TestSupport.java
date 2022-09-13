@@ -85,7 +85,7 @@ public abstract class TestSupport {
     private void saveBaseData() {
         memberId1 = memberService.save("홍길동", "email1@email.com", "KAKAO", "1");
         memberId2 = memberService.save("이순신", "email2@email.com", "KAKAO", "2");
-        memberId3 = memberService.save("아이유", "email3@email.com", "KAKAO", "3");
+        memberId3 = memberService.save("아이유", "email3@email.com", "NAVER", "1");
 
         teamId = teamService.save(
                 new TeamRequestDto("우테코 4기", "우테코 4기 크루원들 모임입니다.", "\\uD83D\\uDE00", "#212121", "길동이", false),

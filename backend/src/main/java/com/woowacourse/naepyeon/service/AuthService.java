@@ -5,6 +5,7 @@ import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
 import com.woowacourse.naepyeon.support.oauth.kakao.KakaoPlatformUserProvider;
+import com.woowacourse.naepyeon.support.oauth.naver.NaverPlatformUserProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ public class AuthService {
     private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
     private final KakaoPlatformUserProvider kakaoPlatformUserProvider;
+    private final NaverPlatformUserProvider naverPlatformUserProvider;
 
     public TokenResponseDto createTokenWithKakaoOauth(final TokenRequestDto tokenRequestDto) {
         final PlatformUserDto platformUser = kakaoPlatformUserProvider.getPlatformUser(
@@ -43,5 +45,17 @@ public class AuthService {
                 platformUser.getPlatform(),
                 platformUser.getPlatformId()
         );
+    }
+
+    public TokenResponseDto createTokenWithNaverOauth(final String authorizationCode, final String redirectUri,
+                                                      final String state) {
+        final PlatformUserDto platformUser = naverPlatformUserProvider.getPlatformUser(
+                authorizationCode,
+                redirectUri,
+                state
+        );
+        final Long memberId = createOrFindMemberId(platformUser);
+        final String accessToken = jwtTokenProvider.createToken(String.valueOf(memberId));
+        return new TokenResponseDto(accessToken, memberId);
     }
 }

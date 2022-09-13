@@ -1,14 +1,16 @@
-package com.woowacourse.naepyeon.support.oauth.kakao.dto;
+package com.woowacourse.naepyeon.controller.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class AccessTokenResponse {
+@Getter
+public class NaverTokenRequest {
 
-    private String access_token;
+    private String authorizationCode;
+    private String redirectUri;
+    private String state;
 }
