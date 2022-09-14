@@ -86,12 +86,12 @@ const TeamCreationPage = () => {
           errorMessage={"1~20자 사이의 모임명을 입력해주세요"}
         />
         <LabeledTextArea
-          labelText="모임 설명"
+          labelText="한 줄 소개"
           value={teamDescription}
           onChange={handleTeamDescriptionChange}
           minLength={1}
-          maxLength={100}
-          placeholder="최대 100자까지 입력 가능합니다"
+          maxLength={80}
+          placeholder="어떤 모임인지 소개해주세요. 최대 80자까지 입력 가능합니다."
           showValueLength
         />
         <LabeledInput
