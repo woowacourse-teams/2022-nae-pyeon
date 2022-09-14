@@ -6,7 +6,6 @@ import useTeamCreationForm from "@/pages/TeamCreationPage/hooks/useTeamCreationF
 
 import LabeledInput from "@/components/LabeledInput";
 import LabeledRadio from "@/components/LabeledRadio";
-import LabeledTextArea from "@/components/LabeledTextArea";
 import Button from "@/components/Button";
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LabeledSwitch from "@/components/LabeledSwitch";
@@ -51,7 +50,7 @@ const TeamCreationPage = () => {
     if (!REGEX.TEAM_NAME.test(nickname)) {
       return alert("모임명을 입력해주세요");
     }
-    if (!teamDescription) {
+    if (!REGEX.TEAM_DESCRIPTION.test(teamDescription)) {
       return alert("모임 설명을 입력해주세요");
     }
     if (!REGEX.USERNAME.test(nickname)) {
@@ -85,13 +84,17 @@ const TeamCreationPage = () => {
           onChange={handleTeamNameChange}
           errorMessage={"1~20자 사이의 모임명을 입력해주세요"}
         />
-        <LabeledTextArea
+        <LabeledInput
           labelText="한 줄 소개"
           value={teamDescription}
+          pattern={REGEX.TEAM_DESCRIPTION.source}
           onChange={handleTeamDescriptionChange}
           minLength={1}
           maxLength={80}
-          placeholder="어떤 모임인지 소개해주세요. 최대 80자까지 입력 가능합니다."
+          placeholder={
+            "어떤 모임인지 소개해주세요. 최대 80자까지 입력 가능합니다."
+          }
+          errorMessage={"최대 80자까지 입력 가능합니다."}
           showValueLength
         />
         <LabeledInput
@@ -122,7 +125,7 @@ const TeamCreationPage = () => {
           disabled={
             !(
               REGEX.TEAM_NAME.test(nickname) &&
-              teamDescription &&
+              REGEX.TEAM_DESCRIPTION.test(teamDescription) &&
               REGEX.USERNAME.test(nickname) &&
               emoji &&
               color
