@@ -5,7 +5,7 @@ import { divideArrayByIndexRemainder } from "@/util";
 import { Message } from "@/types";
 
 const useSliceMessageList = (messageList: Message[]) => {
-  const messageListRef = useRef<Message[]>(messageList);
+  const messageListRef = useRef(messageList);
   const [slicedMessageLists, setSlicedMessageLists] = useState<Message[][]>(
     Array.from(Array(4), () => [])
   );
