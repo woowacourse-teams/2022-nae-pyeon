@@ -89,7 +89,8 @@ const StyledMessage = styled.div`
 `;
 
 const StyledMessageContent = styled.div`
-  overflow: hidden;
+  white-space: break-spaces;
+  word-break: break-all;
 
   font-size: 16px;
   line-height: 22px;

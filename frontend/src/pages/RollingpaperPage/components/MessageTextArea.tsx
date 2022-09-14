@@ -62,6 +62,7 @@ const StyledTextArea = styled.textarea`
   background-color: transparent;
 
   resize: none;
+  white-space: break-spaces;
 
   font-size: inherit;
   line-height: inherit;
