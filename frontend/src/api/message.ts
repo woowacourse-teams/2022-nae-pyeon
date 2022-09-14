@@ -1,4 +1,7 @@
+import axios from "axios";
+
 import { appClient } from "@/api";
+import ApiError from "@/util/ApiError";
 
 interface PutMessageRequest {
   rollingpaperId: number;
@@ -14,42 +17,74 @@ interface DeleteMessageRequest {
   id: number;
 }
 
-const putMessage = ({
+const postMessage = async ({
+  rollingpaperId,
+  content,
+  color,
+  anonymous,
+  secret,
+}: Partial<PutMessageRequest>) => {
+  try {
+    const { data } = await appClient.post(
+      `/rollingpapers/${rollingpaperId}/messages`,
+      {
+        content,
+        color,
+        anonymous,
+        secret,
+      }
+    );
+
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const customError = error.response.data as ApiError;
+      throw new ApiError(customError.errorCode, customError.message);
+    }
+  }
+};
+
+const putMessage = async ({
   rollingpaperId,
   id,
   content,
   color,
   anonymous,
   secret,
-}: PutMessageRequest) =>
-  appClient
-    .put(`/rollingpapers/${rollingpaperId}/messages/${id}`, {
-      content,
-      color,
-      anonymous,
-      secret,
-    })
-    .then((response) => response.data);
+}: PutMessageRequest) => {
+  try {
+    const { data } = await appClient.put(
+      `/rollingpapers/${rollingpaperId}/messages/${id}`,
+      {
+        content,
+        color,
+        anonymous,
+        secret,
+      }
+    );
 
-const postMessage = ({
-  rollingpaperId,
-  content,
-  color,
-  anonymous,
-  secret,
-}: Partial<PutMessageRequest>) =>
-  appClient
-    .post(`/rollingpapers/${rollingpaperId}/messages`, {
-      content,
-      color,
-      anonymous,
-      secret,
-    })
-    .then((response) => response.data);
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const customError = error.response.data as ApiError;
+      throw new ApiError(customError.errorCode, customError.message);
+    }
+  }
+};
 
-const deleteMessage = ({ rollingpaperId, id }: DeleteMessageRequest) =>
-  appClient
-    .delete(`/rollingpapers/${rollingpaperId}/messages/${id}`)
-    .then((response) => response.data);
+const deleteMessage = async ({ rollingpaperId, id }: DeleteMessageRequest) => {
+  try {
+    const { data } = await appClient.delete(
+      `/rollingpapers/${rollingpaperId}/messages/${id}`
+    );
+
+    return { data };
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const customError = error.response.data as ApiError;
+      throw new ApiError(customError.errorCode, customError.message);
+    }
+  }
+};
 
 export { putMessage, postMessage, deleteMessage };
