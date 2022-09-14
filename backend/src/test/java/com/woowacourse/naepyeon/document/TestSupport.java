@@ -9,9 +9,6 @@ import com.woowacourse.naepyeon.service.TeamService;
 import com.woowacourse.naepyeon.service.dto.MessageRequestDto;
 import com.woowacourse.naepyeon.service.dto.TeamRequestDto;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,11 +86,21 @@ public abstract class TestSupport {
 
         teamId = teamService.save(
                 new TeamRequestDto("우테코 4기", "우테코 4기 크루원들 모임입니다.", "\\uD83D\\uDE00", "#212121", "길동이", false),
-                memberId1);
+                memberId1
+        );
+        teamService.save(
+                new TeamRequestDto("케이의 알고리즘 스터디", "케이와 함께하는 알고리즈 스터디", "\\uD83D\\uDE00", "#212121", "제로", false),
+                memberId1
+        );
+        teamService.save(
+                new TeamRequestDto("우테코 5기", "우테코 5기 크루원들 모임입니다.", "\\uD83D\\uDE00", "#212121", "승팡", false),
+                memberId1
+        );
         teamService.joinMember(teamId, memberId2, "순신이");
 
         rollingpaperId1 = rollingpaperService.createMemberRollingpaper("이순신 환영해", teamId, memberId1, memberId2);
         rollingpaperId2 = rollingpaperService.createMemberRollingpaper("홍길동 반가워", teamId, memberId2, memberId1);
+        rollingpaperService.createMemberRollingpaper("홍길동 생일축하해", teamId, memberId2, memberId1);
 
         messageId = messageService.saveMessage(
                 new MessageRequestDto("생일축하해!", "#123456", false, false), rollingpaperId1, memberId2
@@ -107,9 +114,5 @@ public abstract class TestSupport {
         messageService.saveMessage(
                 new MessageRequestDto("많은 가르침 받았습니다.", "#123456", false, false), rollingpaperId2, memberId2
         );
-    }
-
-    protected String readJson(final String path) throws IOException {
-        return new String(Files.readAllBytes(Paths.get("src/test/resources", path)));
     }
 }
