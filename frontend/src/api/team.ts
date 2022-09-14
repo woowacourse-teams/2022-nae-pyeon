@@ -1,4 +1,8 @@
+import axios from "axios";
+
 import { appClient } from "@/api";
+import ApiError from "@/util/ApiError";
+
 import { Team } from "@/types";
 
 interface SearchRequest {
@@ -8,76 +12,197 @@ interface SearchRequest {
 
 const getMyTeams =
   (teamPageCount = 5) =>
-  async ({ pageParam = 0 }) =>
-    appClient
-      .get(`teams/me?page=${pageParam}&count=${teamPageCount}`)
-      .then((response) => response.data);
+  async ({ pageParam = 0 }) => {
+    try {
+      const { data } = await appClient.get(
+        `teams/me?page=${pageParam}&count=${teamPageCount}`
+      );
+
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const customError = error.response.data as ApiError;
+        throw new ApiError(customError.errorCode, customError.message);
+      }
+    }
+  };
 
 const getTeamSearchResult =
   ({ keyword, count }: SearchRequest) =>
-  async ({ pageParam = 0 }) =>
-    appClient
-      .get(`teams?keyword=${keyword}&page=${pageParam}&count=${count}`)
+  async ({ pageParam = 0 }) => {
+    try {
+      const { data } = await appClient.get(
+        `teams?keyword=${keyword}&page=${pageParam}&count=${count}`
+      );
+
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const customError = error.response.data as ApiError;
+        throw new ApiError(customError.errorCode, customError.message);
+      }
+    }
+  };
+
+const getTeam = async (id: number) => {
+  try {
+    const { data } = await appClient.get(`/teams/${id}`);
+
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const customError = error.response.data as ApiError;
+      throw new ApiError(customError.errorCode, customError.message);
+    }
+  }
+};
+
+const getTeamMembers = async (id: number) => {
+  try {
+    const { data } = await appClient.get(`/teams/${id}/members`);
+
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const customError = error.response.data as ApiError;
+      throw new ApiError(customError.errorCode, customError.message);
+    }
+  }
+};
+
+const getTeamRollingpapers = async (id: number) => {
+  try {
+    const { data } = await appClient.get(`/teams/${id}/rollingpapers`);
+
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const customError = error.response.data as ApiError;
+      throw new ApiError(customError.errorCode, customError.message);
+    }
+  }
+};
+
+const getTeamWithInviteToken = async (inviteToken: string) => {
+  try {
+    const { data } = await appClient.get(
+      `/teams/invite?inviteToken=${inviteToken}`
+    );
+
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const customError = error.response.data as ApiError;
+      throw new ApiError(customError.errorCode, customError.message);
+    }
+  }
+};
+
+const getTeamMyNickname = async (id: number) => {
+  try {
+    const { data } = await appClient
+      .get(`/teams/${id}/me`)
       .then((response) => response.data);
 
-const getTeam = (id: number) =>
-  appClient.get(`/teams/${id}`).then((response) => response.data);
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const customError = error.response.data as ApiError;
+      throw new ApiError(customError.errorCode, customError.message);
+    }
+  }
+};
 
-const getTeamMembers = (id: number) =>
-  appClient.get(`/teams/${id}/members`).then((response) => response.data);
-
-const getTeamRollingpapers = (id: number) =>
-  appClient.get(`/teams/${id}/rollingpapers`).then((response) => {
-    return response.data;
-  });
-
-const getTeamWithInviteToken = (inviteToken: string) =>
-  appClient
-    .get(`/teams/invite?inviteToken=${inviteToken}`)
-    .then((response) => response.data);
-
-const getTeamMyNickname = (id: number) =>
-  appClient.get(`/teams/${id}/me`).then((response) => response.data);
-
-const postTeam = ({
+const postTeam = async ({
   name,
   description,
   emoji,
   color,
   nickname,
   secret,
-}: Omit<Team, "id" | "joined">) =>
-  appClient
-    .post("/teams", {
+}: Omit<Team, "id" | "joined">) => {
+  try {
+    const { data } = await appClient.post("/teams", {
       name,
       description,
       emoji,
       color,
       nickname,
       secret,
-    })
-    .then((response) => response.data);
+    });
 
-const postTeamInviteToken = ({ id }: Pick<Team, "id">) =>
-  appClient.post(`/teams/${id}/invite`).then((response) => response.data);
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const customError = error.response.data as ApiError;
+      throw new ApiError(customError.errorCode, customError.message);
+    }
+  }
+};
 
-const postTeamMember = ({ id, nickname }: Pick<Team, "id" | "nickname">) =>
-  appClient
-    .post(`/teams/${id}`, { nickname })
-    .then((response) => response.data);
+const postTeamInviteToken = async ({ id }: Pick<Team, "id">) => {
+  try {
+    const { data } = await appClient.post(`/teams/${id}/invite`);
 
-const postTeamMemberWithInviteToken = ({
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const customError = error.response.data as ApiError;
+      throw new ApiError(customError.errorCode, customError.message);
+    }
+  }
+};
+
+const postTeamMember = async ({
+  id,
+  nickname,
+}: Pick<Team, "id" | "nickname">) => {
+  try {
+    const { data } = await appClient.post(`/teams/${id}`, { nickname });
+
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const customError = error.response.data as ApiError;
+      throw new ApiError(customError.errorCode, customError.message);
+    }
+  }
+};
+
+const postTeamMemberWithInviteToken = async ({
   inviteToken,
   nickname,
-}: Pick<Team, "nickname"> & { inviteToken: string }) =>
-  appClient
-    .post(`/teams/invite/join`, { inviteToken, nickname })
-    .then((response) => response.data);
+}: Pick<Team, "nickname"> & { inviteToken: string }) => {
+  try {
+    const { data } = await appClient.post(`/teams/invite/join`, {
+      inviteToken,
+      nickname,
+    });
 
-const putTeamNickname = ({ id, nickname }: Pick<Team, "id" | "nickname">) =>
-  appClient
-    .put(`/teams/${id}/me`, { nickname })
-    .then((response) => response.data);
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const customError = error.response.data as ApiError;
+      throw new ApiError(customError.errorCode, customError.message);
+    }
+  }
+};
+
+const putTeamNickname = async ({
+  id,
+  nickname,
+}: Pick<Team, "id" | "nickname">) => {
+  try {
+    const { data } = await appClient.put(`/teams/${id}/me`, { nickname });
+
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const customError = error.response.data as ApiError;
+      throw new ApiError(customError.errorCode, customError.message);
+    }
+  }
+};
 
 export {
   getMyTeams,
