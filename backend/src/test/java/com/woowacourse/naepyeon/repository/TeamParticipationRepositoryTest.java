@@ -1,29 +1,27 @@
 package com.woowacourse.naepyeon.repository;
 
-import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.naepyeon.config.JpaAuditingConfig;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
-import com.woowacourse.naepyeon.exception.DuplicateTeamPaticipateException;
 import java.time.LocalDateTime;
 import java.util.List;
-import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Transactional
+@DataJpaTest
+@Import(JpaAuditingConfig.class)
 class TeamParticipationRepositoryTest {
 
     @Autowired
@@ -36,7 +34,7 @@ class TeamParticipationRepositoryTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private EntityManager em;
+    private TestEntityManager em;
 
     private final Member member1 = new Member("내편이1", "naePyeon1@test.com", Platform.KAKAO, "1");
     private final Member member2 = new Member("내편이2", "naePyeon2@test.com", Platform.KAKAO, "2");
@@ -58,7 +56,8 @@ class TeamParticipationRepositoryTest {
     void saveAndFind() {
         final String nickname = "닉네임";
         final TeamParticipation teamParticipation = new TeamParticipation(team1, member1, nickname);
-        final Long savedId = teamParticipationRepository.save(teamParticipation);
+        final Long savedId = teamParticipationRepository.save(teamParticipation)
+                .getId();
 
         final TeamParticipation findTeamParticipation = teamParticipationRepository.findById(savedId)
                 .orElseThrow();
@@ -68,18 +67,6 @@ class TeamParticipationRepositoryTest {
                 () -> assertThat(findTeamParticipation.getTeam().getId()).isEqualTo(team1.getId()),
                 () -> assertThat(findTeamParticipation.getNickname()).isEqualTo(nickname)
         );
-    }
-
-    @Test
-    @DisplayName("이미 해당 모임에 가입한 회원이 다시 가입할 경우 예외를 발생시킨다.")
-    void duplicateSaveException() {
-        final String nickname = "닉네임";
-        final TeamParticipation teamParticipation1 = new TeamParticipation(team1, member1, nickname);
-        final TeamParticipation teamParticipation2 = new TeamParticipation(team1, member1, nickname);
-        teamParticipationRepository.save(teamParticipation1);
-
-        assertThatThrownBy(() -> teamParticipationRepository.save(teamParticipation2))
-                .isInstanceOf(DuplicateTeamPaticipateException.class);
     }
 
     @Test
@@ -122,7 +109,7 @@ class TeamParticipationRepositoryTest {
         teamParticipationRepository.save(teamParticipation2);
 
         final Page<Team> joinedTeams =
-                teamParticipationRepository.findTeamsByMemberIdAndPageRequest(member1.getId(), PageRequest.of(0, 1));
+                teamParticipationRepository.findTeamsByMemberId(member1.getId(), PageRequest.of(0, 1));
 
         assertAll(
                 () -> assertThat(joinedTeams).contains(team1),
@@ -159,26 +146,11 @@ class TeamParticipationRepositoryTest {
     }
 
     @Test
-    @DisplayName("특정 모임에 회원이 가입했는지 여부를 반환한다.")
-    void isJoinedMember() {
-        final TeamParticipation teamParticipation1 = new TeamParticipation(team1, member1, "닉네임1");
-        final TeamParticipation teamParticipation2 = new TeamParticipation(team2, member1, "닉네임2");
-        final TeamParticipation teamParticipation3 = new TeamParticipation(team2, member2, "닉네임3");
-        teamParticipationRepository.save(teamParticipation1);
-        teamParticipationRepository.save(teamParticipation2);
-        teamParticipationRepository.save(teamParticipation3);
-
-        assertAll(
-                () -> assertThat(teamParticipationRepository.isJoinedMember(member1.getId(), team1.getId())).isTrue(),
-                () -> assertThat(teamParticipationRepository.isJoinedMember(member2.getId(), team1.getId())).isFalse()
-        );
-    }
-
-    @Test
     @DisplayName("회원 가입일자가 올바르게 나온다.")
     void createMemberWhen() {
         final TeamParticipation teamParticipation = new TeamParticipation(team1, member1, "닉네임1");
-        final Long teamParticipationId = teamParticipationRepository.save(teamParticipation);
+        final Long teamParticipationId = teamParticipationRepository.save(teamParticipation)
+                .getId();
 
         final TeamParticipation actual = teamParticipationRepository.findById(teamParticipationId)
                 .orElseThrow();
@@ -187,12 +159,12 @@ class TeamParticipationRepositoryTest {
 
     @Test
     @DisplayName("회원이 특정 팀의 닉네임을 변경한다.")
-    void updateNickname() throws InterruptedException {
+    void updateNickname() {
         final String expected = "닉네임2";
         final TeamParticipation teamParticipation = new TeamParticipation(team1, member1, "닉네임1");
-        final Long teamParticipationId = teamParticipationRepository.save(teamParticipation);
+        final Long teamParticipationId = teamParticipationRepository.save(teamParticipation)
+                .getId();
 
-        sleep(1);
         teamParticipationRepository.updateNickname(expected, member1.getId(), team1.getId());
         em.flush();
 
