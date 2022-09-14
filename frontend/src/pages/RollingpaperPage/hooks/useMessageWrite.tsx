@@ -1,23 +1,13 @@
 import React, { useState } from "react";
 
-type UseMessageWriterArgs = {
-  onClickWriteButton: () => void;
-  onClickWriteEnd: () => void;
-};
-
-const useMessageWrite = ({
-  onClickWriteButton,
-  onClickWriteEnd,
-}: UseMessageWriterArgs) => {
+const useMessageWrite = () => {
   const [isWrite, setIsWrite] = useState(false);
 
   const handleWriteButtonClick = () => {
-    onClickWriteButton();
     setIsWrite(true);
   };
 
   const handleWriteEnd = () => {
-    onClickWriteEnd();
     setIsWrite(false);
   };
 
