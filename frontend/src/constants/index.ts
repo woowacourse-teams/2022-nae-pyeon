@@ -4,8 +4,9 @@ const REGEX = {
   EMAIL: /^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\w+\.)+\w+$/,
   USERNAME: /^.{1,64}$/,
   PASSWORD: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d~!@#$%^&*()+|=]{8,20}$/,
-  TEAM_NAME: /^[가-힣a-zA-Z\d~!@#$%^&*()+_\-\s]{1,20}$/,
+  TEAM_NAME: /^.{1,20}$/,
   TEAM_NICKNAME: /^.{1,20}$/,
+  TEAM_DESCRIPTION: /^.{1,80}$/,
   ROLLINGPAPER_TITLE: /^.{1,20}$/,
 };
 
