@@ -4,11 +4,12 @@ import { appClient } from "@/api";
 import ApiError from "@/util/ApiError";
 
 import { RequestKakaoOauthBody } from "@/types/oauth";
+import { ApiOptions } from "@/types";
 
-const postKakaoOauth = async ({
-  authorizationCode,
-  redirectUri,
-}: RequestKakaoOauthBody) => {
+const postKakaoOauth = async (
+  { authorizationCode, redirectUri }: RequestKakaoOauthBody,
+  options?: ApiOptions
+) => {
   try {
     const { data } = await appClient.post("/oauth/kakao", {
       authorizationCode,
@@ -19,7 +20,12 @@ const postKakaoOauth = async ({
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       const customError = error.response.data as ApiError;
-      throw new ApiError(customError.errorCode, customError.message);
+      const { errorCode, message } = customError;
+      throw new ApiError({
+        errorCode,
+        message,
+        errorHandler: options?.onError,
+      });
     }
   }
 };

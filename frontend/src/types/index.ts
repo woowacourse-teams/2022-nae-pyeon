@@ -76,3 +76,7 @@ export type CustomError = {
 export type ValueOf<T> = T[keyof T];
 
 export type Recipient = ValueOf<typeof RECIPIENT>;
+
+export type ApiOptions = {
+  onError?: () => void;
+};
