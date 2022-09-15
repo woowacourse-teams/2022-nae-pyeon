@@ -17,7 +17,13 @@ public class LoggingInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler)
             throws Exception {
-        final CustomCachingRequestWrapper cachingRequest = (CustomCachingRequestWrapper) request;
+        final CustomCachingRequestWrapper cachingRequest;
+        try {
+             cachingRequest = (CustomCachingRequestWrapper) request;
+        } catch (final ClassCastException e) {
+            log.info("로깅 필터가 동작했는지 확인해주세요.");
+            return true;
+        }
 
         log.info(
                 LogForm.SUCCESS_REQUEST_FORM,
