@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { appClient } from "@/api";
+import { appClient, handleApiError } from "@/api";
 import ApiError from "@/util/ApiError";
 
 import { ApiOptions, Team } from "@/types";
@@ -20,15 +20,10 @@ const getMyTeams =
 
       return data;
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        const customError = error.response.data as ApiError;
-        const { errorCode, message } = customError;
-        throw new ApiError({
-          errorCode,
-          message,
-          errorHandler: options?.onError,
-        });
-      }
+      handleApiError({
+        error,
+        errorHandler: options?.onError,
+      });
     }
   };
 
@@ -42,15 +37,10 @@ const getTeamSearchResult =
 
       return data;
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        const customError = error.response.data as ApiError;
-        const { errorCode, message } = customError;
-        throw new ApiError({
-          errorCode,
-          message,
-          errorHandler: options?.onError,
-        });
-      }
+      handleApiError({
+        error,
+        errorHandler: options?.onError,
+      });
     }
   };
 
@@ -60,15 +50,10 @@ const getTeam = async (id: number, options?: ApiOptions) => {
 
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      const customError = error.response.data as ApiError;
-      const { errorCode, message } = customError;
-      throw new ApiError({
-        errorCode,
-        message,
-        errorHandler: options?.onError,
-      });
-    }
+    handleApiError({
+      error,
+      errorHandler: options?.onError,
+    });
   }
 };
 
@@ -78,15 +63,10 @@ const getTeamMembers = async (id: number, options?: ApiOptions) => {
 
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      const customError = error.response.data as ApiError;
-      const { errorCode, message } = customError;
-      throw new ApiError({
-        errorCode,
-        message,
-        errorHandler: options?.onError,
-      });
-    }
+    handleApiError({
+      error,
+      errorHandler: options?.onError,
+    });
   }
 };
 
@@ -96,15 +76,10 @@ const getTeamRollingpapers = async (id: number, options?: ApiOptions) => {
 
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      const customError = error.response.data as ApiError;
-      const { errorCode, message } = customError;
-      throw new ApiError({
-        errorCode,
-        message,
-        errorHandler: options?.onError,
-      });
-    }
+    handleApiError({
+      error,
+      errorHandler: options?.onError,
+    });
   }
 };
 
@@ -119,15 +94,10 @@ const getTeamWithInviteToken = async (
 
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      const customError = error.response.data as ApiError;
-      const { errorCode, message } = customError;
-      throw new ApiError({
-        errorCode,
-        message,
-        errorHandler: options?.onError,
-      });
-    }
+    handleApiError({
+      error,
+      errorHandler: options?.onError,
+    });
   }
 };
 
@@ -139,15 +109,10 @@ const getTeamMyNickname = async (id: number, options?: ApiOptions) => {
 
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      const customError = error.response.data as ApiError;
-      const { errorCode, message } = customError;
-      throw new ApiError({
-        errorCode,
-        message,
-        errorHandler: options?.onError,
-      });
-    }
+    handleApiError({
+      error,
+      errorHandler: options?.onError,
+    });
   }
 };
 
@@ -174,15 +139,10 @@ const postTeam = async (
 
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      const customError = error.response.data as ApiError;
-      const { errorCode, message } = customError;
-      throw new ApiError({
-        errorCode,
-        message,
-        errorHandler: options?.onError,
-      });
-    }
+    handleApiError({
+      error,
+      errorHandler: options?.onError,
+    });
   }
 };
 
@@ -195,15 +155,10 @@ const postTeamInviteToken = async (
 
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      const customError = error.response.data as ApiError;
-      const { errorCode, message } = customError;
-      throw new ApiError({
-        errorCode,
-        message,
-        errorHandler: options?.onError,
-      });
-    }
+    handleApiError({
+      error,
+      errorHandler: options?.onError,
+    });
   }
 };
 
@@ -216,15 +171,10 @@ const postTeamMember = async (
 
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      const customError = error.response.data as ApiError;
-      const { errorCode, message } = customError;
-      throw new ApiError({
-        errorCode,
-        message,
-        errorHandler: options?.onError,
-      });
-    }
+    handleApiError({
+      error,
+      errorHandler: options?.onError,
+    });
   }
 };
 
@@ -240,15 +190,10 @@ const postTeamMemberWithInviteToken = async (
 
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      const customError = error.response.data as ApiError;
-      const { errorCode, message } = customError;
-      throw new ApiError({
-        errorCode,
-        message,
-        errorHandler: options?.onError,
-      });
-    }
+    handleApiError({
+      error,
+      errorHandler: options?.onError,
+    });
   }
 };
 
@@ -261,15 +206,10 @@ const putTeamNickname = async (
 
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      const customError = error.response.data as ApiError;
-      const { errorCode, message } = customError;
-      throw new ApiError({
-        errorCode,
-        message,
-        errorHandler: options?.onError,
-      });
-    }
+    handleApiError({
+      error,
+      errorHandler: options?.onError,
+    });
   }
 };
 

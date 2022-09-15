@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { appClient } from "@/api";
+import { appClient, handleApiError } from "@/api";
 import ApiError from "@/util/ApiError";
 
 import { ApiOptions } from "@/types";
@@ -42,15 +42,10 @@ const postMessage = async (
 
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      const customError = error.response.data as ApiError;
-      const { errorCode, message } = customError;
-      throw new ApiError({
-        errorCode,
-        message,
-        errorHandler: options?.onError,
-      });
-    }
+    handleApiError({
+      error,
+      errorHandler: options?.onError,
+    });
   }
 };
 
@@ -71,15 +66,10 @@ const putMessage = async (
 
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      const customError = error.response.data as ApiError;
-      const { errorCode, message } = customError;
-      throw new ApiError({
-        errorCode,
-        message,
-        errorHandler: options?.onError,
-      });
-    }
+    handleApiError({
+      error,
+      errorHandler: options?.onError,
+    });
   }
 };
 
@@ -94,15 +84,10 @@ const deleteMessage = async (
 
     return { data };
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      const customError = error.response.data as ApiError;
-      const { errorCode, message } = customError;
-      throw new ApiError({
-        errorCode,
-        message,
-        errorHandler: options?.onError,
-      });
-    }
+    handleApiError({
+      error,
+      errorHandler: options?.onError,
+    });
   }
 };
 

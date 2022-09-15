@@ -9,7 +9,7 @@ type ApiErrorArgs = {
 export default class ApiError extends Error {
   errorCode: number;
   message: string;
-  errorHandler: ErrorHandler | undefined;
+  errorHandler?: ErrorHandler;
 
   constructor({ errorCode, message, errorHandler }: ApiErrorArgs) {
     super(message);

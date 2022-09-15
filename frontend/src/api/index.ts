@@ -1,5 +1,6 @@
 import axios from "axios";
 import { QueryClient } from "@tanstack/react-query";
+import ApiError from "@/util/ApiError";
 
 const appClient = axios.create({
   baseURL: process.env.API_URL,
@@ -12,4 +13,26 @@ const setAppClientHeaderAuthorization = (accessToken: string) => {
   appClient.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
 };
 
-export { appClient, queryClient, setAppClientHeaderAuthorization };
+const handleApiError = ({
+  error,
+  errorHandler,
+}: {
+  error: unknown;
+} & Pick<ApiError, "errorHandler">) => {
+  if (axios.isAxiosError(error) && error.response) {
+    const customError = error.response.data as ApiError;
+    const { errorCode, message } = customError;
+    throw new ApiError({
+      errorCode,
+      message,
+      errorHandler: errorHandler,
+    });
+  }
+};
+
+export {
+  appClient,
+  queryClient,
+  setAppClientHeaderAuthorization,
+  handleApiError,
+};
