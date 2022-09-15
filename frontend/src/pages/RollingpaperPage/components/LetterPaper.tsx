@@ -33,7 +33,7 @@ const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProp) => {
       .map((message) => (
         <MessageBox
           key={message.id}
-          enableSecretMessage={recipientType === "MEMBER"}
+          recipientType={recipientType}
           {...message}
         />
       ))
