@@ -1,6 +1,4 @@
-import axios from "axios";
-
-import { appClient, handleApiError } from "@/api";
+import { appClient, requestApi } from "@/api";
 
 import { ApiOptions } from "@/types";
 
@@ -9,63 +7,40 @@ interface RequestPostRollingpaper {
   title: string;
   addresseeId: number;
 }
+
 const getRollingpaper = async (
   teamId: number,
   id: number,
   options?: ApiOptions
-) => {
-  try {
-    const { data } = await appClient.get(
-      `/teams/${teamId}/rollingpapers/${id}`
-    );
-
-    return data;
-  } catch (error) {
-    handleApiError({
-      error,
-      errorHandler: options?.onError,
-    });
-  }
-};
+) =>
+  requestApi(
+    () => appClient.get(`/teams/${teamId}/rollingpapers/${id}`),
+    options
+  );
 
 const postTeamRollingpaper = async (
   { teamId, title }: Omit<RequestPostRollingpaper, "addresseeId">,
   options?: ApiOptions
-) => {
-  try {
-    const { data } = await appClient.post(
-      `/teams/${teamId}/team-rollingpapers`,
-      {
+) =>
+  requestApi(
+    () =>
+      appClient.post(`/teams/${teamId}/team-rollingpapers`, {
         title,
-      }
-    );
-
-    return data;
-  } catch (error) {
-    handleApiError({
-      error,
-      errorHandler: options?.onError,
-    });
-  }
-};
+      }),
+    options
+  );
 
 const postMemberRollingpaper = async (
   { teamId, title, addresseeId }: RequestPostRollingpaper,
   options?: ApiOptions
-) => {
-  try {
-    const { data } = await appClient.post(`/teams/${teamId}/rollingpapers`, {
-      title,
-      addresseeId,
-    });
-
-    return data;
-  } catch (error) {
-    handleApiError({
-      error,
-      errorHandler: options?.onError,
-    });
-  }
-};
+) =>
+  requestApi(
+    () =>
+      appClient.post(`/teams/${teamId}/rollingpapers`, {
+        title,
+        addresseeId,
+      }),
+    options
+  );
 
 export { getRollingpaper, postTeamRollingpaper, postMemberRollingpaper };

@@ -1,7 +1,4 @@
-import axios from "axios";
-
-import { appClient, handleApiError } from "@/api";
-import ApiError from "@/util/ApiError";
+import { appClient, requestApi } from "@/api";
 
 import { ApiOptions } from "@/types";
 
@@ -28,67 +25,40 @@ const postMessage = async (
     secret,
   }: Partial<PutMessageRequest>,
   options?: ApiOptions
-) => {
-  try {
-    const { data } = await appClient.post(
-      `/rollingpapers/${rollingpaperId}/messages`,
-      {
+) =>
+  requestApi(
+    () =>
+      appClient.post(`/rollingpapers/${rollingpaperId}/messages`, {
         content,
         color,
         anonymous,
         secret,
-      }
-    );
-
-    return data;
-  } catch (error) {
-    handleApiError({
-      error,
-      errorHandler: options?.onError,
-    });
-  }
-};
+      }),
+    options
+  );
 
 const putMessage = async (
   { rollingpaperId, id, content, color, anonymous, secret }: PutMessageRequest,
   options?: ApiOptions
-) => {
-  try {
-    const { data } = await appClient.put(
-      `/rollingpapers/${rollingpaperId}/messages/${id}`,
-      {
+) =>
+  requestApi(
+    () =>
+      appClient.put(`/rollingpapers/${rollingpaperId}/messages/${id}`, {
         content,
         color,
         anonymous,
         secret,
-      }
-    );
-
-    return data;
-  } catch (error) {
-    handleApiError({
-      error,
-      errorHandler: options?.onError,
-    });
-  }
-};
+      }),
+    options
+  );
 
 const deleteMessage = async (
   { rollingpaperId, id }: DeleteMessageRequest,
   options?: ApiOptions
-) => {
-  try {
-    const { data } = await appClient.delete(
-      `/rollingpapers/${rollingpaperId}/messages/${id}`
-    );
-
-    return { data };
-  } catch (error) {
-    handleApiError({
-      error,
-      errorHandler: options?.onError,
-    });
-  }
-};
+) =>
+  requestApi(
+    () => appClient.delete(`/rollingpapers/${rollingpaperId}/messages/${id}`),
+    options
+  );
 
 export { putMessage, postMessage, deleteMessage };
