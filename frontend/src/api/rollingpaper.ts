@@ -3,12 +3,18 @@ import axios from "axios";
 import { appClient } from "@/api";
 import ApiError from "@/util/ApiError";
 
+import { ApiOptions } from "@/types";
+
 interface RequestPostRollingpaper {
   teamId: number;
   title: string;
   addresseeId: number;
 }
-const getRollingpaper = async (teamId: number, id: number) => {
+const getRollingpaper = async (
+  teamId: number,
+  id: number,
+  options?: ApiOptions
+) => {
   try {
     const { data } = await appClient.get(
       `/teams/${teamId}/rollingpapers/${id}`
@@ -18,15 +24,20 @@ const getRollingpaper = async (teamId: number, id: number) => {
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       const customError = error.response.data as ApiError;
-      throw new ApiError(customError.errorCode, customError.message);
+      const { errorCode, message } = customError;
+      throw new ApiError({
+        errorCode,
+        message,
+        errorHandler: options?.onError,
+      });
     }
   }
 };
 
-const postTeamRollingpaper = async ({
-  teamId,
-  title,
-}: Omit<RequestPostRollingpaper, "addresseeId">) => {
+const postTeamRollingpaper = async (
+  { teamId, title }: Omit<RequestPostRollingpaper, "addresseeId">,
+  options?: ApiOptions
+) => {
   try {
     const { data } = await appClient.post(
       `/teams/${teamId}/team-rollingpapers`,
@@ -39,16 +50,20 @@ const postTeamRollingpaper = async ({
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       const customError = error.response.data as ApiError;
-      throw new ApiError(customError.errorCode, customError.message);
+      const { errorCode, message } = customError;
+      throw new ApiError({
+        errorCode,
+        message,
+        errorHandler: options?.onError,
+      });
     }
   }
 };
 
-const postMemberRollingpaper = async ({
-  teamId,
-  title,
-  addresseeId,
-}: RequestPostRollingpaper) => {
+const postMemberRollingpaper = async (
+  { teamId, title, addresseeId }: RequestPostRollingpaper,
+  options?: ApiOptions
+) => {
   try {
     const { data } = await appClient.post(`/teams/${teamId}/rollingpapers`, {
       title,
@@ -59,7 +74,12 @@ const postMemberRollingpaper = async ({
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       const customError = error.response.data as ApiError;
-      throw new ApiError(customError.errorCode, customError.message);
+      const { errorCode, message } = customError;
+      throw new ApiError({
+        errorCode,
+        message,
+        errorHandler: options?.onError,
+      });
     }
   }
 };
