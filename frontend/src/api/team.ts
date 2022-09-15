@@ -1,5 +1,6 @@
-import { appClient } from "@/api";
-import { Team } from "@/types";
+import { appClient, requestApi } from "@/api";
+
+import { ApiOptions, Team } from "@/types";
 
 interface SearchRequest {
   keyword: string;
@@ -7,77 +8,99 @@ interface SearchRequest {
 }
 
 const getMyTeams =
-  (teamPageCount = 5) =>
+  (teamPageCount = 5, options?: ApiOptions) =>
   async ({ pageParam = 0 }) =>
-    appClient
-      .get(`teams/me?page=${pageParam}&count=${teamPageCount}`)
-      .then((response) => response.data);
+    requestApi(
+      () => appClient.get(`teams/me?page=${pageParam}&count=${teamPageCount}`),
+      options
+    );
 
 const getTeamSearchResult =
-  ({ keyword, count }: SearchRequest) =>
+  ({ keyword, count }: SearchRequest, options?: ApiOptions) =>
   async ({ pageParam = 0 }) =>
-    appClient
-      .get(`teams?keyword=${keyword}&page=${pageParam}&count=${count}`)
-      .then((response) => response.data);
+    requestApi(
+      () =>
+        appClient.get(
+          `teams?keyword=${keyword}&page=${pageParam}&count=${count}`
+        ),
+      options
+    );
 
-const getTeam = (id: number) =>
-  appClient.get(`/teams/${id}`).then((response) => response.data);
+const getTeam = async (id: number, options?: ApiOptions) =>
+  requestApi(() => appClient.get(`/teams/${id}`), options);
 
-const getTeamMembers = (id: number) =>
-  appClient.get(`/teams/${id}/members`).then((response) => response.data);
+const getTeamMembers = async (id: number, options?: ApiOptions) =>
+  requestApi(() => appClient.get(`/teams/${id}/members`), options);
 
-const getTeamRollingpapers = (id: number) =>
-  appClient.get(`/teams/${id}/rollingpapers`).then((response) => {
-    return response.data;
-  });
+const getTeamRollingpapers = async (id: number, options?: ApiOptions) =>
+  requestApi(() => appClient.get(`/teams/${id}/rollingpapers`), options);
 
-const getTeamWithInviteToken = (inviteToken: string) =>
-  appClient
-    .get(`/teams/invite?inviteToken=${inviteToken}`)
-    .then((response) => response.data);
+const getTeamWithInviteToken = async (
+  inviteToken: string,
+  options?: ApiOptions
+) =>
+  requestApi(
+    () => appClient.get(`/teams/invite?inviteToken=${inviteToken}`),
+    options
+  );
 
-const getTeamMyNickname = (id: number) =>
-  appClient.get(`/teams/${id}/me`).then((response) => response.data);
+const getTeamMyNickname = async (id: number, options?: ApiOptions) =>
+  requestApi(
+    () => appClient.get(`/teams/${id}/me`).then((response) => response.data),
+    options
+  );
 
-const postTeam = ({
-  name,
-  description,
-  emoji,
-  color,
-  nickname,
-  secret,
-}: Omit<Team, "id" | "joined">) =>
-  appClient
-    .post("/teams", {
-      name,
-      description,
-      emoji,
-      color,
-      nickname,
-      secret,
-    })
-    .then((response) => response.data);
+const postTeam = async (
+  {
+    name,
+    description,
+    emoji,
+    color,
+    nickname,
+    secret,
+  }: Omit<Team, "id" | "joined">,
+  options?: ApiOptions
+) =>
+  requestApi(
+    () =>
+      appClient.post("/teams", {
+        name,
+        description,
+        emoji,
+        color,
+        nickname,
+        secret,
+      }),
+    options
+  );
 
-const postTeamInviteToken = ({ id }: Pick<Team, "id">) =>
-  appClient.post(`/teams/${id}/invite`).then((response) => response.data);
+const postTeamInviteToken = async (
+  { id }: Pick<Team, "id">,
+  options?: ApiOptions
+) => requestApi(() => appClient.post(`/teams/${id}/invite`), options);
 
-const postTeamMember = ({ id, nickname }: Pick<Team, "id" | "nickname">) =>
-  appClient
-    .post(`/teams/${id}`, { nickname })
-    .then((response) => response.data);
+const postTeamMember = async (
+  { id, nickname }: Pick<Team, "id" | "nickname">,
+  options?: ApiOptions
+) => requestApi(() => appClient.post(`/teams/${id}`, { nickname }), options);
 
-const postTeamMemberWithInviteToken = ({
-  inviteToken,
-  nickname,
-}: Pick<Team, "nickname"> & { inviteToken: string }) =>
-  appClient
-    .post(`/teams/invite/join`, { inviteToken, nickname })
-    .then((response) => response.data);
+const postTeamMemberWithInviteToken = async (
+  { inviteToken, nickname }: Pick<Team, "nickname"> & { inviteToken: string },
+  options?: ApiOptions
+) =>
+  requestApi(
+    () =>
+      appClient.post(`/teams/invite/join`, {
+        inviteToken,
+        nickname,
+      }),
+    options
+  );
 
-const putTeamNickname = ({ id, nickname }: Pick<Team, "id" | "nickname">) =>
-  appClient
-    .put(`/teams/${id}/me`, { nickname })
-    .then((response) => response.data);
+const putTeamNickname = async (
+  { id, nickname }: Pick<Team, "id" | "nickname">,
+  options?: ApiOptions
+) => requestApi(() => appClient.put(`/teams/${id}/me`, { nickname }), options);
 
 export {
   getMyTeams,

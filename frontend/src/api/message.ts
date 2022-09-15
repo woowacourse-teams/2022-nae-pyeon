@@ -1,4 +1,6 @@
-import { appClient } from "@/api";
+import { appClient, requestApi } from "@/api";
+
+import { ApiOptions } from "@/types";
 
 interface PutMessageRequest {
   rollingpaperId: number;
@@ -14,42 +16,49 @@ interface DeleteMessageRequest {
   id: number;
 }
 
-const putMessage = ({
-  rollingpaperId,
-  id,
-  content,
-  color,
-  anonymous,
-  secret,
-}: PutMessageRequest) =>
-  appClient
-    .put(`/rollingpapers/${rollingpaperId}/messages/${id}`, {
-      content,
-      color,
-      anonymous,
-      secret,
-    })
-    .then((response) => response.data);
+const postMessage = async (
+  {
+    rollingpaperId,
+    content,
+    color,
+    anonymous,
+    secret,
+  }: Partial<PutMessageRequest>,
+  options?: ApiOptions
+) =>
+  requestApi(
+    () =>
+      appClient.post(`/rollingpapers/${rollingpaperId}/messages`, {
+        content,
+        color,
+        anonymous,
+        secret,
+      }),
+    options
+  );
 
-const postMessage = ({
-  rollingpaperId,
-  content,
-  color,
-  anonymous,
-  secret,
-}: Partial<PutMessageRequest>) =>
-  appClient
-    .post(`/rollingpapers/${rollingpaperId}/messages`, {
-      content,
-      color,
-      anonymous,
-      secret,
-    })
-    .then((response) => response.data);
+const putMessage = async (
+  { rollingpaperId, id, content, color, anonymous, secret }: PutMessageRequest,
+  options?: ApiOptions
+) =>
+  requestApi(
+    () =>
+      appClient.put(`/rollingpapers/${rollingpaperId}/messages/${id}`, {
+        content,
+        color,
+        anonymous,
+        secret,
+      }),
+    options
+  );
 
-const deleteMessage = ({ rollingpaperId, id }: DeleteMessageRequest) =>
-  appClient
-    .delete(`/rollingpapers/${rollingpaperId}/messages/${id}`)
-    .then((response) => response.data);
+const deleteMessage = async (
+  { rollingpaperId, id }: DeleteMessageRequest,
+  options?: ApiOptions
+) =>
+  requestApi(
+    () => appClient.delete(`/rollingpapers/${rollingpaperId}/messages/${id}`),
+    options
+  );
 
 export { putMessage, postMessage, deleteMessage };

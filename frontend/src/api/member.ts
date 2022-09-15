@@ -1,36 +1,46 @@
-import { appClient } from "@/api";
+import { appClient, requestApi } from "@/api";
 
-const getMyInfo = () => {
-  return appClient.get("/members/me").then((response) => response.data);
-};
+import { ApiOptions } from "@/types";
 
-const getMyInfoWithAccessToken = (accessToken: string | null) => {
-  return appClient
-    .get("/members/me", {
-      headers: {
-        Authorization: `Bearer ${accessToken || ""}`,
-      },
-    })
-    .then((response) => response.data);
-};
+const getMyInfo = async (options?: ApiOptions) =>
+  requestApi(() => appClient.get("/members/me"), options);
 
-const getMyReceivedRollingpapers = (page = 0, count = 5) => {
-  return appClient
-    .get(`/members/me/rollingpapers/received?page=${page}&count=${count}`)
-    .then((response) => response.data);
-};
+const getMyInfoWithAccessToken = async (
+  accessToken: string | null,
+  options?: ApiOptions
+) =>
+  requestApi(
+    () =>
+      appClient.get("/members/me", {
+        headers: {
+          Authorization: `Bearer ${accessToken || ""}`,
+        },
+      }),
+    options
+  );
 
-const getMySentMessage = (page = 0, count = 5) => {
-  return appClient
-    .get(`/members/me/messages/written?page=${page}&count=${count}`)
-    .then((response) => response.data);
-};
+const getMyReceivedRollingpapers = async (
+  page = 0,
+  count = 5,
+  options?: ApiOptions
+) =>
+  requestApi(
+    () =>
+      appClient.get(
+        `/members/me/rollingpapers/received?page=${page}&count=${count}`
+      ),
+    options
+  );
 
-const putMyNickname = (username: string) => {
-  return appClient
-    .put("/members/me", { username })
-    .then((response) => response.data);
-};
+const getMySentMessage = async (page = 0, count = 5, options?: ApiOptions) =>
+  requestApi(
+    () =>
+      appClient.get(`/members/me/messages/written?page=${page}&count=${count}`),
+    options
+  );
+
+const putMyNickname = async (username: string, options?: ApiOptions) =>
+  requestApi(() => appClient.put("/members/me", { username }), options);
 
 export {
   getMyInfo,
