@@ -32,17 +32,18 @@ const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProp) => {
       ))
       .reverse();
 
-    return isWrite ? [messageForm, ...elementList] : [...elementList];
+    return isWrite
+      ? [
+          <MessageCreateForm
+            enableSecretMessage={recipientType === "MEMBER"}
+            onEditEnd={handleWriteEnd}
+          />,
+          ...elementList,
+        ]
+      : [...elementList];
   }, [messageList, isWrite]);
 
   const slicedMessageLists = useSliceMessageList(elementList);
-
-  const messageForm = (
-    <MessageCreateForm
-      enableSecretMessage={recipientType === "MEMBER"}
-      onEditEnd={handleWriteEnd}
-    />
-  );
 
   return (
     <StyledLetterPaper>
