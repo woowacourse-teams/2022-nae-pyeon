@@ -5,10 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RollingpaperRepository {
-
-    Long save(final Rollingpaper rollingpaper);
+public interface RollingpaperRepository extends JpaRepository<Rollingpaper, Long> {
 
     Optional<Rollingpaper> findById(final Long rollingpaperId);
 
@@ -17,8 +16,4 @@ public interface RollingpaperRepository {
     Page<Rollingpaper> findByMemberId(final Long memberId, final Pageable pageRequest);
 
     List<Rollingpaper> findByTeamId(final Long teamId);
-
-    void update(final Long rollingpaperId, final String newTitle);
-
-    void delete(final Long rollingpaperId);
 }

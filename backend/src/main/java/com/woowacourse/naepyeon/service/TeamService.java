@@ -4,6 +4,8 @@ import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.exception.DuplicateNicknameException;
+import com.woowacourse.naepyeon.exception.DuplicateTeamNameException;
+import com.woowacourse.naepyeon.exception.DuplicateTeamPaticipateException;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
@@ -39,6 +41,7 @@ public class TeamService {
 
     @Transactional
     public Long save(final TeamRequestDto teamRequestDto, final Long memberId) {
+        validateDuplicateTeamName(teamRequestDto);
         final Team team = new Team(
                 teamRequestDto.getName(),
                 teamRequestDto.getDescription(),
@@ -46,28 +49,43 @@ public class TeamService {
                 teamRequestDto.getColor(),
                 teamRequestDto.isSecret()
         );
-        final Long createdTeamId = teamRepository.save(team);
+        final Long createdTeamId = teamRepository.save(team)
+                .getId();
         final Member owner = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException(memberId));
         teamParticipationRepository.save(new TeamParticipation(team, owner, teamRequestDto.getNickname()));
         return createdTeamId;
     }
 
+    private void validateDuplicateTeamName(final TeamRequestDto teamRequestDto) {
+        if (teamRepository.existsByName(teamRequestDto.getName())) {
+            throw new DuplicateTeamNameException(teamRequestDto.getName());
+        }
+    }
+
     @Transactional
     public Long joinMember(final Long teamId, final Long memberId, final String nickname) {
+        validateDuplicateJoined(teamId, memberId);
         validateDuplicateNickname(teamId, nickname);
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
         final Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException(memberId));
         final TeamParticipation teamParticipation = new TeamParticipation(team, member, nickname);
-        return teamParticipationRepository.save(teamParticipation);
+        return teamParticipationRepository.save(teamParticipation)
+                .getId();
+    }
+
+    private void validateDuplicateJoined(final Long teamId, final Long memberId) {
+        if (isJoinedMember(memberId, teamId)) {
+            throw new DuplicateTeamPaticipateException(teamId, memberId);
+        }
     }
 
     public TeamResponseDto findById(final Long teamId, final Long memberId) {
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
-        return TeamResponseDto.of(team, teamParticipationRepository.isJoinedMember(memberId, teamId), team.isSecret());
+        return TeamResponseDto.of(team, isJoinedMember(memberId, teamId), team.isSecret());
     }
 
     @Transactional
@@ -79,13 +97,13 @@ public class TeamService {
 
     @Transactional
     public void delete(final Long teamId) {
-        teamRepository.delete(teamId);
+        teamRepository.deleteById(teamId);
     }
 
     public TeamsResponseDto findTeamsByContainingTeamName(final String keyword, final Long memberId,
                                                           final Integer page, final int count) {
         final Pageable pageRequest = PageRequest.of(page, count);
-        final Page<Team> teams = teamRepository.findTeamsByContainingTeamName(keyword, pageRequest);
+        final Page<Team> teams = teamRepository.findTeamsByNameContaining(keyword, pageRequest);
         final List<Team> joinedTeams = teamParticipationRepository.findTeamsByMemberId(memberId);
 
         final List<TeamResponseDto> teamResponseDtos = teams.stream()
@@ -112,7 +130,7 @@ public class TeamService {
 
     public TeamsResponseDto findByJoinedMemberId(final Long memberId, final Integer page, final int count) {
         final Pageable pageRequest = PageRequest.of(page, count);
-        final Page<Team> teams = teamParticipationRepository.findTeamsByMemberIdAndPageRequest(memberId, pageRequest);
+        final Page<Team> teams = teamParticipationRepository.findTeamsByMemberId(memberId, pageRequest);
         final List<TeamResponseDto> teamResponseDtos = teams.stream()
                 .map(team -> TeamResponseDto.of(team, true, team.isSecret()))
                 .collect(Collectors.toList());
@@ -165,7 +183,9 @@ public class TeamService {
 
     public boolean isJoinedMember(final Long memberId, final Long teamId) {
         validateExistTeam(teamId);
-        return teamParticipationRepository.isJoinedMember(memberId, teamId);
+        final List<Team> teams = teamParticipationRepository.findTeamsByMemberId(memberId);
+        return teams.stream()
+                .anyMatch(team -> team.getId().equals(teamId));
     }
 
     public String createInviteToken(final Long teamId) {
@@ -183,9 +203,10 @@ public class TeamService {
         final Long teamId = inviteTokenProvider.getTeamId(inviteToken);
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
-        return TeamResponseDto.of(team, teamParticipationRepository.isJoinedMember(memberId, teamId), team.isSecret());
+        return TeamResponseDto.of(team, isJoinedMember(memberId, teamId), team.isSecret());
     }
 
+    @Transactional
     public Long inviteJoin(final String inviteToken, final Long memberId, final String nickname) {
         final Long teamId = inviteTokenProvider.getTeamId(inviteToken);
 

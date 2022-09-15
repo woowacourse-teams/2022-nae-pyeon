@@ -10,6 +10,7 @@ import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
+import com.woowacourse.naepyeon.acceptance.support.DatabaseCleaner;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
 import com.woowacourse.naepyeon.support.invitetoken.InviteTokenProvider;
 import com.woowacourse.naepyeon.support.invitetoken.aes.Aes256InviteTokenProvider;
@@ -23,11 +24,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase
 public class AcceptanceTest {
 
@@ -44,6 +42,8 @@ public class AcceptanceTest {
     protected Aes256Supporter aes256Supporter;
     @Autowired
     protected ObjectMapper objectMapper;
+    @Autowired
+    protected DatabaseCleaner databaseCleaner;
 
     @LocalServerPort
     int port;
@@ -61,6 +61,7 @@ public class AcceptanceTest {
     @BeforeEach
     public void setUp() {
         RestAssured.port = port;
+        databaseCleaner.execute();
         authService = new AuthService(memberService, jwtTokenProvider, kakaoPlatformUserProvider);
 
         final String alexName = "alex";

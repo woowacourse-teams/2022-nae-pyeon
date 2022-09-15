@@ -1,17 +1,5 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
-
-import HeaderLayoutPage from "@/pages/HeaderLayoutPage";
-import RollingpaperPage from "@/pages/RollingpaperPage";
-import RollingpaperCreationPage from "@/pages/RollingpaperCreationPage";
-import TeamDetailPage from "@/pages/TeamDetailPage";
-import TeamCreationPage from "@/pages/TeamCreationPage";
-import MainPage from "@/pages/MainPage";
-import LoginPage from "@/pages/LoginPage";
-import TeamSearch from "@/pages/TeamSearchPage";
-import ErrorPage from "@/pages/ErrorPage";
-import KakaoRedirectPage from "@/pages/KakaoRedirectPage";
-import MyPage from "@/pages/MyPage";
 
 import RequireLogin from "@/components/RequireLogin";
 import RequireLogout from "@/components/RequireLogout";
@@ -23,6 +11,20 @@ import { useSnackbar } from "@/context/SnackbarContext";
 
 import useAutoLogin from "@/hooks/useAutoLogin";
 import InvitePage from "@/pages/InvitePage";
+
+const HeaderLayoutPage = lazy(() => import("@/pages/HeaderLayoutPage"));
+const RollingpaperPage = lazy(() => import("@/pages/RollingpaperPage"));
+const RollingpaperCreationPage = lazy(
+  () => import("@/pages/RollingpaperCreationPage")
+);
+const TeamDetailPage = lazy(() => import("@/pages/TeamDetailPage"));
+const TeamCreationPage = lazy(() => import("@/pages/TeamCreationPage"));
+const MainPage = lazy(() => import("@/pages/MainPage"));
+const LoginPage = lazy(() => import("@/pages/LoginPage"));
+const TeamSearchPage = lazy(() => import("@/pages/TeamSearchPage"));
+const ErrorPage = lazy(() => import("@/pages/ErrorPage"));
+const KakaoRedirectPage = lazy(() => import("@/pages/KakaoRedirectPage"));
+const MyPage = lazy(() => import("@/pages/MyPage"));
 
 const App = () => {
   const { isOpened } = useSnackbar();
@@ -42,33 +44,34 @@ const App = () => {
           }
         }
       >
-        <Routes>
-          <Route element={<RequireLogin />}>
-            <Route path="/" element={<HeaderLayoutPage />}>
-              <Route path="/" element={<MainPage />} />
-              <Route path="team/:teamId" element={<TeamDetailPage />} />
-              <Route path="search" element={<TeamSearch />} />
-              <Route path="mypage" element={<MyPage />} />
-              <Route path="*" element={<ErrorPage />} />
+        <Suspense fallback={<div>Loading..</div>}>
+          <Routes>
+            <Route element={<RequireLogin />}>
+              <Route path="/" element={<HeaderLayoutPage />}>
+                <Route path="/" element={<MainPage />} />
+                <Route path="team/:teamId" element={<TeamDetailPage />} />
+                <Route path="search" element={<TeamSearchPage />} />
+                <Route path="mypage" element={<MyPage />} />
+                <Route path="*" element={<ErrorPage />} />
+              </Route>
+
+              <Route path="team/new" element={<TeamCreationPage />} />
+              <Route
+                path="team/:teamId/rollingpaper/new"
+                element={<RollingpaperCreationPage />}
+              />
+              <Route
+                path="team/:teamId/rollingpaper/:rollingpaperId"
+                element={<RollingpaperPage />}
+              />
             </Route>
-
-            <Route path="team/new" element={<TeamCreationPage />} />
-            <Route
-              path="team/:teamId/rollingpaper/new"
-              element={<RollingpaperCreationPage />}
-            />
-            <Route
-              path="team/:teamId/rollingpaper/:rollingpaperId"
-              element={<RollingpaperPage />}
-            />
-          </Route>
-          <Route element={<RequireLogout />}>
-            <Route path="login" element={<LoginPage />} />
-            <Route path="oauth/kakao" element={<KakaoRedirectPage />} />
-          </Route>
-          <Route path="invite/:inviteToken" element={<InvitePage />} />
-
-        </Routes>
+            <Route element={<RequireLogout />}>
+              <Route path="login" element={<LoginPage />} />
+              <Route path="oauth/kakao" element={<KakaoRedirectPage />} />
+            </Route>
+            <Route path="invite/:inviteToken" element={<InvitePage />} />
+          </Routes>
+        </Suspense>
         {isOpened && <Snackbar />}
       </UserProvider>
     </PageContainer>

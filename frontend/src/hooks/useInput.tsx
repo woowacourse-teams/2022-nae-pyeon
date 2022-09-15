@@ -1,4 +1,4 @@
-import { useState, ChangeEventHandler } from "react";
+import { useState, ChangeEventHandler, useEffect } from "react";
 
 const useInput = (defaultValue: string) => {
   const [value, setValue] = useState(defaultValue);
@@ -8,6 +8,10 @@ const useInput = (defaultValue: string) => {
 
     setValue(target.value);
   };
+
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
 
   return { value, handleInputChange, setValue };
 };

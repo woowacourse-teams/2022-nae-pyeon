@@ -21,7 +21,7 @@ class AuthControllerTest extends TestSupport {
     void kakaoLogin() throws Exception {
         when(kakaoPlatformUserProvider.getPlatformUser(anyString(), anyString()))
                 .thenReturn(new PlatformUserDto("이순신", "email1@email.com", "KAKAO", "1"));
-        final TokenRequest tokenRequest = new TokenRequest("seungpang", "https://...");
+        final TokenRequest tokenRequest = new TokenRequest("seungpang", "https://naepyeon.site/oauth/kakao");
 
         mockMvc.perform(
                         post("/api/v1/oauth/kakao")

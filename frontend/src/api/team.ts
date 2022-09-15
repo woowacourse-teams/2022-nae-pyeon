@@ -36,6 +36,9 @@ const getTeamWithInviteToken = (inviteToken: string) =>
     .get(`/teams/invite?inviteToken=${inviteToken}`)
     .then((response) => response.data);
 
+const getTeamMyNickname = (id: number) =>
+  appClient.get(`/teams/${id}/me`).then((response) => response.data);
+
 const postTeam = ({
   name,
   description,
@@ -58,11 +61,6 @@ const postTeam = ({
 const postTeamInviteToken = ({ id }: Pick<Team, "id">) =>
   appClient.post(`/teams/${id}/invite`).then((response) => response.data);
 
-const putTeamNickname = ({ id, nickname }: Pick<Team, "id" | "nickname">) =>
-  appClient
-    .put(`/teams/${id}/me`, { nickname })
-    .then((response) => response.data);
-
 const postTeamMember = ({ id, nickname }: Pick<Team, "id" | "nickname">) =>
   appClient
     .post(`/teams/${id}`, { nickname })
@@ -76,6 +74,11 @@ const postTeamMemberWithInviteToken = ({
     .post(`/teams/invite/join`, { inviteToken, nickname })
     .then((response) => response.data);
 
+const putTeamNickname = ({ id, nickname }: Pick<Team, "id" | "nickname">) =>
+  appClient
+    .put(`/teams/${id}/me`, { nickname })
+    .then((response) => response.data);
+
 export {
   getMyTeams,
   getTeamSearchResult,
@@ -83,6 +86,7 @@ export {
   getTeamMembers,
   getTeamRollingpapers,
   getTeamWithInviteToken,
+  getTeamMyNickname,
   postTeam,
   postTeamMember,
   postTeamMemberWithInviteToken,
