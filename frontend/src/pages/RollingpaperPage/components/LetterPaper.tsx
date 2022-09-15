@@ -21,13 +21,6 @@ interface LetterPaperProp {
 const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProp) => {
   const { isWrite, handleWriteButtonClick, handleWriteEnd } = useMessageWrite();
 
-  const messageForm = (
-    <MessageCreateForm
-      enableSecretMessage={recipientType === "MEMBER"}
-      onEditEnd={handleWriteEnd}
-    />
-  );
-
   const elementList = useMemo(() => {
     const elementList = messageList
       .map((message) => (
@@ -43,6 +36,13 @@ const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProp) => {
   }, [messageList, isWrite]);
 
   const slicedMessageLists = useSliceMessageList(elementList);
+
+  const messageForm = (
+    <MessageCreateForm
+      enableSecretMessage={recipientType === "MEMBER"}
+      onEditEnd={handleWriteEnd}
+    />
+  );
 
   return (
     <StyledLetterPaper>
