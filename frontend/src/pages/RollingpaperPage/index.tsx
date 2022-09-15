@@ -46,7 +46,7 @@ const RollingpaperPage = () => {
         <LetterPaper
           to={rollingpaper.to}
           recipientType={rollingpaper.recipient}
-          messageList={[...rollingpaper.messages].reverse()}
+          messageList={[...rollingpaper.messages]}
         />
       </main>
     </>

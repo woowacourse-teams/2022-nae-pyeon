@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "@emotion/styled";
 
 import IconButton from "@components/IconButton";
@@ -21,7 +21,29 @@ interface LetterPaperProp {
 const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProp) => {
   const { isWrite, handleWriteButtonClick, handleWriteEnd } = useMessageWrite();
 
-  const slicedMessageLists = useSliceMessageList(messageList);
+  const elementList = useMemo(() => {
+    const elementList = messageList
+      .map((message) => (
+        <MessageBox
+          key={message.id}
+          recipientType={recipientType}
+          {...message}
+        />
+      ))
+      .reverse();
+
+    return isWrite
+      ? [
+          <MessageCreateForm
+            enableSecretMessage={recipientType === "MEMBER"}
+            onEditEnd={handleWriteEnd}
+          />,
+          ...elementList,
+        ]
+      : [...elementList];
+  }, [messageList, isWrite]);
+
+  const slicedMessageLists = useSliceMessageList(elementList);
 
   return (
     <StyledLetterPaper>
@@ -36,21 +58,7 @@ const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProp) => {
       <StyledSlicedMessageLists>
         {slicedMessageLists.map((messageList, index) => (
           <StyledMessageList key={index}>
-            {index === 0 && isWrite && (
-              <MessageCreateForm
-                enableSecretMessage={recipientType === "MEMBER"}
-                onEditEnd={handleWriteEnd}
-              />
-            )}
-            {messageList.map((message) => {
-              return (
-                <MessageBox
-                  key={message.id}
-                  enableSecretMessage={recipientType === "MEMBER"}
-                  {...message}
-                />
-              );
-            })}
+            <>{...messageList}</>
           </StyledMessageList>
         ))}
       </StyledSlicedMessageLists>

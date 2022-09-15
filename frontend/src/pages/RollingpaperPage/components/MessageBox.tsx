@@ -11,7 +11,7 @@ import MessageUpdateForm from "@/pages/RollingpaperPage/components/MessageUpdate
 import useMessageBox from "@/pages/RollingpaperPage/hooks/useMessageBox";
 import SecretMessage from "@/pages/RollingpaperPage/components/SecretMessage";
 
-import { Message } from "@/types";
+import { Message, RollingpaperRecipient } from "@/types";
 import useValidatedParam from "@/hooks/useValidatedParam";
 
 const MessageBox = ({
@@ -23,8 +23,8 @@ const MessageBox = ({
   secret,
   editable,
   visible,
-  enableSecretMessage,
-}: Message & { enableSecretMessage: boolean }) => {
+  recipientType,
+}: Message & { recipientType: RollingpaperRecipient }) => {
   const rollingpaperId = useValidatedParam<number>("rollingpaperId");
 
   const {
@@ -47,7 +47,7 @@ const MessageBox = ({
         anonymous={anonymous}
         secret={secret}
         onEditEnd={handleEditEnd}
-        enableSecretMessage={enableSecretMessage}
+        enableSecretMessage={recipientType === "MEMBER"}
       />
     );
   }
