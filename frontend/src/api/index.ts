@@ -1,6 +1,7 @@
 import axios from "axios";
 import { QueryClient } from "@tanstack/react-query";
 import ApiError from "@/util/ApiError";
+import { ApiErrorResponse } from "@/types";
 
 const appClient = axios.create({
   baseURL: process.env.API_URL,
@@ -20,7 +21,7 @@ const handleApiError = ({
   error: unknown;
 } & Pick<ApiError, "errorHandler">) => {
   if (axios.isAxiosError(error) && error.response) {
-    const customError = error.response.data as ApiError;
+    const customError = error.response.data as ApiErrorResponse;
     const { errorCode, message } = customError;
     throw new ApiError({
       errorCode,
