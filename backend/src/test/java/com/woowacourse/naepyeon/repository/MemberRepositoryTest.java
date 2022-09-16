@@ -44,6 +44,22 @@ class MemberRepositoryTest {
     }
 
     @Test
+    @DisplayName("회원을 가입 플랫폼 및 플랫폼 ID로 찾는다.")
+    void findMemberIdByPlatformAndPlatformId() {
+        // given
+        final Member member = new Member("seungpang", "email@email.com", Platform.KAKAO, "1");
+        final Long memberId = memberRepository.save(member)
+                .getId();
+
+        // when
+        final Long findMemberId = memberRepository.findMemberIdByPlatformAndPlatformId(Platform.KAKAO, "1")
+                .orElseThrow();
+
+        // then
+        assertThat(memberId).isEqualTo(findMemberId);
+    }
+
+    @Test
     @DisplayName("회원을 id값을 통해 제거한다.")
     void delete() {
         // given
