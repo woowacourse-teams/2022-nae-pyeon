@@ -37,3 +37,6 @@ out/
 .vscode/
 ### logs ###
 /logs/
+
+### frontend ###
+*/dist
