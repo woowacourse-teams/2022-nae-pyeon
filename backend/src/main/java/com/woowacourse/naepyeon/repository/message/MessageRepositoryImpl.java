@@ -1,9 +1,7 @@
 package com.woowacourse.naepyeon.repository.message;
 
 import static com.woowacourse.naepyeon.domain.QMessage.message;
-import static com.woowacourse.naepyeon.domain.QTeam.team;
 import static com.woowacourse.naepyeon.domain.QTeamParticipation.teamParticipation;
-import static com.woowacourse.naepyeon.domain.rollingpaper.QRollingpaper.rollingpaper;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.ConstructorExpression;
@@ -40,14 +38,12 @@ public class MessageRepositoryImpl implements MessageRepositoryCustom {
 
     @Override
     public Page<WrittenMessageResponseDto> findAllByAuthorId(final Long authorId, final Pageable pageRequest) {
-        final JPAQuery<WrittenMessageResponseDto> query =
-                getQueryWhenFindAllByAuthorId(authorId);
+        final JPAQuery<WrittenMessageResponseDto> query = getQueryWhenFindAllByAuthorId(authorId);
 
         final List<WrittenMessageResponseDto> content = query
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
-
         final long total = query
                 .stream()
                 .count();
@@ -59,12 +55,8 @@ public class MessageRepositoryImpl implements MessageRepositoryCustom {
         return queryFactory
                 .select(makeProjections())
                 .from(message)
-                .leftJoin(message.rollingpaper, rollingpaper)
-                .leftJoin(rollingpaper.team, team)
                 .join(teamParticipation).on(message.rollingpaper.team.id.eq(teamParticipation.team.id))
                 .where(isAuthorIdEq(authorId)
-                        .and(message.rollingpaper.id.eq(rollingpaper.id))
-                        .and(rollingpaper.team.id.eq(team.id))
                         .and(message.rollingpaper.member.id.isNull()
                                 .or(message.rollingpaper.member.id.eq(teamParticipation.member.id))
                         )
