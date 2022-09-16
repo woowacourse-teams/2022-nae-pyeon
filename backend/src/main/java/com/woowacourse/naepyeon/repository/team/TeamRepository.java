@@ -1,4 +1,4 @@
-package com.woowacourse.naepyeon.repository;
+package com.woowacourse.naepyeon.repository.team;
 
 import com.woowacourse.naepyeon.domain.Team;
 import java.util.List;

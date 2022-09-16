@@ -1,4 +1,4 @@
-package com.woowacourse.naepyeon.repository;
+package com.woowacourse.naepyeon.repository.rollingpaper;
 
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import java.util.List;

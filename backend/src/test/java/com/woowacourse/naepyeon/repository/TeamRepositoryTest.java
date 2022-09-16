@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.config.JpaAuditingConfig;
 import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.repository.team.TeamRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;

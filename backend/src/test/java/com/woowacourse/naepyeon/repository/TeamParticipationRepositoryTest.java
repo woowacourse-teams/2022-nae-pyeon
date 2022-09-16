@@ -8,6 +8,9 @@ import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
+import com.woowacourse.naepyeon.repository.member.MemberRepository;
+import com.woowacourse.naepyeon.repository.team.TeamRepository;
+import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -67,17 +70,6 @@ class TeamParticipationRepositoryTest {
                 () -> assertThat(findTeamParticipation.getTeam().getId()).isEqualTo(team1.getId()),
                 () -> assertThat(findTeamParticipation.getNickname()).isEqualTo(nickname)
         );
-    }
-
-    @Test
-    @DisplayName("모임에 가입한 회원을 memberId와 teamId로 찾는다.")
-    void findMemberByMemberIdAndTeamId() {
-        final TeamParticipation teamParticipation1 = new TeamParticipation(team1, member1, "닉네임1");
-        teamParticipationRepository.save(teamParticipation1);
-
-        final Member actual = teamParticipationRepository.findMemberByMemberIdAndTeamId(member1.getId(), team1.getId())
-                .orElseThrow();
-        assertThat(actual).isEqualTo(member1);
     }
 
     @Test
@@ -166,7 +158,6 @@ class TeamParticipationRepositoryTest {
                 .getId();
 
         teamParticipationRepository.updateNickname(expected, member1.getId(), team1.getId());
-        em.flush();
 
         final String actual = teamParticipationRepository.findById(teamParticipationId)
                 .orElseThrow()

@@ -1,4 +1,4 @@
-package com.woowacourse.naepyeon.repository;
+package com.woowacourse.naepyeon.repository.message;
 
 import com.woowacourse.naepyeon.domain.Message;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;

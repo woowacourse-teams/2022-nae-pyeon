@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
-import com.woowacourse.naepyeon.repository.MemberRepository;
+import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
@@ -67,7 +67,7 @@ class AuthServiceTest {
         final TokenResponseDto tokenResponseDto = authService.createTokenWithKakaoOauth(tokenRequestDto);
         final Long memberId = tokenResponseDto.getId();
         final Member findMember = memberRepository.findById(memberId)
-                .get();
+                .orElseThrow();
 
         assertThat(findMember).extracting("id", "username", "email", "platform", "platformId")
                 .containsExactly(

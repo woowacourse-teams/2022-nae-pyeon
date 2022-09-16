@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.woowacourse.naepyeon.config.JpaAuditingConfig;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
+import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
