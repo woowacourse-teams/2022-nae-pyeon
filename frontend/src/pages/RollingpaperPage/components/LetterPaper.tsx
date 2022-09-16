@@ -57,9 +57,7 @@ const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProp) => {
       </StyledLetterPaperTop>
       <StyledSlicedMessageLists>
         {slicedMessageLists.map((messageList, index) => (
-          <StyledMessageList key={index}>
-            <>{...messageList}</>
-          </StyledMessageList>
+          <StyledMessageList key={index}>{messageList}</StyledMessageList>
         ))}
       </StyledSlicedMessageLists>
     </StyledLetterPaper>

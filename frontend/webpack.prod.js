@@ -7,6 +7,14 @@ require("dotenv").config({ path: path.join(__dirname, "./.env.production") });
 
 module.exports = merge(common, {
   mode: "production",
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: "babel-loader",
+      },
+    ],
+  },
   plugins: [
     new webpack.DefinePlugin({
       "process.env": JSON.stringify(process.env),
