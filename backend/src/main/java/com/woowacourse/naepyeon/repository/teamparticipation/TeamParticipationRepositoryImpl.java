@@ -8,6 +8,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.domain.TeamParticipation;
 import java.util.List;
 import java.util.function.Supplier;
 import javax.persistence.EntityManager;
@@ -23,6 +24,14 @@ public class TeamParticipationRepositoryImpl implements TeamParticipationReposit
     public TeamParticipationRepositoryImpl(final EntityManager em) {
         this.em = em;
         this.queryFactory = new JPAQueryFactory(em);
+    }
+
+    @Override
+    public List<TeamParticipation> findByTeamId(final Long teamId) {
+        return queryFactory
+                .selectFrom(teamParticipation)
+                .where(isTeamIdEq(teamId))
+                .fetch();
     }
 
     @Override
