@@ -12,19 +12,16 @@ import com.woowacourse.naepyeon.domain.TeamParticipation;
 import java.util.List;
 import java.util.function.Supplier;
 import javax.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
+@RequiredArgsConstructor
 public class TeamParticipationRepositoryImpl implements TeamParticipationRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
-
-    public TeamParticipationRepositoryImpl(final EntityManager em) {
-        this.em = em;
-        this.queryFactory = new JPAQueryFactory(em);
-    }
 
     @Override
     public List<TeamParticipation> findByTeamId(final Long teamId) {

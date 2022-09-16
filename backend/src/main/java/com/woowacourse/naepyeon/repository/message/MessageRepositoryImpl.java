@@ -15,18 +15,15 @@ import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import java.util.List;
 import java.util.function.Supplier;
-import javax.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+@RequiredArgsConstructor
 public class MessageRepositoryImpl implements MessageRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
-
-    public MessageRepositoryImpl(final EntityManager em) {
-        this.queryFactory = new JPAQueryFactory(em);
-    }
 
     @Override
     public List<Message> findAllByRollingpaperId(final Long rollingpaperId) {

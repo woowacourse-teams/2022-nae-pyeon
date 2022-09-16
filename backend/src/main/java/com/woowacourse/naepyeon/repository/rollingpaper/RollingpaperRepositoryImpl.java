@@ -9,18 +9,15 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import java.util.List;
 import java.util.function.Supplier;
-import javax.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
+@RequiredArgsConstructor
 public class RollingpaperRepositoryImpl implements RollingpaperRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
-
-    public RollingpaperRepositoryImpl(final EntityManager em) {
-        this.queryFactory = new JPAQueryFactory(em);
-    }
 
     @Override
     public Page<Rollingpaper> findByMemberId(final Long memberId, final Pageable pageRequest) {

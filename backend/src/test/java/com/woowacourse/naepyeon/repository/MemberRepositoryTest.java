@@ -3,6 +3,7 @@ package com.woowacourse.naepyeon.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.naepyeon.config.JpaAuditingConfig;
+import com.woowacourse.naepyeon.config.QueryDslConfig;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
@@ -15,7 +16,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import(JpaAuditingConfig.class)
+@Import({JpaAuditingConfig.class, QueryDslConfig.class})
 class MemberRepositoryTest {
 
     @Autowired
