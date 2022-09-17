@@ -3,13 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getTeamMembers } from "@/api/team";
 
+import { TeamMember } from "@/types";
+
 interface UseReadTeamMembersArgs {
   teamId: number;
   onSuccess: (data: ResponseTeamMember) => void;
-}
-interface TeamMember {
-  id: number;
-  nickname: string;
 }
 
 interface ResponseTeamMember {

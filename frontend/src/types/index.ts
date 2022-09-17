@@ -30,10 +30,15 @@ export interface Rollingpaper {
   messages: Message[];
 }
 
-export interface UserInfo {
+export interface User {
   id: number;
   username: string;
   email: string;
+}
+
+export interface TeamMember {
+  id: number;
+  nickname: string;
 }
 
 export interface ReceivedRollingpaper {

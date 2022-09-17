@@ -1,6 +1,6 @@
 // kakao oauth
 
-import { Message, Rollingpaper } from ".";
+import { Message, Rollingpaper, Team, TeamMember } from ".";
 
 export interface KakaoOauthRequest {
   authorizationCode: string;
@@ -33,6 +33,21 @@ export interface DeleteMessageRequest {
   id: Message["id"];
 }
 
-// teams
-
 // rollingpaper
+export interface GetRollingpaperRequest {
+  teamId: Team["id"];
+  id: Rollingpaper["id"];
+}
+
+export interface PostTeamRollingpaperRequest {
+  teamId: Team["id"];
+  title: Rollingpaper["title"];
+}
+
+export interface PostMemberRollingpaperRequest {
+  teamId: Team["id"];
+  title: Rollingpaper["title"];
+  addresseeId: TeamMember["id"];
+}
+
+// teams

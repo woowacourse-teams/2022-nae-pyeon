@@ -5,7 +5,7 @@ import { setAppClientHeaderAuthorization } from "@/api";
 import { getMyInfoWithAccessToken } from "@/api/member";
 
 import { getCookie } from "@/util/cookie";
-import { UserInfo } from "@/types/index";
+import { User } from "@/types/index";
 
 const COOKIE_KEY = {
   ACCESS_TOKEN: "accessToken",
@@ -14,7 +14,7 @@ const COOKIE_KEY = {
 function useAutoLogin() {
   const accessTokenCookie = getCookie(COOKIE_KEY.ACCESS_TOKEN);
 
-  return useQuery<UserInfo>(
+  return useQuery<User>(
     ["memberId"],
     () => getMyInfoWithAccessToken(accessTokenCookie!),
     {

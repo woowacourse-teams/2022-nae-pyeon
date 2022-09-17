@@ -20,7 +20,7 @@ const RollingpaperPage = () => {
     error: rollingpaperError,
     data: rollingpaper,
   } = useQuery<Rollingpaper>(["rollingpaper", rollingpaperId], () =>
-    getRollingpaper(teamId, rollingpaperId)
+    getRollingpaper({ teamId, id: rollingpaperId })
   );
 
   if (isLoading) {

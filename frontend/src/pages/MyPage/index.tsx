@@ -20,7 +20,7 @@ import {
 } from "@/constants";
 
 import {
-  UserInfo,
+  User,
   ResponseSentMessages,
   ResponseReceivedRollingpapers,
   CustomError,
@@ -42,7 +42,7 @@ const MyPage = () => {
     isError: isErrorGetUserProfile,
     error: getUserProfileError,
     data: userProfile,
-  } = useQuery<UserInfo>(["user-profile"], () => getMyInfo());
+  } = useQuery<User>(["user-profile"], () => getMyInfo());
 
   const {
     isLoading: isLoadingGetReceivedRollingpapers,

@@ -1,6 +1,6 @@
 import { appClient, requestApi } from "@/api";
 
-import { ApiOptions, UserInfo } from "@/types";
+import { ApiOptions, User } from "@/types";
 import {
   GetMyReceivedRollingpapersRequest,
   GetMySentMessagesRequest,
@@ -46,7 +46,7 @@ const getMySentMessages = async (
   );
 
 const putMyNickname = async (
-  username: UserInfo["username"],
+  username: User["username"],
   options?: ApiOptions
 ) => requestApi(() => appClient.put("/members/me", { username }), options);
 
