@@ -1,6 +1,6 @@
 import { appClient, requestApi } from "@/api";
 
-import { KakaoOauthRequest } from "@/types/api";
+import { KakaoOauthRequest } from "@/types/apiRequest";
 import { ApiOptions } from "@/types";
 
 const postKakaoOauth = async (

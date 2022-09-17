@@ -4,7 +4,7 @@ import { ApiOptions, User } from "@/types";
 import {
   GetMyReceivedRollingpapersRequest,
   GetMySentMessagesRequest,
-} from "@/types/api";
+} from "@/types/apiRequest";
 
 const getMyInfo = async (options?: ApiOptions) =>
   requestApi(() => appClient.get("/members/me"), options);

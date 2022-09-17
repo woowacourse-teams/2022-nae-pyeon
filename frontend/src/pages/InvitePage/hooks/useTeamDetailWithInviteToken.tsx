@@ -7,8 +7,8 @@ import { Team } from "@/types";
 
 type UseTeamDetailWithInviteTokenArgs = {
   inviteToken: string;
-  onSuccess?: ((data: Team) => void) | undefined;
-  onError?: ((err: unknown) => void) | undefined;
+  onSuccess?: (data: Team) => void;
+  onError?: (err: unknown) => void;
 };
 
 const useTeamDetailWithInviteToken = ({

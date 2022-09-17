@@ -5,7 +5,7 @@ import {
   GetRollingpaperRequest,
   PostTeamRollingpaperRequest,
   PostMemberRollingpaperRequest,
-} from "@/types/api";
+} from "@/types/apiRequest";
 
 const getRollingpaper = async (
   { teamId, id }: GetRollingpaperRequest,

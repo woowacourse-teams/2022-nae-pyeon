@@ -5,7 +5,7 @@ import {
   PostMessageRequest,
   PutMessageRequest,
   DeleteMessageRequest,
-} from "@/types/api";
+} from "@/types/apiRequest";
 
 const postMessage = async (
   { rollingpaperId, content, color, anonymous, secret }: PostMessageRequest,

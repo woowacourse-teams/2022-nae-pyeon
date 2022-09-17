@@ -8,7 +8,7 @@ import { UserContext } from "@/context/UserContext";
 import { postKakaoOauth } from "@/api/kakaoOauth";
 
 import { CustomError } from "@/types";
-import { KakaoOauthRequest } from "@/types/api";
+import { KakaoOauthRequest } from "@/types/apiRequest";
 
 const KakaoRedirectPage = () => {
   const navigate = useNavigate();

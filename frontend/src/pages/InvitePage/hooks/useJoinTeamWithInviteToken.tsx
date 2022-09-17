@@ -8,9 +8,9 @@ import { useSnackbar } from "@/context/SnackbarContext";
 import { postTeamMemberWithInviteToken } from "@/api/team";
 
 import { CustomError } from "@/types";
-import { PostTeamMemberWithInviteTokenRequest } from "@/types/api";
+import { PostTeamMemberWithInviteTokenRequest } from "@/types/apiRequest";
 
-const useJoinTeamWithInviteToken = (teamId: number | undefined) => {
+const useJoinTeamWithInviteToken = (teamId?: number) => {
   const navigate = useNavigate();
   const { openSnackbar } = useSnackbar();
 

@@ -6,7 +6,7 @@ import axios from "axios";
 import { postTeam } from "@/api/team";
 
 import { CustomError } from "@/types";
-import { PostTeamRequest } from "@/types/api";
+import { PostTeamRequest } from "@/types/apiRequest";
 
 const useCreateTeam = () => {
   const navigate = useNavigate();

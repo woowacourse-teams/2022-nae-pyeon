@@ -5,7 +5,7 @@ import {
   GetTeamSearchResultRequest,
   PostTeamRequest,
   PostTeamMemberWithInviteTokenRequest,
-} from "@/types/api";
+} from "@/types/apiRequest";
 
 const getMyTeams =
   (teamPageCount = 5, options?: ApiOptions) =>
