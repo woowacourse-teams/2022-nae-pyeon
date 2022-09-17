@@ -8,7 +8,7 @@ import { UserContext } from "@/context/UserContext";
 import { postKakaoOauth } from "@/api/kakaoOauth";
 
 import { CustomError } from "@/types";
-import { RequestKakaoOauthBody } from "@/types/oauth";
+import { KakaoOauthRequest } from "@/types/api";
 
 const KakaoRedirectPage = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const KakaoRedirectPage = () => {
   const inviteToken = params.get("state");
 
   const { mutate: kakaoOauthLogin } = useMutation(
-    ({ authorizationCode, redirectUri }: RequestKakaoOauthBody) =>
+    ({ authorizationCode, redirectUri }: KakaoOauthRequest) =>
       postKakaoOauth({
         authorizationCode,
         redirectUri,

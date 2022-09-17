@@ -11,7 +11,7 @@ import MessageUpdateForm from "@/pages/RollingpaperPage/components/MessageUpdate
 import useMessageBox from "@/pages/RollingpaperPage/hooks/useMessageBox";
 import SecretMessage from "@/pages/RollingpaperPage/components/SecretMessage";
 
-import { Message, RollingpaperRecipient } from "@/types";
+import { Message, Recipient } from "@/types";
 import useValidatedParam from "@/hooks/useValidatedParam";
 
 const MessageBox = ({
@@ -24,7 +24,7 @@ const MessageBox = ({
   editable,
   visible,
   recipientType,
-}: Message & { recipientType: RollingpaperRecipient }) => {
+}: Message & { recipientType: Recipient }) => {
   const rollingpaperId = useValidatedParam<number>("rollingpaperId");
 
   const {

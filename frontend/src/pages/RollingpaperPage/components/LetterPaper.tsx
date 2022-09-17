@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 
 import IconButton from "@components/IconButton";
 
-import { Message, RollingpaperRecipient } from "@/types";
+import { Message, Recipient } from "@/types";
 
 import PencilIcon from "@/assets/icons/bx-pencil.svg";
 
@@ -14,7 +14,7 @@ import useSliceMessageList from "../hooks/useSliceMessageList";
 
 interface LetterPaperProp {
   to: string;
-  recipientType: RollingpaperRecipient;
+  recipientType: Recipient;
   messageList: Message[];
 }
 

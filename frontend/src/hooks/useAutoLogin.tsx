@@ -16,12 +16,11 @@ function useAutoLogin() {
 
   return useQuery<UserInfo>(
     ["memberId"],
-    () => getMyInfoWithAccessToken(accessTokenCookie),
-
+    () => getMyInfoWithAccessToken(accessTokenCookie!),
     {
       enabled: !!accessTokenCookie,
       onSuccess: () => {
-        setAppClientHeaderAuthorization(accessTokenCookie || "");
+        setAppClientHeaderAuthorization(accessTokenCookie!);
       },
     }
   );

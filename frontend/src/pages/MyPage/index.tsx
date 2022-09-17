@@ -11,7 +11,7 @@ import MessageList from "@/pages/MyPage/components/MessageList";
 import {
   getMyInfo,
   getMyReceivedRollingpapers,
-  getMySentMessage,
+  getMySentMessages,
 } from "@/api/member";
 
 import {
@@ -51,7 +51,11 @@ const MyPage = () => {
     data: responseReceivedRollingpapers,
   } = useQuery<ResponseReceivedRollingpapers>(
     ["received-rollingpapers", 0],
-    () => getMyReceivedRollingpapers(0, MYPAGE_ROLLINGPAPER_PAGING_COUNT),
+    () =>
+      getMyReceivedRollingpapers({
+        page: 0,
+        count: MYPAGE_ROLLINGPAPER_PAGING_COUNT,
+      }),
     { keepPreviousData: true }
   );
 
@@ -62,7 +66,7 @@ const MyPage = () => {
     data: responseSentMessages,
   } = useQuery<ResponseSentMessages>(
     ["sent-messages", 0],
-    () => getMySentMessage(0, MYPAGE_MESSAGE_PAGING_COUNT),
+    () => getMySentMessages({ page: 0, count: MYPAGE_MESSAGE_PAGING_COUNT }),
     { keepPreviousData: true }
   );
 

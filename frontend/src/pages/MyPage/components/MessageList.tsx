@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import styled from "@emotion/styled";
 
-import { getMySentMessage } from "@/api/member";
+import { getMySentMessages } from "@/api/member";
 
 import MessageListItem from "@/pages/MyPage/components/MessageListItem";
 import Paging from "@/components/Paging";
@@ -23,7 +23,11 @@ const MessageList = ({ lastPage }: MessageListProp) => {
 
   const { isLoading, isError, error, data } = useQuery<ResponseSentMessages>(
     ["sent-messages", currentPage],
-    () => getMySentMessage(currentPage, MYPAGE_MESSAGE_PAGING_COUNT),
+    () =>
+      getMySentMessages({
+        page: currentPage,
+        count: MYPAGE_MESSAGE_PAGING_COUNT,
+      }),
     { keepPreviousData: true }
   );
 

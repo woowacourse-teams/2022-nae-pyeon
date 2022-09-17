@@ -25,10 +25,10 @@ const RollingpaperList = ({ lastPage }: RollingpaperListProp) => {
     useQuery<ResponseReceivedRollingpapers>(
       ["received-rollingpapers", currentPage],
       () =>
-        getMyReceivedRollingpapers(
-          currentPage,
-          MYPAGE_ROLLINGPAPER_PAGING_COUNT
-        ),
+        getMyReceivedRollingpapers({
+          page: currentPage,
+          count: MYPAGE_ROLLINGPAPER_PAGING_COUNT,
+        }),
       { keepPreviousData: true }
     );
 
