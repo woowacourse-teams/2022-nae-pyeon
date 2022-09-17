@@ -51,3 +51,16 @@ export interface PostMemberRollingpaperRequest {
 }
 
 // teams
+export interface GetTeamSearchResultRequest {
+  keyword: string;
+  count: number;
+}
+
+export interface PostTeamRequest extends Omit<Team, "id" | "joined"> {
+  nickname: TeamMember["nickname"];
+}
+
+export interface PostTeamMemberWithInviteTokenRequest {
+  inviteToken: string;
+  nickname: TeamMember["nickname"];
+}

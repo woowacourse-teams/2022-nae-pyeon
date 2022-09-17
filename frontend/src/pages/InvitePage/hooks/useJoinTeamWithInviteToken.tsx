@@ -3,21 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
-import { postTeamMemberWithInviteToken } from "@/api/team";
-
-import { CustomError, Team } from "@/types";
 import { useSnackbar } from "@/context/SnackbarContext";
 
-type RequestJoinTeamWithInviteToken = Pick<Team, "nickname"> & {
-  inviteToken: string;
-};
+import { postTeamMemberWithInviteToken } from "@/api/team";
+
+import { CustomError } from "@/types";
+import { PostTeamMemberWithInviteTokenRequest } from "@/types/api";
 
 const useJoinTeamWithInviteToken = (teamId: number | undefined) => {
   const navigate = useNavigate();
   const { openSnackbar } = useSnackbar();
 
   const { mutate: joinTeamWithInviteToken } = useMutation(
-    ({ inviteToken, nickname }: RequestJoinTeamWithInviteToken) => {
+    ({ inviteToken, nickname }: PostTeamMemberWithInviteTokenRequest) => {
       return postTeamMemberWithInviteToken({
         inviteToken,
         nickname,

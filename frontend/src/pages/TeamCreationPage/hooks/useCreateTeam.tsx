@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
-import { CustomError, Team } from "@/types";
 import { postTeam } from "@/api/team";
+
+import { CustomError } from "@/types";
+import { PostTeamRequest } from "@/types/api";
 
 const useCreateTeam = () => {
   const navigate = useNavigate();
@@ -17,7 +19,7 @@ const useCreateTeam = () => {
       color,
       nickname,
       secret,
-    }: Omit<Team, "id" | "joined">) => {
+    }: PostTeamRequest) => {
       return postTeam({
         name,
         description,

@@ -6,7 +6,6 @@ export interface Team {
   description: string;
   emoji: string;
   color: string;
-  nickname: string;
   joined: boolean;
   secret: boolean;
 }

@@ -15,7 +15,7 @@ import { REGEX } from "@/constants";
 import { useSnackbar } from "@/context/SnackbarContext";
 
 import { putTeamNickname, getTeamMyNickname } from "@/api/team";
-import { Team } from "@/types";
+import { TeamMember } from "@/types";
 
 interface NicknameEditModalForm {
   onClickCloseButton: () => void;
@@ -27,7 +27,7 @@ const NicknameEditModalForm = ({
   const { openSnackbar } = useSnackbar();
   const teamId = useValidatedParam<number>("teamId");
 
-  const { data: teamNicknameResponse } = useQuery<Pick<Team, "nickname">>(
+  const { data: teamNicknameResponse } = useQuery<Pick<TeamMember, "nickname">>(
     ["team-nickname", teamId],
     () => getTeamMyNickname(teamId)
   );
