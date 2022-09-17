@@ -22,13 +22,11 @@ export interface Message {
   visible: boolean;
 }
 
-export type RollingpaperRecipient = "MEMBER" | "TEAM";
-
 export interface Rollingpaper {
   id: number;
   title: string;
   to: string;
-  recipient: RollingpaperRecipient;
+  recipient: Recipient;
   messages: Message[];
 }
 
