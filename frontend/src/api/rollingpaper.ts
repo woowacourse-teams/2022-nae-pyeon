@@ -1,16 +1,15 @@
 import { appClient, requestApi } from "@/api";
 
-import { ApiOptions } from "@/types";
+import { ApiOptions } from "@/types/api";
 
-interface RequestPostRollingpaper {
-  teamId: number;
-  title: string;
-  addresseeId: number;
-}
+import {
+  GetRollingpaperRequest,
+  PostTeamRollingpaperRequest,
+  PostMemberRollingpaperRequest,
+} from "@/types/apiRequest";
 
 const getRollingpaper = async (
-  teamId: number,
-  id: number,
+  { teamId, id }: GetRollingpaperRequest,
   options?: ApiOptions
 ) =>
   requestApi(
@@ -19,7 +18,7 @@ const getRollingpaper = async (
   );
 
 const postTeamRollingpaper = async (
-  { teamId, title }: Omit<RequestPostRollingpaper, "addresseeId">,
+  { teamId, title }: PostTeamRollingpaperRequest,
   options?: ApiOptions
 ) =>
   requestApi(
@@ -31,7 +30,7 @@ const postTeamRollingpaper = async (
   );
 
 const postMemberRollingpaper = async (
-  { teamId, title, addresseeId }: RequestPostRollingpaper,
+  { teamId, title, addresseeId }: PostMemberRollingpaperRequest,
   options?: ApiOptions
 ) =>
   requestApi(
