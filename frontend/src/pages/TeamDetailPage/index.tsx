@@ -1,13 +1,12 @@
-import React from "react";
+import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import styled from "@emotion/styled";
-import axios from "axios";
 
 import TeamDescriptionBox from "@/pages/TeamDetailPage/components/TeamDescriptionBox";
 import RollingpaperList from "@/pages/TeamDetailPage/components/RollingpaperList";
 import TeamJoinSection from "@/pages/TeamDetailPage/components/TeamJoinSection";
 
-import { Team, CustomError } from "@/types";
+import { CustomError } from "@/types";
 import { getTeam } from "@/api/team";
 import useValidatedParam from "@/hooks/useValidatedParam";
 
@@ -19,7 +18,7 @@ const TeamDetailPage = () => {
     isError: isErrorTeamDetail,
     error: TeamDetailError,
     data: teamDetail,
-  } = useQuery<Team>(["team", teamId], () => getTeam(teamId));
+  } = useQuery(["team", teamId], () => getTeam(teamId));
 
   if (isLoadingTeamDetail) {
     return <div>로딩중</div>;

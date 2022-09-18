@@ -40,34 +40,18 @@ export interface TeamMember {
   nickname: string;
 }
 
-export interface ReceivedRollingpaper {
-  id: number;
-  title: string;
-  teamId: number;
-  teamName: string;
+export interface ReceivedRollingpaper
+  extends Pick<Rollingpaper, "id" | "title"> {
+  teamId: Team["id"];
+  teamName: Team["name"];
 }
 
-export interface SentMessage {
-  id: number;
-  rollingpaperId: number;
-  rollingpaperTitle: string;
-  teamId: number;
-  teamName: string;
-  to: string;
-  content: string;
-  color: string;
-}
-
-export interface ResponseReceivedRollingpapers {
-  totalCount: number;
-  currentPage: number;
-  rollingpapers: ReceivedRollingpaper[];
-}
-
-export interface ResponseSentMessages {
-  totalCount: number;
-  currentPage: number;
-  messages: SentMessage[];
+export interface SentMessage extends Pick<Message, "id" | "content" | "color"> {
+  teamId: Team["id"];
+  teamName: Team["name"];
+  rollingpaperId: Rollingpaper["id"];
+  rollingpaperTitle: Rollingpaper["title"];
+  to: Rollingpaper["to"];
 }
 
 export type CustomError = {
@@ -78,12 +62,3 @@ export type CustomError = {
 export type ValueOf<T> = T[keyof T];
 
 export type Recipient = ValueOf<typeof RECIPIENT>;
-
-export type ApiOptions = {
-  onError?: () => void;
-};
-
-export type ApiErrorResponse = {
-  errorCode: number;
-  message: string;
-};

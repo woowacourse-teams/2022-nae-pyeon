@@ -1,4 +1,3 @@
-import React from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 import styled from "@emotion/styled";
@@ -13,11 +12,6 @@ import useIntersect from "@/hooks/useIntersect";
 
 const TEAM_PAGING_COUNT = 10;
 
-interface MyTeamListResponse {
-  teams: Team[];
-  currentPage: number;
-  totalCount: number;
-}
 interface Team {
   id: number;
   name: string;
@@ -45,17 +39,16 @@ const MainPage = () => {
     isFetching,
     isError,
     isLoading,
-  } = useInfiniteQuery<MyTeamListResponse>(
-    ["my-teams"],
-    getMyTeams(TEAM_PAGING_COUNT),
-    {
-      getNextPageParam: (lastPage) => {
-        if (lastPage.currentPage * TEAM_PAGING_COUNT < lastPage.totalCount) {
-          return lastPage.currentPage + 1;
-        }
-      },
-    }
-  );
+  } = useInfiniteQuery(["my-teams"], getMyTeams(TEAM_PAGING_COUNT), {
+    getNextPageParam: (lastPage) => {
+      if (
+        lastPage &&
+        lastPage.currentPage * TEAM_PAGING_COUNT < lastPage.totalCount
+      ) {
+        return lastPage.currentPage + 1;
+      }
+    },
+  });
 
   if (isLoading) {
     return <div>로딩 중</div>;
@@ -73,7 +66,7 @@ const MainPage = () => {
     return <div>에러</div>;
   }
 
-  if (myTeamListResponse.pages[0].teams.length === 0) {
+  if (myTeamListResponse.pages[0]?.teams.length === 0) {
     return (
       <StyledEmptyMain>
         <EmptyMyTeamList />
@@ -85,7 +78,7 @@ const MainPage = () => {
     <StyledMain>
       <StyledCardList>
         {myTeamListResponse.pages.map((page) =>
-          page.teams.map(({ id, name, description, emoji, color }: Team) => (
+          page!.teams.map(({ id, name, description, emoji, color }: Team) => (
             <MyTeamCard
               key={id}
               id={id}

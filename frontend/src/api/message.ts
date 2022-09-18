@@ -1,17 +1,20 @@
 import { appClient, requestApi } from "@/api";
 
-import { ApiOptions } from "@/types";
+import { ApiOptions } from "@/types/api";
+
 import {
   PostMessageRequest,
   PutMessageRequest,
   DeleteMessageRequest,
 } from "@/types/apiRequest";
 
+import { PostMessageResponse } from "@/types/apiResponse";
+
 const postMessage = async (
   { rollingpaperId, content, color, anonymous, secret }: PostMessageRequest,
   options?: ApiOptions
 ) =>
-  requestApi(
+  requestApi<PostMessageResponse>(
     () =>
       appClient.post(`/rollingpapers/${rollingpaperId}/messages`, {
         content,

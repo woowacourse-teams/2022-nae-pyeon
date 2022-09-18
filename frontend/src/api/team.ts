@@ -1,16 +1,42 @@
 import { appClient, requestApi } from "@/api";
 
-import { ApiOptions, Team, TeamMember } from "@/types";
+import { Team, TeamMember } from "@/types";
+import { ApiOptions } from "@/types/api";
+
 import {
   GetTeamSearchResultRequest,
   PostTeamRequest,
   PostTeamMemberWithInviteTokenRequest,
 } from "@/types/apiRequest";
 
+import {
+  GetTeamResponse,
+  GetTeamWithInviteTokenResponse,
+  GetMyTeamsResponse,
+  GetTeamSearchResultResponse,
+  GetTeamMembersResponse,
+  GetTeamRollingpapersResponse,
+  GetTeamMyNicknameResponse,
+  PostTeamResponse,
+  PostTeamInviteTokenResponse,
+} from "@/types/apiResponse";
+
+const getTeam = async (id: Team["id"], options?: ApiOptions) =>
+  requestApi<GetTeamResponse>(() => appClient.get(`/teams/${id}`), options);
+
+const getTeamWithInviteToken = async (
+  inviteToken: string,
+  options?: ApiOptions
+) =>
+  requestApi<GetTeamWithInviteTokenResponse>(
+    () => appClient.get(`/teams/invite?inviteToken=${inviteToken}`),
+    options
+  );
+
 const getMyTeams =
   (teamPageCount = 5, options?: ApiOptions) =>
   async ({ pageParam = 0 }) =>
-    requestApi(
+    requestApi<GetMyTeamsResponse>(
       () => appClient.get(`teams/me?page=${pageParam}&count=${teamPageCount}`),
       options
     );
@@ -18,7 +44,7 @@ const getMyTeams =
 const getTeamSearchResult =
   ({ keyword, count }: GetTeamSearchResultRequest, options?: ApiOptions) =>
   async ({ pageParam = 0 }) =>
-    requestApi(
+    requestApi<GetTeamSearchResultResponse>(
       () =>
         appClient.get(
           `teams?keyword=${keyword}&page=${pageParam}&count=${count}`
@@ -26,26 +52,20 @@ const getTeamSearchResult =
       options
     );
 
-const getTeam = async (id: Team["id"], options?: ApiOptions) =>
-  requestApi(() => appClient.get(`/teams/${id}`), options);
-
 const getTeamMembers = async (id: Team["id"], options?: ApiOptions) =>
-  requestApi(() => appClient.get(`/teams/${id}/members`), options);
+  requestApi<GetTeamMembersResponse>(
+    () => appClient.get(`/teams/${id}/members`),
+    options
+  );
 
 const getTeamRollingpapers = async (id: Team["id"], options?: ApiOptions) =>
-  requestApi(() => appClient.get(`/teams/${id}/rollingpapers`), options);
-
-const getTeamWithInviteToken = async (
-  inviteToken: string,
-  options?: ApiOptions
-) =>
-  requestApi(
-    () => appClient.get(`/teams/invite?inviteToken=${inviteToken}`),
+  requestApi<GetTeamRollingpapersResponse>(
+    () => appClient.get(`/teams/${id}/rollingpapers`),
     options
   );
 
 const getTeamMyNickname = async (id: Team["id"], options?: ApiOptions) =>
-  requestApi(
+  requestApi<GetTeamMyNicknameResponse>(
     () => appClient.get(`/teams/${id}/me`).then((response) => response.data),
     options
   );
@@ -54,7 +74,7 @@ const postTeam = async (
   { name, description, emoji, color, nickname, secret }: PostTeamRequest,
   options?: ApiOptions
 ) =>
-  requestApi(
+  requestApi<PostTeamResponse>(
     () =>
       appClient.post("/teams", {
         name,
@@ -66,9 +86,6 @@ const postTeam = async (
       }),
     options
   );
-
-const postTeamInviteToken = async (id: Team["id"], options?: ApiOptions) =>
-  requestApi(() => appClient.post(`/teams/${id}/invite`), options);
 
 const postTeamMember = async (
   { id, nickname }: TeamMember,
@@ -85,6 +102,12 @@ const postTeamMemberWithInviteToken = async (
         inviteToken,
         nickname,
       }),
+    options
+  );
+
+const postTeamInviteToken = async (id: Team["id"], options?: ApiOptions) =>
+  requestApi<PostTeamInviteTokenResponse>(
+    () => appClient.post(`/teams/${id}/invite`),
     options
   );
 

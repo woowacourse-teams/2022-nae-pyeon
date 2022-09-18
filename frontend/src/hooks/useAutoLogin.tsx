@@ -1,4 +1,3 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { setAppClientHeaderAuthorization } from "@/api";
@@ -14,7 +13,7 @@ const COOKIE_KEY = {
 function useAutoLogin() {
   const accessTokenCookie = getCookie(COOKIE_KEY.ACCESS_TOKEN);
 
-  return useQuery<User>(
+  return useQuery(
     ["memberId"],
     () => getMyInfoWithAccessToken(accessTokenCookie!),
     {

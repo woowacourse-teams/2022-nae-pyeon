@@ -1,4 +1,3 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { getTeamWithInviteToken } from "@/api/team";
@@ -16,7 +15,7 @@ const useTeamDetailWithInviteToken = ({
   onSuccess,
   onError,
 }: UseTeamDetailWithInviteTokenArgs) => {
-  return useQuery<Team>(
+  return useQuery(
     ["teamDetailWithInviteToken", inviteToken],
     () => getTeamWithInviteToken(inviteToken),
     { onSuccess, onError }

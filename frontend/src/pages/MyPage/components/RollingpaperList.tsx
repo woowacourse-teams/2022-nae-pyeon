@@ -1,17 +1,15 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import styled from "@emotion/styled";
-
-import { getMyReceivedRollingpapers } from "@/api/member";
 
 import RollingpaperListItem from "@/pages/MyPage/components/RollingpaperListItem";
 import Paging from "@/components/Paging";
 
-import EmptyStateImg from "@/assets/images/empty-state.svg";
+import usePaging from "@/hooks/usePaging";
+
+import { getMyReceivedRollingpapers } from "@/api/member";
 import { MYPAGE_ROLLINGPAPER_PAGING_COUNT } from "@/constants";
 
-import { ResponseReceivedRollingpapers } from "@/types";
-import usePaging from "@/hooks/usePaging";
+import EmptyStateImg from "@/assets/images/empty-state.svg";
 
 interface RollingpaperListProp {
   lastPage: number;
@@ -21,16 +19,15 @@ const RollingpaperList = ({ lastPage }: RollingpaperListProp) => {
   const { currentPage, handleNumberClick, handleNextClick, handlePrevClick } =
     usePaging(lastPage);
 
-  const { isLoading, isError, error, data } =
-    useQuery<ResponseReceivedRollingpapers>(
-      ["received-rollingpapers", currentPage],
-      () =>
-        getMyReceivedRollingpapers({
-          page: currentPage,
-          count: MYPAGE_ROLLINGPAPER_PAGING_COUNT,
-        }),
-      { keepPreviousData: true }
-    );
+  const { isLoading, isError, error, data } = useQuery(
+    ["received-rollingpapers", currentPage],
+    () =>
+      getMyReceivedRollingpapers({
+        page: currentPage,
+        count: MYPAGE_ROLLINGPAPER_PAGING_COUNT,
+      }),
+    { keepPreviousData: true }
+  );
 
   if (isError || !data) {
     return <div>에러</div>;

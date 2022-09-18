@@ -1,4 +1,3 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import styled from "@emotion/styled";
 
@@ -10,7 +9,6 @@ import Paging from "@/components/Paging";
 import EmptyStateImg from "@/assets/images/empty-state.svg";
 import { MYPAGE_MESSAGE_PAGING_COUNT } from "@/constants";
 
-import { ResponseSentMessages } from "@/types";
 import usePaging from "@/hooks/usePaging";
 
 interface MessageListProp {
@@ -21,7 +19,7 @@ const MessageList = ({ lastPage }: MessageListProp) => {
   const { currentPage, handleNumberClick, handleNextClick, handlePrevClick } =
     usePaging(lastPage);
 
-  const { isLoading, isError, error, data } = useQuery<ResponseSentMessages>(
+  const { isLoading, isError, error, data } = useQuery(
     ["sent-messages", currentPage],
     () =>
       getMySentMessages({

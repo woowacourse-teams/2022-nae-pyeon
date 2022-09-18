@@ -46,8 +46,8 @@ const TeamSearch = () => {
     {
       getNextPageParam: (lastPage) => {
         if (
-          lastPage.currentPage * TOTAL_TEAMS_PAGING_COUNT <
-          lastPage.totalCount
+          lastPage &&
+          lastPage.currentPage * TOTAL_TEAMS_PAGING_COUNT < lastPage.totalCount
         ) {
           return lastPage.currentPage + 1;
         }
@@ -86,7 +86,7 @@ const TeamSearch = () => {
     return <div>에러</div>;
   }
 
-  if (totalTeamResponse.pages[0].teams.length === 0) {
+  if (totalTeamResponse.pages[0]?.teams.length === 0) {
     return (
       <>
         <StyledSearch>
@@ -113,7 +113,7 @@ const TeamSearch = () => {
       </StyledSearch>
       <StyledTeamList>
         {totalTeamResponse.pages.map((page) =>
-          page.teams.map((team: Team) => (
+          page!.teams.map((team: Team) => (
             <SearchResultListItem
               key={team.id}
               onClick={() => {

@@ -1,5 +1,4 @@
-import React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import styled from "@emotion/styled";
@@ -7,15 +6,11 @@ import styled from "@emotion/styled";
 import IconButton from "@/components/IconButton";
 import RollingpaperListItem from "@/pages/TeamDetailPage/components/RollingpaperListItem";
 
-import { Rollingpaper, CustomError } from "@/types";
+import { CustomError } from "@/types";
 
 import PlusIcon from "@/assets/icons/bx-plus.svg";
 import { getTeamRollingpapers } from "@/api/team";
 import useValidatedParam from "@/hooks/useValidatedParam";
-
-interface RollingpaperListResponse {
-  rollingpapers: Omit<Rollingpaper, "messages">[];
-}
 
 const RollingpaperList = () => {
   const navigate = useNavigate();
@@ -26,7 +21,7 @@ const RollingpaperList = () => {
     isError: isErrorGetTeamRollingpaperList,
     error: getTeamRollingpaperListError,
     data: teamRollinpaperListResponse,
-  } = useQuery<RollingpaperListResponse>(["rollingpaperList", teamId], () =>
+  } = useQuery(["rollingpaperList", teamId], () =>
     getTeamRollingpapers(teamId)
   );
 

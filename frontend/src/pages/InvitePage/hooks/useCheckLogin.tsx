@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useSnackbar } from "@/context/SnackbarContext";
 import { UserContext } from "@/context/UserContext";
-
 
 const useCheckLogin = (inviteToken: string) => {
   const navigate = useNavigate();

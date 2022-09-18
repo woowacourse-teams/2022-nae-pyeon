@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { QueryClient } from "@tanstack/react-query";
 
 import ApiError from "@/util/ApiError";
 
-import { ApiErrorResponse, ApiOptions } from "@/types";
+import { ApiErrorResponse, ApiOptions } from "@/types/api";
 
 const appClient = axios.create({
   baseURL: process.env.API_URL,
@@ -16,8 +16,8 @@ const setAppClientHeaderAuthorization = (accessToken: string) => {
   appClient.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
 };
 
-const requestApi = async (
-  request: () => Promise<any>,
+const requestApi = async <T>(
+  request: () => Promise<AxiosResponse<T>>,
   options?: ApiOptions
 ) => {
   try {
@@ -25,9 +25,11 @@ const requestApi = async (
 
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      const customError = error.response.data as ApiErrorResponse;
-      const { errorCode, message } = customError;
+    const axiosError = error as AxiosError;
+
+    if (axiosError.response) {
+      const { errorCode, message } = axiosError.response
+        .data as ApiErrorResponse;
 
       throw new ApiError({
         errorCode,

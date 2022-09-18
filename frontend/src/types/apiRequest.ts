@@ -1,8 +1,7 @@
-// kakao oauth
-
 import { Message, Rollingpaper, Team, TeamMember } from ".";
 
-export interface KakaoOauthRequest {
+// kakao oauth
+export interface postKakaoOauthRequest {
   authorizationCode: string;
   redirectUri: string;
 }
