@@ -10,6 +10,7 @@ import EmptyStateImg from "@/assets/images/empty-state.svg";
 import { MYPAGE_MESSAGE_PAGING_COUNT } from "@/constants";
 
 import usePaging from "@/hooks/usePaging";
+import { GetMySentMessagesResponse } from "@/types/apiResponse";
 
 interface MessageListProp {
   lastPage: number;
@@ -19,15 +20,16 @@ const MessageList = ({ lastPage }: MessageListProp) => {
   const { currentPage, handleNumberClick, handleNextClick, handlePrevClick } =
     usePaging(lastPage);
 
-  const { isLoading, isError, error, data } = useQuery(
-    ["sent-messages", currentPage],
-    () =>
-      getMySentMessages({
-        page: currentPage,
-        count: MYPAGE_MESSAGE_PAGING_COUNT,
-      }),
-    { keepPreviousData: true }
-  );
+  const { isLoading, isError, error, data } =
+    useQuery<GetMySentMessagesResponse>(
+      ["sent-messages", currentPage],
+      () =>
+        getMySentMessages({
+          page: currentPage,
+          count: MYPAGE_MESSAGE_PAGING_COUNT,
+        }),
+      { keepPreviousData: true }
+    );
 
   if (isError || !data) {
     return <div>에러</div>;

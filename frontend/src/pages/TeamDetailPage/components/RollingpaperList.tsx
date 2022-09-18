@@ -11,6 +11,7 @@ import { CustomError } from "@/types";
 import PlusIcon from "@/assets/icons/bx-plus.svg";
 import { getTeamRollingpapers } from "@/api/team";
 import useValidatedParam from "@/hooks/useValidatedParam";
+import { GetTeamRollingpapersResponse } from "@/types/apiResponse";
 
 const RollingpaperList = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const RollingpaperList = () => {
     isError: isErrorGetTeamRollingpaperList,
     error: getTeamRollingpaperListError,
     data: teamRollinpaperListResponse,
-  } = useQuery(["rollingpaperList", teamId], () =>
+  } = useQuery<GetTeamRollingpapersResponse>(["rollingpaperList", teamId], () =>
     getTeamRollingpapers(teamId)
   );
 

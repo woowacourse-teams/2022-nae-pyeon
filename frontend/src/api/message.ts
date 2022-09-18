@@ -8,13 +8,11 @@ import {
   DeleteMessageRequest,
 } from "@/types/apiRequest";
 
-import { PostMessageResponse } from "@/types/apiResponse";
-
 const postMessage = async (
   { rollingpaperId, content, color, anonymous, secret }: PostMessageRequest,
   options?: ApiOptions
 ) =>
-  requestApi<PostMessageResponse>(
+  requestApi(
     () =>
       appClient.post(`/rollingpapers/${rollingpaperId}/messages`, {
         content,

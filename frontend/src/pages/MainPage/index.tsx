@@ -41,10 +41,7 @@ const MainPage = () => {
     isLoading,
   } = useInfiniteQuery(["my-teams"], getMyTeams(TEAM_PAGING_COUNT), {
     getNextPageParam: (lastPage) => {
-      if (
-        lastPage &&
-        lastPage.currentPage * TEAM_PAGING_COUNT < lastPage.totalCount
-      ) {
+      if (lastPage.currentPage * TEAM_PAGING_COUNT < lastPage.totalCount) {
         return lastPage.currentPage + 1;
       }
     },
@@ -78,7 +75,7 @@ const MainPage = () => {
     <StyledMain>
       <StyledCardList>
         {myTeamListResponse.pages.map((page) =>
-          page!.teams.map(({ id, name, description, emoji, color }: Team) => (
+          page.teams.map(({ id, name, description, emoji, color }: Team) => (
             <MyTeamCard
               key={id}
               id={id}

@@ -46,8 +46,8 @@ const TeamSearch = () => {
     {
       getNextPageParam: (lastPage) => {
         if (
-          lastPage &&
-          lastPage.currentPage * TOTAL_TEAMS_PAGING_COUNT < lastPage.totalCount
+          lastPage.currentPage * TOTAL_TEAMS_PAGING_COUNT <
+          lastPage.totalCount
         ) {
           return lastPage.currentPage + 1;
         }
@@ -113,7 +113,7 @@ const TeamSearch = () => {
       </StyledSearch>
       <StyledTeamList>
         {totalTeamResponse.pages.map((page) =>
-          page!.teams.map((team: Team) => (
+          page.teams.map((team: Team) => (
             <SearchResultListItem
               key={team.id}
               onClick={() => {

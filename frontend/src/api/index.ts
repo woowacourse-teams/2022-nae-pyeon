@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError } from "axios";
 import { QueryClient } from "@tanstack/react-query";
 
 import ApiError from "@/util/ApiError";
@@ -16,8 +16,8 @@ const setAppClientHeaderAuthorization = (accessToken: string) => {
   appClient.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
 };
 
-const requestApi = async <T>(
-  request: () => Promise<AxiosResponse<T>>,
+const requestApi = async (
+  request: () => Promise<any>,
   options?: ApiOptions
 ) => {
   try {

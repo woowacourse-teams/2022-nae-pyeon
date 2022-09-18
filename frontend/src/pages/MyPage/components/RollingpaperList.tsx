@@ -10,6 +10,7 @@ import { getMyReceivedRollingpapers } from "@/api/member";
 import { MYPAGE_ROLLINGPAPER_PAGING_COUNT } from "@/constants";
 
 import EmptyStateImg from "@/assets/images/empty-state.svg";
+import { GetMyReceivedRollingpapersResponse } from "@/types/apiResponse";
 
 interface RollingpaperListProp {
   lastPage: number;
@@ -19,15 +20,16 @@ const RollingpaperList = ({ lastPage }: RollingpaperListProp) => {
   const { currentPage, handleNumberClick, handleNextClick, handlePrevClick } =
     usePaging(lastPage);
 
-  const { isLoading, isError, error, data } = useQuery(
-    ["received-rollingpapers", currentPage],
-    () =>
-      getMyReceivedRollingpapers({
-        page: currentPage,
-        count: MYPAGE_ROLLINGPAPER_PAGING_COUNT,
-      }),
-    { keepPreviousData: true }
-  );
+  const { isLoading, isError, error, data } =
+    useQuery<GetMyReceivedRollingpapersResponse>(
+      ["received-rollingpapers", currentPage],
+      () =>
+        getMyReceivedRollingpapers({
+          page: currentPage,
+          count: MYPAGE_ROLLINGPAPER_PAGING_COUNT,
+        }),
+      { keepPreviousData: true }
+    );
 
   if (isError || !data) {
     return <div>에러</div>;

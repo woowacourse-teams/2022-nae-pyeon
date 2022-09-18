@@ -8,19 +8,14 @@ import {
   GetMySentMessagesRequest,
 } from "@/types/apiRequest";
 
-import {
-  GetMyReceivedRollingpapersResponse,
-  GetMySentMessagesResponse,
-} from "@/types/apiResponse";
-
 const getMyInfo = async (options?: ApiOptions) =>
-  requestApi<User>(() => appClient.get("/members/me"), options);
+  requestApi(() => appClient.get("/members/me"), options);
 
 const getMyInfoWithAccessToken = async (
   accessToken: string,
   options?: ApiOptions
 ) =>
-  requestApi<User>(
+  requestApi(
     () =>
       appClient.get("/members/me", {
         headers: {
@@ -34,7 +29,7 @@ const getMyReceivedRollingpapers = async (
   { page = 0, count = 5 }: GetMyReceivedRollingpapersRequest,
   options?: ApiOptions
 ) =>
-  requestApi<GetMyReceivedRollingpapersResponse>(
+  requestApi(
     () =>
       appClient.get(
         `/members/me/rollingpapers/received?page=${page}&count=${count}`
@@ -46,7 +41,7 @@ const getMySentMessages = async (
   { page = 0, count = 5 }: GetMySentMessagesRequest,
   options?: ApiOptions
 ) =>
-  requestApi<GetMySentMessagesResponse>(
+  requestApi(
     () =>
       appClient.get(`/members/me/messages/written?page=${page}&count=${count}`),
     options

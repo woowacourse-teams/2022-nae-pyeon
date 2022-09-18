@@ -8,17 +8,11 @@ import {
   PostMemberRollingpaperRequest,
 } from "@/types/apiRequest";
 
-import {
-  GetRollingpaperResponse,
-  PostMemberRollingpaperResponse,
-  PostTeamRollingpaperResponse,
-} from "@/types/apiResponse";
-
 const getRollingpaper = async (
   { teamId, id }: GetRollingpaperRequest,
   options?: ApiOptions
 ) =>
-  requestApi<GetRollingpaperResponse>(
+  requestApi(
     () => appClient.get(`/teams/${teamId}/rollingpapers/${id}`),
     options
   );
@@ -27,7 +21,7 @@ const postTeamRollingpaper = async (
   { teamId, title }: PostTeamRollingpaperRequest,
   options?: ApiOptions
 ) =>
-  requestApi<PostTeamRollingpaperResponse>(
+  requestApi(
     () =>
       appClient.post(`/teams/${teamId}/team-rollingpapers`, {
         title,
@@ -39,7 +33,7 @@ const postMemberRollingpaper = async (
   { teamId, title, addresseeId }: PostMemberRollingpaperRequest,
   options?: ApiOptions
 ) =>
-  requestApi<PostMemberRollingpaperResponse>(
+  requestApi(
     () =>
       appClient.post(`/teams/${teamId}/rollingpapers`, {
         title,
