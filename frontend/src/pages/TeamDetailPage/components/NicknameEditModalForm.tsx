@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import styled from "@emotion/styled";
 
 import { queryClient } from "@/api";
@@ -14,7 +14,8 @@ import useInput from "@/hooks/useInput";
 import { REGEX } from "@/constants";
 import { useSnackbar } from "@/context/SnackbarContext";
 
-import { putTeamNickname, getTeamMyNickname } from "@/api/team";
+import { putTeamNickname } from "@/api/team";
+import useReadTeamNickname from "@/pages/TeamDetailPage/hooks/useReadTeamNickname";
 
 interface NicknameEditModalForm {
   onClickCloseButton: () => void;
@@ -26,10 +27,7 @@ const NicknameEditModalForm = ({
   const { openSnackbar } = useSnackbar();
   const teamId = useValidatedParam<number>("teamId");
 
-  const { data: teamNicknameResponse } = useQuery(
-    ["team-nickname", teamId],
-    () => getTeamMyNickname(teamId)
-  );
+  const { data: teamNicknameResponse } = useReadTeamNickname(teamId);
 
   const { value: nickname, handleInputChange: handleNicknameChange } = useInput(
     teamNicknameResponse?.nickname || ""
