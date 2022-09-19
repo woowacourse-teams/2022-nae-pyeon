@@ -23,10 +23,10 @@ const InvitePage = () => {
   const checkLogin = useCheckLogin(inviteToken);
   const handleTeamDetailWithInviteTokenSuccess = useCheckTeamJoined();
 
-  const { data: teamDetail, isLoading } = useTeamDetailWithInviteToken({
+  const { data: teamDetail, isLoading } = useTeamDetailWithInviteToken(
     inviteToken,
-    onSuccess: handleTeamDetailWithInviteTokenSuccess,
-  });
+    { onSuccess: handleTeamDetailWithInviteTokenSuccess }
+  );
 
   const joinTeamWithInviteToken = useJoinTeamWithInviteToken(teamDetail?.id);
 
