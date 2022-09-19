@@ -12,6 +12,7 @@ import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
+import com.woowacourse.naepyeon.support.oauth.google.GooglePlatformUserProvider;
 import com.woowacourse.naepyeon.support.oauth.kakao.KakaoPlatformUserProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,6 +28,8 @@ class AuthServiceTest {
 
     @MockBean
     private KakaoPlatformUserProvider kakaoPlatformUserProvider;
+    @MockBean
+    private GooglePlatformUserProvider googlePlatformUserProvider;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -41,7 +44,7 @@ class AuthServiceTest {
 
     @BeforeEach
     void setUp() {
-        authService = new AuthService(memberService, jwtTokenProvider, kakaoPlatformUserProvider);
+        authService = new AuthService(memberService, jwtTokenProvider, kakaoPlatformUserProvider, googlePlatformUserProvider);
     }
 
     @Test
