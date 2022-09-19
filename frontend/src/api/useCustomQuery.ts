@@ -1,11 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 
-type QueryKey = readonly unknown[];
+import { QueryOptions } from "@/types/api";
 
-interface QueryOptions {
-  onError?: () => void;
-  onSuccess?: () => void;
-}
+type QueryKey = readonly unknown[];
 
 export default function useCustomQuery<T>(
   queryKey: QueryKey,

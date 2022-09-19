@@ -10,4 +10,6 @@ export interface ApiErrorResponse {
 export interface QueryOptions {
   onError?: () => void;
   onSuccess?: () => void;
+  enabled?: boolean;
+  keepPreviousData?: boolean;
 }
