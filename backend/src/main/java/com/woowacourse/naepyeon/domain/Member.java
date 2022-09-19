@@ -11,6 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,7 +19,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "member")
+@Table(name = "member", indexes = {
+        @Index(name = "member_email_index", columnList = "email"),
+        @Index(name = "member_oauth_index", columnList = "platform, platform_id")
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
 
