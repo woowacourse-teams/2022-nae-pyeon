@@ -9,11 +9,12 @@ interface UseReadRollingpaperArgs extends QueryOptions {
   rollingpaperId: number;
 }
 
-export const useReadRollingpaper = ({
-  teamId,
-  rollingpaperId,
-}: UseReadRollingpaperArgs) =>
+export const useReadRollingpaper = (
+  { teamId, rollingpaperId }: UseReadRollingpaperArgs,
+  options?: QueryOptions
+) =>
   useCustomQuery<GetRollingpaperResponse>(
     ["rollingpaper", rollingpaperId],
-    () => getRollingpaper({ teamId, id: rollingpaperId })
+    () => getRollingpaper({ teamId, id: rollingpaperId }),
+    { ...options }
   );
