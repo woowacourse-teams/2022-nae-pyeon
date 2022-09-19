@@ -1,18 +1,18 @@
-import { useQuery } from "@tanstack/react-query";
+import useCustomQuery from "@/api/useCustomQuery";
 
 import { getTeamMembers } from "@/api/team";
 
+import { QueryOptions } from "@/types/api";
 import { GetTeamMembersResponse } from "@/types/apiResponse";
 
-interface UseReadTeamMembersArgs {
-  teamId: number;
-  onSuccess: (data: GetTeamMembersResponse) => void;
-}
-
-const useReadTeamMembers = ({ teamId, onSuccess }: UseReadTeamMembersArgs) => {
-  return useQuery(["team-member", teamId], () => getTeamMembers(+teamId), {
-    onSuccess,
-  });
+const useReadTeamMembers = (teamId: number, options: QueryOptions) => {
+  return useCustomQuery<GetTeamMembersResponse>(
+    ["team-member", teamId],
+    () => getTeamMembers(+teamId),
+    {
+      ...options,
+    }
+  );
 };
 
 export default useReadTeamMembers;
