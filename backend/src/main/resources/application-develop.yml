@@ -7,6 +7,8 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+    hikari:
+      maximum-pool-size: ${MAX_THREAD_POOL_SIZE}
 
   jpa:
     hibernate:
@@ -34,6 +36,12 @@ kakao:
   admin-key: ${KAKAO_ADMIN_KEY}
   client-id: ${KAKAO_CLIENT_ID}
   client-secret: ${KAKAO_CLIENT_SECRET}
+
+server:
+  tomcat:
+    accept-count: 10
+    threads:
+      max: ${MAX_THREAD_POOL_SIZE}
 
 logging:
   config: classpath:log4j2-develop.yml
