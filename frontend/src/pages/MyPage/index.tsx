@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import styled from "@emotion/styled";
 
@@ -9,17 +8,14 @@ import RollingpaperList from "@/pages/MyPage/components/RollingpaperList";
 import MessageList from "@/pages/MyPage/components/MessageList";
 
 import {
-  getMyInfo,
-  getMyReceivedRollingpapers,
-  getMySentMessages,
-} from "@/api/member";
-
-import {
   MYPAGE_ROLLINGPAPER_PAGING_COUNT,
   MYPAGE_MESSAGE_PAGING_COUNT,
 } from "@/constants";
 
 import { CustomError, ValueOf } from "@/types";
+import { useReadUserProfile } from "./hooks/useReadUserProfile";
+import { useReadSentMessages } from "./hooks/useReadSentMessages";
+import { useReadReceivedRollingpapers } from "./hooks/useReadReceivedRollingpapers";
 
 type TabMode = ValueOf<typeof TAB>;
 
@@ -36,33 +32,21 @@ const MyPage = () => {
     isError: isErrorGetUserProfile,
     error: getUserProfileError,
     data: userProfile,
-  } = useQuery(["user-profile"], () => getMyInfo());
+  } = useReadUserProfile();
 
   const {
     isLoading: isLoadingGetReceivedRollingpapers,
     isError: isErrorGetReceivedRollingpapers,
     error: getReceivedRollingpapersError,
     data: responseReceivedRollingpapers,
-  } = useQuery(
-    ["received-rollingpapers", 0],
-    () =>
-      getMyReceivedRollingpapers({
-        page: 0,
-        count: MYPAGE_ROLLINGPAPER_PAGING_COUNT,
-      }),
-    { keepPreviousData: true }
-  );
+  } = useReadReceivedRollingpapers();
 
   const {
     isLoading: isLoadingGetSentMessages,
     isError: isErrorGetSentMessages,
     error: getSentMessagesError,
     data: responseSentMessages,
-  } = useQuery(
-    ["sent-messages", 0],
-    () => getMySentMessages({ page: 0, count: MYPAGE_MESSAGE_PAGING_COUNT }),
-    { keepPreviousData: true }
-  );
+  } = useReadSentMessages();
 
   if (
     isLoadingGetUserProfile ||
@@ -142,7 +126,7 @@ const MyPage = () => {
       ) : (
         <MessageList
           lastPage={Math.ceil(
-            responseSentMessages.totalCount / MYPAGE_ROLLINGPAPER_PAGING_COUNT
+            responseSentMessages.totalCount / MYPAGE_MESSAGE_PAGING_COUNT
           )}
         />
       )}
