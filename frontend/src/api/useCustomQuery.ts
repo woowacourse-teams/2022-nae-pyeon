@@ -6,7 +6,7 @@ type QueryKey = readonly unknown[];
 
 export default function useCustomQuery<T>(
   queryKey: QueryKey,
-  queryFn: any,
+  queryFn: () => Promise<any>,
   options?: QueryOptions
 ) {
   return useQuery<T>(queryKey, queryFn, {
