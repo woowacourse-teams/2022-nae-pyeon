@@ -8,7 +8,7 @@ spring:
     password:
     driver-class-name: org.h2.Driver
     hikari:
-      maximum-pool-size: ${MAX_THREAD_POOL_SIZE}
+      maximum-pool-size: ${MAX_CONNECTION_POOL_SIZE}
 
   jpa:
     hibernate:
