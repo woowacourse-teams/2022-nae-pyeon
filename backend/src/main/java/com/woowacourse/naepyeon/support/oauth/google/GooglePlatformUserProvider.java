@@ -4,6 +4,7 @@ import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.exception.GoogleAuthorizationException;
 import com.woowacourse.naepyeon.exception.GoogleResourceException;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
+import com.woowacourse.naepyeon.support.oauth.PlatformUserProvider;
 import com.woowacourse.naepyeon.support.oauth.dto.GoogleAccessTokenResponse;
 import com.woowacourse.naepyeon.support.oauth.dto.GoogleUserResponse;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class GooglePlatformUserProvider {
+public class GooglePlatformUserProvider implements PlatformUserProvider {
 
     private static final String AUTHORIZATION_SERVER_BASE_URL = "https://oauth2.googleapis.com";
     private static final String RESOURCE_SERVER_BASE_URL = "https://www.googleapis.com";
@@ -43,6 +44,7 @@ public class GooglePlatformUserProvider {
         this.googleClientSecret = googleClientSecret;
     }
 
+    @Override
     public PlatformUserDto getPlatformUser(String authorizationCode, String redirectUri) {
         final GoogleAccessTokenResponse accessTokenResponse = requestAccessToken(authorizationCode, redirectUri);
         final GoogleUserResponse googleUserResponse = requestPlatformUser(accessTokenResponse.getAccess_token());

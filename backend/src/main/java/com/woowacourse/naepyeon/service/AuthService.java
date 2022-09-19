@@ -26,9 +26,7 @@ public class AuthService {
                 tokenRequestDto.getRedirectUri()
         );
 
-        final Long memberId = createOrFindMemberId(platformUser);
-        final String accessToken = jwtTokenProvider.createToken(String.valueOf(memberId));
-        return new TokenResponseDto(accessToken, memberId);
+        return createTokenResponseDto(platformUser);
     }
 
     public TokenResponseDto createTokenWithGoogleOauth(final TokenRequestDto tokenRequestDto) {
@@ -37,6 +35,10 @@ public class AuthService {
                 tokenRequestDto.getRedirectUri()
         );
 
+        return createTokenResponseDto(platformUser);
+    }
+
+    private TokenResponseDto createTokenResponseDto(PlatformUserDto platformUser) {
         final Long memberId = createOrFindMemberId(platformUser);
         final String accessToken = jwtTokenProvider.createToken(String.valueOf(memberId));
         return new TokenResponseDto(accessToken, memberId);
