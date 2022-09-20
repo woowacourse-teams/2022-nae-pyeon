@@ -4,7 +4,6 @@ import styled from "@emotion/styled";
 import useValidatedParam from "@/hooks/useValidatedParam";
 import useInput from "@/hooks/useInput";
 import useCheckLogin from "@/pages/InvitePage/hooks/useCheckLogin";
-import useCheckTeamJoined from "@/pages/InvitePage/hooks/useCheckTeamJoined";
 
 import useTeamDetailWithInviteToken from "@/pages/InvitePage/hooks/useTeamDetailWithInviteToken";
 import useCreateTeamWithInviteToken from "@/pages/InvitePage/hooks/useCreateTeamWithInviteToken";
@@ -21,12 +20,9 @@ const InvitePage = () => {
 
   const { value: nickname, handleInputChange } = useInput("");
   const checkLogin = useCheckLogin(inviteToken);
-  const handleTeamDetailWithInviteTokenSuccess = useCheckTeamJoined();
 
-  const { data: teamDetail, isLoading } = useTeamDetailWithInviteToken(
-    inviteToken,
-    { onSuccess: handleTeamDetailWithInviteTokenSuccess }
-  );
+  const { data: teamDetail, isLoading } =
+    useTeamDetailWithInviteToken(inviteToken);
 
   const createTeamWithInviteToken = useCreateTeamWithInviteToken(
     teamDetail?.id

@@ -6,12 +6,8 @@ import { getMyReceivedRollingpapers } from "@/api/member";
 import { MYPAGE_ROLLINGPAPER_PAGING_COUNT } from "@/constants";
 
 import { GetMyReceivedRollingpapersResponse } from "@/types/apiResponse";
-import { QueryOptions } from "@/types/api";
 
-const useReadReceivedRollingpapers = (
-  currentPage = 0,
-  options?: QueryOptions
-) => {
+const useReadReceivedRollingpapers = (currentPage = 0) => {
   return useQuery<GetMyReceivedRollingpapersResponse, AxiosError>(
     ["received-rollingpapers", currentPage],
     () =>
@@ -21,8 +17,7 @@ const useReadReceivedRollingpapers = (
       }),
     {
       keepPreviousData: true,
-      useErrorBoundary: !options?.onError,
-      ...options,
+      useErrorBoundary: true,
     }
   );
 };

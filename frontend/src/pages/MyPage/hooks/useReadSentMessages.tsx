@@ -6,9 +6,8 @@ import { getMySentMessages } from "@/api/member";
 import { MYPAGE_MESSAGE_PAGING_COUNT } from "@/constants";
 
 import { GetMySentMessagesResponse } from "@/types/apiResponse";
-import { QueryOptions } from "@/types/api";
 
-const useReadSentMessages = (currentPage = 0, options?: QueryOptions) =>
+const useReadSentMessages = (currentPage = 0) =>
   useQuery<GetMySentMessagesResponse, AxiosError>(
     ["sent-messages", currentPage],
     () =>
@@ -16,7 +15,7 @@ const useReadSentMessages = (currentPage = 0, options?: QueryOptions) =>
         page: currentPage,
         count: MYPAGE_MESSAGE_PAGING_COUNT,
       }),
-    { keepPreviousData: true, useErrorBoundary: !options?.onError, ...options }
+    { keepPreviousData: true, useErrorBoundary: true }
   );
 
 export default useReadSentMessages;
