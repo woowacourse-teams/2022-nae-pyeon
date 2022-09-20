@@ -31,6 +31,8 @@ const MemberRollingpaperCreateForm = () => {
 
   const createMemberRollingpaper = useCreateMemberRollingpaper(teamId);
 
+  // 이런 경우에는 컴포넌트 단에서 onSuccess를 처리하는 것이 편할듯
+  // 다른 커스텀 훅의 호출이 필요한 경우
   const { data: teamMemberResponse } = useReadTeamMembers(teamId, {
     onSuccess: (data: GetTeamMembersResponse) =>
       setKeywordList(data.members.map((member) => member.nickname)),
@@ -65,7 +67,7 @@ const MemberRollingpaperCreateForm = () => {
       return alert("받는 사람은 모임원 중 한 명이어야 합니다.");
     }
 
-    createMemberRollingpaper({ title, addresseeId: receiver.id });
+    createMemberRollingpaper({ teamId, title, addresseeId: receiver.id });
   };
 
   return (

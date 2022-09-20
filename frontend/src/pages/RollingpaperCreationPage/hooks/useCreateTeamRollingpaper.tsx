@@ -1,20 +1,25 @@
-import React from "react";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+
+import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
 
 import { postTeamRollingpaper } from "@/api/rollingpaper";
 
 import { useSnackbar } from "@/context/SnackbarContext";
 
-import { Rollingpaper, CustomError } from "@/types";
-import { useNavigate } from "react-router-dom";
+import { PostTeamRollingpaperResponse } from "@/types/apiResponse";
+import { PostTeamRollingpaperRequest } from "@/types/apiRequest";
 
 const useCreateTeamRollingpaper = (teamId: number) => {
   const { openSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
-  const { mutate: createTeamRollingpaper } = useMutation(
-    ({ title }: Pick<Rollingpaper, "title">) => {
+  const { mutate: createTeamRollingpaper } = useMutation<
+    PostTeamRollingpaperResponse,
+    AxiosError,
+    PostTeamRollingpaperRequest
+  >(
+    ({ title }) => {
       return postTeamRollingpaper({ teamId, title });
     },
     {
@@ -22,12 +27,7 @@ const useCreateTeamRollingpaper = (teamId: number) => {
         navigate(`/team/${teamId}`);
         openSnackbar("롤링페이퍼 생성 완료");
       },
-      onError: (error) => {
-        if (axios.isAxiosError(error) && error.response) {
-          const customError = error.response.data as CustomError;
-          alert(customError.message);
-        }
-      },
+      useErrorBoundary: true,
     }
   );
 
