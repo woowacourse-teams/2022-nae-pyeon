@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Aes256InviteTokenProvider implements InviteTokenProvider {
 
-    private final com.woowacourse.naepyeon.support.invitetoken.aes.Aes256Supporter aes256Supporter;
+    private final Aes256Supporter aes256Supporter;
     private final ObjectMapper objectMapper;
     private final long validityInMilliseconds;
 

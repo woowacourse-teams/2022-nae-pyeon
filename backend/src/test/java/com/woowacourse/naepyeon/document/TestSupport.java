@@ -2,6 +2,7 @@ package com.woowacourse.naepyeon.document;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.naepyeon.config.logging.RequestBodyWrappingFilter;
 import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.MessageService;
 import com.woowacourse.naepyeon.service.RollingpaperService;
@@ -71,6 +72,7 @@ public abstract class TestSupport {
     ) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
+                .addFilters(new RequestBodyWrappingFilter())
                 .alwaysDo(restDocs)
                 .build();
         saveBaseData();
