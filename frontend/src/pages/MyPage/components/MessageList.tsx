@@ -5,7 +5,7 @@ import Paging from "@/components/Paging";
 
 import usePaging from "@/hooks/usePaging";
 
-import { useReadSentMessages } from "../hooks/useReadSentMessages";
+import useReadSentMessages from "@/pages/MyPage/hooks/useReadSentMessages";
 
 import EmptyStateImg from "@/assets/images/empty-state.svg";
 
@@ -17,7 +17,7 @@ const MessageList = ({ lastPage }: MessageListProp) => {
   const { currentPage, handleNumberClick, handleNextClick, handlePrevClick } =
     usePaging(lastPage);
 
-  const { isLoading, isError, error, data } = useReadSentMessages(currentPage);
+  const { isLoading, isError, data } = useReadSentMessages(currentPage);
 
   if (isError || !data) {
     return <div>에러</div>;

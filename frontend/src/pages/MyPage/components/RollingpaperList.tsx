@@ -5,7 +5,7 @@ import Paging from "@/components/Paging";
 
 import usePaging from "@/hooks/usePaging";
 
-import { useReadReceivedRollingpapers } from "../hooks/useReadReceivedRollingpapers";
+import useReadReceivedRollingpapers from "@/pages/MyPage/hooks/useReadReceivedRollingpapers";
 
 import EmptyStateImg from "@/assets/images/empty-state.svg";
 
@@ -17,7 +17,7 @@ const RollingpaperList = ({ lastPage }: RollingpaperListProp) => {
   const { currentPage, handleNumberClick, handleNextClick, handlePrevClick } =
     usePaging(lastPage);
 
-  const { isLoading, isError, error, data } =
+  const { isLoading, isError, data } =
     useReadReceivedRollingpapers(currentPage);
 
   if (isError || !data) {

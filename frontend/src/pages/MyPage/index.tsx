@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import styled from "@emotion/styled";
 
 import MyPageTab from "@/pages/MyPage/components/MyPageTab";
@@ -12,10 +11,10 @@ import {
   MYPAGE_MESSAGE_PAGING_COUNT,
 } from "@/constants";
 
-import { CustomError, ValueOf } from "@/types";
-import { useReadUserProfile } from "./hooks/useReadUserProfile";
-import { useReadSentMessages } from "./hooks/useReadSentMessages";
-import { useReadReceivedRollingpapers } from "./hooks/useReadReceivedRollingpapers";
+import { ValueOf } from "@/types";
+import useReadUserProfile from "@/pages/MyPage/hooks/useReadUserProfile";
+import useReadSentMessages from "@/pages/MyPage/hooks/useReadSentMessages";
+import useReadReceivedRollingpapers from "@/pages/MyPage/hooks/useReadReceivedRollingpapers";
 
 type TabMode = ValueOf<typeof TAB>;
 
@@ -27,26 +26,16 @@ const TAB = {
 const MyPage = () => {
   const [tab, setTab] = useState<TabMode>(TAB.RECEIVED_PAPER);
 
-  const {
-    isLoading: isLoadingGetUserProfile,
-    isError: isErrorGetUserProfile,
-    error: getUserProfileError,
-    data: userProfile,
-  } = useReadUserProfile();
+  const { isLoading: isLoadingGetUserProfile, data: userProfile } =
+    useReadUserProfile();
 
   const {
     isLoading: isLoadingGetReceivedRollingpapers,
-    isError: isErrorGetReceivedRollingpapers,
-    error: getReceivedRollingpapersError,
     data: responseReceivedRollingpapers,
   } = useReadReceivedRollingpapers();
 
-  const {
-    isLoading: isLoadingGetSentMessages,
-    isError: isErrorGetSentMessages,
-    error: getSentMessagesError,
-    data: responseSentMessages,
-  } = useReadSentMessages();
+  const { isLoading: isLoadingGetSentMessages, data: responseSentMessages } =
+    useReadSentMessages();
 
   if (
     isLoadingGetUserProfile ||
@@ -54,40 +43,6 @@ const MyPage = () => {
     isLoadingGetSentMessages
   ) {
     return <div>로딩중</div>;
-  }
-
-  if (isErrorGetUserProfile) {
-    if (
-      axios.isAxiosError(getUserProfileError) &&
-      getUserProfileError.response
-    ) {
-      const customError = getUserProfileError.response.data as CustomError;
-      return <div>{customError.message}</div>;
-    }
-    return <div>에러</div>;
-  }
-
-  if (isErrorGetReceivedRollingpapers) {
-    if (
-      axios.isAxiosError(getReceivedRollingpapersError) &&
-      getReceivedRollingpapersError.response
-    ) {
-      const customError = getReceivedRollingpapersError.response
-        .data as CustomError;
-      return <div>{customError.message}</div>;
-    }
-    return <div>에러</div>;
-  }
-
-  if (isErrorGetSentMessages) {
-    if (
-      axios.isAxiosError(getSentMessagesError) &&
-      getSentMessagesError.response
-    ) {
-      const customError = getSentMessagesError.response.data as CustomError;
-      return <div>{customError.message}</div>;
-    }
-    return <div>에러</div>;
   }
 
   if (!userProfile || !responseReceivedRollingpapers || !responseSentMessages) {

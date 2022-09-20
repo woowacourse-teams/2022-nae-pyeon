@@ -1,13 +1,20 @@
-import useCustomQuery from "@/api/useCustomQuery";
+import { useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+
 import { getMyInfo } from "@/api/member";
 
 import { GetUserProfileResponse } from "@/types/apiResponse";
 import { QueryOptions } from "@/types/api";
 
-export const useReadUserProfile = (options?: QueryOptions) => {
-  return useCustomQuery<GetUserProfileResponse>(
+const useReadUserProfile = (options?: QueryOptions) => {
+  return useQuery<GetUserProfileResponse, AxiosError>(
     ["user-profile"],
     () => getMyInfo(),
-    { ...options }
+    {
+      useErrorBoundary: !options?.onError,
+      ...options,
+    }
   );
 };
+
+export default useReadUserProfile;

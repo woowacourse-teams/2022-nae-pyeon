@@ -39,7 +39,14 @@ const rollingpaperHandlers = [
         (rollingpaper) => rollingpaper.id === +rollingpaperId
       );
 
-      return res(ctx.json(result));
+      // return res(ctx.json(result));
+      return res(
+        ctx.status(404),
+        ctx.json({
+          errorCode: 1000,
+          message: "올바르지 않은 롤링페이퍼입니다",
+        })
+      );
     }
   ),
 

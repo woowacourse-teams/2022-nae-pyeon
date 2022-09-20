@@ -1,4 +1,5 @@
-import useCustomQuery from "@/api/useCustomQuery";
+import { useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 import { getTeamWithInviteToken } from "@/api/team";
 
@@ -9,10 +10,10 @@ const useTeamDetailWithInviteToken = (
   inviteToken: string,
   options: QueryOptions
 ) => {
-  return useCustomQuery<GetTeamResponse>(
+  return useQuery<GetTeamResponse, AxiosError>(
     ["teamDetailWithInviteToken", inviteToken],
     () => getTeamWithInviteToken(inviteToken),
-    { ...options }
+    { useErrorBoundary: !options?.onError, ...options }
   );
 };
 

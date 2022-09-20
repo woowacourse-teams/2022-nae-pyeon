@@ -1,4 +1,6 @@
-import useCustomQuery from "@/api/useCustomQuery";
+import { useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+
 import { getMyReceivedRollingpapers } from "@/api/member";
 
 import { MYPAGE_ROLLINGPAPER_PAGING_COUNT } from "@/constants";
@@ -6,17 +8,23 @@ import { MYPAGE_ROLLINGPAPER_PAGING_COUNT } from "@/constants";
 import { GetMyReceivedRollingpapersResponse } from "@/types/apiResponse";
 import { QueryOptions } from "@/types/api";
 
-export const useReadReceivedRollingpapers = (
+const useReadReceivedRollingpapers = (
   currentPage = 0,
   options?: QueryOptions
 ) => {
-  return useCustomQuery<GetMyReceivedRollingpapersResponse>(
+  return useQuery<GetMyReceivedRollingpapersResponse, AxiosError>(
     ["received-rollingpapers", currentPage],
     () =>
       getMyReceivedRollingpapers({
         page: currentPage,
         count: MYPAGE_ROLLINGPAPER_PAGING_COUNT,
       }),
-    { ...options, keepPreviousData: true }
+    {
+      keepPreviousData: true,
+      useErrorBoundary: !options?.onError,
+      ...options,
+    }
   );
 };
+
+export default useReadReceivedRollingpapers;

@@ -1,5 +1,7 @@
+import { useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+
 import { getRollingpaper } from "@/api/rollingpaper";
-import useCustomQuery from "@/api/useCustomQuery";
 
 import { QueryOptions } from "@/types/api";
 import { GetRollingpaperResponse } from "@/types/apiResponse";
@@ -13,8 +15,8 @@ export const useReadRollingpaper = (
   { teamId, rollingpaperId }: UseReadRollingpaperArgs,
   options?: QueryOptions
 ) =>
-  useCustomQuery<GetRollingpaperResponse>(
+  useQuery<GetRollingpaperResponse, AxiosError>(
     ["rollingpaper", rollingpaperId],
     () => getRollingpaper({ teamId, id: rollingpaperId }),
-    { ...options }
+    { useErrorBoundary: !options?.onError, ...options }
   );

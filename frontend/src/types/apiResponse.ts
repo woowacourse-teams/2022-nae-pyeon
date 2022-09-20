@@ -15,11 +15,7 @@ export interface PostKakaoOauthResponse {
 }
 
 // member
-export interface GetUserProfileResponse {
-  id: number;
-  username: string;
-  email: string;
-}
+export interface GetUserProfileResponse extends User {}
 
 export interface GetMyReceivedRollingpapersResponse {
   totalCount: number;
