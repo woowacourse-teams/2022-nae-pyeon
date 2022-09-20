@@ -7,7 +7,7 @@ import useCheckLogin from "@/pages/InvitePage/hooks/useCheckLogin";
 import useCheckTeamJoined from "@/pages/InvitePage/hooks/useCheckTeamJoined";
 
 import useTeamDetailWithInviteToken from "@/pages/InvitePage/hooks/useTeamDetailWithInviteToken";
-import useJoinTeamWithInviteToken from "@/pages/InvitePage/hooks/useJoinTeamWithInviteToken";
+import useCreateTeamWithInviteToken from "@/pages/InvitePage/hooks/useCreateTeamWithInviteToken";
 
 import UnderlineInput from "@/components/UnderlineInput";
 import LineButton from "@/components/LineButton";
@@ -28,7 +28,9 @@ const InvitePage = () => {
     { onSuccess: handleTeamDetailWithInviteTokenSuccess }
   );
 
-  const joinTeamWithInviteToken = useJoinTeamWithInviteToken(teamDetail?.id);
+  const createTeamWithInviteToken = useCreateTeamWithInviteToken(
+    teamDetail?.id
+  );
 
   const isValidTeamNickname = (nickname: string) => {
     return REGEX.TEAM_NICKNAME.test(nickname);
@@ -41,7 +43,7 @@ const InvitePage = () => {
       return;
     }
 
-    joinTeamWithInviteToken({
+    createTeamWithInviteToken({
       nickname,
       inviteToken,
     });

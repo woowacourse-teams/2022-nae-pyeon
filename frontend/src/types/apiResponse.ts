@@ -78,6 +78,6 @@ export interface PostTeamResponse {
   id: Team["id"];
 }
 
-export interface PostTeamInviteTokenResponse {
+export interface PostTeamWithInviteTokenResponse {
   inviteToken: string;
 }
