@@ -7,8 +7,12 @@ import { UserContext } from "@/context/UserContext";
 
 import { postKakaoOauth } from "@/api/kakaoOauth";
 
-import { postKakaoOauthRequest } from "@/types/apiRequest";
 import { PostKakaoOauthResponse } from "@/types/apiResponse";
+
+interface kakaoOauthLoginVariable {
+  authorizationCode: string;
+  redirectUri: string;
+}
 
 const useCreateKakaoOauthLogin = (inviteToken: string | null) => {
   const navigate = useNavigate();
@@ -17,7 +21,7 @@ const useCreateKakaoOauthLogin = (inviteToken: string | null) => {
   const { mutate: kakaoOauthLogin } = useMutation<
     PostKakaoOauthResponse,
     AxiosError,
-    postKakaoOauthRequest
+    kakaoOauthLoginVariable
   >(
     ({ authorizationCode, redirectUri }) =>
       postKakaoOauth({

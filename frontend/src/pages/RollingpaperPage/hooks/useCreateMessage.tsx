@@ -7,7 +7,12 @@ import { queryClient } from "@/api";
 import { postMessage } from "@/api/message";
 
 import { PostMessageResponse } from "@/types/apiResponse";
-import { PostMessageRequest } from "@/types/apiRequest";
+import { Message, Rollingpaper } from "@/types";
+
+interface createMessageVariable
+  extends Pick<Message, "content" | "color" | "anonymous" | "secret"> {
+  rollingpaperId: Rollingpaper["id"];
+}
 
 const useCreateMessage = (rollingpaperId: number) => {
   const { openSnackbar } = useSnackbar();
@@ -15,7 +20,7 @@ const useCreateMessage = (rollingpaperId: number) => {
   const { mutate: createMessage } = useMutation<
     PostMessageResponse,
     AxiosError,
-    PostMessageRequest
+    createMessageVariable
   >(
     ({ content, color, anonymous, secret }) => {
       return postMessage({

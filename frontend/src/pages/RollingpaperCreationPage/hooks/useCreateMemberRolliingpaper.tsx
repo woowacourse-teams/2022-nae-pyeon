@@ -7,7 +7,13 @@ import { postMemberRollingpaper } from "@/api/rollingpaper";
 import { useSnackbar } from "@/context/SnackbarContext";
 
 import { PostMemberRollingpaperResponse } from "@/types/apiResponse";
-import { PostMemberRollingpaperRequest } from "@/types/apiRequest";
+import { Rollingpaper, Team, TeamMember } from "@/types";
+
+interface CreateMemberRollingpaperVariable {
+  title: Rollingpaper["title"];
+  teamId: Team["id"];
+  addresseeId: TeamMember["id"];
+}
 
 const useCreateMemberRollingpaper = (teamId: number) => {
   const { openSnackbar } = useSnackbar();
@@ -16,7 +22,7 @@ const useCreateMemberRollingpaper = (teamId: number) => {
   const { mutate: createMemberRollingpaper } = useMutation<
     PostMemberRollingpaperResponse,
     AxiosError,
-    PostMemberRollingpaperRequest
+    CreateMemberRollingpaperVariable
   >(
     ({ title, addresseeId }) =>
       postMemberRollingpaper({ teamId, title, addresseeId }),

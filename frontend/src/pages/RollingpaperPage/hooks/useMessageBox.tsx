@@ -8,7 +8,7 @@ interface UseMessageProps {
 
 const useMessage = ({ id, rollingpaperId }: UseMessageProps) => {
   const [isEdit, setIsEdit] = useState(false);
-  const { deleteRollingpaperMessage } = useDeleteMessage(id, rollingpaperId);
+  const { deleteRollingpaperMessage } = useDeleteMessage(rollingpaperId);
 
   const handleWriteButtonClick: React.MouseEventHandler<
     HTMLButtonElement

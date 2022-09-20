@@ -6,8 +6,13 @@ import { useSnackbar } from "@/context/SnackbarContext";
 
 import { postTeamMemberWithInviteToken } from "@/api/team";
 
-import { PostTeamMemberWithInviteTokenRequest } from "@/types/apiRequest";
 import { PostTeamWithInviteTokenResponse } from "@/types/apiResponse";
+import { TeamMember } from "@/types";
+
+interface CreateTeamWithInviteTokenVariable {
+  inviteToken: string;
+  nickname: TeamMember["nickname"];
+}
 
 const useCreateTeamWithInviteToken = (teamId?: number) => {
   const navigate = useNavigate();
@@ -16,7 +21,7 @@ const useCreateTeamWithInviteToken = (teamId?: number) => {
   const { mutate: createTeamWithInviteToken } = useMutation<
     PostTeamWithInviteTokenResponse,
     AxiosError,
-    PostTeamMemberWithInviteTokenRequest
+    CreateTeamWithInviteTokenVariable
   >(
     ({ inviteToken, nickname }) =>
       postTeamMemberWithInviteToken({

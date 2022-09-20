@@ -8,7 +8,12 @@ import { postTeamRollingpaper } from "@/api/rollingpaper";
 import { useSnackbar } from "@/context/SnackbarContext";
 
 import { PostTeamRollingpaperResponse } from "@/types/apiResponse";
-import { PostTeamRollingpaperRequest } from "@/types/apiRequest";
+import { Rollingpaper, Team } from "@/types";
+
+interface createTeamRollingpaperVaribale {
+  teamId: Team["id"];
+  title: Rollingpaper["title"];
+}
 
 const useCreateTeamRollingpaper = (teamId: number) => {
   const { openSnackbar } = useSnackbar();
@@ -17,7 +22,7 @@ const useCreateTeamRollingpaper = (teamId: number) => {
   const { mutate: createTeamRollingpaper } = useMutation<
     PostTeamRollingpaperResponse,
     AxiosError,
-    PostTeamRollingpaperRequest
+    createTeamRollingpaperVaribale
   >(
     ({ title }) => {
       return postTeamRollingpaper({ teamId, title });

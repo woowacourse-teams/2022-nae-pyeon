@@ -1,20 +1,14 @@
 import React from "react";
-import { useMutation } from "@tanstack/react-query";
 import styled from "@emotion/styled";
-
-import { queryClient } from "@/api";
 
 import LineButton from "@/components/LineButton";
 import Modal from "@/components/Modal";
 import UnderlineInput from "@/components/UnderlineInput";
 
 import { REGEX } from "@/constants";
-import { useSnackbar } from "@/context/SnackbarContext";
 
 import useInput from "@/hooks/useInput";
-
-import { postTeamMember } from "@/api/team";
-import useValidatedParam from "@/hooks/useValidatedParam";
+import useCreateTeamMember from "../hooks/useCreateTeamMember";
 
 interface NicknameCreateModalFormProp {
   onClickCloseButton: () => void;
@@ -23,29 +17,9 @@ interface NicknameCreateModalFormProp {
 const NicknameCreateModalForm = ({
   onClickCloseButton,
 }: NicknameCreateModalFormProp) => {
-  const { openSnackbar } = useSnackbar();
   const { value: nickname, handleInputChange: handleNicknameChange } =
     useInput("");
-  const teamId = useValidatedParam<number>("teamId");
-
-  const { mutate: joinTeam } = useMutation(
-    async (nickname: string) => {
-      postTeamMember({ id: teamId, nickname });
-    },
-    {
-      onSuccess: () => {
-        onClickCloseButton();
-        openSnackbar("모임 가입 완료");
-        queryClient.invalidateQueries(["team", teamId]);
-        queryClient.invalidateQueries(["rollingpaperList", teamId]);
-        queryClient.refetchQueries(["team", teamId]);
-        queryClient.refetchQueries(["rollingpaperList", teamId]);
-      },
-      onError: (error) => {
-        console.log(error);
-      },
-    }
-  );
+  const createTeamMember = useCreateTeamMember(onClickCloseButton);
 
   const handleTeamJoinSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -55,7 +29,7 @@ const NicknameCreateModalForm = ({
       return;
     }
 
-    joinTeam(nickname);
+    createTeamMember(nickname);
   };
 
   return (
