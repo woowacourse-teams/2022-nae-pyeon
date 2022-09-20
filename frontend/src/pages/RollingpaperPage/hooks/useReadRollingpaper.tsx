@@ -3,20 +3,19 @@ import { AxiosError } from "axios";
 
 import { getRollingpaper } from "@/api/rollingpaper";
 
-import { QueryOptions } from "@/types/api";
 import { GetRollingpaperResponse } from "@/types/apiResponse";
 
-interface UseReadRollingpaperArgs extends QueryOptions {
+interface UseReadRollingpaperArgs {
   teamId: number;
   rollingpaperId: number;
 }
 
-export const useReadRollingpaper = (
-  { teamId, rollingpaperId }: UseReadRollingpaperArgs,
-  options?: QueryOptions
-) =>
+export const useReadRollingpaper = ({
+  teamId,
+  rollingpaperId,
+}: UseReadRollingpaperArgs) =>
   useQuery<GetRollingpaperResponse, AxiosError>(
     ["rollingpaper", rollingpaperId],
     () => getRollingpaper({ teamId, id: rollingpaperId }),
-    { useErrorBoundary: !options?.onError, ...options }
+    { useErrorBoundary: true }
   );

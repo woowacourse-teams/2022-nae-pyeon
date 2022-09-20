@@ -3,14 +3,13 @@ import { AxiosError } from "axios";
 
 import { getTeamRollingpapers } from "@/api/team";
 
-import { QueryOptions } from "@/types/api";
 import { GetTeamRollingpapersResponse } from "@/types/apiResponse";
 
-const useReadTeamRollingpaper = (teamId: number, options?: QueryOptions) =>
+const useReadTeamRollingpaper = (teamId: number) =>
   useQuery<GetTeamRollingpapersResponse, AxiosError>(
     ["rollingpaperList", teamId],
     () => getTeamRollingpapers(teamId),
-    { useErrorBoundary: !options?.onError, ...options }
+    { useErrorBoundary: true }
   );
 
 export default useReadTeamRollingpaper;
