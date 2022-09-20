@@ -17,9 +17,9 @@ const MessageList = ({ lastPage }: MessageListProp) => {
   const { currentPage, handleNumberClick, handleNextClick, handlePrevClick } =
     usePaging(lastPage);
 
-  const { isLoading, isError, data } = useReadSentMessages(currentPage);
+  const { isLoading, data } = useReadSentMessages(currentPage);
 
-  if (isError || !data) {
+  if (!data) {
     return <div>에러</div>;
   }
 

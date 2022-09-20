@@ -17,10 +17,9 @@ const RollingpaperList = ({ lastPage }: RollingpaperListProp) => {
   const { currentPage, handleNumberClick, handleNextClick, handlePrevClick } =
     usePaging(lastPage);
 
-  const { isLoading, isError, data } =
-    useReadReceivedRollingpapers(currentPage);
+  const { isLoading, data } = useReadReceivedRollingpapers(currentPage);
 
-  if (isError || !data) {
+  if (!data) {
     return <div>에러</div>;
   }
 

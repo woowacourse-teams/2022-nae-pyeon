@@ -17,6 +17,10 @@ export interface GetMySentMessagesRequest {
   count: number;
 }
 
+export interface UpdateUserProfileRequest {
+  username: TeamMember["nickname"];
+}
+
 // message
 export interface PostMessageRequest
   extends Pick<Message, "content" | "color" | "anonymous" | "secret"> {
