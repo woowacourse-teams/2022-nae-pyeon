@@ -13,7 +13,7 @@ const useCreateInviteLink = () => {
     isError,
     data,
   } = useMutation(({ id }: Pick<Team, "id">) => {
-    return postTeamInviteToken({ id });
+    return postTeamInviteToken(id);
   });
 
   return { createInviteLink, isLoading, isSuccess, isError, data };

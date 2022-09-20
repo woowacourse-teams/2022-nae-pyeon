@@ -40,8 +40,8 @@ const KAKAO_OAUTH_URL = {
 };
 
 const RECIPIENT = {
-  TEAM: "team",
-  MEMBER: "member",
+  TEAM: "TEAM",
+  MEMBER: "MEMBER",
 } as const;
 
 export {

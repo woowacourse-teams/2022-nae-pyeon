@@ -86,7 +86,7 @@ const TeamSearch = () => {
     return <div>에러</div>;
   }
 
-  if (totalTeamResponse.pages[0].teams.length === 0) {
+  if (totalTeamResponse.pages[0]?.teams.length === 0) {
     return (
       <>
         <StyledSearch>

@@ -1,29 +1,15 @@
 import { appClient, requestApi } from "@/api";
 
-import { ApiOptions } from "@/types";
+import { ApiOptions } from "@/types/api";
 
-interface PutMessageRequest {
-  rollingpaperId: number;
-  id: number | null;
-  content: string;
-  color: string;
-  anonymous: boolean;
-  secret: boolean;
-}
-
-interface DeleteMessageRequest {
-  rollingpaperId: number;
-  id: number;
-}
+import {
+  PostMessageRequest,
+  PutMessageRequest,
+  DeleteMessageRequest,
+} from "@/types/apiRequest";
 
 const postMessage = async (
-  {
-    rollingpaperId,
-    content,
-    color,
-    anonymous,
-    secret,
-  }: Partial<PutMessageRequest>,
+  { rollingpaperId, content, color, anonymous, secret }: PostMessageRequest,
   options?: ApiOptions
 ) =>
   requestApi(
