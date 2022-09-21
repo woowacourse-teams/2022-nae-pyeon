@@ -26,7 +26,6 @@ const ErrorPage = lazy(() => import("@/pages/ErrorPage"));
 const KakaoRedirectPage = lazy(() => import("@/pages/KakaoRedirectPage"));
 const GoogleRedirectPage = lazy(() => import("@/pages/GoogleRedirectPage"));
 const MyPage = lazy(() => import("@/pages/MyPage"));
-
 const PolicyPage = lazy(() => import("@/pages/PolicyPage"));
 
 const App = () => {
