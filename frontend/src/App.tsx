@@ -11,7 +11,6 @@ import { useSnackbar } from "@/context/SnackbarContext";
 
 import useAutoLogin from "@/hooks/useAutoLogin";
 import InvitePage from "@/pages/InvitePage";
-import GoogleRedirectPage from "./pages/GoogleRedirectPage";
 
 const HeaderLayoutPage = lazy(() => import("@/pages/HeaderLayoutPage"));
 const RollingpaperPage = lazy(() => import("@/pages/RollingpaperPage"));
@@ -25,7 +24,10 @@ const LoginPage = lazy(() => import("@/pages/LoginPage"));
 const TeamSearchPage = lazy(() => import("@/pages/TeamSearchPage"));
 const ErrorPage = lazy(() => import("@/pages/ErrorPage"));
 const KakaoRedirectPage = lazy(() => import("@/pages/KakaoRedirectPage"));
+const GoogleRedirectPage = lazy(() => import("@/pages/GoogleRedirectPage"));
 const MyPage = lazy(() => import("@/pages/MyPage"));
+
+const PolicyPage = lazy(() => import("@/pages/PolicyPage"));
 
 const App = () => {
   const { isOpened } = useSnackbar();
@@ -72,6 +74,7 @@ const App = () => {
               <Route path="oauth/google" element={<GoogleRedirectPage />} />
             </Route>
             <Route path="invite/:inviteToken" element={<InvitePage />} />
+            <Route path="policy" element={<PolicyPage />} />
           </Routes>
         </Suspense>
         {isOpened && <Snackbar />}
