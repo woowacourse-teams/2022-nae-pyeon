@@ -8,7 +8,7 @@ import { postTeam } from "@/api/team";
 import { PostTeamResponse } from "@/types/apiResponse";
 import { Team, TeamMember } from "@/types";
 
-interface createTeamVariable extends Omit<Team, "id" | "joined"> {
+interface CreateTeamVariable extends Omit<Team, "id" | "joined"> {
   nickname: TeamMember["nickname"];
 }
 
@@ -18,7 +18,7 @@ const useCreateTeam = () => {
   const { mutate: createTeam } = useMutation<
     PostTeamResponse,
     AxiosError,
-    createTeamVariable
+    CreateTeamVariable
   >(
     ({ name, description, emoji, color, nickname, secret }) => {
       return postTeam({

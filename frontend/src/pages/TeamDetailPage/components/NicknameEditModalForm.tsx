@@ -11,7 +11,7 @@ import useInput from "@/hooks/useInput";
 import { REGEX } from "@/constants";
 
 import useReadTeamNickname from "@/pages/TeamDetailPage/hooks/useReadTeamNickname";
-import useUpdateTeamNickname from "../hooks/useUpdateTeamNickname";
+import useUpdateTeamNickname from "@/pages/TeamDetailPage/hooks/useUpdateTeamNickname";
 
 interface NicknameEditModalForm {
   onClickCloseButton: () => void;

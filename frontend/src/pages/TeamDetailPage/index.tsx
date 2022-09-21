@@ -5,7 +5,7 @@ import RollingpaperList from "@/pages/TeamDetailPage/components/RollingpaperList
 import TeamJoinSection from "@/pages/TeamDetailPage/components/TeamJoinSection";
 
 import useValidatedParam from "@/hooks/useValidatedParam";
-import useReadTeamDetail from "./hooks/useReadTeamDetail";
+import useReadTeamDetail from "@/pages/TeamDetailPage/hooks/useReadTeamDetail";
 
 const TeamDetailPage = () => {
   const teamId = useValidatedParam<number>("teamId");

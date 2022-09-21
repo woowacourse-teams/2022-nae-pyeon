@@ -8,7 +8,7 @@ import { deleteMessage } from "@/api/message";
 
 import { Message, Rollingpaper } from "@/types";
 
-interface deleteRollingpaperMessageVariable {
+interface DeleteRollingpaperMessageVariable {
   id: Message["id"];
   rollingpaperId: Rollingpaper["id"];
 }
@@ -19,7 +19,7 @@ const useDeleteMessage = (rollingpaperId: number) => {
   const { mutate: deleteRollingpaperMessage } = useMutation<
     null,
     AxiosError,
-    deleteRollingpaperMessageVariable
+    DeleteRollingpaperMessageVariable
   >(({ id }) => deleteMessage({ rollingpaperId, id }), {
     onSuccess: () => {
       queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
