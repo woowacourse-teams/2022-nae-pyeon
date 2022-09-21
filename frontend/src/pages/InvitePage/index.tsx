@@ -5,7 +5,7 @@ import useValidatedParam from "@/hooks/useValidatedParam";
 import useInput from "@/hooks/useInput";
 import useCheckLogin from "@/pages/InvitePage/hooks/useCheckLogin";
 
-import useTeamDetailWithInviteToken from "@/pages/InvitePage/hooks/useTeamDetailWithInviteToken";
+import useReadTeamDetailWithInviteToken from "@/pages/InvitePage/hooks/useReadTeamDetailWithInviteToken";
 import useCreateTeamWithInviteToken from "@/pages/InvitePage/hooks/useCreateTeamWithInviteToken";
 
 import UnderlineInput from "@/components/UnderlineInput";
@@ -22,7 +22,7 @@ const InvitePage = () => {
   const checkLogin = useCheckLogin(inviteToken);
 
   const { data: teamDetail, isLoading } =
-    useTeamDetailWithInviteToken(inviteToken);
+    useReadTeamDetailWithInviteToken(inviteToken);
 
   const createTeamWithInviteToken = useCreateTeamWithInviteToken(
     teamDetail?.id

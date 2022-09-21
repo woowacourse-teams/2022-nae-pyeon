@@ -5,7 +5,7 @@ import { getTeamWithInviteToken } from "@/api/team";
 import { GetTeamResponse } from "@/types/apiResponse";
 import useCheckTeamJoined from "./useCheckTeamJoined";
 
-const useTeamDetailWithInviteToken = (inviteToken: string) => {
+const useReadTeamDetailWithInviteToken = (inviteToken: string) => {
   const handleTeamDetailWithInviteTokenSuccess = useCheckTeamJoined();
   return useQuery<GetTeamResponse, AxiosError>(
     ["teamDetailWithInviteToken", inviteToken],
@@ -17,4 +17,4 @@ const useTeamDetailWithInviteToken = (inviteToken: string) => {
   );
 };
 
-export default useTeamDetailWithInviteToken;
+export default useReadTeamDetailWithInviteToken;
