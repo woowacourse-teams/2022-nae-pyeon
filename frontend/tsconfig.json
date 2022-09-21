@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
     /* Projects */
