@@ -7,11 +7,15 @@ interface LabeledInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   labelText: string;
   errorMessage?: string;
+  showValueLength?: boolean;
 }
 
 const LabeledInput = ({
+  value = "",
+  maxLength,
   labelText,
   errorMessage,
+  showValueLength = false,
   ...prop
 }: LabeledInputProps) => {
   return (
@@ -22,11 +26,17 @@ const LabeledInput = ({
         <ErrorIcon />
         {errorMessage}
       </div>
+      {showValueLength && (
+        <StyledValueLength>
+          {value.toString().length}/{maxLength}
+        </StyledValueLength>
+      )}
     </StyledLabel>
   );
 };
 
 const StyledLabel = styled.label`
+  position: relative;
   display: flex;
   flex-direction: column;
 
@@ -74,6 +84,11 @@ const StyledLabel = styled.label`
       fill: ${({ theme }) => theme.colors.RED_300};
     }
   }
+`;
+
+const StyledValueLength = styled.span`
+  position: absolute;
+  right: 0;
 `;
 
 export default LabeledInput;

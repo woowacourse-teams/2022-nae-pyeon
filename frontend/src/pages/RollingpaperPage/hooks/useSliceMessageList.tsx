@@ -1,30 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, ReactElement } from "react";
 
 import { divideArrayByIndexRemainder } from "@/util";
 
-import { Message } from "@/types";
-
-const useSliceMessageList = (messageList: Message[]) => {
-  const [slicedMessageLists, setSlicedMessageLists] = useState<Message[][]>(
-    Array.from(Array(4), () => [])
-  );
+const useSliceMessageList = (messageList: ReactElement[]) => {
+  const messageListRef = useRef(messageList);
+  const [slicedMessageLists, setSlicedMessageLists] = useState<
+    ReactElement[][]
+  >(Array.from(Array(4), () => []));
 
   const updateSlicedMessageListByWindowWidth = () => {
     const width = window.innerWidth;
 
     let newSlicedMessageList;
     if (width < 960) {
-      newSlicedMessageList = [messageList];
+      newSlicedMessageList = [messageListRef.current];
     } else if (width < 1280) {
-      newSlicedMessageList = divideArrayByIndexRemainder(messageList, 2);
+      newSlicedMessageList = divideArrayByIndexRemainder(
+        messageListRef.current,
+        2
+      );
     } else {
-      newSlicedMessageList = divideArrayByIndexRemainder(messageList, 3);
+      newSlicedMessageList = divideArrayByIndexRemainder(
+        messageListRef.current,
+        3
+      );
     }
 
     setSlicedMessageLists(newSlicedMessageList);
   };
 
   useEffect(() => {
+    messageListRef.current = messageList;
     updateSlicedMessageListByWindowWidth();
   }, [messageList]);
 

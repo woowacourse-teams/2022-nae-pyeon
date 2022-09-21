@@ -1,7 +1,10 @@
 == 롤링페이퍼
 
-=== 롤링페이퍼 생성
-operation::rollingpaper-controller-test/create-rollingpaper[snippets='http-request,http-response']
+=== 멤버 전용 롤링페이퍼 생성
+operation::rollingpaper-controller-test/create-member-rollingpaper[snippets='http-request,http-response']
+
+=== 모임 전용 롤링 페이퍼 생성
+operation::rollingpaper-controller-test/create-team-rollingpaper[snippets='http-request,http-response']
 
 === 롤링페이퍼 단건 조회
 operation::rollingpaper-controller-test/find-rollingpaper-by-id[snippets='http-request,http-response']
@@ -10,7 +13,7 @@ operation::rollingpaper-controller-test/find-rollingpaper-by-id[snippets='http-r
 operation::rollingpaper-controller-test/find-rollingpapers-by-team-id[snippets='http-request,http-response']
 
 === 모임에서 받은 내 롤링페이퍼들 조회
-operation::rollingpaper-controller-test/find-rollingpapers-by-member-id[snippets='http-request,http-response']
+operation::rollingpaper-controller-test/find-rollingpaper-by-id[snippets='http-request,http-response']
 
 === 롤링페이퍼 수정
 operation::rollingpaper-controller-test/update-rollingpaper[snippets='http-request,http-response']

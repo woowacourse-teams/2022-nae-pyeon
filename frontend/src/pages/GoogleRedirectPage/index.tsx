@@ -3,14 +3,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
+import { postGoogleOauth } from "@/api/googleOauth";
 import { UserContext } from "@/context/UserContext";
 
-import { postKakaoOauth } from "@/api/kakaoOauth";
-
 import { CustomError } from "@/types";
-import { postKakaoOauthRequest } from "@/types/apiRequest";
+import { postGoogleOauthRequest } from "@/types/apiRequest";
 
-const KakaoRedirectPage = () => {
+const GoogleRedirectPage = () => {
   const navigate = useNavigate();
   const { login } = useContext(UserContext);
 
@@ -18,9 +17,9 @@ const KakaoRedirectPage = () => {
   const authorizationCode = params.get("code");
   const inviteToken = params.get("state");
 
-  const { mutate: kakaoOauthLogin } = useMutation(
-    ({ authorizationCode, redirectUri }: postKakaoOauthRequest) =>
-      postKakaoOauth({
+  const { mutate: GoogleOauthLogin } = useMutation(
+    ({ authorizationCode, redirectUri }: postGoogleOauthRequest) =>
+      postGoogleOauth({
         authorizationCode,
         redirectUri,
       }),
@@ -47,18 +46,18 @@ const KakaoRedirectPage = () => {
   );
 
   useEffect(() => {
-    const redirectUri = process.env.KAKAO_REDIRECT_URL;
+    const redirectUri = process.env.GOOGLE_REDIRECT_URL;
     if (!authorizationCode || !redirectUri) {
       return;
     }
 
-    kakaoOauthLogin({
+    GoogleOauthLogin({
       authorizationCode,
       redirectUri,
     });
   }, []);
 
-  return <div>KakaoRedirectPage</div>;
+  return <div>GoogleRedirectPage</div>;
 };
 
-export default KakaoRedirectPage;
+export default GoogleRedirectPage;

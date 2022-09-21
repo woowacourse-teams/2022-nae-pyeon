@@ -1,11 +1,10 @@
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
 
-import { Rollingpaper, CustomError } from "@/types";
+import { CustomError } from "@/types";
 import { getRollingpaper } from "@/api/rollingpaper";
 
 import useValidatedParam from "@/hooks/useValidatedParam";
@@ -19,8 +18,8 @@ const RollingpaperPage = () => {
     isError,
     error: rollingpaperError,
     data: rollingpaper,
-  } = useQuery<Rollingpaper>(["rollingpaper", rollingpaperId], () =>
-    getRollingpaper(teamId, rollingpaperId)
+  } = useQuery(["rollingpaper", rollingpaperId], () =>
+    getRollingpaper({ teamId, id: rollingpaperId })
   );
 
   if (isLoading) {
@@ -46,7 +45,7 @@ const RollingpaperPage = () => {
         <LetterPaper
           to={rollingpaper.to}
           recipientType={rollingpaper.recipient}
-          messageList={[...rollingpaper.messages].reverse()}
+          messageList={[...rollingpaper.messages]}
         />
       </main>
     </>

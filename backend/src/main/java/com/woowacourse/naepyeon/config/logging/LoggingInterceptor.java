@@ -1,35 +1,28 @@
 package com.woowacourse.naepyeon.config.logging;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.util.ContentCachingRequestWrapper;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class LoggingInterceptor implements HandlerInterceptor {
 
-    private final ObjectMapper objectMapper;
-
     @Override
-    public void afterCompletion(
-            final HttpServletRequest request,
-            final HttpServletResponse response,
-            final Object handler,
-            final Exception ex
-    ) throws Exception {
-        final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
-
-        if (isFailed(response.getStatus())) {
-            return;
+    public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler)
+            throws Exception {
+        final CustomCachingRequestWrapper cachingRequest;
+        try {
+             cachingRequest = (CustomCachingRequestWrapper) request;
+        } catch (final ClassCastException e) {
+            log.info("로깅 필터가 동작했는지 확인해주세요.");
+            return true;
         }
 
         log.info(
@@ -37,12 +30,9 @@ public class LoggingInterceptor implements HandlerInterceptor {
                 request.getMethod(),
                 request.getRequestURI(),
                 StringUtils.hasText(request.getHeader(HttpHeaders.AUTHORIZATION)),
-                objectMapper.readTree(cachingRequest.getContentAsByteArray())
+                new String(cachingRequest.getInputStream().readAllBytes())
         );
-    }
 
-    private boolean isFailed(final int statusCode) {
-        return HttpStatus.valueOf(statusCode).is4xxClientError() ||
-                HttpStatus.valueOf(statusCode).is5xxServerError();
+        return true;
     }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import styled from "@emotion/styled";
@@ -11,7 +11,7 @@ import MessageList from "@/pages/MyPage/components/MessageList";
 import {
   getMyInfo,
   getMyReceivedRollingpapers,
-  getMySentMessage,
+  getMySentMessages,
 } from "@/api/member";
 
 import {
@@ -19,13 +19,7 @@ import {
   MYPAGE_MESSAGE_PAGING_COUNT,
 } from "@/constants";
 
-import {
-  UserInfo,
-  ResponseSentMessages,
-  ResponseReceivedRollingpapers,
-  CustomError,
-  ValueOf,
-} from "@/types";
+import { CustomError, ValueOf } from "@/types";
 
 type TabMode = ValueOf<typeof TAB>;
 
@@ -42,16 +36,20 @@ const MyPage = () => {
     isError: isErrorGetUserProfile,
     error: getUserProfileError,
     data: userProfile,
-  } = useQuery<UserInfo>(["user-profile"], () => getMyInfo());
+  } = useQuery(["user-profile"], () => getMyInfo());
 
   const {
     isLoading: isLoadingGetReceivedRollingpapers,
     isError: isErrorGetReceivedRollingpapers,
     error: getReceivedRollingpapersError,
     data: responseReceivedRollingpapers,
-  } = useQuery<ResponseReceivedRollingpapers>(
+  } = useQuery(
     ["received-rollingpapers", 0],
-    () => getMyReceivedRollingpapers(0, MYPAGE_ROLLINGPAPER_PAGING_COUNT),
+    () =>
+      getMyReceivedRollingpapers({
+        page: 0,
+        count: MYPAGE_ROLLINGPAPER_PAGING_COUNT,
+      }),
     { keepPreviousData: true }
   );
 
@@ -60,9 +58,9 @@ const MyPage = () => {
     isError: isErrorGetSentMessages,
     error: getSentMessagesError,
     data: responseSentMessages,
-  } = useQuery<ResponseSentMessages>(
+  } = useQuery(
     ["sent-messages", 0],
-    () => getMySentMessage(0, MYPAGE_MESSAGE_PAGING_COUNT),
+    () => getMySentMessages({ page: 0, count: MYPAGE_MESSAGE_PAGING_COUNT }),
     { keepPreviousData: true }
   );
 
