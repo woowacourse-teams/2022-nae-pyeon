@@ -6,12 +6,7 @@ import { useSnackbar } from "@/context/SnackbarContext";
 import { queryClient } from "@/api";
 import { deleteMessage } from "@/api/message";
 
-import { Message, Rollingpaper } from "@/types";
-
-interface DeleteRollingpaperMessageVariable {
-  id: Message["id"];
-  rollingpaperId: Rollingpaper["id"];
-}
+import { Message } from "@/types";
 
 const useDeleteMessage = (rollingpaperId: number) => {
   const { openSnackbar } = useSnackbar();
@@ -19,8 +14,8 @@ const useDeleteMessage = (rollingpaperId: number) => {
   const { mutate: deleteRollingpaperMessage } = useMutation<
     null,
     AxiosError,
-    DeleteRollingpaperMessageVariable
-  >(({ id }) => deleteMessage({ rollingpaperId, id }), {
+    Message["id"]
+  >((id) => deleteMessage({ rollingpaperId, id }), {
     onSuccess: () => {
       queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
       openSnackbar("메시지 삭제 완료");

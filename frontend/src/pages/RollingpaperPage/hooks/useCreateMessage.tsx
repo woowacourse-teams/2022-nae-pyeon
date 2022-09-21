@@ -7,12 +7,10 @@ import { queryClient } from "@/api";
 import { postMessage } from "@/api/message";
 
 import { PostMessageResponse } from "@/types/apiResponse";
-import { Message, Rollingpaper } from "@/types";
+import { Message } from "@/types";
 
 interface createMessageVariable
-  extends Pick<Message, "content" | "color" | "anonymous" | "secret"> {
-  rollingpaperId: Rollingpaper["id"];
-}
+  extends Pick<Message, "content" | "color" | "anonymous" | "secret"> {}
 
 const useCreateMessage = (rollingpaperId: number) => {
   const { openSnackbar } = useSnackbar();

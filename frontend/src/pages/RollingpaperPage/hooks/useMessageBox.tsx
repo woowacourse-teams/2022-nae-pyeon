@@ -18,7 +18,7 @@ const useMessage = ({ id, rollingpaperId }: UseMessageProps) => {
 
   const handleDeleteButtonClick = () => {
     if (id) {
-      deleteRollingpaperMessage({ id, rollingpaperId });
+      deleteRollingpaperMessage(id);
     }
   };
 

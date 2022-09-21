@@ -37,7 +37,6 @@ export const MessageCreateForm = ({
       color,
       anonymous,
       secret: enableSecretMessage && secret,
-      rollingpaperId,
     });
     initMessage();
     onEditEnd();

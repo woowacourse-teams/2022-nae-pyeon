@@ -7,11 +7,10 @@ import { postMemberRollingpaper } from "@/api/rollingpaper";
 import { useSnackbar } from "@/context/SnackbarContext";
 
 import { PostMemberRollingpaperResponse } from "@/types/apiResponse";
-import { Rollingpaper, Team, TeamMember } from "@/types";
+import { Rollingpaper, TeamMember } from "@/types";
 
 interface CreateMemberRollingpaperVariable {
   title: Rollingpaper["title"];
-  teamId: Team["id"];
   addresseeId: TeamMember["id"];
 }
 

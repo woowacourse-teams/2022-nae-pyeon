@@ -61,7 +61,7 @@ const MemberRollingpaperCreateForm = () => {
       return alert("받는 사람은 모임원 중 한 명이어야 합니다.");
     }
 
-    createMemberRollingpaper({ teamId, title, addresseeId: receiver.id });
+    createMemberRollingpaper({ title, addresseeId: receiver.id });
   };
 
   return (
