@@ -1,14 +1,9 @@
 spring:
-  h2:
-    console:
-      enabled: true
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=MYSQL
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-    hikari:
-      maximum-pool-size: ${MAX_CONNECTION_POOL_SIZE}
+    url: ${MYSQL_URL}
+    password: ${MYSQL_PASSWORD}
+    username: ${MYSQL_USERNAME}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
