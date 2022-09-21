@@ -40,5 +40,9 @@ kakao:
   client-id: client_id
   client-secret: client_secret
 
+google:
+  client-id: admin_key
+  client-secret: client_id
+
 logging:
   config: classpath:log4j2.yml

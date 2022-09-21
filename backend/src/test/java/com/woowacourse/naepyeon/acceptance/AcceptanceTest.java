@@ -15,6 +15,7 @@ import com.woowacourse.naepyeon.support.JwtTokenProvider;
 import com.woowacourse.naepyeon.support.invitetoken.InviteTokenProvider;
 import com.woowacourse.naepyeon.support.invitetoken.aes.Aes256InviteTokenProvider;
 import com.woowacourse.naepyeon.support.invitetoken.aes.Aes256Supporter;
+import com.woowacourse.naepyeon.support.oauth.google.GooglePlatformUserProvider;
 import com.woowacourse.naepyeon.support.oauth.kakao.KakaoPlatformUserProvider;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,6 +32,8 @@ public class AcceptanceTest {
 
     @MockBean
     protected KakaoPlatformUserProvider kakaoPlatformUserProvider;
+    @MockBean
+    protected GooglePlatformUserProvider googlePlatformUserProvider;
     @Autowired
     protected MemberRepository memberRepository;
     @Autowired
@@ -62,7 +65,7 @@ public class AcceptanceTest {
     public void setUp() {
         RestAssured.port = port;
         databaseCleaner.execute();
-        authService = new AuthService(memberService, jwtTokenProvider, kakaoPlatformUserProvider);
+        authService = new AuthService(memberService, jwtTokenProvider, kakaoPlatformUserProvider, googlePlatformUserProvider);
 
         final String alexName = "alex";
         when(kakaoPlatformUserProvider.getPlatformUser(anyString(), anyString()))

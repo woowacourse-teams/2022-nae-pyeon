@@ -4,8 +4,9 @@ import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.exception.KakaoAuthorizationException;
 import com.woowacourse.naepyeon.exception.KakaoResourceException;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
-import com.woowacourse.naepyeon.support.oauth.kakao.dto.AccessTokenResponse;
-import com.woowacourse.naepyeon.support.oauth.kakao.dto.KakaoUserResponse;
+import com.woowacourse.naepyeon.support.oauth.PlatformUserProvider;
+import com.woowacourse.naepyeon.support.oauth.dto.AccessTokenResponse;
+import com.woowacourse.naepyeon.support.oauth.dto.KakaoUserResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
-public class KakaoPlatformUserProvider {
+public class KakaoPlatformUserProvider implements PlatformUserProvider {
 
     private static final String AUTHORIZATION_SERVER_BASE_URL = "https://kauth.kakao.com";
     private static final String RESOURCE_SERVER_BASE_URL = "https://kapi.kakao.com";
@@ -42,6 +43,7 @@ public class KakaoPlatformUserProvider {
         this.kakaoClientSecret = kakaoClientSecret;
     }
 
+    @Override
     public PlatformUserDto getPlatformUser(final String authorizationCode, final String redirectUri) {
         final AccessTokenResponse accessTokenResponse = requestAccessToken(authorizationCode, redirectUri);
         final KakaoUserResponse kakaoUserResponse = requestPlatformUser(accessTokenResponse.getAccess_token());

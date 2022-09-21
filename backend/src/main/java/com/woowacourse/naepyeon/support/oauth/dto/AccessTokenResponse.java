@@ -1,4 +1,4 @@
-package com.woowacourse.naepyeon.support.oauth.kakao.dto;
+package com.woowacourse.naepyeon.support.oauth.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

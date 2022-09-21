@@ -80,12 +80,22 @@
 | `3014`
 | 전달받은 authorizationCode나 redirectUri가 잘못 되었거나 카카오 서버 에러입니다. errorMessage={%s}
 | 카카오 로그인에 실패했습니다. 관리자에게 문의하세요.
-| `400 Bad Request`
 
+| `400 Bad Request`
 | `3015`
 | 카카오 리소스 서버 요청시 에러 발생 accessToken={%s} errorMessage={%s}
 | 카카오 로그인에 실패했습니다. 관리자에게 문의하세요.
-| `500 Internal Server Error``
+| `401 Unauthorized`
+
+| `3016`
+| "전달받은 authorizationCode나 redirectUri가 잘못 되었거나 구글 서버 에러입니다. errorMessage={%s}"
+| "구글 로그인에 실패했습니다. 관리자에게 문의하세요."
+| `401 Unauthorized`
+
+| `3017`
+| "구글 리소스 서버 요청시 에러 발생 accessToken={%s}\nerrorMessage={%s}"
+| "구글 로그인에 실패했습니다. 관리자에게 문의하세요."
+| `401 Unauthorized`
 |===
 
 === 모임 에러
