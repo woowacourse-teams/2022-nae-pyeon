@@ -6,6 +6,12 @@ export interface postKakaoOauthRequest {
   redirectUri: string;
 }
 
+// google oauth
+export interface postGoogleOauthRequest {
+  authorizationCode: string;
+  redirectUri: string;
+}
+
 // member
 export interface GetMyReceivedRollingpapersRequest {
   page: number;

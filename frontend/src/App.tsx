@@ -11,6 +11,7 @@ import { useSnackbar } from "@/context/SnackbarContext";
 
 import useAutoLogin from "@/hooks/useAutoLogin";
 import InvitePage from "@/pages/InvitePage";
+import GoogleRedirectPage from "./pages/GoogleRedirectPage";
 
 const HeaderLayoutPage = lazy(() => import("@/pages/HeaderLayoutPage"));
 const RollingpaperPage = lazy(() => import("@/pages/RollingpaperPage"));
@@ -68,6 +69,7 @@ const App = () => {
             <Route element={<RequireLogout />}>
               <Route path="login" element={<LoginPage />} />
               <Route path="oauth/kakao" element={<KakaoRedirectPage />} />
+              <Route path="oauth/google" element={<GoogleRedirectPage />} />
             </Route>
             <Route path="invite/:inviteToken" element={<InvitePage />} />
           </Routes>
