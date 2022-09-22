@@ -76,7 +76,7 @@ const MemberRollingpaperCreateForm = () => {
 
   return (
     <StyledMain>
-      <StyledHeader>맴버에게 롤링페이퍼 작성</StyledHeader>
+      <StyledHeader>멤버에게 롤링페이퍼 작성</StyledHeader>
       <StyledForm onSubmit={handleRollingpaperCreateSubmit}>
         <LabeledInput
           labelText="롤링페이퍼 제목"
