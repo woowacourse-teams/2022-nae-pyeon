@@ -9,7 +9,8 @@ import { postTeamMember } from "@/api/team";
 import { AxiosError } from "axios";
 import { TeamMember } from "@/types";
 
-// 우선은 OnClickCloseButton을 내려받음
+type createTeamMemberVariable = TeamMember["nickname"];
+
 const useCreateTeamMember = (onClickCloseButton: () => void) => {
   const { openSnackbar } = useSnackbar();
   const teamId = useValidatedParam<number>("teamId");
@@ -17,7 +18,7 @@ const useCreateTeamMember = (onClickCloseButton: () => void) => {
   const { mutate: createTeamMember } = useMutation<
     null,
     AxiosError,
-    TeamMember["nickname"]
+    createTeamMemberVariable
   >((nickname) => postTeamMember({ id: teamId, nickname }), {
     onSuccess: () => {
       onClickCloseButton();

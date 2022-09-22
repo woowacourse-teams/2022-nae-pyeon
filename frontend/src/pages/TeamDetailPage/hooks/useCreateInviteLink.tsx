@@ -7,17 +7,20 @@ import { Team } from "@/types";
 import { PostTeamWithInviteTokenResponse } from "@/types/apiResponse";
 import { AxiosError } from "axios";
 
+type CreateInviteLinkVariable = Team["id"];
+
 const useCreateInviteLink = () => {
   const {
     mutate: createInviteLink,
     isError,
     data,
-  } = useMutation<PostTeamWithInviteTokenResponse, AxiosError, Team["id"]>(
-    (id) => postTeamInviteToken(id),
-    {
-      useErrorBoundary: true,
-    }
-  );
+  } = useMutation<
+    PostTeamWithInviteTokenResponse,
+    AxiosError,
+    CreateInviteLinkVariable
+  >((id) => postTeamInviteToken(id), {
+    useErrorBoundary: true,
+  });
 
   return { createInviteLink, isError, data };
 };

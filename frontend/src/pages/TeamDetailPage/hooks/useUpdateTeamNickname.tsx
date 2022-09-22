@@ -9,6 +9,8 @@ import { putTeamNickname } from "@/api/team";
 
 import { Team, TeamMember } from "@/types";
 
+type UpdateTeamNicknameVariable = TeamMember["nickname"];
+
 const useUpdateTeamNickname = (onClickCloseButton: () => void) => {
   const teamId = useValidatedParam<Team["id"]>("teamId");
   const { openSnackbar } = useSnackbar();
@@ -16,13 +18,13 @@ const useUpdateTeamNickname = (onClickCloseButton: () => void) => {
   const { mutate: updateTeamNickname } = useMutation<
     null,
     AxiosError,
-    TeamMember["nickname"]
+    UpdateTeamNicknameVariable
   >((nickname: string) => putTeamNickname({ id: teamId, nickname }), {
     onSuccess: () => {
-      onClickCloseButton();
-      openSnackbar("닉네임 수정 완료");
       queryClient.refetchQueries(["team", teamId]);
       queryClient.refetchQueries(["rollingpaperList", teamId]);
+      onClickCloseButton();
+      openSnackbar("닉네임 수정 완료");
     },
     useErrorBoundary: true,
   });

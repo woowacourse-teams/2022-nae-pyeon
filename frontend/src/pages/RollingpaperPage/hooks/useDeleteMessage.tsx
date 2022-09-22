@@ -8,13 +8,15 @@ import { deleteMessage } from "@/api/message";
 
 import { Message } from "@/types";
 
+type DeleteRollingpaperMessageVariable = Message["id"];
+
 const useDeleteMessage = (rollingpaperId: number) => {
   const { openSnackbar } = useSnackbar();
 
   const { mutate: deleteRollingpaperMessage } = useMutation<
     null,
     AxiosError,
-    Message["id"]
+    DeleteRollingpaperMessageVariable
   >((id) => deleteMessage({ rollingpaperId, id }), {
     onSuccess: () => {
       queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
