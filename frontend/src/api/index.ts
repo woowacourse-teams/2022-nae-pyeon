@@ -16,28 +16,10 @@ const setAppClientHeaderAuthorization = (accessToken: string) => {
   appClient.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
 };
 
-const requestApi = async (
-  request: () => Promise<any>,
-  options?: ApiOptions
-) => {
-  try {
-    const { data } = await request();
+const requestApi = async (request: () => Promise<any>) => {
+  const { data } = await request();
 
-    return data;
-  } catch (error) {
-    const axiosError = error as AxiosError;
-
-    if (axiosError.response) {
-      const { errorCode, message } = axiosError.response
-        .data as ApiErrorResponse;
-
-      throw new ApiError({
-        errorCode,
-        message,
-        errorHandler: options?.onError,
-      });
-    }
-  }
+  return data;
 };
 
 export { appClient, queryClient, setAppClientHeaderAuthorization, requestApi };
