@@ -142,7 +142,7 @@ class MessageRepositoryTest {
     @Test
     @DisplayName("메시지를 id값을 통해 삭제한다.")
     void delete() {
-        final Member member = memberRepository.findByEmail(author.getEmail())
+        final Member member = memberRepository.findById(author.getId())
                 .orElseThrow();
         final Message message = new Message(content, "green", member, rollingpaper, false, false);
         final Long messageId = messageRepository.save(message)
