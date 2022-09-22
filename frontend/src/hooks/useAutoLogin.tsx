@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 import { setAppClientHeaderAuthorization } from "@/api";
 import { getMyInfoWithAccessToken } from "@/api/member";
 
 import { getCookie } from "@/util/cookie";
-import { User } from "@/types/index";
+
+import { GetUserProfileResponse } from "@/types/apiResponse";
 
 const COOKIE_KEY = {
   ACCESS_TOKEN: "accessToken",
@@ -13,7 +15,7 @@ const COOKIE_KEY = {
 function useAutoLogin() {
   const accessTokenCookie = getCookie(COOKIE_KEY.ACCESS_TOKEN);
 
-  return useQuery(
+  return useQuery<GetUserProfileResponse, AxiosError>(
     ["memberId"],
     () => getMyInfoWithAccessToken(accessTokenCookie!),
     {
@@ -21,6 +23,7 @@ function useAutoLogin() {
       onSuccess: () => {
         setAppClientHeaderAuthorization(accessTokenCookie!);
       },
+      useErrorBoundary: true,
     }
   );
 }

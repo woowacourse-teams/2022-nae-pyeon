@@ -1,22 +1,19 @@
 import React, { useState, useContext } from "react";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import styled from "@emotion/styled";
 
 import { UserContext } from "@/context/UserContext";
-import { useSnackbar } from "@/context/SnackbarContext";
 
 import IconButton from "@/components/IconButton";
 import LineButton from "@/components/LineButton";
 import UnderlineInput from "@/components/UnderlineInput";
 
 import { REGEX } from "@/constants";
-import { CustomError, ValueOf } from "@/types";
-import { queryClient } from "@/api";
+import { ValueOf } from "@/types";
+
 import Pencil from "@/assets/icons/bx-pencil.svg";
 
 import useInput from "@/hooks/useInput";
-import { putMyNickname } from "@/api/member";
+import useUpdateUserProfile from "@/pages/MyPage/hooks/useUpdateUserProfile";
 
 const MODE = {
   NORMAL: "normal",
@@ -33,27 +30,10 @@ const UserProfile = ({ username, email }: UserProfileProp) => {
   const [mode, setMode] = useState<UserProfileMode>(MODE.NORMAL);
   const { value: editName, handleInputChange: handleEditNameChange } =
     useInput(username);
-  const { openSnackbar } = useSnackbar();
+
+  const updateUserProfile = useUpdateUserProfile();
 
   const { logout } = useContext(UserContext);
-
-  const { mutate: updateUserProfile } = useMutation(
-    async ({ username }: Pick<UserProfileProp, "username">) => {
-      return putMyNickname(username);
-    },
-    {
-      onSuccess: () => {
-        queryClient.refetchQueries(["user-profile"]);
-        openSnackbar("이름 수정 완료");
-      },
-      onError: (error) => {
-        if (axios.isAxiosError(error) && error.response) {
-          const customError = error.response.data as CustomError;
-          alert(customError.message);
-        }
-      },
-    }
-  );
 
   const handleLogoutButtonClick = () => {
     if (mode === MODE.NORMAL) {

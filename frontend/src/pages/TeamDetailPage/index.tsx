@@ -1,35 +1,20 @@
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
 import styled from "@emotion/styled";
 
 import TeamDescriptionBox from "@/pages/TeamDetailPage/components/TeamDescriptionBox";
 import RollingpaperList from "@/pages/TeamDetailPage/components/RollingpaperList";
 import TeamJoinSection from "@/pages/TeamDetailPage/components/TeamJoinSection";
 
-import { CustomError } from "@/types";
-import { getTeam } from "@/api/team";
 import useValidatedParam from "@/hooks/useValidatedParam";
+import useReadTeamDetail from "@/pages/TeamDetailPage/hooks/useReadTeamDetail";
 
 const TeamDetailPage = () => {
   const teamId = useValidatedParam<number>("teamId");
 
-  const {
-    isLoading: isLoadingTeamDetail,
-    isError: isErrorTeamDetail,
-    error: TeamDetailError,
-    data: teamDetail,
-  } = useQuery(["team", teamId], () => getTeam(teamId));
+  const { isLoading: isLoadingTeamDetail, data: teamDetail } =
+    useReadTeamDetail(teamId);
 
   if (isLoadingTeamDetail) {
     return <div>로딩중</div>;
-  }
-
-  if (isErrorTeamDetail) {
-    if (axios.isAxiosError(TeamDetailError) && TeamDetailError.response) {
-      const customError = TeamDetailError.response.data as CustomError;
-      return <div>{customError.message}</div>;
-    }
-    return <div>에러</div>;
   }
 
   if (!teamDetail) {

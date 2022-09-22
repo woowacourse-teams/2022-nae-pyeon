@@ -21,7 +21,7 @@ const TeamRollingpaperCreateForm = () => {
     HTMLFormElement
   > = (e) => {
     e.preventDefault();
-    createTeamRollingpaper({ title });
+    createTeamRollingpaper(title);
   };
 
   const isValidRollingpaperTitle = (title: string) => {

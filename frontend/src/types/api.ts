@@ -2,7 +2,7 @@ export type ApiOptions = {
   onError?: () => void;
 };
 
-export type ApiErrorResponse = {
+export interface ApiErrorResponse {
   errorCode: number;
   message: string;
-};
+}

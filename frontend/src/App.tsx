@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
+import ErrorBoundary from "@/components/ErrorBoundary";
 import RequireLogin from "@/components/RequireLogin";
 import RequireLogout from "@/components/RequireLogout";
 import PageContainer from "@/components/PageContainer";
@@ -38,46 +39,47 @@ const App = () => {
 
   return (
     <PageContainer>
-      <UserProvider
-        initialData={
-          data && {
-            isLoggedIn: true,
-            memberId: data.id,
+      <ErrorBoundary fallback={<div>👻👻👻👻</div>}>
+        <UserProvider
+          initialData={
+            data && {
+              isLoggedIn: true,
+              memberId: data.id,
+            }
           }
-        }
-      >
-        <Suspense fallback={<div>Loading..</div>}>
-          <Routes>
-            <Route element={<RequireLogin />}>
-              <Route path="/" element={<HeaderLayoutPage />}>
-                <Route path="/" element={<MainPage />} />
-                <Route path="team/:teamId" element={<TeamDetailPage />} />
-                <Route path="search" element={<TeamSearchPage />} />
-                <Route path="mypage" element={<MyPage />} />
-                <Route path="*" element={<ErrorPage />} />
+        >
+          <Suspense fallback={<div>Loading..</div>}>
+            <Routes>
+              <Route element={<RequireLogin />}>
+                <Route path="/" element={<HeaderLayoutPage />}>
+                  <Route path="/" element={<MainPage />} />
+                  <Route path="team/:teamId" element={<TeamDetailPage />} />
+                  <Route path="search" element={<TeamSearchPage />} />
+                  <Route path="mypage" element={<MyPage />} />
+                  <Route path="*" element={<ErrorPage />} />
+                </Route>
+                <Route path="team/new" element={<TeamCreationPage />} />
+                <Route
+                  path="team/:teamId/rollingpaper/new"
+                  element={<RollingpaperCreationPage />}
+                />
+                <Route
+                  path="team/:teamId/rollingpaper/:rollingpaperId"
+                  element={<RollingpaperPage />}
+                />
               </Route>
-
-              <Route path="team/new" element={<TeamCreationPage />} />
-              <Route
-                path="team/:teamId/rollingpaper/new"
-                element={<RollingpaperCreationPage />}
-              />
-              <Route
-                path="team/:teamId/rollingpaper/:rollingpaperId"
-                element={<RollingpaperPage />}
-              />
-            </Route>
-            <Route element={<RequireLogout />}>
-              <Route path="login" element={<LoginPage />} />
-              <Route path="oauth/kakao" element={<KakaoRedirectPage />} />
-              <Route path="oauth/google" element={<GoogleRedirectPage />} />
-            </Route>
-            <Route path="invite/:inviteToken" element={<InvitePage />} />
-            <Route path="policy" element={<PolicyPage />} />
-          </Routes>
-        </Suspense>
-        {isOpened && <Snackbar />}
-      </UserProvider>
+              <Route element={<RequireLogout />}>
+                <Route path="login" element={<LoginPage />} />
+                <Route path="oauth/kakao" element={<KakaoRedirectPage />} />
+                <Route path="oauth/google" element={<GoogleRedirectPage />} />
+              </Route>
+              <Route path="invite/:inviteToken" element={<InvitePage />} />
+              <Route path="policy" element={<PolicyPage />} />
+            </Routes>
+          </Suspense>
+          {isOpened && <Snackbar />}
+        </UserProvider>
+      </ErrorBoundary>
     </PageContainer>
   );
 };

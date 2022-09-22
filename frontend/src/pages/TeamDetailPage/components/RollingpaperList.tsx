@@ -1,17 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import styled from "@emotion/styled";
 
 import IconButton from "@/components/IconButton";
 import RollingpaperListItem from "@/pages/TeamDetailPage/components/RollingpaperListItem";
 
-import { CustomError } from "@/types";
-
 import PlusIcon from "@/assets/icons/bx-plus.svg";
-import { getTeamRollingpapers } from "@/api/team";
 import useValidatedParam from "@/hooks/useValidatedParam";
-import { GetTeamRollingpapersResponse } from "@/types/apiResponse";
+import useReadTeamRollingpaper from "@/pages/TeamDetailPage/hooks/useReadTeamRollingpaper";
 
 const RollingpaperList = () => {
   const navigate = useNavigate();
@@ -19,27 +14,11 @@ const RollingpaperList = () => {
 
   const {
     isLoading: isLoadingGetTeamRollingpaperList,
-    isError: isErrorGetTeamRollingpaperList,
-    error: getTeamRollingpaperListError,
     data: teamRollinpaperListResponse,
-  } = useQuery<GetTeamRollingpapersResponse>(["rollingpaperList", teamId], () =>
-    getTeamRollingpapers(teamId)
-  );
+  } = useReadTeamRollingpaper(teamId);
 
   if (isLoadingGetTeamRollingpaperList) {
     return <div>로딩중</div>;
-  }
-
-  if (isErrorGetTeamRollingpaperList) {
-    if (
-      axios.isAxiosError(getTeamRollingpaperListError) &&
-      getTeamRollingpaperListError.response
-    ) {
-      const customError = getTeamRollingpaperListError.response
-        .data as CustomError;
-      return <div>{customError.message}</div>;
-    }
-    return <div>에러</div>;
   }
 
   if (!teamRollinpaperListResponse) {

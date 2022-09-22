@@ -15,6 +15,8 @@ export interface PostKakaoOauthResponse {
 }
 
 // member
+export interface GetUserProfileResponse extends User {}
+
 export interface GetMyReceivedRollingpapersResponse {
   totalCount: number;
   currentPage: number;
@@ -76,6 +78,6 @@ export interface PostTeamResponse {
   id: Team["id"];
 }
 
-export interface PostTeamInviteTokenResponse {
+export interface PostTeamWithInviteTokenResponse {
   inviteToken: string;
 }
