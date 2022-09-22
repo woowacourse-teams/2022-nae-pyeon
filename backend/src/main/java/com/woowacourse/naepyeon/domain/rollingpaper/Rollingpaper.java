@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -21,7 +22,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "rollingpaper")
+@Table(name = "rollingpaper", indexes = {
+        @Index(name = "rollingpaper_team_index", columnList = "team_id")
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Rollingpaper extends BaseEntity {
 
