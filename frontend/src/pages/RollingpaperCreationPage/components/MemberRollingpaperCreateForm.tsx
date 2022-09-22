@@ -13,6 +13,8 @@ import useInput from "@/hooks/useInput";
 import useReadTeamMembers from "@/pages/RollingpaperCreationPage/hooks/useReadTeamMembers";
 import useCreateMemberRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateMemberRolliingpaper";
 
+import { GetTeamMembersResponse } from "@/types/apiResponse";
+
 const MemberRollingpaperCreateForm = () => {
   const teamId = useValidatedParam<number>("teamId");
   const { value: title, handleInputChange } = useInput("");
@@ -24,13 +26,21 @@ const MemberRollingpaperCreateForm = () => {
     handleAutoInputChange,
     handleAutoInputFocus,
     handleListItemClick,
+    setKeywordList,
   } = useAutoCompleteInput();
 
   const createMemberRollingpaper = useCreateMemberRollingpaper(teamId);
 
+  const handleReadTeamMembersSuccess = (data: GetTeamMembersResponse) => {
+    setKeywordList(data.members.map((member) => member.nickname));
+  };
+
   // 이런 경우에는 컴포넌트 단에서 onSuccess를 처리하는 것이 편할듯
   // 다른 커스텀 훅의 호출이 필요한 경우
-  const { data: teamMemberResponse } = useReadTeamMembers(teamId);
+  const { data: teamMemberResponse } = useReadTeamMembers(
+    teamId,
+    handleReadTeamMembersSuccess
+  );
 
   const findReceiverWithNickName = (nickName: string) => {
     return teamMemberResponse?.members.find(
