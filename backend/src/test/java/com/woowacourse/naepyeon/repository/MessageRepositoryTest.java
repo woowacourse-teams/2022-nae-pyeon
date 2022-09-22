@@ -125,18 +125,27 @@ class MessageRepositoryTest {
         messageRepository.save(message4);
         final Message message5 = createMessage();
         messageRepository.save(message5);
+        final Message message6 = createMessage();
+        messageRepository.save(message6);
+        final Message message7 = createMessage();
+        messageRepository.save(message7);
         final List<WrittenMessageResponseDto> expected = List.of(
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message1),
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message2),
                 WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message3),
-                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message4)
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message4),
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message5)
         );
 
         final Page<WrittenMessageResponseDto> writtenMessageResponseDtos =
-                messageRepository.findAllByAuthorId(author.getId(), PageRequest.of(1, 2));
+                messageRepository.findAllByAuthorId(author.getId(), PageRequest.of(0, 5));
         final List<WrittenMessageResponseDto> actual = writtenMessageResponseDtos.getContent();
-
-        assertThat(actual)
-                .usingRecursiveComparison()
-                .isEqualTo(expected);
+        assertAll(
+                () -> assertThat(writtenMessageResponseDtos.getTotalElements()).isEqualTo(7),
+                () -> assertThat(actual)
+                        .usingRecursiveComparison()
+                        .isEqualTo(expected)
+        );
     }
 
     @Test
