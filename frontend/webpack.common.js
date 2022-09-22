@@ -6,6 +6,13 @@ module.exports = {
   entry: {
     app: path.join(__dirname, "src/index.tsx"),
   },
+  output: {
+    path: path.join(__dirname, "/dist"),
+    publicPath: "/",
+    filename: "bundle.js",
+    chunkFilename: "[contenthash].bundle.js",
+    clean: true,
+  },
   plugins: [
     new webpack.ProvidePlugin({
       React: "react",
@@ -26,10 +33,6 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: ["babel-loader", "ts-loader"],
-      },
-      {
         test: /\.(png|jpe?g|gif)$/i,
         type: "asset/resource",
       },
@@ -44,11 +47,5 @@ module.exports = {
         ],
       },
     ],
-  },
-  output: {
-    path: path.join(__dirname, "/dist"),
-    publicPath: "/",
-    filename: "bundle.js",
-    clean: true,
   },
 };

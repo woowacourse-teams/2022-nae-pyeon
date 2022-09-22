@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { useState } from "react";
 import styled from "@emotion/styled";
 
 import MyPageTab from "@/pages/MyPage/components/MyPageTab";
@@ -9,23 +7,14 @@ import RollingpaperList from "@/pages/MyPage/components/RollingpaperList";
 import MessageList from "@/pages/MyPage/components/MessageList";
 
 import {
-  getMyInfo,
-  getMyReceivedRollingpapers,
-  getMySentMessage,
-} from "@/api/member";
-
-import {
   MYPAGE_ROLLINGPAPER_PAGING_COUNT,
   MYPAGE_MESSAGE_PAGING_COUNT,
 } from "@/constants";
 
-import {
-  UserInfo,
-  ResponseSentMessages,
-  ResponseReceivedRollingpapers,
-  CustomError,
-  ValueOf,
-} from "@/types";
+import { ValueOf } from "@/types";
+import useReadUserProfile from "@/pages/MyPage/hooks/useReadUserProfile";
+import useReadSentMessages from "@/pages/MyPage/hooks/useReadSentMessages";
+import useReadReceivedRollingpapers from "@/pages/MyPage/hooks/useReadReceivedRollingpapers";
 
 type TabMode = ValueOf<typeof TAB>;
 
@@ -37,34 +26,16 @@ const TAB = {
 const MyPage = () => {
   const [tab, setTab] = useState<TabMode>(TAB.RECEIVED_PAPER);
 
-  const {
-    isLoading: isLoadingGetUserProfile,
-    isError: isErrorGetUserProfile,
-    error: getUserProfileError,
-    data: userProfile,
-  } = useQuery<UserInfo>(["user-profile"], () => getMyInfo());
+  const { isLoading: isLoadingGetUserProfile, data: userProfile } =
+    useReadUserProfile();
 
   const {
     isLoading: isLoadingGetReceivedRollingpapers,
-    isError: isErrorGetReceivedRollingpapers,
-    error: getReceivedRollingpapersError,
     data: responseReceivedRollingpapers,
-  } = useQuery<ResponseReceivedRollingpapers>(
-    ["received-rollingpapers", 0],
-    () => getMyReceivedRollingpapers(0, MYPAGE_ROLLINGPAPER_PAGING_COUNT),
-    { keepPreviousData: true }
-  );
+  } = useReadReceivedRollingpapers();
 
-  const {
-    isLoading: isLoadingGetSentMessages,
-    isError: isErrorGetSentMessages,
-    error: getSentMessagesError,
-    data: responseSentMessages,
-  } = useQuery<ResponseSentMessages>(
-    ["sent-messages", 0],
-    () => getMySentMessage(0, MYPAGE_MESSAGE_PAGING_COUNT),
-    { keepPreviousData: true }
-  );
+  const { isLoading: isLoadingGetSentMessages, data: responseSentMessages } =
+    useReadSentMessages();
 
   if (
     isLoadingGetUserProfile ||
@@ -72,40 +43,6 @@ const MyPage = () => {
     isLoadingGetSentMessages
   ) {
     return <div>로딩중</div>;
-  }
-
-  if (isErrorGetUserProfile) {
-    if (
-      axios.isAxiosError(getUserProfileError) &&
-      getUserProfileError.response
-    ) {
-      const customError = getUserProfileError.response.data as CustomError;
-      return <div>{customError.message}</div>;
-    }
-    return <div>에러</div>;
-  }
-
-  if (isErrorGetReceivedRollingpapers) {
-    if (
-      axios.isAxiosError(getReceivedRollingpapersError) &&
-      getReceivedRollingpapersError.response
-    ) {
-      const customError = getReceivedRollingpapersError.response
-        .data as CustomError;
-      return <div>{customError.message}</div>;
-    }
-    return <div>에러</div>;
-  }
-
-  if (isErrorGetSentMessages) {
-    if (
-      axios.isAxiosError(getSentMessagesError) &&
-      getSentMessagesError.response
-    ) {
-      const customError = getSentMessagesError.response.data as CustomError;
-      return <div>{customError.message}</div>;
-    }
-    return <div>에러</div>;
   }
 
   if (!userProfile || !responseReceivedRollingpapers || !responseSentMessages) {
@@ -144,7 +81,7 @@ const MyPage = () => {
       ) : (
         <MessageList
           lastPage={Math.ceil(
-            responseSentMessages.totalCount / MYPAGE_ROLLINGPAPER_PAGING_COUNT
+            responseSentMessages.totalCount / MYPAGE_MESSAGE_PAGING_COUNT
           )}
         />
       )}

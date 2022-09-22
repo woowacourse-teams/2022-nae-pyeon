@@ -1,17 +1,13 @@
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
 import styled from "@emotion/styled";
-
-import { getMySentMessage } from "@/api/member";
 
 import MessageListItem from "@/pages/MyPage/components/MessageListItem";
 import Paging from "@/components/Paging";
 
-import EmptyStateImg from "@/assets/images/empty-state.svg";
-import { MYPAGE_MESSAGE_PAGING_COUNT } from "@/constants";
-
-import { ResponseSentMessages } from "@/types";
 import usePaging from "@/hooks/usePaging";
+
+import useReadSentMessages from "@/pages/MyPage/hooks/useReadSentMessages";
+
+import EmptyStateImg from "@/assets/images/empty-state.svg";
 
 interface MessageListProp {
   lastPage: number;
@@ -21,13 +17,9 @@ const MessageList = ({ lastPage }: MessageListProp) => {
   const { currentPage, handleNumberClick, handleNextClick, handlePrevClick } =
     usePaging(lastPage);
 
-  const { isLoading, isError, error, data } = useQuery<ResponseSentMessages>(
-    ["sent-messages", currentPage],
-    () => getMySentMessage(currentPage, MYPAGE_MESSAGE_PAGING_COUNT),
-    { keepPreviousData: true }
-  );
+  const { isLoading, data } = useReadSentMessages(currentPage);
 
-  if (isError || !data) {
+  if (!data) {
     return <div>에러</div>;
   }
 

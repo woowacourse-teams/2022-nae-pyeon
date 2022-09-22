@@ -1,41 +1,61 @@
-import { appClient } from "@/api";
+import { appClient, requestApi } from "@/api";
 
-const getMyInfo = () => {
-  return appClient.get("/members/me").then((response) => response.data);
-};
+import { User } from "@/types";
+import { ApiOptions } from "@/types/api";
 
-const getMyInfoWithAccessToken = (accessToken: string | null) => {
-  return appClient
-    .get("/members/me", {
-      headers: {
-        Authorization: `Bearer ${accessToken || ""}`,
-      },
-    })
-    .then((response) => response.data);
-};
+import {
+  GetMyReceivedRollingpapersRequest,
+  GetMySentMessagesRequest,
+} from "@/types/apiRequest";
 
-const getMyReceivedRollingpapers = (page = 0, count = 5) => {
-  return appClient
-    .get(`/members/me/rollingpapers/received?page=${page}&count=${count}`)
-    .then((response) => response.data);
-};
+const getMyInfo = async (options?: ApiOptions) =>
+  requestApi(() => appClient.get("/members/me"), options);
 
-const getMySentMessage = (page = 0, count = 5) => {
-  return appClient
-    .get(`/members/me/messages/written?page=${page}&count=${count}`)
-    .then((response) => response.data);
-};
+const getMyInfoWithAccessToken = async (
+  accessToken: string,
+  options?: ApiOptions
+) =>
+  requestApi(
+    () =>
+      appClient.get("/members/me", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }),
+    options
+  );
 
-const putMyNickname = (username: string) => {
-  return appClient
-    .put("/members/me", { username })
-    .then((response) => response.data);
-};
+const getMyReceivedRollingpapers = async (
+  { page = 0, count = 5 }: GetMyReceivedRollingpapersRequest,
+  options?: ApiOptions
+) =>
+  requestApi(
+    () =>
+      appClient.get(
+        `/members/me/rollingpapers/received?page=${page}&count=${count}`
+      ),
+    options
+  );
+
+const getMySentMessages = async (
+  { page = 0, count = 5 }: GetMySentMessagesRequest,
+  options?: ApiOptions
+) =>
+  requestApi(
+    () =>
+      appClient.get(`/members/me/messages/written?page=${page}&count=${count}`),
+    options
+  );
+
+const putMyNickname = async (
+  username: User["username"],
+  options?: ApiOptions
+) => requestApi(() => appClient.put("/members/me", { username }), options);
 
 export {
   getMyInfo,
   getMyInfoWithAccessToken,
   getMyReceivedRollingpapers,
-  getMySentMessage,
+  getMySentMessages,
   putMyNickname,
 };

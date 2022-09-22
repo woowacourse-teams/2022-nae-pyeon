@@ -9,11 +9,14 @@ require("dotenv").config({
 
 module.exports = merge(common, {
   mode: "development",
-  devtool: "inline-source-map",
+  devtool: "source-map",
   devServer: {
     historyApiFallback: true,
     port: 3000,
     hot: true,
+  },
+  module: {
+    rules: [{ test: /\.tsx?$/, use: ["babel-loader", "ts-loader"] }],
   },
   plugins: [
     new webpack.DefinePlugin({

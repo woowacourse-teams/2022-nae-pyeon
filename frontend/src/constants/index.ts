@@ -4,8 +4,9 @@ const REGEX = {
   EMAIL: /^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\w+\.)+\w+$/,
   USERNAME: /^.{1,64}$/,
   PASSWORD: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d~!@#$%^&*()+|=]{8,20}$/,
-  TEAM_NAME: /^[가-힣a-zA-Z\d~!@#$%^&*()+_\-\s]{1,20}$/,
+  TEAM_NAME: /^.{1,20}$/,
   TEAM_NICKNAME: /^.{1,20}$/,
+  TEAM_DESCRIPTION: /^.{1,80}$/,
   ROLLINGPAPER_TITLE: /^.{1,20}$/,
 };
 
@@ -38,9 +39,14 @@ const KAKAO_OAUTH_URL = {
     'https://kapi.kakao.com/v2/user/me?secure_resource=true&property_keys=["kakao_account.profile","kakao_account.email"]',
 };
 
+const GOOGLE_OAUTH_URL = {
+  AUTHORIZE_CODE: (inviteToken = "") =>
+    `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_SECRET}&redirect_uri=${process.env.GOOGLE_REDIRECT_URL}&scope=https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile&response_type=code&state=${inviteToken}`,
+};
+
 const RECIPIENT = {
-  TEAM: "team",
-  MEMBER: "member",
+  TEAM: "TEAM",
+  MEMBER: "MEMBER",
 } as const;
 
 export {
@@ -51,5 +57,6 @@ export {
   MYPAGE_MESSAGE_PAGING_COUNT,
   SOCIAL_LOGIN_PLATFORM,
   KAKAO_OAUTH_URL,
+  GOOGLE_OAUTH_URL,
   RECIPIENT,
 };

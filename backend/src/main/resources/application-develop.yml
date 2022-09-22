@@ -1,16 +1,15 @@
 spring:
-  h2:
-    console:
-      enabled: true
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=MYSQL
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: ${MYSQL_URL}
+    password: ${MYSQL_PASSWORD}
+    username: ${MYSQL_USERNAME}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: ${MAX_CONNECTION_POOL_SIZE}
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
@@ -18,7 +17,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
     open-in-view: false
   flyway:
-    enabled: false
+    enabled: true
     baseline-on-migrate: true
 
 security:
@@ -34,6 +33,18 @@ kakao:
   admin-key: ${KAKAO_ADMIN_KEY}
   client-id: ${KAKAO_CLIENT_ID}
   client-secret: ${KAKAO_CLIENT_SECRET}
+
+google:
+  client-id: ${GOOGLE_CLIENT_ID}
+  client-secret: ${GOOGLE_CLIENT_SECRET}
+
+server:
+  tomcat:
+    accept-count: ${TOMCAT_ACCEPT_COUNT}
+    threads:
+      max: ${MAX_THREAD_POOL_SIZE}
+    max-connections: ${TOMCAT_MAX_CONNENCTIONS}
+
 
 logging:
   config: classpath:log4j2-develop.yml

@@ -4,16 +4,18 @@ import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.naepyeon.repository.MemberRepository;
+import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.service.AuthService;
 import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
+import com.woowacourse.naepyeon.acceptance.support.DatabaseCleaner;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
 import com.woowacourse.naepyeon.support.invitetoken.InviteTokenProvider;
 import com.woowacourse.naepyeon.support.invitetoken.aes.Aes256InviteTokenProvider;
 import com.woowacourse.naepyeon.support.invitetoken.aes.Aes256Supporter;
+import com.woowacourse.naepyeon.support.oauth.google.GooglePlatformUserProvider;
 import com.woowacourse.naepyeon.support.oauth.kakao.KakaoPlatformUserProvider;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,16 +25,15 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase
 public class AcceptanceTest {
 
     @MockBean
     protected KakaoPlatformUserProvider kakaoPlatformUserProvider;
+    @MockBean
+    protected GooglePlatformUserProvider googlePlatformUserProvider;
     @Autowired
     protected MemberRepository memberRepository;
     @Autowired
@@ -44,6 +45,8 @@ public class AcceptanceTest {
     protected Aes256Supporter aes256Supporter;
     @Autowired
     protected ObjectMapper objectMapper;
+    @Autowired
+    protected DatabaseCleaner databaseCleaner;
 
     @LocalServerPort
     int port;
@@ -61,7 +64,8 @@ public class AcceptanceTest {
     @BeforeEach
     public void setUp() {
         RestAssured.port = port;
-        authService = new AuthService(memberService, jwtTokenProvider, kakaoPlatformUserProvider);
+        databaseCleaner.execute();
+        authService = new AuthService(memberService, jwtTokenProvider, kakaoPlatformUserProvider, googlePlatformUserProvider);
 
         final String alexName = "alex";
         when(kakaoPlatformUserProvider.getPlatformUser(anyString(), anyString()))

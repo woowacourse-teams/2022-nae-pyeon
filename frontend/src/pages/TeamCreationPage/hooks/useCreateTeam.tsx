@@ -1,23 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
+import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 
-import { CustomError, Team } from "@/types";
 import { postTeam } from "@/api/team";
+
+import { PostTeamResponse } from "@/types/apiResponse";
+import { Team, TeamMember } from "@/types";
+
+interface CreateTeamVariable extends Omit<Team, "id" | "joined"> {
+  nickname: TeamMember["nickname"];
+}
 
 const useCreateTeam = () => {
   const navigate = useNavigate();
 
-  const { mutate: createTeam } = useMutation(
-    ({
-      name,
-      description,
-      emoji,
-      color,
-      nickname,
-      secret,
-    }: Omit<Team, "id" | "joined">) => {
+  const { mutate: createTeam } = useMutation<
+    PostTeamResponse,
+    AxiosError,
+    CreateTeamVariable
+  >(
+    ({ name, description, emoji, color, nickname, secret }) => {
       return postTeam({
         name,
         description,
@@ -31,12 +34,7 @@ const useCreateTeam = () => {
       onSuccess: () => {
         navigate("/");
       },
-      onError: (error) => {
-        if (axios.isAxiosError(error) && error.response) {
-          const customError = error.response.data as CustomError;
-          alert(customError.message);
-        }
-      },
+      useErrorBoundary: true,
     }
   );
 

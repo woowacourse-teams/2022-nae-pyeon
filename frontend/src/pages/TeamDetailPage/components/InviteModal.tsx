@@ -34,9 +34,10 @@ const InviteModal = ({ onClickClose }: InviteModalProp) => {
     };
 
   useEffect(() => {
-    createInviteLink({ id: teamId });
+    createInviteLink(teamId);
   }, []);
 
+  // 이부분을 어떻게 처리할지...?
   if (isError) {
     return (
       <Modal onClickCloseButton={onClickClose}>

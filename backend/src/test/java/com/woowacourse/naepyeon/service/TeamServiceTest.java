@@ -9,12 +9,13 @@ import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.exception.DuplicateNicknameException;
+import com.woowacourse.naepyeon.exception.DuplicateTeamPaticipateException;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
-import com.woowacourse.naepyeon.repository.MemberRepository;
-import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
-import com.woowacourse.naepyeon.repository.TeamRepository;
+import com.woowacourse.naepyeon.repository.member.MemberRepository;
+import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
+import com.woowacourse.naepyeon.repository.team.TeamRepository;
 import com.woowacourse.naepyeon.service.dto.AllTeamsResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
@@ -31,7 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @Transactional
 class TeamServiceTest {
 
@@ -177,6 +178,17 @@ class TeamServiceTest {
                 () -> assertThat(findTeamParticipation.getTeam().getId()).isEqualTo(team1.getId()),
                 () -> assertThat(findTeamParticipation.getNickname()).isEqualTo(nickname)
         );
+    }
+
+    @Test
+    @DisplayName("이미 가입한 모임에 회원을 가입시킬 경우 예외를 발생시킨다.")
+    void joinMemberToParticipatedTeam() {
+        final String nickname1 = "닉네임1";
+        final String nickname2 = "닉네임2";
+        teamService.joinMember(team1.getId(), member.getId(), nickname1);
+
+        assertThatThrownBy(() -> teamService.joinMember(team1.getId(), member.getId(), nickname2))
+                .isInstanceOf(DuplicateTeamPaticipateException.class);
     }
 
     @Test
@@ -407,7 +419,7 @@ class TeamServiceTest {
         final Long teamParticipationId = teamService.inviteJoin(inviteToken, member.getId(), "가입할래요");
 
         final TeamParticipation teamParticipation = teamParticipationRepository.findById(teamParticipationId)
-                .get();
+                .orElseThrow();
 
         assertAll(
                 () -> assertThat(teamParticipation.getMember().getId()).isEqualTo(member.getId()),

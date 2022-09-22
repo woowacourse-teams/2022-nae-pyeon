@@ -14,10 +14,10 @@ import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.InvalidSecretMessageToTeam;
 import com.woowacourse.naepyeon.exception.NotAuthorException;
 import com.woowacourse.naepyeon.exception.NotFoundMessageException;
-import com.woowacourse.naepyeon.repository.MemberRepository;
-import com.woowacourse.naepyeon.repository.RollingpaperRepository;
-import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
-import com.woowacourse.naepyeon.repository.TeamRepository;
+import com.woowacourse.naepyeon.repository.member.MemberRepository;
+import com.woowacourse.naepyeon.repository.rollingpaper.RollingpaperRepository;
+import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
+import com.woowacourse.naepyeon.repository.team.TeamRepository;
 import com.woowacourse.naepyeon.service.dto.MessageRequestDto;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.MessageUpdateRequestDto;
@@ -31,7 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @Transactional
 class MessageServiceTest {
 

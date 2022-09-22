@@ -3,7 +3,7 @@ package com.woowacourse.naepyeon.service;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
-import com.woowacourse.naepyeon.repository.MemberRepository;
+import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,8 @@ public class MemberService {
 
     public Long save(final String username, final String email, final String platformType, final String platformId) {
         final Member member = new Member(username, email, Platform.valueOf(platformType), platformId);
-        return memberRepository.save(member);
+        return memberRepository.save(member)
+                .getId();
     }
 
     @Transactional(readOnly = true)
@@ -42,7 +43,7 @@ public class MemberService {
     public void delete(final Long memberId) {
         memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException(memberId));
-        memberRepository.delete(memberId);
+        memberRepository.deleteById(memberId);
     }
 
     public Optional<Long> findMemberIdByPlatformAndPlatformId(final String platform, final String platformId) {

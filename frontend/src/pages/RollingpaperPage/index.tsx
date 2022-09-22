@@ -1,38 +1,20 @@
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
 
-import { Rollingpaper, CustomError } from "@/types";
-import { getRollingpaper } from "@/api/rollingpaper";
-
 import useValidatedParam from "@/hooks/useValidatedParam";
+import { useReadRollingpaper } from "@/pages/RollingpaperPage/hooks/useReadRollingpaper";
 
 const RollingpaperPage = () => {
   const teamId = useValidatedParam<number>("teamId");
   const rollingpaperId = useValidatedParam<number>("rollingpaperId");
 
-  const {
-    isLoading,
-    isError,
-    error: rollingpaperError,
-    data: rollingpaper,
-  } = useQuery<Rollingpaper>(["rollingpaper", rollingpaperId], () =>
-    getRollingpaper(teamId, rollingpaperId)
-  );
+  const { isLoading, data: rollingpaper } = useReadRollingpaper({
+    teamId,
+    rollingpaperId,
+  });
 
   if (isLoading) {
     return <div>로딩 중</div>;
-  }
-
-  if (isError) {
-    if (axios.isAxiosError(rollingpaperError) && rollingpaperError.response) {
-      const customError = rollingpaperError.response.data as CustomError;
-      return <div>{customError.message}</div>;
-    }
-    return <div>에러</div>;
   }
 
   if (!rollingpaper) {
@@ -46,7 +28,7 @@ const RollingpaperPage = () => {
         <LetterPaper
           to={rollingpaper.to}
           recipientType={rollingpaper.recipient}
-          messageList={[...rollingpaper.messages].reverse()}
+          messageList={[...rollingpaper.messages]}
         />
       </main>
     </>

@@ -1,9 +1,10 @@
 package com.woowacourse.naepyeon.repository;
 
-import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.naepyeon.config.JpaAuditingConfig;
+import com.woowacourse.naepyeon.config.QueryDslConfig;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Message;
 import com.woowacourse.naepyeon.domain.Platform;
@@ -11,21 +12,26 @@ import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
+import com.woowacourse.naepyeon.repository.member.MemberRepository;
+import com.woowacourse.naepyeon.repository.message.MessageRepository;
+import com.woowacourse.naepyeon.repository.rollingpaper.RollingpaperRepository;
+import com.woowacourse.naepyeon.repository.team.TeamRepository;
+import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import java.time.LocalDateTime;
 import java.util.List;
-import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Transactional
+@DataJpaTest
+@Import({JpaAuditingConfig.class, QueryDslConfig.class})
 class MessageRepositoryTest {
 
     private static final String content = "안녕하세요😁";
@@ -46,7 +52,7 @@ class MessageRepositoryTest {
     private TeamParticipationRepository teamParticipationRepository;
 
     @Autowired
-    private EntityManager em;
+    private TestEntityManager em;
 
     private final Team team = new Team(
             "nae-pyeon",
@@ -71,7 +77,8 @@ class MessageRepositoryTest {
     @DisplayName("메시지를 저장하고 id값으로 찾는다.")
     void save() {
         final Message message = createMessage();
-        final Long messageId = messageRepository.save(message);
+        final Long messageId = messageRepository.save(message)
+                .getId();
 
         final Message findMessage = messageRepository.findById(messageId)
                 .orElseThrow();
@@ -118,75 +125,30 @@ class MessageRepositoryTest {
         messageRepository.save(message4);
         final Message message5 = createMessage();
         messageRepository.save(message5);
+        final List<WrittenMessageResponseDto> expected = List.of(
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message3),
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message4)
+        );
 
         final Page<WrittenMessageResponseDto> writtenMessageResponseDtos =
                 messageRepository.findAllByAuthorId(author.getId(), PageRequest.of(1, 2));
         final List<WrittenMessageResponseDto> actual = writtenMessageResponseDtos.getContent();
 
-        assertThat(actual).hasSize(2);
-    }
-
-    @Test
-    @DisplayName("본인이 작성한 메시지 내용과 색상을 변경한다.")
-    void updateMessageContentAndColor() {
-        final Member member = memberRepository.findByEmail(author.getEmail())
-                .orElseThrow();
-        final Message message = new Message(content, "green", member, rollingpaper, false, false);
-        final Long messageId = messageRepository.save(message);
-        final String newContent = "알고리즘이 좋아요";
-        final String newColor = "red";
-
-        messageRepository.update(messageId, newColor, newContent, false, false);
-        final Message updateMessage = messageRepository.findById(messageId)
-                .orElseThrow();
-
-        assertThat(updateMessage.getContent()).isEqualTo(newContent);
-    }
-
-    @Test
-    @DisplayName("본인이 작성한 메시지 익명 옵션을 변경한다.")
-    void updateMessageAnonymous() {
-        final Member member = memberRepository.findByEmail(author.getEmail())
-                .orElseThrow();
-        final String color = "green";
-        final Message message = new Message(content, color, member, rollingpaper, false, false);
-        final Long messageId = messageRepository.save(message);
-
-        final boolean expected = true;
-
-        messageRepository.update(messageId, color, content, expected, false);
-        final Message updateMessage = messageRepository.findById(messageId)
-                .orElseThrow();
-
-        assertThat(updateMessage.isAnonymous()).isEqualTo(expected);
-    }
-
-    @Test
-    @DisplayName("본인이 작성한 메시지 내용과 색상을 변경한다.")
-    void updateMessageSecret() {
-        final Member member = memberRepository.findByEmail(author.getEmail())
-                .orElseThrow();
-        final String color = "green";
-        final Message message = new Message(content, color, member, rollingpaper, false, false);
-        final Long messageId = messageRepository.save(message);
-        final boolean expected = true;
-
-        messageRepository.update(messageId, color, content, false, expected);
-        final Message updateMessage = messageRepository.findById(messageId)
-                .orElseThrow();
-
-        assertThat(updateMessage.isSecret()).isEqualTo(expected);
+        assertThat(actual)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
     }
 
     @Test
     @DisplayName("메시지를 id값을 통해 삭제한다.")
     void delete() {
-        final Member member = memberRepository.findByEmail(author.getEmail())
+        final Member member = memberRepository.findById(author.getId())
                 .orElseThrow();
         final Message message = new Message(content, "green", member, rollingpaper, false, false);
-        final Long messageId = messageRepository.save(message);
+        final Long messageId = messageRepository.save(message)
+                .getId();
 
-        messageRepository.delete(messageId);
+        messageRepository.deleteById(messageId);
 
         assertThat(messageRepository.findById(messageId))
                 .isEmpty();
@@ -196,7 +158,8 @@ class MessageRepositoryTest {
     @DisplayName("메시지를 생성할 때 생성일자가 올바르게 나온다.")
     void createMemberWhen() {
         final Message message = createMessage();
-        final Long messageId = messageRepository.save(message);
+        final Long messageId = messageRepository.save(message)
+                .getId();
 
         final Message actual = messageRepository.findById(messageId)
                 .orElseThrow();
@@ -205,11 +168,11 @@ class MessageRepositoryTest {
 
     @Test
     @DisplayName("메시지를 수정할 때 수정일자가 올바르게 나온다.")
-    void updateMemberWhen() throws InterruptedException {
+    void updateMemberWhen() {
         final Message message = createMessage();
-        final Long messageId = messageRepository.save(message);
+        final Long messageId = messageRepository.save(message)
+                .getId();
 
-        sleep(1);
         message.changeContent("updateupdate");
         em.flush();
 

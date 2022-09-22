@@ -1,29 +1,22 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+
+import useAutoCompleteInput from "@/hooks/useAutoCompleteInput";
 
 import { getTeamMembers } from "@/api/team";
 
-interface UseReadTeamMembersArgs {
-  teamId: number;
-  onSuccess: (data: ResponseTeamMember) => void;
-}
-interface TeamMember {
-  id: number;
-  nickname: string;
-}
+import { GetTeamMembersResponse } from "@/types/apiResponse";
 
-interface ResponseTeamMember {
-  members: TeamMember[];
-}
-
-const useReadTeamMembers = ({ teamId, onSuccess }: UseReadTeamMembersArgs) => {
-  return useQuery<ResponseTeamMember>(
+const useReadTeamMembers = (teamId: number) => {
+  const { setKeywordList } = useAutoCompleteInput();
+  return useQuery<GetTeamMembersResponse, AxiosError>(
     ["team-member", teamId],
     () => getTeamMembers(+teamId),
     {
-      onSuccess,
+      onSuccess: (data: GetTeamMembersResponse) =>
+        setKeywordList(data.members.map((member) => member.nickname)),
+      useErrorBoundary: true,
     }
   );
 };
-
 export default useReadTeamMembers;

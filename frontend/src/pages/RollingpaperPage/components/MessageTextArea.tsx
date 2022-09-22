@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
+
 import { useMessageTextArea } from "@/pages/RollingpaperPage/hooks/useMessageTextArea";
 
 type MessageTextAreaProps = {
@@ -62,6 +63,7 @@ const StyledTextArea = styled.textarea`
   background-color: transparent;
 
   resize: none;
+  white-space: break-spaces;
 
   font-size: inherit;
   line-height: inherit;

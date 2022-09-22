@@ -9,10 +9,10 @@ import com.woowacourse.naepyeon.exception.NotAuthorException;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundMessageException;
 import com.woowacourse.naepyeon.exception.NotFoundRollingpaperException;
-import com.woowacourse.naepyeon.repository.MemberRepository;
-import com.woowacourse.naepyeon.repository.MessageRepository;
-import com.woowacourse.naepyeon.repository.RollingpaperRepository;
-import com.woowacourse.naepyeon.repository.TeamParticipationRepository;
+import com.woowacourse.naepyeon.repository.member.MemberRepository;
+import com.woowacourse.naepyeon.repository.message.MessageRepository;
+import com.woowacourse.naepyeon.repository.rollingpaper.RollingpaperRepository;
+import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.MessageRequestDto;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.MessageUpdateRequestDto;
@@ -45,7 +45,8 @@ public class MessageService {
                 .orElseThrow(() -> new NotFoundMemberException(authorId));
         final Message message = new Message(messageRequestDto.getContent(), messageRequestDto.getColor(),
                 author, rollingpaper, messageRequestDto.isAnonymous(), messageRequestDto.isSecret());
-        return messageRepository.save(message);
+        return messageRepository.save(message)
+                .getId();
     }
 
     private void validateCanSecret(
@@ -148,20 +149,17 @@ public class MessageService {
         final Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new NotFoundMessageException(messageId));
         validateAuthor(memberId, message);
-        messageRepository.update(
-                messageId,
-                messageUpdateRequestDto.getColor(),
-                messageUpdateRequestDto.getContent(),
-                messageUpdateRequestDto.isAnonymous(),
-                messageUpdateRequestDto.isSecret()
-        );
+        message.changeContent(messageUpdateRequestDto.getContent());
+        message.changeColor(messageUpdateRequestDto.getColor());
+        message.changeAnonymous(messageUpdateRequestDto.isAnonymous());
+        message.changeSecret(messageUpdateRequestDto.isSecret());
     }
 
     public void deleteMessage(final Long messageId, final Long memberId) {
         final Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new NotFoundMessageException(messageId));
         validateAuthor(memberId, message);
-        messageRepository.delete(messageId);
+        messageRepository.deleteById(messageId);
     }
 
     private void validateAuthor(final Long memberId, final Message message) {
