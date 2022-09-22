@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
@@ -53,38 +52,27 @@ public class MessageRepositoryImpl implements MessageRepositoryCustom {
     private JPAQuery<WrittenMessageResponseDto> getQueryWhenFindAllByAuthorId(final Long authorId) {
         return queryFactory
                 .select(makeProjections())
-                .from(message)
-                .from(rollingpaper)
-                .from(team)
-                .from(teamParticipation)
-                .where(isAuthorIdEq(authorId)
-                        .and(message.rollingpaper.id.eq(rollingpaper.id))
-                        .and(teamParticipation.team.id.eq(team.id))
-                        .and(message.rollingpaper.team.id.eq(team.id))
+                .distinct()
+                .from(message, rollingpaper, team, teamParticipation)
+                .where(message.rollingpaper.id.eq(rollingpaper.id)
                         .and(rollingpaper.team.id.eq(team.id))
-                        .and(message.rollingpaper.member.id.isNull()
-                                .or(message.rollingpaper.member.id.eq(teamParticipation.member.id))
-                        )
-                )
-                .distinct();
+                        .and(teamParticipation.id.eq(team.id))
+                        .and(message.author.id.eq(authorId))
+                        .and(teamParticipation.member.id.eq(rollingpaper.id)
+                                .or(rollingpaper.member.id.isNull())));
     }
 
     private JPAQuery<Long> getCountQueryWhenFindAllByAuthorId(final Long authorId) {
         return queryFactory
                 .select(message.count())
-                .from(message)
-                .from(rollingpaper)
-                .from(team)
-                .from(teamParticipation)
-                .where(isAuthorIdEq(authorId)
-                        .and(message.rollingpaper.id.eq(rollingpaper.id))
-                        .and(teamParticipation.team.id.eq(team.id))
+                .distinct()
+                .from(message, rollingpaper, team, teamParticipation)
+                .where(message.rollingpaper.id.eq(rollingpaper.id)
                         .and(rollingpaper.team.id.eq(team.id))
-                        .and(message.rollingpaper.member.id.isNull()
-                                .or(message.rollingpaper.member.id.eq(teamParticipation.member.id))
-                        )
-                )
-                .distinct();
+                        .and(teamParticipation.id.eq(team.id))
+                        .and(message.author.id.eq(authorId))
+                        .and(teamParticipation.member.id.eq(rollingpaper.id)
+                                .or(rollingpaper.member.id.isNull())));
     }
 
     private ConstructorExpression<WrittenMessageResponseDto> makeProjections() {
