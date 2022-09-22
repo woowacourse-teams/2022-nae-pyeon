@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
@@ -15,7 +15,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
     open-in-view: false
   flyway:
-    enabled: false
+    enabled: true
     baseline-on-migrate: true
 
 security:
