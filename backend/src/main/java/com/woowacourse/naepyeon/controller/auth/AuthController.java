@@ -24,4 +24,11 @@ public class AuthController {
                 authService.createTokenWithKakaoOauth(tokenRequest.toServiceRequest());
         return ResponseEntity.ok(tokenResponseDto);
     }
+
+    @PostMapping("/google")
+    public ResponseEntity<TokenResponseDto> googleLogin(@RequestBody @Valid final TokenRequest tokenRequest) {
+        final TokenResponseDto tokenResponseDto =
+                authService.createTokenWithGoogleOauth(tokenRequest.toServiceRequest());
+        return ResponseEntity.ok(tokenResponseDto);
+    }
 }

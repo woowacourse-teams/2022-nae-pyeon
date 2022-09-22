@@ -2,3 +2,6 @@
 
 === 카카오 Oauth
 operation::auth-controller-test/kakao-login[snippets='http-request,http-response']
+
+=== 구글 Oauth
+operation::auth-controller-test/google-login[snippets='http-request,http-response']

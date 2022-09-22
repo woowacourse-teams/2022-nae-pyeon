@@ -39,6 +39,11 @@ const KAKAO_OAUTH_URL = {
     'https://kapi.kakao.com/v2/user/me?secure_resource=true&property_keys=["kakao_account.profile","kakao_account.email"]',
 };
 
+const GOOGLE_OAUTH_URL = {
+  AUTHORIZE_CODE: (inviteToken = "") =>
+    `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_SECRET}&redirect_uri=${process.env.GOOGLE_REDIRECT_URL}&scope=https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile&response_type=code&state=${inviteToken}`,
+};
+
 const RECIPIENT = {
   TEAM: "TEAM",
   MEMBER: "MEMBER",
@@ -52,5 +57,6 @@ export {
   MYPAGE_MESSAGE_PAGING_COUNT,
   SOCIAL_LOGIN_PLATFORM,
   KAKAO_OAUTH_URL,
+  GOOGLE_OAUTH_URL,
   RECIPIENT,
 };
