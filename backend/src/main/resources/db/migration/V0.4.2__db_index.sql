@@ -1,5 +1,3 @@
-CREATE INDEX member_email_index ON member (email);
-
 CREATE INDEX member_oauth_index ON member (platform, platform_id);
 
 CREATE INDEX message_rollingpaper_index ON message (rollingpaper_id);

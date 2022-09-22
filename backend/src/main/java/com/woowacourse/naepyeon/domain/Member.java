@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @Table(name = "member", indexes = {
-        @Index(name = "member_email_index", columnList = "email"),
         @Index(name = "member_oauth_index", columnList = "platform, platform_id")
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
