@@ -4,11 +4,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.config.JpaAuditingConfig;
+import com.woowacourse.naepyeon.config.QueryDslConfig;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
+import com.woowacourse.naepyeon.repository.member.MemberRepository;
+import com.woowacourse.naepyeon.repository.rollingpaper.RollingpaperRepository;
+import com.woowacourse.naepyeon.repository.team.TeamRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +26,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 @DataJpaTest
-@Import(JpaAuditingConfig.class)
+@Import({JpaAuditingConfig.class, QueryDslConfig.class})
 class RollingpaperRepositoryTest {
 
     private static final String rollingPaperTitle = "AlexAndKei";
@@ -86,17 +90,6 @@ class RollingpaperRepositoryTest {
         final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByTeamId(team.getId());
 
         assertThat(rollingpapers).hasSize(2);
-    }
-
-    @Test
-    @DisplayName("롤링페이퍼들을 memberId로 찾는다.")
-    void findByMemberId() {
-        final Rollingpaper rollingPaper1 = createRollingPaper();
-        rollingpaperRepository.save(rollingPaper1);
-
-        final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByMemberId(member.getId());
-
-        assertThat(rollingpapers).hasSize(1);
     }
 
     @Test

@@ -4,7 +4,7 @@ import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.naepyeon.repository.MemberRepository;
+import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.service.AuthService;
 import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;

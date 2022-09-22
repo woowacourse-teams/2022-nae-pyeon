@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.config.JpaAuditingConfig;
+import com.woowacourse.naepyeon.config.QueryDslConfig;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Message;
 import com.woowacourse.naepyeon.domain.Platform;
@@ -11,6 +12,11 @@ import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
+import com.woowacourse.naepyeon.repository.member.MemberRepository;
+import com.woowacourse.naepyeon.repository.message.MessageRepository;
+import com.woowacourse.naepyeon.repository.rollingpaper.RollingpaperRepository;
+import com.woowacourse.naepyeon.repository.team.TeamRepository;
+import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +31,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 @DataJpaTest
-@Import(JpaAuditingConfig.class)
+@Import({JpaAuditingConfig.class, QueryDslConfig.class})
 class MessageRepositoryTest {
 
     private static final String content = "안녕하세요😁";
@@ -119,18 +125,24 @@ class MessageRepositoryTest {
         messageRepository.save(message4);
         final Message message5 = createMessage();
         messageRepository.save(message5);
+        final List<WrittenMessageResponseDto> expected = List.of(
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message3),
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message4)
+        );
 
         final Page<WrittenMessageResponseDto> writtenMessageResponseDtos =
                 messageRepository.findAllByAuthorId(author.getId(), PageRequest.of(1, 2));
         final List<WrittenMessageResponseDto> actual = writtenMessageResponseDtos.getContent();
 
-        assertThat(actual).hasSize(2);
+        assertThat(actual)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
     }
 
     @Test
     @DisplayName("메시지를 id값을 통해 삭제한다.")
     void delete() {
-        final Member member = memberRepository.findByEmail(author.getEmail())
+        final Member member = memberRepository.findById(author.getId())
                 .orElseThrow();
         final Message message = new Message(content, "green", member, rollingpaper, false, false);
         final Long messageId = messageRepository.save(message)

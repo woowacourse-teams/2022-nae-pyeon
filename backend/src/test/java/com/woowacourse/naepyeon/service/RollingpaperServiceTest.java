@@ -7,7 +7,7 @@ import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.NotFoundRollingpaperException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamMemberException;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
-import com.woowacourse.naepyeon.repository.RollingpaperRepository;
+import com.woowacourse.naepyeon.repository.rollingpaper.RollingpaperRepository;
 import com.woowacourse.naepyeon.service.dto.ReceivedRollingpaperResponseDto;
 import com.woowacourse.naepyeon.service.dto.ReceivedRollingpapersResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperPreviewResponseDto;

@@ -3,8 +3,10 @@ package com.woowacourse.naepyeon.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.naepyeon.config.JpaAuditingConfig;
+import com.woowacourse.naepyeon.config.QueryDslConfig;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
+import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +16,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import(JpaAuditingConfig.class)
+@Import({JpaAuditingConfig.class, QueryDslConfig.class})
 class MemberRepositoryTest {
 
     @Autowired
@@ -40,6 +42,22 @@ class MemberRepositoryTest {
                 .extracting("id", "username", "email", "platform", "platformId")
                 .containsExactly(memberId, "seungpang", "email@email.com", member.getPlatform(),
                         member.getPlatformId());
+    }
+
+    @Test
+    @DisplayName("회원을 가입 플랫폼 및 플랫폼 ID로 찾는다.")
+    void findMemberIdByPlatformAndPlatformId() {
+        // given
+        final Member member = new Member("seungpang", "email@email.com", Platform.KAKAO, "1");
+        final Long memberId = memberRepository.save(member)
+                .getId();
+
+        // when
+        final Long findMemberId = memberRepository.findMemberIdByPlatformAndPlatformId(Platform.KAKAO, "1")
+                .orElseThrow();
+
+        // then
+        assertThat(memberId).isEqualTo(findMemberId);
     }
 
     @Test

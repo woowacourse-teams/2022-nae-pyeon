@@ -3,6 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'org.asciidoctor.jvm.convert' version '3.3.2'
 	id 'org.sonarqube' version '3.4.0.2513'
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 	id 'java'
 	id 'jacoco'
 }
@@ -37,6 +38,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.flywaydb:flyway-core:6.4.2'
 	implementation 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
+	implementation "com.querydsl:querydsl-jpa:5.0.0"
+	annotationProcessor "com.querydsl:querydsl-apt:5.0.0"
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2:1.4.200'
 	runtimeOnly 'mysql:mysql-connector-java'
@@ -99,3 +103,20 @@ sonarqube {
 		property "sonar.projectKey", "woowacourse-teams_2022-nae-pyeon_AYKuzmWfelLz0D2BhgWj"
 	}
 }
+
+// script for querydsl
+def querydslDir = "$buildDir/generated/querydsl"
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+sourceSets {
+	main.java.srcDir querydslDir
+}
+configurations {
+	querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+//querydsl 추가 끝

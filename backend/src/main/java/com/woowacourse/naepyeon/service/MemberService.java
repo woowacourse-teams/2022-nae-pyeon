@@ -3,7 +3,7 @@ package com.woowacourse.naepyeon.service;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
-import com.woowacourse.naepyeon.repository.MemberRepository;
+import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
