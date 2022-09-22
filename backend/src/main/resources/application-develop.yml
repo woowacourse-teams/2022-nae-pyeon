@@ -4,6 +4,8 @@ spring:
     password: ${MYSQL_PASSWORD}
     username: ${MYSQL_USERNAME}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: ${MAX_CONNECTION_POOL_SIZE}
 
   jpa:
     hibernate:
@@ -38,9 +40,11 @@ google:
 
 server:
   tomcat:
-    accept-count: 10
+    accept-count: ${TOMCAT_ACCEPT_COUNT}
     threads:
       max: ${MAX_THREAD_POOL_SIZE}
+    max-connections: ${TOMCAT_MAX_CONNENCTIONS}
+
 
 logging:
   config: classpath:log4j2-develop.yml
