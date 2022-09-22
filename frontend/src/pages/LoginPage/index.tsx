@@ -39,10 +39,11 @@ const LoginPage = () => {
   const handleGoogleLoginButtonClick: React.MouseEventHandler<
     HTMLButtonElement
   > = () => {
-    const locationState = state as LoginPageLocationState;
-    const inviteToken = locationState?.inviteToken || "";
+    openSnackbar("준비 중! 🤗");
+    // const locationState = state as LoginPageLocationState;
+    // const inviteToken = locationState?.inviteToken || "";
 
-    location.href = GOOGLE_OAUTH_URL.AUTHORIZE_CODE(inviteToken);
+    // location.href = GOOGLE_OAUTH_URL.AUTHORIZE_CODE(inviteToken);
   };
 
   return (
