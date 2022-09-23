@@ -39,7 +39,7 @@ const App = () => {
 
   return (
     <PageContainer>
-      <ErrorBoundary fallback={<div>👻👻👻👻</div>}>
+      <ErrorBoundary fallback={<ErrorPage />}>
         <UserProvider
           initialData={
             data && {

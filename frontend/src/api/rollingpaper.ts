@@ -1,45 +1,34 @@
 import { appClient, requestApi } from "@/api";
 
-import { ApiOptions } from "@/types/api";
-
 import {
   GetRollingpaperRequest,
   PostTeamRollingpaperRequest,
   PostMemberRollingpaperRequest,
 } from "@/types/apiRequest";
 
-const getRollingpaper = async (
-  { teamId, id }: GetRollingpaperRequest,
-  options?: ApiOptions
-) =>
-  requestApi(
-    () => appClient.get(`/teams/${teamId}/rollingpapers/${id}`),
-    options
+const getRollingpaper = async ({ teamId, id }: GetRollingpaperRequest) =>
+  requestApi(() => appClient.get(`/teams/${teamId}/rollingpapers/${id}`));
+
+const postTeamRollingpaper = async ({
+  teamId,
+  title,
+}: PostTeamRollingpaperRequest) =>
+  requestApi(() =>
+    appClient.post(`/teams/${teamId}/team-rollingpapers`, {
+      title,
+    })
   );
 
-const postTeamRollingpaper = async (
-  { teamId, title }: PostTeamRollingpaperRequest,
-  options?: ApiOptions
-) =>
-  requestApi(
-    () =>
-      appClient.post(`/teams/${teamId}/team-rollingpapers`, {
-        title,
-      }),
-    options
-  );
-
-const postMemberRollingpaper = async (
-  { teamId, title, addresseeId }: PostMemberRollingpaperRequest,
-  options?: ApiOptions
-) =>
-  requestApi(
-    () =>
-      appClient.post(`/teams/${teamId}/rollingpapers`, {
-        title,
-        addresseeId,
-      }),
-    options
+const postMemberRollingpaper = async ({
+  teamId,
+  title,
+  addresseeId,
+}: PostMemberRollingpaperRequest) =>
+  requestApi(() =>
+    appClient.post(`/teams/${teamId}/rollingpapers`, {
+      title,
+      addresseeId,
+    })
   );
 
 export { getRollingpaper, postTeamRollingpaper, postMemberRollingpaper };

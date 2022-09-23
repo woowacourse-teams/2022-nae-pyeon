@@ -61,6 +61,13 @@ class MessageRepositoryTest {
             "#123456",
             false
     );
+    private final Team team2 = new Team(
+            "nae-pyeon2",
+            "테스트 모임입니다.",
+            "testEmoji",
+            "#123456",
+            false
+    );
     private final Member member = new Member("member", "email1@email.com", Platform.KAKAO, "1");
     private final Member author = new Member("author", "email2@email.com", Platform.KAKAO, "2");
     private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", Recipient.MEMBER, team, member);
@@ -68,6 +75,7 @@ class MessageRepositoryTest {
     @BeforeEach
     void setUp() {
         teamRepository.save(team);
+        teamRepository.save(team2);
         memberRepository.save(member);
         memberRepository.save(author);
         rollingpaperRepository.save(rollingpaper);
@@ -114,6 +122,10 @@ class MessageRepositoryTest {
         teamParticipationRepository.save(teamParticipation1);
         final TeamParticipation teamParticipation2 = new TeamParticipation(team, author, "작성자");
         teamParticipationRepository.save(teamParticipation2);
+        final TeamParticipation teamParticipation3 = new TeamParticipation(team2, member, "멤버");
+        teamParticipationRepository.save(teamParticipation3);
+        final TeamParticipation teamParticipation4 = new TeamParticipation(team2, author, "작성자");
+        teamParticipationRepository.save(teamParticipation4);
 
         final Message message1 = createMessage();
         messageRepository.save(message1);
@@ -125,18 +137,37 @@ class MessageRepositoryTest {
         messageRepository.save(message4);
         final Message message5 = createMessage();
         messageRepository.save(message5);
+        final Message message6 = createMessage();
+        messageRepository.save(message6);
+        final Message message7 = createMessage();
+        messageRepository.save(message7);
+        final Message message8 = createMessage();
+        messageRepository.save(message8);
+        final Message message9 = createMessage();
+        messageRepository.save(message9);
+        final Message message10 = createMessage();
+        messageRepository.save(message10);
+        final Message message11 = createMessage();
+        messageRepository.save(message11);
+        final Message message12 = createMessage();
+        messageRepository.save(message12);
         final List<WrittenMessageResponseDto> expected = List.of(
-                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message3),
-                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message4)
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message6),
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message7),
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message8),
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message9),
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message10)
         );
 
         final Page<WrittenMessageResponseDto> writtenMessageResponseDtos =
-                messageRepository.findAllByAuthorId(author.getId(), PageRequest.of(1, 2));
+                messageRepository.findAllByAuthorId(author.getId(), PageRequest.of(1, 5));
         final List<WrittenMessageResponseDto> actual = writtenMessageResponseDtos.getContent();
-
-        assertThat(actual)
-                .usingRecursiveComparison()
-                .isEqualTo(expected);
+        assertAll(
+                () -> assertThat(writtenMessageResponseDtos.getTotalElements()).isEqualTo(12),
+                () -> assertThat(actual)
+                        .usingRecursiveComparison()
+                        .isEqualTo(expected)
+        );
     }
 
     @Test
