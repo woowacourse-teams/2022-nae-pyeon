@@ -10,15 +10,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GoogleUserResponse {
 
-        private String id;
-        private String email;
-        private String verified_email;
-        private String name;
-        private String given_name;
-        private String picture;
-        private String locale;
+    private String id;
+    private String email;
+    private String verified_email;
+    private String name;
+    private String given_name;
+    private String picture;
+    private String locale;
 
-        public String getNickname() {
-                return given_name;
-        }
+    public String getNickname() {
+        return given_name;
+    }
 }

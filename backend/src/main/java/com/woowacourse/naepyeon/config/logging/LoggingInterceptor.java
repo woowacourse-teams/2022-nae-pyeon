@@ -19,7 +19,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
             throws Exception {
         final CustomCachingRequestWrapper cachingRequest;
         try {
-             cachingRequest = (CustomCachingRequestWrapper) request;
+            cachingRequest = (CustomCachingRequestWrapper) request;
         } catch (final ClassCastException e) {
             log.info("로깅 필터가 동작했는지 확인해주세요.");
             return true;

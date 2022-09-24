@@ -3,15 +3,18 @@ package com.woowacourse.naepyeon.service;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
+import com.woowacourse.naepyeon.domain.invitecode.InviteCode;
 import com.woowacourse.naepyeon.exception.DuplicateNicknameException;
 import com.woowacourse.naepyeon.exception.DuplicateTeamNameException;
 import com.woowacourse.naepyeon.exception.DuplicateTeamPaticipateException;
+import com.woowacourse.naepyeon.exception.InviteCodeExpiredException;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
+import com.woowacourse.naepyeon.repository.invitecode.InviteCodeRepository;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
-import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;
+import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.AllTeamsResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
@@ -19,10 +22,10 @@ import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamRequestDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
-import com.woowacourse.naepyeon.support.invitetoken.InviteTokenProvider;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +40,7 @@ public class TeamService {
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
     private final TeamParticipationRepository teamParticipationRepository;
-    private final InviteTokenProvider inviteTokenProvider;
+    private final InviteCodeRepository inviteCodeRepository;
 
     @Transactional
     public Long save(final TeamRequestDto teamRequestDto, final Long memberId) {
@@ -190,7 +193,9 @@ public class TeamService {
 
     public String createInviteToken(final Long teamId) {
         validateExistTeam(teamId);
-        return inviteTokenProvider.createInviteToken(teamId);
+        final InviteCode inviteCode = InviteCode.createdBy(teamId, () -> RandomStringUtils.randomAlphanumeric(10));
+        return inviteCodeRepository.save(inviteCode)
+                .getCode();
     }
 
     private void validateExistTeam(final Long teamId) {
@@ -199,17 +204,21 @@ public class TeamService {
         }
     }
 
-    public TeamResponseDto findTeamByInviteToken(final String inviteToken, final Long memberId) {
-        final Long teamId = inviteTokenProvider.getTeamId(inviteToken);
-        final Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new NotFoundTeamException(teamId));
-        return TeamResponseDto.of(team, isJoinedMember(memberId, teamId), team.isSecret());
+    public TeamResponseDto findTeamByInviteCode(final String code, final Long memberId) {
+        final InviteCode inviteCode = inviteCodeRepository.findByCode(code)
+                .filter(InviteCode::isAvailable)
+                .orElseThrow(InviteCodeExpiredException::new);
+        final Team team = teamRepository.findById(inviteCode.getTeamId())
+                .orElseThrow(() -> new NotFoundTeamException(inviteCode.getTeamId()));
+        return TeamResponseDto.of(team, isJoinedMember(memberId, inviteCode.getTeamId()), team.isSecret());
     }
 
     @Transactional
-    public Long inviteJoin(final String inviteToken, final Long memberId, final String nickname) {
-        final Long teamId = inviteTokenProvider.getTeamId(inviteToken);
+    public Long inviteJoin(final String code, final Long memberId, final String nickname) {
+        final InviteCode inviteCode = inviteCodeRepository.findByCode(code)
+                .filter(InviteCode::isAvailable)
+                .orElseThrow(InviteCodeExpiredException::new);
 
-        return joinMember(teamId, memberId, nickname);
+        return joinMember(inviteCode.getTeamId(), memberId, nickname);
     }
 }

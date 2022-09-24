@@ -15,7 +15,8 @@ class RollingpaperControllerTest extends TestSupport {
 
     @Test
     void createMemberRollingpaper() throws Exception {
-        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest = new CreateMemberRollingpaperRequest("어서오세요", memberId2);
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest = new CreateMemberRollingpaperRequest(
+                "어서오세요", memberId2);
         mockMvc.perform(
                         post("/api/v1/teams/{teamId}/rollingpapers", teamId)
                                 .header("Authorization", "Bearer " + accessToken)

@@ -13,16 +13,16 @@ import com.woowacourse.naepyeon.exception.DuplicateTeamPaticipateException;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
+import com.woowacourse.naepyeon.repository.invitecode.InviteCodeRepository;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
-import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;
+import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.AllTeamsResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamRequestDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
-import com.woowacourse.naepyeon.support.invitetoken.InviteTokenProvider;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,7 +52,7 @@ class TeamServiceTest {
     private TeamParticipationRepository teamParticipationRepository;
 
     @Autowired
-    private InviteTokenProvider inviteTokenProvider;
+    private InviteCodeRepository inviteCodeRepository;
 
     @BeforeEach
     void setUp() {
@@ -378,16 +378,6 @@ class TeamServiceTest {
     }
 
     @Test
-    @DisplayName("팀 id를 받아 해당 팀의 초대토큰을 생성한다.")
-    void createInviteToken() {
-        final String inviteToken = teamService.createInviteToken(team1.getId());
-
-        final Long tokenTeamId = inviteTokenProvider.getTeamId(inviteToken);
-
-        assertThat(tokenTeamId).isEqualTo(team1.getId());
-    }
-
-    @Test
     @DisplayName("존재하지 않는 팀의 초대토큰을 생성하려 할 경우 예외를 발생시킨다.")
     void createInviteTokenWithNotExistTeam() {
         assertThatThrownBy(() -> teamService.createInviteToken(9999L))
@@ -399,7 +389,7 @@ class TeamServiceTest {
     void getTeamByInviteToken() {
         final String inviteToken = teamService.createInviteToken(team1.getId());
 
-        final TeamResponseDto teamResponseDto = teamService.findTeamByInviteToken(inviteToken, member.getId());
+        final TeamResponseDto teamResponseDto = teamService.findTeamByInviteCode(inviteToken, member.getId());
 
         assertThat(teamResponseDto).extracting("id", "name", "description", "emoji", "color")
                 .containsExactly(
