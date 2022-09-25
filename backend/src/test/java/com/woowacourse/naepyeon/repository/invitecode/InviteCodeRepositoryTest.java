@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.repository.invitecode;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.naepyeon.config.JpaAuditingConfig;
@@ -8,7 +8,6 @@ import com.woowacourse.naepyeon.config.QueryDslConfig;
 import com.woowacourse.naepyeon.domain.invitecode.InviteCode;
 import java.time.LocalDateTime;
 import java.util.List;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
