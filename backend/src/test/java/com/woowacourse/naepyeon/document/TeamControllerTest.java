@@ -136,7 +136,7 @@ class TeamControllerTest extends TestSupport {
     }
 
     @Test
-    void createInviteToken() throws Exception {
+    void createInviteCode() throws Exception {
         mockMvc.perform(
                         post("/api/v1/teams/{teamId}/invite", teamId)
                                 .header("Authorization", "Bearer " + joinedMemberAccessToken)
@@ -146,7 +146,7 @@ class TeamControllerTest extends TestSupport {
     }
 
     @Test
-    void getTeamIdByInviteToken() throws Exception {
+    void getTeamIdByInviteCode() throws Exception {
         final InviteCode inviteCode = InviteCode.createdBy(teamId, () -> "abc");
         inviteCodeRepository.save(inviteCode);
         mockMvc.perform(

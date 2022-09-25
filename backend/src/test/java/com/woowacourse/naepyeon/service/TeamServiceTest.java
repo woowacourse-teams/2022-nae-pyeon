@@ -378,18 +378,18 @@ class TeamServiceTest {
     }
 
     @Test
-    @DisplayName("존재하지 않는 팀의 초대토큰을 생성하려 할 경우 예외를 발생시킨다.")
-    void createInviteTokenWithNotExistTeam() {
-        assertThatThrownBy(() -> teamService.createInviteToken(9999L))
+    @DisplayName("존재하지 않는 팀의 초대코드를 생성하려 할 경우 예외를 발생시킨다.")
+    void createInviteCodeWithNotExistTeam() {
+        assertThatThrownBy(() -> teamService.createInviteCode(9999L))
                 .isInstanceOf(NotFoundTeamException.class);
     }
 
     @Test
-    @DisplayName("초대 토큰으로 팀 정보를 조회한다.")
+    @DisplayName("초대 코드로 팀 정보를 조회한다.")
     void getTeamByInviteToken() {
-        final String inviteToken = teamService.createInviteToken(team1.getId());
+        final String inviteCode = teamService.createInviteCode(team1.getId());
 
-        final TeamResponseDto teamResponseDto = teamService.findTeamByInviteCode(inviteToken, member.getId());
+        final TeamResponseDto teamResponseDto = teamService.findTeamByInviteCode(inviteCode, member.getId());
 
         assertThat(teamResponseDto).extracting("id", "name", "description", "emoji", "color")
                 .containsExactly(
@@ -402,11 +402,11 @@ class TeamServiceTest {
     }
 
     @Test
-    @DisplayName("초대 토큰으로 멤버를 팀에 가입시킨다.")
+    @DisplayName("초대 코드로 멤버를 팀에 가입시킨다.")
     void inviteJoin() {
-        final String inviteToken = teamService.createInviteToken(team1.getId());
+        final String inviteCode = teamService.createInviteCode(team1.getId());
 
-        final Long teamParticipationId = teamService.inviteJoin(inviteToken, member.getId(), "가입할래요");
+        final Long teamParticipationId = teamService.inviteJoin(inviteCode, member.getId(), "가입할래요");
 
         final TeamParticipation teamParticipation = teamParticipationRepository.findById(teamParticipationId)
                 .orElseThrow();

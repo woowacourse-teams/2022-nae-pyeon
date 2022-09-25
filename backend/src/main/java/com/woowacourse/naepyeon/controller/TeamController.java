@@ -133,7 +133,7 @@ public class TeamController {
         if (!teamService.isJoinedMember(loginMemberRequest.getId(), teamId)) {
             throw new UncertificationTeamMemberException(teamId, loginMemberRequest.getId());
         }
-        final String inviteToken = teamService.createInviteToken(teamId);
+        final String inviteToken = teamService.createInviteCode(teamId);
         return ResponseEntity.ok(new InviteTokenResponse(inviteToken));
     }
 

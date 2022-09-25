@@ -25,13 +25,16 @@ import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -191,11 +194,16 @@ public class TeamService {
                 .anyMatch(team -> team.getId().equals(teamId));
     }
 
-    public String createInviteToken(final Long teamId) {
+    public String createInviteCode(final Long teamId) {
         validateExistTeam(teamId);
         final InviteCode inviteCode = InviteCode.createdBy(teamId, () -> RandomStringUtils.randomAlphanumeric(10));
-        return inviteCodeRepository.save(inviteCode)
-                .getCode();
+        try {
+            return inviteCodeRepository.save(inviteCode)
+                    .getCode();
+        } catch (final DataIntegrityViolationException e) {
+            log.debug("초대 코드 중복 키 발생, 재시도");
+            return createInviteCode(teamId);
+        }
     }
 
     private void validateExistTeam(final Long teamId) {

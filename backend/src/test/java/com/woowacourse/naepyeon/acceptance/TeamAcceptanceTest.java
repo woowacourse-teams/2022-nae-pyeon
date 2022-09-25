@@ -10,8 +10,8 @@ import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_생�
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_이름_수정;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_추가;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임에_가입한_회원_목록_조회;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.초대_토큰_생성;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.초대_토큰으로_팀_상세_조회;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.초대_코드_생성;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.초대_코드로_팀_상세_조회;
 import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.키워드로_모든_모임_조회;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -420,10 +420,10 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @DisplayName("모임의 초대 코드를 생성하고 모임 정보를 얻는다.")
     void findTeamByInviteToken() {
         final Long teamId = 모임_생성(alex);
-        final String inviteToken = 초대_토큰_생성(alex, teamId).as(InviteTokenResponse.class)
+        final String inviteCode = 초대_코드_생성(alex, teamId).as(InviteTokenResponse.class)
                 .getInviteToken();
 
-        final ExtractableResponse<Response> response = 초대_토큰으로_팀_상세_조회(alex, inviteToken);
+        final ExtractableResponse<Response> response = 초대_코드로_팀_상세_조회(alex, inviteCode);
         final Long findTeamId = response.as(TeamResponseDto.class)
                 .getId();
 
@@ -440,7 +440,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
         final InviteCode expiredInviteToken = new InviteCode(null, "abc", teamId, LocalDateTime.now().minusHours(1));
         inviteCodeRepository.save(expiredInviteToken);
 
-        final ExtractableResponse<Response> response = 초대_토큰으로_팀_상세_조회(alex, expiredInviteToken.getCode());
+        final ExtractableResponse<Response> response = 초대_코드로_팀_상세_조회(alex, expiredInviteToken.getCode());
         final ErrorResponse errorResponse = response.as(ErrorResponse.class);
 
         assertAll(
