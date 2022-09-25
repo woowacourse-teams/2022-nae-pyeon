@@ -22,13 +22,13 @@ public class InviteCode {
     @Column(name = "invite_code_id")
     private Long id;
 
-    @Column(name = "code", unique = true)
+    @Column(name = "code", unique = true, nullable = false)
     private String code;
 
-    @Column(name = "team_id", unique = true)
+    @Column(name = "team_id", nullable = false)
     private Long teamId;
 
-    @Column(name = "expired", unique = true)
+    @Column(name = "expired", nullable = false)
     private LocalDateTime expired;
 
     public InviteCode(final Long id, final String code, final Long teamId, final LocalDateTime expired) {
