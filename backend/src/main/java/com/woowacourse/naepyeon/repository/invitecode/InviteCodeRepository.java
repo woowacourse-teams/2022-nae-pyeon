@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface InviteCodeRepository extends JpaRepository<InviteCode, Long> {
 
@@ -13,5 +14,5 @@ public interface InviteCodeRepository extends JpaRepository<InviteCode, Long> {
 
     @Query("delete from InviteCode ic where ic.expired < :now")
     @Modifying(clearAutomatically = true, flushAutomatically = true)
-    int deleteExpired(final LocalDateTime now);
+    int deleteExpired(@Param("now") final LocalDateTime now);
 }
