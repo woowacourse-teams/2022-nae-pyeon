@@ -38,10 +38,10 @@ public class DataSourceConfig {
     @Bean
     public DataSource routingDataSource() {
         final RoutingDataSource routingDataSource = new RoutingDataSource();
-
         final HashMap<Object, Object> dataSources = new HashMap<>();
+
         dataSources.put(DatabaseType.SOURCE, sourceDataSource());
-        dataSources.put(DatabaseType.REPLICA, sourceDataSource());
+        dataSources.put(DatabaseType.REPLICA, replicaDataSource());
 
         routingDataSource.setDefaultTargetDataSource(sourceDataSource());
         routingDataSource.setTargetDataSources(dataSources);
