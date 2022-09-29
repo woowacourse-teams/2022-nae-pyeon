@@ -22,11 +22,11 @@ import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamRequestDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
+import com.woowacourse.naepyeon.support.SecureRandomStringUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -194,10 +194,13 @@ public class TeamService {
                 .anyMatch(team -> team.getId().equals(teamId));
     }
 
+    @Transactional
     public String createInviteCode(final Long teamId) {
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
-        final InviteCode inviteCode = team.createInviteCode(() -> RandomStringUtils.randomAlphanumeric(10));
+        final InviteCode inviteCode = team.createInviteCode(
+                () -> SecureRandomStringUtils.createRandomAlphanumericSecure(10)
+        );
         try {
             return inviteCodeRepository.save(inviteCode)
                     .getCode();

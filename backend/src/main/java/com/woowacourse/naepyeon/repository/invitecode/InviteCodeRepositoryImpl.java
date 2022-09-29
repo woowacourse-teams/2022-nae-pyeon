@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.repository.invitecode;
 
-import static com.woowacourse.naepyeon.domain.invitecode.QInviteCode.*;
+import static com.woowacourse.naepyeon.domain.invitecode.QInviteCode.inviteCode;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.naepyeon.domain.invitecode.InviteCode;
@@ -24,8 +24,8 @@ public class InviteCodeRepositoryImpl implements InviteCodeRepositoryCustom {
     public Optional<InviteCode> findByCode(final String code) {
         return Optional.ofNullable(
                 queryFactory.selectFrom(inviteCode)
-                .where(inviteCode.code.eq(code))
-                .fetchOne()
+                        .where(inviteCode.code.eq(code))
+                        .fetchOne()
         );
     }
 }
