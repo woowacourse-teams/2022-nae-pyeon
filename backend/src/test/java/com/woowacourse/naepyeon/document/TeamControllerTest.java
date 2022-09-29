@@ -10,6 +10,7 @@ import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
+import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.invitecode.InviteCode;
 import com.woowacourse.naepyeon.repository.invitecode.InviteCodeRepository;
 import org.junit.jupiter.api.Test;
@@ -147,7 +148,8 @@ class TeamControllerTest extends TestSupport {
 
     @Test
     void getTeamIdByInviteCode() throws Exception {
-        final InviteCode inviteCode = InviteCode.createdBy(teamId, () -> "abc");
+        final Team team = teamRepository.findById(teamId).get();
+        final InviteCode inviteCode = InviteCode.createdBy(team, () -> "abc");
         inviteCodeRepository.save(inviteCode);
         mockMvc.perform(
                         get("/api/v1/teams/invite?inviteToken=" + inviteCode.getCode())
@@ -159,7 +161,8 @@ class TeamControllerTest extends TestSupport {
 
     @Test
     void inviteJoin() throws Exception {
-        final InviteCode inviteCode = InviteCode.createdBy(teamId, () -> "abc");
+        final Team team = teamRepository.findById(teamId).get();
+        final InviteCode inviteCode = InviteCode.createdBy(team, () -> "abc");
         inviteCodeRepository.save(inviteCode);
         final InviteJoinRequest inviteJoinRequest = new InviteJoinRequest(inviteCode.getCode(), "모임가입닉네임");
         mockMvc.perform(

@@ -22,6 +22,7 @@ import com.woowacourse.naepyeon.controller.dto.InviteTokenResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
+import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.invitecode.InviteCode;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
@@ -437,7 +438,8 @@ class TeamAcceptanceTest extends AcceptanceTest {
     @DisplayName("유효시간이 지난 초대코드로 모임 정보를 요청시 예외가 발생한다.")
     void findTeamByInviteTokenWithExpiredToken() {
         final Long teamId = 모임_생성(alex);
-        final InviteCode expiredInviteToken = new InviteCode(null, "abc", teamId, LocalDateTime.now().minusHours(1));
+        final Team team = teamRepository.findById(teamId).get();
+        final InviteCode expiredInviteToken = new InviteCode(null, "abc", LocalDateTime.now().minusHours(1), team);
         inviteCodeRepository.save(expiredInviteToken);
 
         final ExtractableResponse<Response> response = 초대_코드로_팀_상세_조회(alex, expiredInviteToken.getCode());

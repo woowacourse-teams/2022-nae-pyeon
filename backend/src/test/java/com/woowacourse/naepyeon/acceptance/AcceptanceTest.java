@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.naepyeon.acceptance.support.DatabaseCleaner;
 import com.woowacourse.naepyeon.repository.invitecode.InviteCodeRepository;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
+import com.woowacourse.naepyeon.repository.team.TeamRepository;
 import com.woowacourse.naepyeon.service.AuthService;
 import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
@@ -45,6 +46,8 @@ public class AcceptanceTest {
     protected DatabaseCleaner databaseCleaner;
     @Autowired
     protected InviteCodeRepository inviteCodeRepository;
+    @Autowired
+    protected TeamRepository teamRepository;
 
     @LocalServerPort
     int port;
