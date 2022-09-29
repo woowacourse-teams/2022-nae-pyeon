@@ -149,7 +149,7 @@ class TeamControllerTest extends TestSupport {
     @Test
     void getTeamIdByInviteCode() throws Exception {
         final Team team = teamRepository.findById(teamId).get();
-        final InviteCode inviteCode = InviteCode.createdBy(team, () -> "abc");
+        final InviteCode inviteCode = team.createInviteCode(() -> "abc");
         inviteCodeRepository.save(inviteCode);
         mockMvc.perform(
                         get("/api/v1/teams/invite?inviteToken=" + inviteCode.getCode())
@@ -162,7 +162,7 @@ class TeamControllerTest extends TestSupport {
     @Test
     void inviteJoin() throws Exception {
         final Team team = teamRepository.findById(teamId).get();
-        final InviteCode inviteCode = InviteCode.createdBy(team, () -> "abc");
+        final InviteCode inviteCode = team.createInviteCode(() -> "abc");
         inviteCodeRepository.save(inviteCode);
         final InviteJoinRequest inviteJoinRequest = new InviteJoinRequest(inviteCode.getCode(), "모임가입닉네임");
         mockMvc.perform(

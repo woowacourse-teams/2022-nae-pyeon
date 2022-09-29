@@ -1,11 +1,18 @@
 package com.woowacourse.naepyeon.domain;
 
+import com.woowacourse.naepyeon.domain.invitecode.InviteCode;
+import com.woowacourse.naepyeon.domain.invitecode.InviteCodeGenerator;
 import com.woowacourse.naepyeon.exception.ExceedTeamNameLengthException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -39,6 +46,9 @@ public class Team extends BaseEntity {
     @Column(name = "secret", nullable = false)
     private boolean secret;
 
+    @OneToMany(mappedBy = "team", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private final List<InviteCode> inviteCodes = new ArrayList<>();
+
     public Team(final String name, final String description, final String emoji, final String color,
                 final boolean secret) {
         validateTeam(name);
@@ -58,5 +68,11 @@ public class Team extends BaseEntity {
         if (name.length() > MAX_TEAMNAME_LENGTH) {
             throw new ExceedTeamNameLengthException(name);
         }
+    }
+
+    public InviteCode createInviteCode(final InviteCodeGenerator inviteCodeGenerator) {
+        final InviteCode inviteCode = InviteCode.createdBy(this, inviteCodeGenerator);
+        this.inviteCodes.add(inviteCode);
+        return inviteCode;
     }
 }

@@ -53,8 +53,8 @@ class InviteCodeRepositoryTest {
     @Test
     @DisplayName("중복된 코드를 저장시 예외가 발생한다.")
     void saveDuplicate() {
-        final InviteCode inviteCode1 = InviteCode.createdBy(team1, () -> "duplicate");
-        final InviteCode inviteCode2 = InviteCode.createdBy(team2, () -> "duplicate");
+        final InviteCode inviteCode1 = team1.createInviteCode(() -> "duplicate");
+        final InviteCode inviteCode2 = team2.createInviteCode(() -> "duplicate");
 
         inviteCodeRepository.save(inviteCode1);
 

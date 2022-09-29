@@ -197,7 +197,7 @@ public class TeamService {
     public String createInviteCode(final Long teamId) {
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
-        final InviteCode inviteCode = InviteCode.createdBy(team, () -> RandomStringUtils.randomAlphanumeric(10));
+        final InviteCode inviteCode = team.createInviteCode(() -> RandomStringUtils.randomAlphanumeric(10));
         try {
             return inviteCodeRepository.save(inviteCode)
                     .getCode();
