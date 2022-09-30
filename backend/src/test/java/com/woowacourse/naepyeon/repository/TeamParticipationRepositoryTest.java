@@ -136,7 +136,7 @@ class TeamParticipationRepositoryTest {
         teamParticipationRepository.save(teamParticipation1);
 
         final String actual =
-                teamParticipationRepository.findNicknameByMemberIdAndTeamId(member1.getId(), team1.getId());
+                teamParticipationRepository.findNicknameByTeamIdAndMemberId(team1.getId(), member1.getId());
 
         assertThat(actual).isEqualTo(expected);
     }

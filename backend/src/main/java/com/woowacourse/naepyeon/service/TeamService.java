@@ -10,8 +10,8 @@ import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
-import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;
+import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.AllTeamsResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
@@ -158,7 +158,7 @@ public class TeamService {
 
     public TeamMemberResponseDto findMyInfoInTeam(final Long teamId, final Long memberId) {
         checkMemberNotIncludedTeam(teamId, memberId);
-        final String nickname = teamParticipationRepository.findNicknameByMemberIdAndTeamId(memberId, teamId);
+        final String nickname = teamParticipationRepository.findNicknameByTeamIdAndMemberId(teamId, memberId);
         return new TeamMemberResponseDto(nickname);
     }
 

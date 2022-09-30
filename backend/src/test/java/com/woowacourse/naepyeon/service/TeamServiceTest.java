@@ -14,8 +14,8 @@ import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
-import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;
+import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.AllTeamsResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
@@ -342,8 +342,8 @@ class TeamServiceTest {
 
         teamService.updateMyInfo(team2.getId(), member2.getId(), expected);
 
-        final String actual = teamParticipationRepository.findNicknameByMemberIdAndTeamId(member2.getId(),
-                team2.getId());
+        final String actual =
+                teamParticipationRepository.findNicknameByTeamIdAndMemberId(team2.getId(), member2.getId());
         assertThat(actual).isEqualTo(expected);
     }
 

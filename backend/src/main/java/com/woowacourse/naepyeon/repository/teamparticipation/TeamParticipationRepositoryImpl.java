@@ -69,9 +69,8 @@ public class TeamParticipationRepositoryImpl implements TeamParticipationReposit
         return PageableExecutionUtils.getPage(content, pageRequest, countQuery::fetchOne);
     }
 
-
     @Override
-    public String findNicknameByMemberIdAndTeamId(final Long memberId, final Long teamId) {
+    public String findNicknameByTeamIdAndMemberId(final Long teamId, final Long memberId) {
         return queryFactory
                 .select(teamParticipation.nickname)
                 .from(teamParticipation)

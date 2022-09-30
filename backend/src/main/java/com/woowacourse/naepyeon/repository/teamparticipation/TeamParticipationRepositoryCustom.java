@@ -16,7 +16,7 @@ public interface TeamParticipationRepositoryCustom {
 
     Page<Team> findTeamsByMemberId(final Long memberId, final Pageable pageRequest);
 
-    String findNicknameByMemberIdAndTeamId(final Long memberId, final Long teamId);
+    String findNicknameByTeamIdAndMemberId(final Long teamId, final Long memberId);
 
     List<String> findAllNicknamesByTeamId(final Long teamId);
 
