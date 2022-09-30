@@ -19,6 +19,7 @@ import com.woowacourse.naepyeon.repository.team.TeamRepository;
 import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -70,7 +71,12 @@ class MessageRepositoryTest {
     );
     private final Member member = new Member("member", "email1@email.com", Platform.KAKAO, "1");
     private final Member author = new Member("author", "email2@email.com", Platform.KAKAO, "2");
-    private final Rollingpaper rollingpaper = new Rollingpaper("AlexAndKei", Recipient.MEMBER, team, member);
+    private final TeamParticipation teamParticipation1 = new TeamParticipation(team, member, "멤버");
+    private final TeamParticipation teamParticipation2 = new TeamParticipation(team, author, "작성자");
+    private final TeamParticipation teamParticipation3 = new TeamParticipation(team2, member, "멤버");
+    private final TeamParticipation teamParticipation4 = new TeamParticipation(team2, author, "작성자");
+    private final Rollingpaper rollingpaper =
+            new Rollingpaper("AlexAndKei", Recipient.MEMBER, team, member, teamParticipation1);
 
     @BeforeEach
     void setUp() {
@@ -78,6 +84,10 @@ class MessageRepositoryTest {
         teamRepository.save(team2);
         memberRepository.save(member);
         memberRepository.save(author);
+        teamParticipationRepository.save(teamParticipation1);
+        teamParticipationRepository.save(teamParticipation2);
+        teamParticipationRepository.save(teamParticipation3);
+        teamParticipationRepository.save(teamParticipation4);
         rollingpaperRepository.save(rollingpaper);
     }
 
@@ -118,45 +128,24 @@ class MessageRepositoryTest {
     @Test
     @DisplayName("본인이 작성한 메시지들을 찾는다.")
     void findAllByMemberIdAndPageRequest() {
-        final TeamParticipation teamParticipation1 = new TeamParticipation(team, member, "멤버");
-        teamParticipationRepository.save(teamParticipation1);
-        final TeamParticipation teamParticipation2 = new TeamParticipation(team, author, "작성자");
-        teamParticipationRepository.save(teamParticipation2);
-        final TeamParticipation teamParticipation3 = new TeamParticipation(team2, member, "멤버");
-        teamParticipationRepository.save(teamParticipation3);
-        final TeamParticipation teamParticipation4 = new TeamParticipation(team2, author, "작성자");
-        teamParticipationRepository.save(teamParticipation4);
+        final TeamParticipation teamParticipation5 = new TeamParticipation(team, null, team.getName());
+        teamParticipationRepository.save(teamParticipation5);
+        final Rollingpaper rollingpaper2 =
+                new Rollingpaper("AlexAndKei2", Recipient.TEAM, team, member, teamParticipation5);
+        rollingpaperRepository.save(rollingpaper2);
 
-        final Message message1 = createMessage();
-        messageRepository.save(message1);
-        final Message message2 = createMessage();
-        messageRepository.save(message2);
-        final Message message3 = createMessage();
-        messageRepository.save(message3);
-        final Message message4 = createMessage();
-        messageRepository.save(message4);
-        final Message message5 = createMessage();
-        messageRepository.save(message5);
-        final Message message6 = createMessage();
-        messageRepository.save(message6);
-        final Message message7 = createMessage();
-        messageRepository.save(message7);
-        final Message message8 = createMessage();
-        messageRepository.save(message8);
-        final Message message9 = createMessage();
-        messageRepository.save(message9);
-        final Message message10 = createMessage();
-        messageRepository.save(message10);
-        final Message message11 = createMessage();
-        messageRepository.save(message11);
-        final Message message12 = createMessage();
-        messageRepository.save(message12);
+        final List<Message> messages = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            final Message message = new Message(content, "green", author, rollingpaper, false, false);
+            messages.add(message);
+            messageRepository.save(message);
+        }
         final List<WrittenMessageResponseDto> expected = List.of(
-                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message6),
-                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message7),
-                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message8),
-                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message9),
-                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", message10)
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", messages.get(5)),
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", messages.get(6)),
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", messages.get(7)),
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", messages.get(8)),
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", messages.get(9))
         );
 
         final Page<WrittenMessageResponseDto> writtenMessageResponseDtos =
