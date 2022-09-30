@@ -2,6 +2,7 @@ package com.woowacourse.naepyeon.document;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.naepyeon.config.DatabaseCleaner;
 import com.woowacourse.naepyeon.config.logging.RequestBodyWrappingFilter;
 import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.MessageService;
@@ -22,14 +23,12 @@ import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(RestDocumentationExtension.class)
 @Import(RestDocsConfiguration.class)
 @AutoConfigureTestDatabase
-@Transactional
 public abstract class TestSupport {
 
     @Autowired
@@ -53,6 +52,9 @@ public abstract class TestSupport {
     @Autowired
     protected MessageService messageService;
 
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
+
     protected MockMvc mockMvc;
     protected String accessToken;
     protected String joinedMemberAccessToken;
@@ -70,6 +72,7 @@ public abstract class TestSupport {
             final WebApplicationContext context,
             final RestDocumentationContextProvider provider
     ) {
+        databaseCleaner.execute();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
                 .addFilters(new RequestBodyWrappingFilter())

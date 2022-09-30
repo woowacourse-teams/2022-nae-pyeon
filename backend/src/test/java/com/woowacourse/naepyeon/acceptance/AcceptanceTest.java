@@ -10,7 +10,7 @@ import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
-import com.woowacourse.naepyeon.acceptance.support.DatabaseCleaner;
+import com.woowacourse.naepyeon.config.DatabaseCleaner;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
 import com.woowacourse.naepyeon.support.invitetoken.InviteTokenProvider;
 import com.woowacourse.naepyeon.support.invitetoken.aes.Aes256InviteTokenProvider;

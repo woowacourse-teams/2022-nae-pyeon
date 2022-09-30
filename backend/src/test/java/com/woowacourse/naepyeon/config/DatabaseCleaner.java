@@ -1,4 +1,4 @@
-package com.woowacourse.naepyeon.acceptance.support;
+package com.woowacourse.naepyeon.config;
 
 import java.util.List;
 import java.util.stream.Collectors;
