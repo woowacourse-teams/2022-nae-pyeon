@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface TeamParticipationRepositoryCustom {
 
+    TeamParticipation findByTeamIdAndMemberId(final Long teamId, final Long memberId);
+
     List<TeamParticipation> findByTeamId(final Long teamId);
 
     List<Team> findTeamsByMemberId(final Long memberId);

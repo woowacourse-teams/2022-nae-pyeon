@@ -124,8 +124,7 @@ class RollingpaperServiceTest {
                 rollingpaperService.createMemberRollingpaper(ROLLINGPAPER_TITLE, teamId, member2Id, memberId);
         final Long rollingpaperId2 =
                 rollingpaperService.createTeamRollingpaper(ROLLINGPAPER_TITLE, teamId, member2Id);
-        final List<RollingpaperPreviewResponseDto> expected = convertPreviewDto(rollingpaperId1, rollingpaperId2,
-                teamId);
+        final List<RollingpaperPreviewResponseDto> expected = convertPreviewDto(rollingpaperId1, rollingpaperId2);
 
         // when
         final RollingpapersResponseDto responseDto = rollingpaperService.findByTeamId(teamId, memberId);
@@ -138,18 +137,17 @@ class RollingpaperServiceTest {
     }
 
     private List<RollingpaperPreviewResponseDto> convertPreviewDto(final Long rollingpaperId1,
-                                                                   final Long rollingpaperId2,
-                                                                   final Long teamId) {
+                                                                   final Long rollingpaperId2) {
         final Rollingpaper rollingpaper1 = rollingpaperRepository.findById(rollingpaperId1).orElseThrow();
         final Rollingpaper rollingpaper2 = rollingpaperRepository.findById(rollingpaperId2).orElseThrow();
         return List.of(
                 RollingpaperPreviewResponseDto.createPreviewRollingpaper(
                         rollingpaper1,
-                        rollingpaperService.findRollingpaperAddresseeNickname(rollingpaper1, teamId)
+                        rollingpaperRepository.findAddresseeNicknameByRollingpaperId(rollingpaperId1)
                 ),
                 RollingpaperPreviewResponseDto.createPreviewRollingpaper(
                         rollingpaper2,
-                        rollingpaperService.findRollingpaperAddresseeNickname(rollingpaper2, teamId)
+                        rollingpaperRepository.findAddresseeNicknameByRollingpaperId(rollingpaperId2)
                 )
         );
     }

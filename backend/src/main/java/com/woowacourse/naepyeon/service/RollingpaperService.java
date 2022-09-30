@@ -1,9 +1,8 @@
 package com.woowacourse.naepyeon.service;
 
-import static com.woowacourse.naepyeon.domain.rollingpaper.Recipient.MEMBER;
-
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
@@ -13,8 +12,8 @@ import com.woowacourse.naepyeon.exception.NotFoundTeamMemberException;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.repository.rollingpaper.RollingpaperRepository;
-import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;
+import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.ReceivedRollingpaperResponseDto;
 import com.woowacourse.naepyeon.service.dto.ReceivedRollingpapersResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperPreviewResponseDto;
@@ -47,7 +46,9 @@ public class RollingpaperService {
         final Member member = memberRepository.findById(addresseeId)
                 .orElseThrow(() -> new NotFoundMemberException(addresseeId));
         validateTeamAndMember(teamId, loginMemberId, addresseeId);
-        final Rollingpaper rollingpaper = new Rollingpaper(title, MEMBER, team, member);
+        final TeamParticipation teamParticipation =
+                teamParticipationRepository.findByTeamIdAndMemberId(teamId, addresseeId);
+        final Rollingpaper rollingpaper = new Rollingpaper(title, Recipient.MEMBER, team, member, teamParticipation);
         return rollingpaperRepository.save(rollingpaper)
                 .getId();
     }
@@ -67,7 +68,9 @@ public class RollingpaperService {
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
             throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
-        final Rollingpaper rollingpaper = new Rollingpaper(title, Recipient.TEAM, team, null);
+        final TeamParticipation teamParticipation = new TeamParticipation(team, null, team.getName());
+        teamParticipationRepository.save(teamParticipation);
+        final Rollingpaper rollingpaper = new Rollingpaper(title, Recipient.TEAM, team, null, teamParticipation);
         return rollingpaperRepository.save(rollingpaper)
                 .getId();
     }
@@ -75,11 +78,11 @@ public class RollingpaperService {
     @Transactional(readOnly = true)
     public RollingpaperResponseDto findById(final Long rollingpaperId, final Long teamId, final Long loginMemberId) {
         final Rollingpaper rollingpaper = checkCreatableRollingpaper(rollingpaperId, teamId, loginMemberId);
+        final String addresseeNickname =
+                rollingpaperRepository.findAddresseeNicknameByRollingpaperId(rollingpaperId);
 
         return RollingpaperResponseDto.of(
-                RollingpaperPreviewResponseDto.createPreviewRollingpaper(
-                        rollingpaper, findRollingpaperAddresseeNickname(rollingpaper, teamId)
-                ),
+                RollingpaperPreviewResponseDto.createPreviewRollingpaper(rollingpaper, addresseeNickname),
                 messageService.findMessages(rollingpaper.getId(), teamId, loginMemberId)
         );
     }
@@ -93,13 +96,6 @@ public class RollingpaperService {
                 .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
     }
 
-    public String findRollingpaperAddresseeNickname(final Rollingpaper rollingpaper, final Long teamId) {
-        if (rollingpaper.isMemberNull()) {
-            return "";
-        }
-        return teamParticipationRepository.findNicknameByMemberIdAndTeamId(rollingpaper.getAddresseeId(), teamId);
-    }
-
     @Transactional(readOnly = true)
     public RollingpapersResponseDto findByTeamId(final Long teamId, final Long loginMemberId) {
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
@@ -108,7 +104,8 @@ public class RollingpaperService {
         final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByTeamId(teamId);
         final List<RollingpaperPreviewResponseDto> rollingpaperPreviewResponseDtos = rollingpapers.stream()
                 .map(rollingpaper -> RollingpaperPreviewResponseDto.createPreviewRollingpaper(
-                        rollingpaper, findRollingpaperAddresseeNickname(rollingpaper, teamId))
+                        rollingpaper,
+                        rollingpaperRepository.findAddresseeNicknameByRollingpaperId(rollingpaper.getId()))
                 )
                 .collect(Collectors.toUnmodifiableList());
         return new RollingpapersResponseDto(rollingpaperPreviewResponseDtos);

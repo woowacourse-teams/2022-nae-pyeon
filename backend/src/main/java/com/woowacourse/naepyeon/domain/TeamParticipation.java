@@ -42,11 +42,11 @@ public class TeamParticipation extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id", nullable = false)
+    @JoinColumn(name = "team_id")
     private Team team;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @Column(name = "nickname", length = 20, nullable = false)

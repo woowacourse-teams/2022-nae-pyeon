@@ -16,8 +16,8 @@ import com.woowacourse.naepyeon.exception.NotAuthorException;
 import com.woowacourse.naepyeon.exception.NotFoundMessageException;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.repository.rollingpaper.RollingpaperRepository;
-import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;
+import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.MessageRequestDto;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.MessageUpdateRequestDto;
@@ -45,11 +45,14 @@ class MessageServiceTest {
     private final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
     private final Member author = new Member("author", "au@hello.com", Platform.KAKAO, "2");
     private final Member otherAuthor = new Member("author2", "aut@hello.com", Platform.KAKAO, "3");
-    private final Rollingpaper teamRollingpaper = new Rollingpaper("AlexAndKei", Recipient.TEAM, team, member);
-    private final Rollingpaper memberRollingpaper = new Rollingpaper("AlexAndKei", Recipient.MEMBER, team, member);
     private final TeamParticipation teamParticipation1 = new TeamParticipation(team, member, "일케이");
     private final TeamParticipation teamParticipation2 = new TeamParticipation(team, author, "이케이");
     private final TeamParticipation teamParticipation3 = new TeamParticipation(team, otherAuthor, "삼케이");
+    private final TeamParticipation teamParticipation4 = new TeamParticipation(team, null, team.getName());
+    private final Rollingpaper teamRollingpaper =
+            new Rollingpaper("AlexAndKei", Recipient.TEAM, team, null, teamParticipation4);
+    private final Rollingpaper memberRollingpaper =
+            new Rollingpaper("AlexAndKei", Recipient.MEMBER, team, member, teamParticipation1);
 
     @Autowired
     private MessageService messageService;
@@ -69,11 +72,12 @@ class MessageServiceTest {
         memberRepository.save(member);
         memberRepository.save(author);
         memberRepository.save(otherAuthor);
-        rollingpaperRepository.save(memberRollingpaper);
-        rollingpaperRepository.save(teamRollingpaper);
         teamParticipationRepository.save(teamParticipation1);
         teamParticipationRepository.save(teamParticipation2);
         teamParticipationRepository.save(teamParticipation3);
+        teamParticipationRepository.save(teamParticipation4);
+        rollingpaperRepository.save(memberRollingpaper);
+        rollingpaperRepository.save(teamRollingpaper);
     }
 
     @Test

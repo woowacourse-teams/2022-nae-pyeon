@@ -44,6 +44,15 @@ public class RollingpaperRepositoryImpl implements RollingpaperRepositoryCustom 
                 .fetch();
     }
 
+    @Override
+    public String findAddresseeNicknameByRollingpaperId(final Long rollingpaperId) {
+        return queryFactory
+                .select(rollingpaper.teamParticipation.nickname)
+                .from(rollingpaper)
+                .where(rollingpaper.id.eq(rollingpaperId))
+                .fetchOne();
+    }
+
     private BooleanBuilder isMemberIdEq(final Long memberId) {
         return nullSafeBuilder(() -> rollingpaper.member.id.eq(memberId));
     }

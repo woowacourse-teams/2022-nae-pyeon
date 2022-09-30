@@ -3,6 +3,7 @@ package com.woowacourse.naepyeon.domain.rollingpaper;
 import com.woowacourse.naepyeon.domain.BaseEntity;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.exception.ExceedRollingpaperNameLengthException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,12 +51,22 @@ public class Rollingpaper extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public Rollingpaper(final String title, final Recipient recipient, final Team team, final Member member) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_participation_id")
+    private TeamParticipation teamParticipation;
+
+    public Rollingpaper(final String title, final Recipient recipient, final Team team, final Member member,
+                        final TeamParticipation teamParticipation) {
         validateRollingpaper(title);
         this.title = title;
         this.recipient = recipient;
         this.team = team;
         this.member = member;
+        this.teamParticipation = teamParticipation;
+    }
+
+    public Rollingpaper(final String title, final Recipient recipient, final Team team, final Member member) {
+        this(title, recipient, team, member, null);
     }
 
     public void validateRollingpaper(final String title) {
