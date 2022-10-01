@@ -137,6 +137,8 @@ const StyledRollingpaperList = styled.ul`
 
   padding: 10px;
   margin-bottom: 20px;
+
+  height: 460px;
 `;
 
 export default MainPage;
