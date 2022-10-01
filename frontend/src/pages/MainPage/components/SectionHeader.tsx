@@ -23,7 +23,7 @@ const StyledSectionHeader = styled.div`
   justify-content: space-between;
 
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 const StyledTitleWithCount = styled.div`
