@@ -2,7 +2,6 @@ package com.woowacourse.naepyeon.repository.teamparticipation;
 
 import static com.woowacourse.naepyeon.domain.QTeam.team;
 import static com.woowacourse.naepyeon.domain.QTeamParticipation.teamParticipation;
-import static com.woowacourse.naepyeon.domain.rollingpaper.QRollingpaper.rollingpaper;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -10,7 +9,6 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
-import com.woowacourse.naepyeon.domain.rollingpaper.QRollingpaper;
 import java.util.List;
 import java.util.function.Supplier;
 import javax.persistence.EntityManager;
