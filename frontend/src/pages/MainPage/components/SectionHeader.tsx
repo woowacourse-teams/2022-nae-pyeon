@@ -1,19 +1,23 @@
 import styled from "@emotion/styled";
+import { useNavigate } from "react-router-dom";
 
 interface SectionHeaderAttributes {
   title: string;
   count?: number;
-  more?: boolean;
+  more?: string;
 }
 
 const SectionHeader = ({ title, count, more }: SectionHeaderAttributes) => {
+  const navigate = useNavigate();
   return (
     <StyledSectionHeader>
       <StyledTitleWithCount>
         <StyledTitle>{title}</StyledTitle>
         {count && <StyledCount>{count}</StyledCount>}
       </StyledTitleWithCount>
-      {more && <StyledMore>더보기</StyledMore>}
+      {more && (
+        <StyledMore onClick={() => navigate(`${more}`)}>더보기</StyledMore>
+      )}
     </StyledSectionHeader>
   );
 };
