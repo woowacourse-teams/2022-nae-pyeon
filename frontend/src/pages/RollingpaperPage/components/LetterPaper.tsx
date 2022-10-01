@@ -9,18 +9,25 @@ import PencilIcon from "@/assets/icons/bx-pencil.svg";
 
 import MessageCreateForm from "@/pages/RollingpaperPage/components/MessageCreateForm";
 import MessageBox from "@/pages/RollingpaperPage/components/MessageBox";
-import useMessageWrite from "@/pages/RollingpaperPage/hooks/useMessageWrite";
 import useSliceMessageList from "../hooks/useSliceMessageList";
 
 interface LetterPaperProp {
   to: string;
   recipientType: Recipient;
   messageList: Message[];
+  isWrite: boolean;
+  handleWriteButtonClick: () => void;
+  onEditEnd: () => void;
 }
 
-const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProp) => {
-  const { isWrite, handleWriteButtonClick, handleWriteEnd } = useMessageWrite();
-
+const LetterPaper = ({
+  to,
+  recipientType,
+  messageList,
+  isWrite,
+  handleWriteButtonClick,
+  onEditEnd,
+}: LetterPaperProp) => {
   const elementList = useMemo(() => {
     const elementList = messageList
       .map((message) => (
@@ -36,7 +43,7 @@ const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProp) => {
       ? [
           <MessageCreateForm
             enableSecretMessage={recipientType === "MEMBER"}
-            onEditEnd={handleWriteEnd}
+            onEditEnd={onEditEnd}
           />,
           ...elementList,
         ]
