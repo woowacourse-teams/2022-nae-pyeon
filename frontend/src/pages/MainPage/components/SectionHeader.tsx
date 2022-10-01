@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 
 interface SectionHeaderAttributes {
   title: string;
-  count?: string;
+  count?: number;
   more?: boolean;
 }
 
