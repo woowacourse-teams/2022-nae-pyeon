@@ -30,7 +30,6 @@ export const MessageUpdateForm = ({
     handleMessageChange,
     handleAnonymousCheckBoxChange,
     handleSecretCheckBoxChange,
-    initMessage,
   } = useMessageForm({
     initContent: content,
     initColor: color,
@@ -47,13 +46,11 @@ export const MessageUpdateForm = ({
       anonymous: newAnonymous,
       secret: enableSecretMessage && newSecret,
     });
-    initMessage();
     onEditEnd();
   };
 
   const handleMessageCancel = () => {
     if (confirm("메시지 작성을 취소하시겠습니까?")) {
-      initMessage();
       onEditEnd();
     }
   };
