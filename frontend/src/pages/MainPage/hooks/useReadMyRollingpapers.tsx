@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 
 import { getMyReceivedRollingpapers } from "@/api/member";
 
-import { MYPAGE_ROLLINGPAPER_PAGING_COUNT } from "@/constants";
+import { MAIN_PAGE_ROLLINGPAPER_COUNT } from "@/constants";
 
 import { GetMyReceivedRollingpapersResponse } from "@/types/apiResponse";
 
@@ -13,7 +13,7 @@ const useReadReceivedRollingpapers = () => {
     () =>
       getMyReceivedRollingpapers({
         page: 0,
-        count: MYPAGE_ROLLINGPAPER_PAGING_COUNT,
+        count: MAIN_PAGE_ROLLINGPAPER_COUNT,
       }),
     {
       useErrorBoundary: true,
