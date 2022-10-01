@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
+interface ButtonAttributes
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
 
 const LineButton = ({
   type = "button",
