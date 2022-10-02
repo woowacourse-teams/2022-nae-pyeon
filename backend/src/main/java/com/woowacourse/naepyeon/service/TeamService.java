@@ -23,6 +23,7 @@ import com.woowacourse.naepyeon.service.dto.TeamRequestDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import com.woowacourse.naepyeon.support.SecureRandomStringUtils;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -214,6 +215,11 @@ public class TeamService {
         if (teamRepository.findById(teamId).isEmpty()) {
             throw new NotFoundTeamException(teamId);
         }
+    }
+
+    @Transactional
+    public void deleteExpiredInviteCodes() {
+        inviteCodeRepository.deleteExpired(LocalDateTime.now());
     }
 
     public TeamResponseDto findTeamByInviteCode(final String code, final Long memberId) {

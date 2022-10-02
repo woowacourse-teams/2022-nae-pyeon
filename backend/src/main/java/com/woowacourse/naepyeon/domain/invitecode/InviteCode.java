@@ -43,8 +43,12 @@ public class InviteCode {
         this.team = team;
     }
 
+    public InviteCode(final String code, final LocalDateTime expired, final Team team) {
+        this(null, code, expired, team);
+    }
+
     public static InviteCode createdBy(final Team team, final InviteCodeGenerator inviteCodeGenerator) {
-        return new InviteCode(null, inviteCodeGenerator.generate(), LocalDateTime.now().plusHours(24), team);
+        return new InviteCode(inviteCodeGenerator.generate(), LocalDateTime.now().plusHours(24), team);
     }
 
     public boolean isAvailable() {

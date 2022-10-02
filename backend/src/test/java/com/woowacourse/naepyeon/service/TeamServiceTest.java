@@ -8,6 +8,7 @@ import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
+import com.woowacourse.naepyeon.domain.invitecode.InviteCode;
 import com.woowacourse.naepyeon.exception.DuplicateNicknameException;
 import com.woowacourse.naepyeon.exception.DuplicateTeamPaticipateException;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
@@ -23,8 +24,10 @@ import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamRequestDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,6 +56,9 @@ class TeamServiceTest {
 
     @Autowired
     private InviteCodeRepository inviteCodeRepository;
+
+    @Autowired
+    private EntityManager em;
 
     @BeforeEach
     void setUp() {
@@ -415,5 +421,24 @@ class TeamServiceTest {
                 () -> assertThat(teamParticipation.getMember().getId()).isEqualTo(member.getId()),
                 () -> assertThat(teamParticipation.getTeam().getId()).isEqualTo(team1.getId())
         );
+    }
+
+    @Test
+    @DisplayName("만료된 초대 코드를 삭제한다.")
+    void deleteExpiredInviteCodes() {
+        final InviteCode inviteCode1 = new InviteCode(null, "abc", LocalDateTime.now().minusHours(1), team1);
+        final InviteCode inviteCode2 = new InviteCode(null, "def", LocalDateTime.now().minusHours(1), team2);
+        final InviteCode inviteCode3 = new InviteCode(null, "ghi", LocalDateTime.now().plusHours(1), team3);
+        inviteCodeRepository.save(inviteCode1);
+        inviteCodeRepository.save(inviteCode2);
+        inviteCodeRepository.save(inviteCode3);
+        em.flush();
+        em.clear();
+
+        teamService.deleteExpiredInviteCodes();
+        final List<InviteCode> inviteCodes = inviteCodeRepository.findAll();
+
+        assertThat(inviteCodes).extracting("code")
+                .containsExactly(inviteCode3.getCode());
     }
 }
