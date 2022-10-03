@@ -45,7 +45,7 @@ const StyledRoundButton = styled.button`
   font-size: 28px;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.SKY_BLUE_300};
+    background-color: ${({ theme }) => theme.colors.SKY_BLUE_300};
   }
 `;
 
