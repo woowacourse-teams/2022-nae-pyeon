@@ -42,12 +42,7 @@ const App = () => {
     <PageContainer>
       <Suspense fallback={<div>global loading...</div>}>
         <ErrorBoundary
-          fallback={(onReset: () => void) => (
-            <>
-              <Header />
-              <ErrorPage onReset={onReset} />
-            </>
-          )}
+          fallback={(onReset: () => void) => <ErrorPage onReset={onReset} />}
         >
           <UserProvider
             initialData={

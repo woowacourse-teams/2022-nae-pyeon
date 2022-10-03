@@ -35,7 +35,7 @@ const StyledContainer = styled.div`
   justify-content: center;
   align-items: center;
 
-  margin-top: 100px;
+  height: 80vh;
 
   svg {
     font-size: 150px;
