@@ -13,7 +13,7 @@ const SectionHeader = ({ title, count, moreLink }: SectionHeaderAttributes) => {
     <StyledSectionHeader>
       <StyledTitleWithCount>
         <StyledTitle>{title}</StyledTitle>
-        {count && <StyledCount>{count}</StyledCount>}
+        {typeof count === "number" && <StyledCount>{count}</StyledCount>}
       </StyledTitleWithCount>
       {moreLink && (
         <StyledMore onClick={() => navigate(`${moreLink}`)}>더보기</StyledMore>
