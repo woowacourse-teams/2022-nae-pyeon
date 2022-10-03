@@ -6,13 +6,14 @@ import RequireLogin from "@/components/RequireLogin";
 import RequireLogout from "@/components/RequireLogout";
 import PageContainer from "@/components/PageContainer";
 import Snackbar from "@/components/Snackbar";
+import Header from "@/components/Header";
 
 import { UserProvider } from "@/context/UserContext";
 import { useSnackbar } from "@/context/SnackbarContext";
 
 import useAutoLogin from "@/hooks/useAutoLogin";
-import InvitePage from "@/pages/InvitePage";
 
+import InvitePage from "@/pages/InvitePage";
 const HeaderLayoutPage = lazy(() => import("@/pages/HeaderLayoutPage"));
 const RollingpaperPage = lazy(() => import("@/pages/RollingpaperPage"));
 const RollingpaperCreationPage = lazy(
@@ -39,16 +40,23 @@ const App = () => {
 
   return (
     <PageContainer>
-      <ErrorBoundary fallback={<ErrorPage />}>
-        <UserProvider
-          initialData={
-            data && {
-              isLoggedIn: true,
-              memberId: data.id,
-            }
-          }
+      <Suspense fallback={<div>global loading...</div>}>
+        <ErrorBoundary
+          fallback={(onReset: () => void) => (
+            <>
+              <Header />
+              <ErrorPage onReset={onReset} />
+            </>
+          )}
         >
-          <Suspense fallback={<div>Loading..</div>}>
+          <UserProvider
+            initialData={
+              data && {
+                isLoggedIn: true,
+                memberId: data.id,
+              }
+            }
+          >
             <Routes>
               <Route element={<RequireLogin />}>
                 <Route path="/" element={<HeaderLayoutPage />}>
@@ -76,10 +84,10 @@ const App = () => {
               <Route path="invite/:inviteToken" element={<InvitePage />} />
               <Route path="policy" element={<PolicyPage />} />
             </Routes>
-          </Suspense>
-          {isOpened && <Snackbar />}
-        </UserProvider>
-      </ErrorBoundary>
+          </UserProvider>
+        </ErrorBoundary>
+      </Suspense>
+      {isOpened && <Snackbar />}
     </PageContainer>
   );
 };

@@ -1,33 +1,85 @@
-import React, { Component, ErrorInfo, ReactNode } from "react";
+import React, { Component, PropsWithChildren, ReactNode } from "react";
+import { Navigate } from "react-router-dom";
+import { AxiosError } from "axios";
 
-interface Props {
-  children?: ReactNode;
-  fallback?: ReactNode;
+interface ErrorBoundaryProps {
+  fallback: (onReset: () => void) => ReactNode;
 }
 
-interface State {
-  hasError: boolean;
+interface ErrorBoundaryStates {
+  status: "Not Error" | "Unauthorized" | "Server Error" | "Undeclared";
+  code?: number;
+  message?: string;
 }
 
-class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
-    hasError: false,
+class ErrorBoundary extends Component<
+  PropsWithChildren<ErrorBoundaryProps>,
+  ErrorBoundaryStates
+> {
+  public state: ErrorBoundaryStates = {
+    status: "Not Error",
+    code: undefined,
+    message: undefined,
   };
 
-  public static getDerivedStateFromError(error: Error): State {
-    return { hasError: true };
+  public static getDerivedStateFromError(
+    error: AxiosError<{ errorCode: string; message: string }>
+  ): ErrorBoundaryStates {
+    const newErrorState = {
+      code: Number(error.response?.data.errorCode),
+      message: error.response?.data.message,
+    };
+
+    switch (error.response?.status) {
+      case 401:
+      case 403:
+        return {
+          ...newErrorState,
+          status: "Unauthorized",
+        };
+
+      case 500:
+        return {
+          ...newErrorState,
+          status: "Server Error",
+        };
+
+      default:
+        return {
+          ...newErrorState,
+          status: "Undeclared",
+        };
+    }
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error("Uncaught error:", error, errorInfo);
+  public componentDidCatch(
+    error: AxiosError<{ errorCode: string; message: string }>
+  ) {
+    const status = error.response?.status;
+    const code = error.response?.data.errorCode;
+    const message = error.response?.data.message;
+
+    if (message) {
+      alert(message);
+    }
   }
 
   public render() {
-    if (this.state.hasError) {
-      return this.props.fallback;
-    }
+    switch (this.state.status) {
+      case "Unauthorized":
+      case "Server Error":
+      case "Undeclared":
+        return this.props.fallback(() => {
+          this.setState({
+            status: "Not Error",
+            code: undefined,
+            message: undefined,
+          });
+        });
 
-    return this.props.children;
+      default:
+        return this.props.children;
+    }
   }
 }
 
