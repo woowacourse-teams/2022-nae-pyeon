@@ -39,7 +39,7 @@ const MainPage = () => {
         <SectionHeader
           title="내편들"
           count={myTeamListResponse?.totalCount}
-          more="/"
+          moreLink="/"
         />
         <StyledCardList>
           {myTeamListResponse?.teams.map(
@@ -60,7 +60,7 @@ const MainPage = () => {
         <SectionHeader
           title="나의 롤링페이퍼"
           count={receivedRollingpapers?.totalCount}
-          more="/mypage"
+          moreLink="/mypage"
         />
         <StyledRollingpaperList>
           {receivedRollingpapers?.rollingpapers.map(

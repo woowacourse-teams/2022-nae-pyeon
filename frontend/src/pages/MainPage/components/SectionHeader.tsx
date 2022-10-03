@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 interface SectionHeaderAttributes {
   title: string;
   count?: number;
-  more?: string;
+  moreLink?: string;
 }
 
-const SectionHeader = ({ title, count, more }: SectionHeaderAttributes) => {
+const SectionHeader = ({ title, count, moreLink }: SectionHeaderAttributes) => {
   const navigate = useNavigate();
   return (
     <StyledSectionHeader>
@@ -15,8 +15,8 @@ const SectionHeader = ({ title, count, more }: SectionHeaderAttributes) => {
         <StyledTitle>{title}</StyledTitle>
         {count && <StyledCount>{count}</StyledCount>}
       </StyledTitleWithCount>
-      {more && (
-        <StyledMore onClick={() => navigate(`${more}`)}>더보기</StyledMore>
+      {moreLink && (
+        <StyledMore onClick={() => navigate(`${moreLink}`)}>더보기</StyledMore>
       )}
     </StyledSectionHeader>
   );
