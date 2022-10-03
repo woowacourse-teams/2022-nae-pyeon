@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import RoundButton from "@/components/RoundButtonWithDescription";
 import RollingpaperListItem from "@/components/RollinpaperListItem";
+import EmptyRollingpaperList from "@/components/EmptyRollingpaperList";
 
 import useReadMyTeams from "@/pages/MainPage/hooks/useReadMyTeams";
 
@@ -82,15 +83,19 @@ const MainPage = () => {
           moreLink="/mypage"
         />
         <StyledRollingpaperList>
-          {receivedRollingpapers?.rollingpapers.map(
-            ({ title, teamId, id, teamName }) => (
-              <RollingpaperListItem
-                key={id}
-                title={title}
-                teamId={teamId}
-                id={id}
-                teamName={teamName}
-              />
+          {receivedRollingpapers?.rollingpapers.length === 0 ? (
+            <EmptyRollingpaperList />
+          ) : (
+            receivedRollingpapers?.rollingpapers.map(
+              ({ title, teamId, id, teamName }) => (
+                <RollingpaperListItem
+                  key={id}
+                  title={title}
+                  teamId={teamId}
+                  id={id}
+                  teamName={teamName}
+                />
+              )
             )
           )}
         </StyledRollingpaperList>
