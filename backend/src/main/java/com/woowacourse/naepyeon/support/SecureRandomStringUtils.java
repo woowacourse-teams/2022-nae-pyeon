@@ -13,6 +13,9 @@ public class SecureRandomStringUtils {
             'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
     };
 
+    private SecureRandomStringUtils() {
+    }
+
     public static String createRandomAlphanumericSecure(final int count) {
         final SecureRandom secureRandom = new SecureRandom();
         secureRandom.setSeed(new Date().getTime());
