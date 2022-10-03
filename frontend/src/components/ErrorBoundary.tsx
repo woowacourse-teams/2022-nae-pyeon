@@ -1,9 +1,10 @@
 import React, { Component, PropsWithChildren, ReactNode } from "react";
-import { Navigate } from "react-router-dom";
 import { AxiosError } from "axios";
+import WithSnackbar from "./WithSnackbar";
 
 interface ErrorBoundaryProps {
   fallback: (onReset: () => void) => ReactNode;
+  openSnackbar: (message: string) => void;
 }
 
 interface ErrorBoundaryStates {
@@ -60,7 +61,7 @@ class ErrorBoundary extends Component<
     const message = error.response?.data.message;
 
     if (message) {
-      alert(message);
+      this.props.openSnackbar(message);
     }
   }
 
@@ -83,4 +84,4 @@ class ErrorBoundary extends Component<
   }
 }
 
-export default ErrorBoundary;
+export default WithSnackbar(ErrorBoundary);
