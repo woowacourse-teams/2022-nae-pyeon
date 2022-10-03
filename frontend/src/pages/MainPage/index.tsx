@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { useNavigate } from "react-router-dom";
 
 import RoundButton from "@/components/RoundButtonWithDescription";
 import RollingpaperListItem from "@/components/RollinpaperListItem";
@@ -15,6 +16,7 @@ const MainPage = () => {
     useReadMyTeams();
   const { data: receivedRollingpapers, isLoading: isLoadingRollingpapers } =
     useReadReceivedRollingpapers();
+  const navigate = useNavigate();
 
   if (isLoadingTeams || isLoadingRollingpapers) {
     return <div>로딩 중</div>;
@@ -28,12 +30,33 @@ const MainPage = () => {
     );
   }
 
+  const handleRollingpaperStartClick = () => {
+    navigate("/");
+  };
+
+  const handleTeamCreateClick = () => {
+    navigate("/team/new");
+  };
+
+  const handleTeamSearchClick = () => {
+    navigate("/search");
+  };
+
   return (
     <StyledMain>
       <StyledTopButtonList>
-        <RoundButton description="롤링페이퍼 시작하기">📜</RoundButton>
-        <RoundButton description="모임 생성">💙</RoundButton>
-        <RoundButton description="모임 검색">🔍</RoundButton>
+        <RoundButton
+          description="롤링페이퍼 시작하기"
+          onClick={handleRollingpaperStartClick}
+        >
+          📜
+        </RoundButton>
+        <RoundButton description="모임 생성" onClick={handleTeamCreateClick}>
+          💙
+        </RoundButton>
+        <RoundButton description="모임 검색" onClick={handleTeamSearchClick}>
+          🔍
+        </RoundButton>
       </StyledTopButtonList>
       <section>
         <SectionHeader
