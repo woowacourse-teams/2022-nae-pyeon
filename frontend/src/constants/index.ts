@@ -49,6 +49,12 @@ const RECIPIENT = {
   MEMBER: "MEMBER",
 } as const;
 
+const ROLLINGPAPER_STATE_TYPE = {
+  WRITE: "WRITE",
+  EDIT: "EDIT",
+  NORMAL: "NORMAL",
+} as const;
+
 export {
   REGEX,
   COLORS,
@@ -59,4 +65,5 @@ export {
   KAKAO_OAUTH_URL,
   GOOGLE_OAUTH_URL,
   RECIPIENT,
+  ROLLINGPAPER_STATE_TYPE,
 };
