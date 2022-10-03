@@ -22,14 +22,6 @@ const MainPage = () => {
     return <div>로딩 중</div>;
   }
 
-  if (myTeamListResponse?.teams.length === 0) {
-    return (
-      <StyledEmptyMain>
-        <EmptyMyTeamList />
-      </StyledEmptyMain>
-    );
-  }
-
   const handleRollingpaperStartClick = () => {
     navigate("/");
   };
@@ -65,16 +57,20 @@ const MainPage = () => {
           moreLink="/"
         />
         <StyledCardList>
-          {myTeamListResponse?.teams.map(
-            ({ id, name, description, emoji, color }) => (
-              <MyTeamCard
-                key={id}
-                id={id}
-                name={name}
-                description={description}
-                emoji={emoji}
-                color={color}
-              />
+          {myTeamListResponse?.teams.length === 0 ? (
+            <EmptyMyTeamList />
+          ) : (
+            myTeamListResponse?.teams.map(
+              ({ id, name, description, emoji, color }) => (
+                <MyTeamCard
+                  key={id}
+                  id={id}
+                  name={name}
+                  description={description}
+                  emoji={emoji}
+                  color={color}
+                />
+              )
             )
           )}
         </StyledCardList>
@@ -102,24 +98,6 @@ const MainPage = () => {
     </StyledMain>
   );
 };
-
-const StyledEmptyMain = styled.main`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  gap: 12px;
-
-  height: calc(100vh - 150px);
-
-  button {
-    width: 152px;
-  }
-  svg {
-    font-size: 200px;
-  }
-`;
 
 const StyledMain = styled.div`
   display: flex;
