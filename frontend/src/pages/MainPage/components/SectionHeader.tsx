@@ -40,10 +40,12 @@ const StyledTitleWithCount = styled.div`
 const StyledTitle = styled.h2`
   font-size: 24px;
   font-weight: 600;
+  line-height: 24px;
 `;
 
 const StyledCount = styled.div`
   color: ${({ theme }) => theme.colors.GRAY_500};
+  line-height: 16px;
 `;
 
 const StyledMore = styled.button`
