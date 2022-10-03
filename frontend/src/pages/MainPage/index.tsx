@@ -1,13 +1,13 @@
 import styled from "@emotion/styled";
 
 import RoundButton from "@/components/RoundButtonWithDescription";
+import RollingpaperListItem from "@/components/RollinpaperListItem";
 
 import useReadMyTeams from "@/pages/MainPage/hooks/useReadMyTeams";
 
 import MyTeamCard from "@/pages/MainPage/components/MyTeamCard";
 import EmptyMyTeamList from "@/pages/MainPage/components/EmptyMyTeamList";
 import SectionHeader from "@/pages/MainPage/components/SectionHeader";
-import RollingpaperListItem from "@/pages/MainPage/components/RollingpaperListItem";
 import useReadReceivedRollingpapers from "../MyPage/hooks/useReadReceivedRollingpapers";
 
 const MainPage = () => {

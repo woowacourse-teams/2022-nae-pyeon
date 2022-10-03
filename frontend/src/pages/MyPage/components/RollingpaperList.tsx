@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-import RollingpaperListItem from "@/pages/MyPage/components/RollingpaperListItem";
+import RollingpaperListItem from "@/components/RollinpaperListItem";
 import Paging from "@/components/Paging";
 
 import usePaging from "@/hooks/usePaging";
