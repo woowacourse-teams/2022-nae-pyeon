@@ -1,17 +1,31 @@
 import React, { useState } from "react";
 
+import { ValueOf } from "@/types";
+import { ROLLINGPAPER_STATE_TYPE } from "@/constants";
+
 const useMessageWrite = () => {
-  const [isWrite, setIsWrite] = useState(false);
+  const [rollingpaperState, setRollingpaperState] = useState<
+    ValueOf<typeof ROLLINGPAPER_STATE_TYPE>
+  >(ROLLINGPAPER_STATE_TYPE.NORMAL);
 
   const handleWriteButtonClick = () => {
-    setIsWrite(true);
+    setRollingpaperState(ROLLINGPAPER_STATE_TYPE.WRITE);
+  };
+
+  const handleEditButtonClick = () => {
+    setRollingpaperState(ROLLINGPAPER_STATE_TYPE.EDIT);
   };
 
   const handleWriteEnd = () => {
-    setIsWrite(false);
+    setRollingpaperState(ROLLINGPAPER_STATE_TYPE.NORMAL);
   };
 
-  return { isWrite, handleWriteButtonClick, handleWriteEnd };
+  return {
+    rollingpaperState,
+    handleWriteButtonClick,
+    handleEditButtonClick,
+    handleWriteEnd,
+  };
 };
 
 export default useMessageWrite;

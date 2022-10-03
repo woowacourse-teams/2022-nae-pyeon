@@ -8,7 +8,12 @@ import useMessageWrite from "./hooks/useMessageWrite";
 const RollingpaperPage = () => {
   const teamId = useValidatedParam<number>("teamId");
   const rollingpaperId = useValidatedParam<number>("rollingpaperId");
-  const { isWrite, handleWriteButtonClick, handleWriteEnd } = useMessageWrite();
+  const {
+    rollingpaperState,
+    handleWriteButtonClick,
+    handleWriteEnd,
+    handleEditButtonClick,
+  } = useMessageWrite();
 
   const { isLoading, data: rollingpaper } = useReadRollingpaper({
     teamId,
@@ -29,12 +34,13 @@ const RollingpaperPage = () => {
       <PageTitleWithBackButton>{rollingpaper.title}</PageTitleWithBackButton>
       <main>
         <LetterPaper
-          isWrite={isWrite}
+          rollingpaperState={rollingpaperState}
           to={rollingpaper.to}
           recipientType={rollingpaper.recipient}
           messageList={[...rollingpaper.messages]}
           handleWriteButtonClick={handleWriteButtonClick}
-          onEditEnd={handleWriteEnd}
+          handleEditButtonClick={handleEditButtonClick}
+          handleWriteEnd={handleWriteEnd}
         />
       </main>
     </>

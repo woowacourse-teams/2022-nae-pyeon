@@ -9,29 +9,35 @@ import PencilIcon from "@/assets/icons/bx-pencil.svg";
 
 import MessageCreateForm from "@/pages/RollingpaperPage/components/MessageCreateForm";
 import MessageBox from "@/pages/RollingpaperPage/components/MessageBox";
-import useSliceMessageList from "../hooks/useSliceMessageList";
+import useSliceMessageList from "@/pages/RollingpaperPage/hooks/useSliceMessageList";
+
+import { ROLLINGPAPER_STATE_TYPE } from "@/constants";
 
 interface LetterPaperProp {
   to: string;
   recipientType: Recipient;
   messageList: Message[];
-  isWrite: boolean;
+  rollingpaperState: string;
   handleWriteButtonClick: () => void;
-  onEditEnd: () => void;
+  handleEditButtonClick: () => void;
+  handleWriteEnd: () => void;
 }
 
 const LetterPaper = ({
   to,
   recipientType,
   messageList,
-  isWrite,
+  rollingpaperState,
   handleWriteButtonClick,
-  onEditEnd,
+  handleEditButtonClick,
+  handleWriteEnd,
 }: LetterPaperProp) => {
   const elementList = useMemo(() => {
     const elementList = messageList
       .map((message) => (
         <MessageBox
+          handleEditButtonClick={handleEditButtonClick}
+          handleWriteEnd={handleWriteEnd}
           key={message.id}
           recipientType={recipientType}
           {...message}
@@ -39,16 +45,16 @@ const LetterPaper = ({
       ))
       .reverse();
 
-    return isWrite
+    return rollingpaperState === ROLLINGPAPER_STATE_TYPE.WRITE
       ? [
           <MessageCreateForm
             enableSecretMessage={recipientType === "MEMBER"}
-            onEditEnd={onEditEnd}
+            onEditEnd={handleWriteEnd}
           />,
           ...elementList,
         ]
       : [...elementList];
-  }, [messageList, isWrite]);
+  }, [rollingpaperState]);
 
   const slicedMessageLists = useSliceMessageList(elementList);
 
@@ -56,7 +62,7 @@ const LetterPaper = ({
     <StyledLetterPaper>
       <StyledLetterPaperTop>
         <StyledTo>To. {to}</StyledTo>
-        {!isWrite && (
+        {rollingpaperState === ROLLINGPAPER_STATE_TYPE.NORMAL && (
           <IconButton size="small" onClick={handleWriteButtonClick}>
             <PencilIcon />
           </IconButton>

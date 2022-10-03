@@ -4,20 +4,27 @@ import useDeleteMessage from "@/pages/RollingpaperPage/hooks/useDeleteMessage";
 interface UseMessageProps {
   id: number;
   rollingpaperId: number;
+  handleEditButtonClick: () => void;
 }
 
-const useMessage = ({ id, rollingpaperId }: UseMessageProps) => {
+const useMessage = ({
+  id,
+  rollingpaperId,
+  handleEditButtonClick,
+}: UseMessageProps) => {
   const [isEdit, setIsEdit] = useState(false);
   const { deleteRollingpaperMessage } = useDeleteMessage(rollingpaperId);
 
   const handleWriteButtonClick: React.MouseEventHandler<
     HTMLButtonElement
   > = () => {
+    handleEditButtonClick();
     setIsEdit(true);
   };
 
   const handleDeleteButtonClick = () => {
     if (id) {
+      handleEditButtonClick();
       deleteRollingpaperMessage(id);
     }
   };
