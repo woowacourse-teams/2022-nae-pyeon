@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 
+import RightIcon from "@/assets/icons/bx-chevron-right.svg";
+
 interface SectionHeaderAttributes {
   title: string;
   count?: number;
@@ -16,7 +18,10 @@ const SectionHeader = ({ title, count, moreLink }: SectionHeaderAttributes) => {
         {typeof count === "number" && <StyledCount>{count}</StyledCount>}
       </StyledTitleWithCount>
       {moreLink && (
-        <StyledMore onClick={() => navigate(`${moreLink}`)}>더보기</StyledMore>
+        <StyledMore onClick={() => navigate(`${moreLink}`)}>
+          더보기
+          <RightIcon />
+        </StyledMore>
       )}
     </StyledSectionHeader>
   );
@@ -49,10 +54,15 @@ const StyledCount = styled.div`
 `;
 
 const StyledMore = styled.button`
+  display: flex;
+  align-items: center;
+
   color: ${({ theme }) => theme.colors.GRAY_500};
+  fill: ${({ theme }) => theme.colors.GRAY_500};
 
   &:hover {
     color: ${({ theme }) => theme.colors.GRAY_600};
+    fill: ${({ theme }) => theme.colors.GRAY_600};
   }
 `;
 
