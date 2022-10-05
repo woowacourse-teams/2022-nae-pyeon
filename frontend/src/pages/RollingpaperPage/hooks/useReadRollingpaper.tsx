@@ -16,6 +16,5 @@ export const useReadRollingpaper = ({
 }: UseReadRollingpaperArgs) =>
   useQuery<GetRollingpaperResponse, AxiosError>(
     ["rollingpaper", rollingpaperId],
-    () => getRollingpaper({ teamId, id: rollingpaperId }),
-    { useErrorBoundary: true }
+    () => getRollingpaper({ teamId, id: rollingpaperId })
   );

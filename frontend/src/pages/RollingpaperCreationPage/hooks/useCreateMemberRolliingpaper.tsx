@@ -26,7 +26,6 @@ const useCreateMemberRollingpaper = (teamId: number) => {
     ({ title, addresseeId }) =>
       postMemberRollingpaper({ teamId, title, addresseeId }),
     {
-      useErrorBoundary: true,
       onSuccess: () => {
         navigate(`/team/${teamId}`);
         openSnackbar("롤링페이퍼 생성 완료");

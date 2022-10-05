@@ -29,7 +29,6 @@ const useCreateTeamRollingpaper = (teamId: number) => {
         navigate(`/team/${teamId}`);
         openSnackbar("롤링페이퍼 생성 완료");
       },
-      useErrorBoundary: true,
     }
   );
 

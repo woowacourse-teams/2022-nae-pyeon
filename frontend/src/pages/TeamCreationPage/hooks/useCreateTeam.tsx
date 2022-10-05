@@ -34,7 +34,6 @@ const useCreateTeam = () => {
       onSuccess: () => {
         navigate("/");
       },
-      useErrorBoundary: true,
     }
   );
 

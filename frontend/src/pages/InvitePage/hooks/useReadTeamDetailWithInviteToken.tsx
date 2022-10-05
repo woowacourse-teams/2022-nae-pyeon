@@ -12,7 +12,6 @@ const useReadTeamDetailWithInviteToken = (inviteToken: string) => {
     () => getTeamWithInviteToken(inviteToken),
     {
       onSuccess: handleTeamDetailWithInviteTokenSuccess,
-      useErrorBoundary: true,
     }
   );
 };

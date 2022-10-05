@@ -15,7 +15,7 @@ const useReadSentMessages = (currentPage = 0) =>
         page: currentPage,
         count: MYPAGE_MESSAGE_PAGING_COUNT,
       }),
-    { keepPreviousData: true, useErrorBoundary: true }
+    { keepPreviousData: true }
   );
 
 export default useReadSentMessages;

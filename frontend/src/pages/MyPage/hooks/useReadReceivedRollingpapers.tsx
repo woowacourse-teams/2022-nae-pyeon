@@ -17,7 +17,6 @@ const useReadReceivedRollingpapers = (currentPage = 0) => {
       }),
     {
       keepPreviousData: true,
-      useErrorBoundary: true,
     }
   );
 };
