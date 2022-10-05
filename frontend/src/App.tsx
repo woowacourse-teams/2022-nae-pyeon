@@ -1,12 +1,12 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
+import { AxiosError } from "axios";
 
 import ErrorBoundary from "@/components/ErrorBoundary";
 import RequireLogin from "@/components/RequireLogin";
 import RequireLogout from "@/components/RequireLogout";
 import PageContainer from "@/components/PageContainer";
 import Snackbar from "@/components/Snackbar";
-import Header from "@/components/Header";
 
 import { UserProvider } from "@/context/UserContext";
 import { useSnackbar } from "@/context/SnackbarContext";
@@ -14,6 +14,8 @@ import { useSnackbar } from "@/context/SnackbarContext";
 import useAutoLogin from "@/hooks/useAutoLogin";
 
 import InvitePage from "@/pages/InvitePage";
+import useQueryErrorHandler from "./api/hooks/useQueryErrorHandler";
+
 const HeaderLayoutPage = lazy(() => import("@/pages/HeaderLayoutPage"));
 const RollingpaperPage = lazy(() => import("@/pages/RollingpaperPage"));
 const RollingpaperCreationPage = lazy(
@@ -30,20 +32,38 @@ const GoogleRedirectPage = lazy(() => import("@/pages/GoogleRedirectPage"));
 const MyPage = lazy(() => import("@/pages/MyPage"));
 const PolicyPage = lazy(() => import("@/pages/PolicyPage"));
 
+import { queryClient } from "@/api";
+import { ApiErrorResponse } from "@/types/api";
+
 const App = () => {
   const { isOpened } = useSnackbar();
   const { data, isLoading, isFetching, isError } = useAutoLogin();
+  const { queryErrorHandler } = useQueryErrorHandler();
 
   if (isLoading && isFetching) {
     return <PageContainer>초기 로딩 중</PageContainer>;
   }
 
+  queryClient.setDefaultOptions({
+    queries: {
+      retry: 0,
+      onError: (error) =>
+        queryErrorHandler(error as AxiosError<ApiErrorResponse>),
+      useErrorBoundary: (error) => {
+        const err = error as AxiosError<ApiErrorResponse>;
+        if (!err.response) {
+          return false;
+        }
+
+        return err.response?.status >= 500;
+      },
+    },
+  });
+
   return (
     <PageContainer>
       <Suspense fallback={<div>global loading...</div>}>
-        <ErrorBoundary
-          fallback={(onReset: () => void) => <ErrorPage onReset={onReset} />}
-        >
+        <ErrorBoundary fallback={<ErrorPage />}>
           <UserProvider
             initialData={
               data && {
