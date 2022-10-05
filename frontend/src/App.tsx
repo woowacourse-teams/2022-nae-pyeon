@@ -67,7 +67,7 @@ const App = () => {
       useErrorBoundary: (error) => {
         const err = error as AxiosError<ApiErrorResponse>;
         if (!err.response) {
-          return false;
+          return true; // AxiosError가 아닌 경우...?
         }
 
         return err.response?.status >= 500;
