@@ -5,12 +5,8 @@ import { setAppClientHeaderAuthorization } from "@/api";
 import { getMyInfoWithAccessToken } from "@/api/member";
 
 import { getCookie } from "@/util/cookie";
-
 import { GetUserProfileResponse } from "@/types/apiResponse";
-
-const COOKIE_KEY = {
-  ACCESS_TOKEN: "accessToken",
-};
+import { COOKIE_KEY } from "@/constants";
 
 function useAutoLogin() {
   const accessTokenCookie = getCookie(COOKIE_KEY.ACCESS_TOKEN);
@@ -23,7 +19,6 @@ function useAutoLogin() {
       onSuccess: () => {
         setAppClientHeaderAuthorization(accessTokenCookie!);
       },
-      useErrorBoundary: true,
     }
   );
 }
