@@ -14,7 +14,8 @@ import { useSnackbar } from "@/context/SnackbarContext";
 import useAutoLogin from "@/hooks/useAutoLogin";
 
 import InvitePage from "@/pages/InvitePage";
-import useQueryErrorHandler from "./api/hooks/useQueryErrorHandler";
+import useQueryErrorHandler from "@/api/hooks/useQueryErrorHandler";
+import useMutationErrorHandler from "@/api/hooks/useMutationErrorHandler";
 
 const HeaderLayoutPage = lazy(() => import("@/pages/HeaderLayoutPage"));
 const RollingpaperPage = lazy(() => import("@/pages/RollingpaperPage"));
@@ -39,6 +40,7 @@ const App = () => {
   const { isOpened } = useSnackbar();
   const { data, isLoading, isFetching, isError } = useAutoLogin();
   const { queryErrorHandler } = useQueryErrorHandler();
+  const { mutationErrorHandler } = useMutationErrorHandler();
 
   if (isLoading && isFetching) {
     return <PageContainer>초기 로딩 중</PageContainer>;
@@ -49,6 +51,19 @@ const App = () => {
       retry: 0,
       onError: (error) =>
         queryErrorHandler(error as AxiosError<ApiErrorResponse>),
+      useErrorBoundary: (error) => {
+        const err = error as AxiosError<ApiErrorResponse>;
+        if (!err.response) {
+          return false;
+        }
+
+        return err.response?.status >= 500;
+      },
+    },
+    mutations: {
+      retry: 0,
+      onError: (error) =>
+        mutationErrorHandler(error as AxiosError<ApiErrorResponse>),
       useErrorBoundary: (error) => {
         const err = error as AxiosError<ApiErrorResponse>;
         if (!err.response) {
