@@ -54,6 +54,7 @@ public class TeamParticipationRepositoryImpl implements TeamParticipationReposit
         final List<Team> content = queryFactory
                 .select(team)
                 .from(teamParticipation)
+                .join(teamParticipation.team, team)
                 .where(isMemberIdEq(memberId))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
@@ -62,6 +63,7 @@ public class TeamParticipationRepositoryImpl implements TeamParticipationReposit
         final JPAQuery<Long> countQuery = queryFactory
                 .select(team.count())
                 .from(teamParticipation)
+                .join(teamParticipation.team, team)
                 .where(isMemberIdEq(memberId));
 
         return PageableExecutionUtils.getPage(content, pageRequest, countQuery::fetchOne);
