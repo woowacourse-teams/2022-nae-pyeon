@@ -11,7 +11,7 @@ import MessageCreateForm from "@/pages/RollingpaperPage/components/MessageCreate
 import MessageBox from "@/pages/RollingpaperPage/components/MessageBox";
 import useSliceMessageList from "@/pages/RollingpaperPage/hooks/useSliceMessageList";
 
-import { ROLLINGPAPER_STATE_TYPE } from "@/constants";
+import { ROLLINGPAPER_STATE_TYPE, RECIPIENT } from "@/constants";
 
 interface LetterPaperProp {
   to: string;
@@ -48,7 +48,7 @@ const LetterPaper = ({
     return rollingpaperState === ROLLINGPAPER_STATE_TYPE.WRITE
       ? [
           <MessageCreateForm
-            enableSecretMessage={recipientType === "MEMBER"}
+            enableSecretMessage={recipientType === RECIPIENT.MEMBER}
             onEditEnd={handleWriteEnd}
           />,
           ...elementList,
