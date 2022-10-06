@@ -62,7 +62,7 @@ const LetterPaper = ({
     <StyledLetterPaper>
       <StyledLetterPaperTop>
         <StyledTo>To. {to}</StyledTo>
-        {rollingpaperState === ROLLINGPAPER_STATE_TYPE.NORMAL && (
+        {rollingpaperState !== ROLLINGPAPER_STATE_TYPE.WRITE && (
           <IconButton size="small" onClick={handleWriteButtonClick}>
             <PencilIcon />
           </IconButton>
