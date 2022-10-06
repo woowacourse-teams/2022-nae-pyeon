@@ -402,7 +402,7 @@ class TeamServiceTest {
     void createInviteCode() {
         final String inviteCode = teamService.createInviteCode(team1.getId());
         assertAll(
-                () -> assertThat(inviteCode.matches("^[a-zA-Z0-9]*$")).isTrue(),
+                () -> assertThat(inviteCode).matches("^[a-zA-Z0-9]*$"),
                 () -> assertThat(inviteCode).hasSize(10)
         );
     }

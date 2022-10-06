@@ -15,7 +15,7 @@ class SecureRandomStringUtilsTest {
 
         assertAll(
                 () -> assertThat(randomString).hasSize(10),
-                () -> assertThat(randomString.matches("^[a-zA-Z0-9]*$")).isTrue()
+                () -> assertThat(randomString).matches("^[a-zA-Z0-9]*$")
         );
     }
 }
