@@ -68,9 +68,7 @@ public class RollingpaperService {
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
             throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
-        final TeamParticipation teamParticipation = new TeamParticipation(team, null, team.getName());
-        teamParticipationRepository.save(teamParticipation);
-        final Rollingpaper rollingpaper = new Rollingpaper(title, Recipient.TEAM, team, null, teamParticipation);
+        final Rollingpaper rollingpaper = new Rollingpaper(title, Recipient.TEAM, team, null, null);
         return rollingpaperRepository.save(rollingpaper)
                 .getId();
     }
@@ -78,8 +76,7 @@ public class RollingpaperService {
     @Transactional(readOnly = true)
     public RollingpaperResponseDto findById(final Long rollingpaperId, final Long teamId, final Long loginMemberId) {
         final Rollingpaper rollingpaper = checkCreatableRollingpaper(rollingpaperId, teamId, loginMemberId);
-        final String addresseeNickname =
-                rollingpaperRepository.findAddresseeNicknameByRollingpaperId(rollingpaperId);
+        final String addresseeNickname = findRollingpaperAddresseeNickname(rollingpaper);
 
         return RollingpaperResponseDto.of(
                 RollingpaperPreviewResponseDto.createPreviewRollingpaper(rollingpaper, addresseeNickname),
@@ -104,11 +101,17 @@ public class RollingpaperService {
         final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByTeamId(teamId);
         final List<RollingpaperPreviewResponseDto> rollingpaperPreviewResponseDtos = rollingpapers.stream()
                 .map(rollingpaper -> RollingpaperPreviewResponseDto.createPreviewRollingpaper(
-                        rollingpaper,
-                        rollingpaperRepository.findAddresseeNicknameByRollingpaperId(rollingpaper.getId()))
+                        rollingpaper, findRollingpaperAddresseeNickname(rollingpaper))
                 )
                 .collect(Collectors.toUnmodifiableList());
         return new RollingpapersResponseDto(rollingpaperPreviewResponseDtos);
+    }
+
+    private String findRollingpaperAddresseeNickname(final Rollingpaper rollingpaper) {
+        if (rollingpaper.isMemberNull()) {
+            return rollingpaper.getTeamName();
+        }
+        return rollingpaperRepository.findAddresseeNicknameByRollingpaperId(rollingpaper.getId());
     }
 
     @Transactional(readOnly = true)

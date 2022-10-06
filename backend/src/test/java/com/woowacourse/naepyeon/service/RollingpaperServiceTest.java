@@ -147,7 +147,7 @@ class RollingpaperServiceTest {
                 ),
                 RollingpaperPreviewResponseDto.createPreviewRollingpaper(
                         rollingpaper2,
-                        rollingpaperRepository.findAddresseeNicknameByRollingpaperId(rollingpaperId2)
+                        rollingpaper2.getTeamName()
                 )
         );
     }
