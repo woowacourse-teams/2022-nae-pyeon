@@ -50,7 +50,7 @@ public class RollingpaperRepositoryImpl implements RollingpaperRepositoryCustom 
         return queryFactory
                 .select(teamParticipation.nickname)
                 .from(rollingpaper)
-                .join(rollingpaper.teamParticipation, teamParticipation)
+                .innerJoin(rollingpaper.teamParticipation, teamParticipation)
                 .where(rollingpaper.id.eq(rollingpaperId))
                 .fetchOne();
     }
