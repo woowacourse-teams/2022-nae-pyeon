@@ -7,7 +7,7 @@ interface UseMessageProps {
   handleEditButtonClick: () => void;
 }
 
-const useMessage = ({
+const useMessageBox = ({
   id,
   rollingpaperId,
   handleEditButtonClick,
@@ -41,4 +41,4 @@ const useMessage = ({
   };
 };
 
-export default useMessage;
+export default useMessageBox;
