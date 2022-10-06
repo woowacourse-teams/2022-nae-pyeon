@@ -53,6 +53,7 @@ const ROLLINGPAPER_STATE_TYPE = {
   WRITE: "WRITE",
   EDIT: "EDIT",
   NORMAL: "NORMAL",
+  LOADING: "LOADING",
 } as const;
 
 export {

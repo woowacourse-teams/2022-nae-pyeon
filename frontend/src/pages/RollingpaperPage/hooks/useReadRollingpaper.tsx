@@ -11,7 +11,7 @@ interface UseReadRollingpaperArgs {
   handleWriteEnd: () => void;
 }
 
-export const useReadRollingpaper = ({
+const useReadRollingpaper = ({
   teamId,
   rollingpaperId,
   handleWriteEnd,
@@ -27,3 +27,5 @@ export const useReadRollingpaper = ({
       },
     }
   );
+
+export default useReadRollingpaper;

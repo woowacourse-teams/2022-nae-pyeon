@@ -6,7 +6,7 @@ import { ROLLINGPAPER_STATE_TYPE } from "@/constants";
 const useMessageWrite = () => {
   const [rollingpaperState, setRollingpaperState] = useState<
     ValueOf<typeof ROLLINGPAPER_STATE_TYPE>
-  >(ROLLINGPAPER_STATE_TYPE.NORMAL);
+  >(ROLLINGPAPER_STATE_TYPE.LOADING);
 
   const handleWriteButtonClick = () => {
     setRollingpaperState(ROLLINGPAPER_STATE_TYPE.WRITE);
