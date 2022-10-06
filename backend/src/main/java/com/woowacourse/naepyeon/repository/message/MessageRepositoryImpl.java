@@ -39,7 +39,6 @@ public class MessageRepositoryImpl implements MessageRepositoryCustom {
     public Page<WrittenMessageResponseDto> findAllByAuthorId(final Long authorId, final Pageable pageRequest) {
         final List<WrittenMessageResponseDto> content = queryFactory
                 .select(makeProjections())
-                .distinct()
                 .from(message)
                 .innerJoin(message.rollingpaper, rollingpaper)
                 .innerJoin(rollingpaper.team, team)
