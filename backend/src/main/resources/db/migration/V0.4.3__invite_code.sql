@@ -9,4 +9,4 @@ CREATE TABLE invite_code (
 alter table invite_code
     add constraint fk_invite_code_team_id
         foreign key (team_id)
-            references team (team_id);
+            references team (team_id) on delete cascade;

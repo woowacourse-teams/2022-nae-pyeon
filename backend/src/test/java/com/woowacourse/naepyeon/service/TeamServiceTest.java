@@ -3,6 +3,11 @@ package com.woowacourse.naepyeon.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
@@ -26,6 +31,7 @@ import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +39,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -391,6 +398,40 @@ class TeamServiceTest {
     }
 
     @Test
+    @DisplayName("알파벳 대문자, 소문자, 숫자로만 이루어진 초대코드를 생성한다.")
+    void createInviteCode() {
+        final String inviteCode = teamService.createInviteCode(team1.getId());
+        assertAll(
+                () -> assertThat(inviteCode.matches("^[a-zA-Z0-9]*$")).isTrue(),
+                () -> assertThat(inviteCode).hasSize(10)
+        );
+    }
+
+    @Test
+    @DisplayName("이미 존재하는 초대코드가 생성됐을 경우 재시도한다.")
+    void createInviteCodeDuplicate() {
+        final InviteCodeRepository inviteCodeRepository = mock(InviteCodeRepository.class);
+        final TeamRepository teamRepository = mock(TeamRepository.class);
+        final TeamService teamService = new TeamService(teamRepository, null, null, inviteCodeRepository);
+        final Team team = mock(Team.class);
+        when(teamRepository.findById(any())).thenReturn(Optional.of(team));
+        when(team.getId()).thenReturn(9999L);
+        final InviteCode duplicateInviteCode = new InviteCode("abc", LocalDateTime.now().plusHours(24), team);
+        final InviteCode recreateInviteCode = new InviteCode("def", LocalDateTime.now().plusHours(24), team);
+        when(team.createInviteCode(any())).thenReturn(duplicateInviteCode, recreateInviteCode);
+        when(inviteCodeRepository.save(duplicateInviteCode)).thenThrow(new DataIntegrityViolationException("중복코드"));
+        when(inviteCodeRepository.save(recreateInviteCode)).thenReturn(recreateInviteCode);
+
+        final String inviteCode = teamService.createInviteCode(team.getId());
+
+        assertAll(
+                () -> assertThat(inviteCode).isEqualTo(recreateInviteCode.getCode()),
+                () -> verify(inviteCodeRepository, times(2)).save(any()),
+                () -> verify(team, times(2)).createInviteCode(any())
+        );
+    }
+
+    @Test
     @DisplayName("초대 코드로 팀 정보를 조회한다.")
     void getTeamByInviteToken() {
         final String inviteCode = teamService.createInviteCode(team1.getId());
@@ -426,9 +467,9 @@ class TeamServiceTest {
     @Test
     @DisplayName("만료된 초대 코드를 삭제한다.")
     void deleteExpiredInviteCodes() {
-        final InviteCode inviteCode1 = new InviteCode(null, "abc", LocalDateTime.now().minusHours(1), team1);
-        final InviteCode inviteCode2 = new InviteCode(null, "def", LocalDateTime.now().minusHours(1), team2);
-        final InviteCode inviteCode3 = new InviteCode(null, "ghi", LocalDateTime.now().plusHours(1), team3);
+        final InviteCode inviteCode1 = new InviteCode("abc", LocalDateTime.now().minusHours(1), team1);
+        final InviteCode inviteCode2 = new InviteCode("def", LocalDateTime.now().minusHours(1), team2);
+        final InviteCode inviteCode3 = new InviteCode("ghi", LocalDateTime.now().plusHours(1), team3);
         inviteCodeRepository.save(inviteCode1);
         inviteCodeRepository.save(inviteCode2);
         inviteCodeRepository.save(inviteCode3);

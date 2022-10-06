@@ -23,18 +23,16 @@ import org.springframework.dao.DataIntegrityViolationException;
 @Import({JpaAuditingConfig.class, QueryDslConfig.class})
 class InviteCodeRepositoryTest {
 
-    @Autowired
-    private InviteCodeRepository inviteCodeRepository;
-    @Autowired
-    private TeamRepository teamRepository;
-
-    @Autowired
-    private TestEntityManager em;
-
     Team team1;
     Team team2;
     Team team3;
     Team team4;
+    @Autowired
+    private InviteCodeRepository inviteCodeRepository;
+    @Autowired
+    private TeamRepository teamRepository;
+    @Autowired
+    private TestEntityManager em;
 
     @BeforeEach
     void setUp() {
@@ -65,10 +63,10 @@ class InviteCodeRepositoryTest {
     @Test
     @DisplayName("만료된 초대코드 데이터를 삭제한다.")
     void deleteExpired() {
-        final InviteCode inviteCode1 = new InviteCode(null, "abc", LocalDateTime.now().minusHours(1), team1);
-        final InviteCode inviteCode2 = new InviteCode(null, "def", LocalDateTime.now().minusHours(1), team2);
-        final InviteCode inviteCode3 = new InviteCode(null, "ghi", LocalDateTime.now().plusHours(1), team3);
-        final InviteCode inviteCode4 = new InviteCode(null, "jkl", LocalDateTime.now().plusHours(1), team4);
+        final InviteCode inviteCode1 = new InviteCode("abc", LocalDateTime.now().minusHours(1), team1);
+        final InviteCode inviteCode2 = new InviteCode("def", LocalDateTime.now().minusHours(1), team2);
+        final InviteCode inviteCode3 = new InviteCode("ghi", LocalDateTime.now().plusHours(1), team3);
+        final InviteCode inviteCode4 = new InviteCode("jkl", LocalDateTime.now().plusHours(1), team4);
         inviteCodeRepository.save(inviteCode1);
         inviteCodeRepository.save(inviteCode2);
         inviteCodeRepository.save(inviteCode3);

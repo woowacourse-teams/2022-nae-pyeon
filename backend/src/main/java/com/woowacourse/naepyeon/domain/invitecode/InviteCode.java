@@ -36,7 +36,7 @@ public class InviteCode {
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;
 
-    public InviteCode(final Long id, final String code, final LocalDateTime expired, final Team team) {
+    private InviteCode(final Long id, final String code, final LocalDateTime expired, final Team team) {
         this.id = id;
         this.code = code;
         this.expired = expired;

@@ -14,7 +14,7 @@ class SecureRandomStringUtilsTest {
         final String randomString = SecureRandomStringUtils.createRandomAlphanumericSecure(10);
 
         assertAll(
-                () -> assertThat(randomString.length()).isEqualTo(10),
+                () -> assertThat(randomString).hasSize(10),
                 () -> assertThat(randomString.matches("^[a-zA-Z0-9]*$")).isTrue()
         );
     }

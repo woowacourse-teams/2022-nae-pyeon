@@ -439,7 +439,7 @@ class TeamAcceptanceTest extends AcceptanceTest {
     void findTeamByInviteTokenWithExpiredToken() {
         final Long teamId = 모임_생성(alex);
         final Team team = teamRepository.findById(teamId).get();
-        final InviteCode expiredInviteToken = new InviteCode(null, "abc", LocalDateTime.now().minusHours(1), team);
+        final InviteCode expiredInviteToken = new InviteCode("abc", LocalDateTime.now().minusHours(1), team);
         inviteCodeRepository.save(expiredInviteToken);
 
         final ExtractableResponse<Response> response = 초대_코드로_팀_상세_조회(alex, expiredInviteToken.getCode());

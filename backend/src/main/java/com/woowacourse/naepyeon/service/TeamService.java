@@ -41,6 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class TeamService {
 
+    private static final int INVITE_CODE_LENGTH = 10;
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
     private final TeamParticipationRepository teamParticipationRepository;
@@ -199,8 +200,12 @@ public class TeamService {
     public String createInviteCode(final Long teamId) {
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
+        return makeInviteCode(teamId, team);
+    }
+
+    private String makeInviteCode(final Long teamId, final Team team) {
         final InviteCode inviteCode = team.createInviteCode(
-                () -> SecureRandomStringUtils.createRandomAlphanumericSecure(10)
+                () -> SecureRandomStringUtils.createRandomAlphanumericSecure(INVITE_CODE_LENGTH)
         );
         try {
             return inviteCodeRepository.save(inviteCode)
