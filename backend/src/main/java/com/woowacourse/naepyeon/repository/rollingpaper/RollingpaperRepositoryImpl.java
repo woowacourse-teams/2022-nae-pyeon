@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.repository.rollingpaper;
 
+import static com.woowacourse.naepyeon.domain.QTeamParticipation.teamParticipation;
 import static com.woowacourse.naepyeon.domain.rollingpaper.QRollingpaper.rollingpaper;
 
 import com.querydsl.core.BooleanBuilder;
@@ -47,8 +48,9 @@ public class RollingpaperRepositoryImpl implements RollingpaperRepositoryCustom 
     @Override
     public String findAddresseeNicknameByRollingpaperId(final Long rollingpaperId) {
         return queryFactory
-                .select(rollingpaper.teamParticipation.nickname)
+                .select(teamParticipation.nickname)
                 .from(rollingpaper)
+                .join(rollingpaper.teamParticipation, teamParticipation)
                 .where(rollingpaper.id.eq(rollingpaperId))
                 .fetchOne();
     }
