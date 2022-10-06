@@ -128,10 +128,8 @@ class MessageRepositoryTest {
     @Test
     @DisplayName("본인이 작성한 메시지들을 찾는다.")
     void findAllByMemberIdAndPageRequest() {
-        final TeamParticipation teamParticipation5 = new TeamParticipation(team, null, team.getName());
-        teamParticipationRepository.save(teamParticipation5);
         final Rollingpaper rollingpaper2 =
-                new Rollingpaper("AlexAndKei2", Recipient.TEAM, team, member, teamParticipation5);
+                new Rollingpaper("AlexAndKei2", Recipient.TEAM, team, member);
         rollingpaperRepository.save(rollingpaper2);
 
         final List<Message> messages = new ArrayList<>();
