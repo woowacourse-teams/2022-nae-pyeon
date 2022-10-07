@@ -76,7 +76,7 @@ public class RollingpaperController {
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long teamId,
             @PathVariable final Long rollingpaperId,
-            @RequestBody final RollingpaperUpdateRequest updateRequest) {
+            @RequestBody @Valid final RollingpaperUpdateRequest updateRequest) {
         rollingpaperService.updateTitle(rollingpaperId, updateRequest.getTitle(), teamId, loginMemberRequest.getId());
         return ResponseEntity.noContent().build();
     }

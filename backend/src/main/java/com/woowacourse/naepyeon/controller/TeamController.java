@@ -104,7 +104,7 @@ public class TeamController {
     @PostMapping("/{teamId}")
     public ResponseEntity<Void> joinMember(@AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
                                            @PathVariable final Long teamId,
-                                           @RequestBody final JoinTeamMemberRequest joinTeamMemberRequest) {
+                                           @RequestBody @Valid final JoinTeamMemberRequest joinTeamMemberRequest) {
         teamService.joinMember(teamId, loginMemberRequest.getId(), joinTeamMemberRequest.getNickname());
         return ResponseEntity.noContent().build();
     }
@@ -121,7 +121,7 @@ public class TeamController {
     public ResponseEntity<Void> updateMyInfo(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long teamId,
-            @RequestBody final UpdateTeamParticipantRequest updateTeamParticipantRequest) {
+            @RequestBody @Valid final UpdateTeamParticipantRequest updateTeamParticipantRequest) {
         teamService.updateMyInfo(teamId, loginMemberRequest.getId(), updateTeamParticipantRequest.getNickname());
         return ResponseEntity.noContent().build();
     }
@@ -148,7 +148,7 @@ public class TeamController {
 
     @PostMapping("/invite/join")
     public ResponseEntity<Void> inviteJoin(@AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
-                                           @RequestBody final InviteJoinRequest inviteJoinRequest) {
+                                           @RequestBody @Valid final InviteJoinRequest inviteJoinRequest) {
         teamService.inviteJoin(
                 inviteJoinRequest.getInviteToken(),
                 loginMemberRequest.getId(),

@@ -42,6 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TeamService {
 
     private static final int INVITE_CODE_LENGTH = 10;
+
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
     private final TeamParticipationRepository teamParticipationRepository;

@@ -36,15 +36,10 @@ public class InviteCode {
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;
 
-    private InviteCode(final Long id, final String code, final LocalDateTime expired, final Team team) {
-        this.id = id;
+    public InviteCode(final String code, final LocalDateTime expired, final Team team) {
         this.code = code;
         this.expired = expired;
         this.team = team;
-    }
-
-    public InviteCode(final String code, final LocalDateTime expired, final Team team) {
-        this(null, code, expired, team);
     }
 
     public static InviteCode createdBy(final Team team, final InviteCodeGenerator inviteCodeGenerator) {
