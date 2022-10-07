@@ -63,7 +63,6 @@ public class Message extends BaseEntity {
         this.rollingpaper = rollingpaper;
         this.anonymous = anonymous;
         this.secret = secret;
-
     }
 
     private void validateCanSecret(final Rollingpaper rollingpaper, final boolean secret) {

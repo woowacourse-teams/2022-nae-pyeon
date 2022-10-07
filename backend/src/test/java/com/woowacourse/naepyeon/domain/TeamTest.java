@@ -2,7 +2,9 @@ package com.woowacourse.naepyeon.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.naepyeon.domain.invitecode.InviteCode;
 import com.woowacourse.naepyeon.exception.ExceedTeamNameLengthException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,5 +60,24 @@ class TeamTest {
 
         assertThatThrownBy(() -> team.changeName(updateTeamName))
                 .isInstanceOf(ExceedTeamNameLengthException.class);
+    }
+
+    @Test
+    @DisplayName("해당 팀의 초대 코드를 생성한다.")
+    void createInviteCode() {
+        final String teamName = "abcdefghi123456";
+        final Team team = new Team(
+                teamName,
+                "테스트 모임입니다.",
+                "testEmoji",
+                "#123456",
+                false
+        );
+        final InviteCode inviteCode = team.createInviteCode(() -> "abc");
+
+        assertAll(
+                () -> assertThat(inviteCode.getTeam()).isSameAs(team),
+                () -> assertThat(team.getInviteCodes()).contains(inviteCode)
+        );
     }
 }

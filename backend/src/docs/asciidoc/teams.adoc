@@ -31,10 +31,10 @@ operation::team-controller-test/get-my-info-in-team[snippets='http-request,http-
 operation::team-controller-test/update-my-info[snippets='http-request,http-response']
 
 === 모임의 초대 코드 생성
-operation::team-controller-test/create-invite-token[snippets='http-request,http-response']
+operation::team-controller-test/create-invite-code[snippets='http-request,http-response']
 
 === 초대 코드로 어떤 팀의 초대 코드인지 조회
-operation::team-controller-test/get-team-id-by-invite-token[snippets='http-request,http-response']
+operation::team-controller-test/get-team-id-by-invite-code[snippets='http-request,http-response']
 
 === 초대 코드로 팀 가입
 operation::team-controller-test/invite-join[snippets='http-request,http-response']

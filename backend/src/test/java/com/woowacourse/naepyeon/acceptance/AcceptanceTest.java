@@ -4,17 +4,16 @@ import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.naepyeon.acceptance.support.DatabaseCleaner;
+import com.woowacourse.naepyeon.repository.invitecode.InviteCodeRepository;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
+import com.woowacourse.naepyeon.repository.team.TeamRepository;
 import com.woowacourse.naepyeon.service.AuthService;
 import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
-import com.woowacourse.naepyeon.acceptance.support.DatabaseCleaner;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
-import com.woowacourse.naepyeon.support.invitetoken.InviteTokenProvider;
-import com.woowacourse.naepyeon.support.invitetoken.aes.Aes256InviteTokenProvider;
-import com.woowacourse.naepyeon.support.invitetoken.aes.Aes256Supporter;
 import com.woowacourse.naepyeon.support.oauth.google.GooglePlatformUserProvider;
 import com.woowacourse.naepyeon.support.oauth.kakao.KakaoPlatformUserProvider;
 import io.restassured.RestAssured;
@@ -42,11 +41,13 @@ public class AcceptanceTest {
     protected MemberService memberService;
     protected AuthService authService;
     @Autowired
-    protected Aes256Supporter aes256Supporter;
-    @Autowired
     protected ObjectMapper objectMapper;
     @Autowired
     protected DatabaseCleaner databaseCleaner;
+    @Autowired
+    protected InviteCodeRepository inviteCodeRepository;
+    @Autowired
+    protected TeamRepository teamRepository;
 
     @LocalServerPort
     int port;
@@ -59,13 +60,12 @@ public class AcceptanceTest {
     @Value("${security.jwt.token.secret-key}")
     protected String secretKey;
 
-    protected InviteTokenProvider expiredTokenInviteTokenProvider;
-
     @BeforeEach
     public void setUp() {
         RestAssured.port = port;
         databaseCleaner.execute();
-        authService = new AuthService(memberService, jwtTokenProvider, kakaoPlatformUserProvider, googlePlatformUserProvider);
+        authService = new AuthService(memberService, jwtTokenProvider, kakaoPlatformUserProvider,
+                googlePlatformUserProvider);
 
         final String alexName = "alex";
         when(kakaoPlatformUserProvider.getPlatformUser(anyString(), anyString()))
@@ -86,7 +86,5 @@ public class AcceptanceTest {
         when(kakaoPlatformUserProvider.getPlatformUser(anyString(), anyString()))
                 .thenReturn(new PlatformUserDto(zeroName, "email4@email.com", "KAKAO", "4"));
         zero = authService.createTokenWithKakaoOauth(new TokenRequestDto(zeroName, "https://..."));
-
-        expiredTokenInviteTokenProvider = new Aes256InviteTokenProvider(aes256Supporter, objectMapper, 0);
     }
 }

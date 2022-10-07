@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.Table;
 import javax.persistence.metamodel.Type;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ public class DatabaseCleaner {
     private final EntityManager entityManager;
     private final List<String> tableNames;
 
+    @Autowired
     public DatabaseCleaner(final EntityManager entityManager) {
         this.entityManager = entityManager;
         this.tableNames = entityManager.getMetamodel()
