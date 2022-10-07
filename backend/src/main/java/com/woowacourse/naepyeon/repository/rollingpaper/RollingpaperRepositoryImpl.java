@@ -9,6 +9,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -46,13 +47,13 @@ public class RollingpaperRepositoryImpl implements RollingpaperRepositoryCustom 
     }
 
     @Override
-    public String findAddresseeNicknameByRollingpaperId(final Long rollingpaperId) {
-        return queryFactory
+    public Optional<String> findAddresseeNicknameByMemberRollingpaperId(final Long rollingpaperId) {
+        return Optional.ofNullable(queryFactory
                 .select(teamParticipation.nickname)
                 .from(rollingpaper)
                 .innerJoin(rollingpaper.teamParticipation, teamParticipation)
                 .where(rollingpaper.id.eq(rollingpaperId))
-                .fetchOne();
+                .fetchOne());
     }
 
     private BooleanBuilder isMemberIdEq(final Long memberId) {

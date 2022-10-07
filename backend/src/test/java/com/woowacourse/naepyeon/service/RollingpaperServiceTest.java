@@ -143,7 +143,8 @@ class RollingpaperServiceTest {
         return List.of(
                 RollingpaperPreviewResponseDto.createPreviewRollingpaper(
                         rollingpaper1,
-                        rollingpaperRepository.findAddresseeNicknameByRollingpaperId(rollingpaperId1)
+                        rollingpaperRepository.findAddresseeNicknameByMemberRollingpaperId(rollingpaperId1)
+                                .orElseThrow()
                 ),
                 RollingpaperPreviewResponseDto.createPreviewRollingpaper(
                         rollingpaper2,

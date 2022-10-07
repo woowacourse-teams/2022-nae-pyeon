@@ -127,32 +127,39 @@ class RollingpaperRepositoryTest {
     }
 
     @Test
-    @DisplayName("롤링페이퍼 수신인의 닉네임을 찾는다.")
+    @DisplayName("개인 롤링페이퍼 수신인의 닉네임을 찾는다.")
     void findAddresseeNicknameByRollingpaperId() {
         final Member author = new Member("author", "a@hello.com", Platform.KAKAO, "2");
         memberRepository.save(author);
         final TeamParticipation teamParticipation2 = new TeamParticipation(team, author, "다른닉네임");
         teamParticipationRepository.save(teamParticipation2);
-        final TeamParticipation teamParticipation3 = new TeamParticipation(team, null, team.getName());
-        teamParticipationRepository.save(teamParticipation3);
 
         final Rollingpaper rollingPaper1 =
                 new Rollingpaper(rollingPaperTitle, Recipient.MEMBER, team, member, teamParticipation1);
         final Rollingpaper rollingPaper2 =
                 new Rollingpaper(rollingPaperTitle, Recipient.MEMBER, team, author, teamParticipation2);
         final Rollingpaper rollingPaper3 =
-                new Rollingpaper(rollingPaperTitle, Recipient.TEAM, team, null, teamParticipation3);
+                new Rollingpaper(rollingPaperTitle, Recipient.TEAM, team, null, null);
         rollingpaperRepository.save(rollingPaper1);
         rollingpaperRepository.save(rollingPaper2);
         rollingpaperRepository.save(rollingPaper3);
 
         assertAll(
-                () -> assertThat(rollingpaperRepository.findAddresseeNicknameByRollingpaperId(rollingPaper1.getId()))
-                        .isEqualTo("케이"),
-                () -> assertThat(rollingpaperRepository.findAddresseeNicknameByRollingpaperId(rollingPaper2.getId()))
-                        .isEqualTo("다른닉네임"),
-                () -> assertThat(rollingpaperRepository.findAddresseeNicknameByRollingpaperId(rollingPaper3.getId()))
-                        .isEqualTo("nae-pyeon")
+                () -> assertThat(
+                        rollingpaperRepository.findAddresseeNicknameByMemberRollingpaperId(rollingPaper1.getId())
+                                .orElse(team.getName())
+                ).isEqualTo("케이"),
+                () -> assertThat(
+                        rollingpaperRepository.findAddresseeNicknameByMemberRollingpaperId(rollingPaper2.getId())
+                                .orElse(team.getName())
+                ).isEqualTo("다른닉네임"),
+                // 팀 롤링페이퍼인데 해당 메서드를 사용할 경우 optional.empty() 반환
+                // 이렇게 이 메서드를 서비스에서 잘못 호출할 수도 있을 듯하다.
+                // 이 경우에는 모임 롤링페이퍼 대상 닉네임이라도 보이도록 team.getName() 반환하도록 해주자
+                () -> assertThat(
+                        rollingpaperRepository.findAddresseeNicknameByMemberRollingpaperId(rollingPaper3.getId())
+                                .orElse(team.getName())
+                ).isEqualTo("nae-pyeon")
         );
     }
 

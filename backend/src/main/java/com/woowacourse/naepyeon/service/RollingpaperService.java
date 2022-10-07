@@ -111,7 +111,8 @@ public class RollingpaperService {
         if (rollingpaper.isMemberNull()) {
             return rollingpaper.getTeamName();
         }
-        return rollingpaperRepository.findAddresseeNicknameByRollingpaperId(rollingpaper.getId());
+        return rollingpaperRepository.findAddresseeNicknameByMemberRollingpaperId(rollingpaper.getId())
+                .orElse(rollingpaper.getTeamName());
     }
 
     @Transactional(readOnly = true)
