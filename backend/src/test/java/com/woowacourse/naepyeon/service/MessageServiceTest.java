@@ -48,9 +48,8 @@ class MessageServiceTest {
     private final TeamParticipation teamParticipation1 = new TeamParticipation(team, member, "일케이");
     private final TeamParticipation teamParticipation2 = new TeamParticipation(team, author, "이케이");
     private final TeamParticipation teamParticipation3 = new TeamParticipation(team, otherAuthor, "삼케이");
-    private final TeamParticipation teamParticipation4 = new TeamParticipation(team, null, team.getName());
     private final Rollingpaper teamRollingpaper =
-            new Rollingpaper("AlexAndKei", Recipient.TEAM, team, null, teamParticipation4);
+            new Rollingpaper("AlexAndKei", Recipient.TEAM, team, null, null);
     private final Rollingpaper memberRollingpaper =
             new Rollingpaper("AlexAndKei", Recipient.MEMBER, team, member, teamParticipation1);
 
@@ -75,7 +74,6 @@ class MessageServiceTest {
         teamParticipationRepository.save(teamParticipation1);
         teamParticipationRepository.save(teamParticipation2);
         teamParticipationRepository.save(teamParticipation3);
-        teamParticipationRepository.save(teamParticipation4);
         rollingpaperRepository.save(memberRollingpaper);
         rollingpaperRepository.save(teamRollingpaper);
     }
