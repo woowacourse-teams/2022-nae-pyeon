@@ -152,7 +152,7 @@ class TeamControllerTest extends TestSupport {
         final InviteCode inviteCode = team.createInviteCode(() -> "abc");
         inviteCodeRepository.save(inviteCode);
         mockMvc.perform(
-                        get("/api/v1/teams/invite?inviteToken=" + inviteCode.getCode())
+                        get("/api/v1/teams/invite?inviteCode=" + inviteCode.getCode())
                                 .header("Authorization", "Bearer " + joinedMemberAccessToken)
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())

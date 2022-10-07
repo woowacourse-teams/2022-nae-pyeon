@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.ErrorResponse;
-import com.woowacourse.naepyeon.controller.dto.InviteTokenResponse;
+import com.woowacourse.naepyeon.controller.dto.InviteCodeResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
@@ -419,10 +419,10 @@ class TeamAcceptanceTest extends AcceptanceTest {
 
     @Test
     @DisplayName("모임의 초대 코드를 생성하고 모임 정보를 얻는다.")
-    void findTeamByInviteToken() {
+    void findTeamByInviteCode() {
         final Long teamId = 모임_생성(alex);
-        final String inviteCode = 초대_코드_생성(alex, teamId).as(InviteTokenResponse.class)
-                .getInviteToken();
+        final String inviteCode = 초대_코드_생성(alex, teamId).as(InviteCodeResponse.class)
+                .getInviteCode();
 
         final ExtractableResponse<Response> response = 초대_코드로_팀_상세_조회(alex, inviteCode);
         final Long findTeamId = response.as(TeamResponseDto.class)
@@ -436,19 +436,19 @@ class TeamAcceptanceTest extends AcceptanceTest {
 
     @Test
     @DisplayName("유효시간이 지난 초대코드로 모임 정보를 요청시 예외가 발생한다.")
-    void findTeamByInviteTokenWithExpiredToken() {
+    void findTeamByInviteCodeWithExpiredToken() {
         final Long teamId = 모임_생성(alex);
         final Team team = teamRepository.findById(teamId).get();
-        final InviteCode expiredInviteToken = new InviteCode("abc", LocalDateTime.now().minusHours(1), team);
-        inviteCodeRepository.save(expiredInviteToken);
+        final InviteCode expiredInviteCode = new InviteCode("abc", LocalDateTime.now().minusHours(1), team);
+        inviteCodeRepository.save(expiredInviteCode);
 
-        final ExtractableResponse<Response> response = 초대_코드로_팀_상세_조회(alex, expiredInviteToken.getCode());
+        final ExtractableResponse<Response> response = 초대_코드로_팀_상세_조회(alex, expiredInviteCode.getCode());
         final ErrorResponse errorResponse = response.as(ErrorResponse.class);
 
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
                 () -> assertThat(errorResponse).extracting("errorCode", "message")
-                        .containsExactly("4017", "토큰의 유효기간이 만료됐습니다.")
+                        .containsExactly("4017", "초대코드의 유효기간이 만료됐습니다.")
         );
     }
 

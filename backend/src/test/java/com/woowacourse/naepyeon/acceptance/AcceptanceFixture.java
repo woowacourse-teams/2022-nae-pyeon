@@ -234,6 +234,6 @@ public class AcceptanceFixture {
 
     public static ExtractableResponse<Response> 초대_코드로_팀_상세_조회(
             final TokenResponseDto tokenResponseDto, final String inviteCode) {
-        return get(tokenResponseDto, "/api/v1/teams/invite?inviteToken=" + inviteCode);
+        return get(tokenResponseDto, "/api/v1/teams/invite?inviteCode=" + inviteCode);
     }
 }

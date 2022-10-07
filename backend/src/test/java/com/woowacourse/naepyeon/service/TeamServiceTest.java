@@ -433,7 +433,7 @@ class TeamServiceTest {
 
     @Test
     @DisplayName("초대 코드로 팀 정보를 조회한다.")
-    void getTeamByInviteToken() {
+    void getTeamByInviteCode() {
         final String inviteCode = teamService.createInviteCode(team1.getId());
 
         final TeamResponseDto teamResponseDto = teamService.findTeamByInviteCode(inviteCode, member.getId());

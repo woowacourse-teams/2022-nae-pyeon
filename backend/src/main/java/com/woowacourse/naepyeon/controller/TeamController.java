@@ -3,7 +3,7 @@ package com.woowacourse.naepyeon.controller;
 import com.woowacourse.naepyeon.controller.auth.AuthenticationPrincipal;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.InviteJoinRequest;
-import com.woowacourse.naepyeon.controller.dto.InviteTokenResponse;
+import com.woowacourse.naepyeon.controller.dto.InviteCodeResponse;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
@@ -127,22 +127,22 @@ public class TeamController {
     }
 
     @PostMapping("/{teamId}/invite")
-    public ResponseEntity<InviteTokenResponse> createInviteToken(
+    public ResponseEntity<InviteCodeResponse> createInviteCode(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long teamId) {
         if (!teamService.isJoinedMember(loginMemberRequest.getId(), teamId)) {
             throw new UncertificationTeamMemberException(teamId, loginMemberRequest.getId());
         }
-        final String inviteToken = teamService.createInviteCode(teamId);
-        return ResponseEntity.ok(new InviteTokenResponse(inviteToken));
+        final String inviteCode = teamService.createInviteCode(teamId);
+        return ResponseEntity.ok(new InviteCodeResponse(inviteCode));
     }
 
     @GetMapping("/invite")
-    public ResponseEntity<TeamResponseDto> findTeamByInviteToken(
+    public ResponseEntity<TeamResponseDto> findTeamByInviteCode(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
-            @RequestParam("inviteToken") final String inviteToken) {
+            @RequestParam("inviteCode") final String inviteCode) {
         final TeamResponseDto teamResponseDto =
-                teamService.findTeamByInviteCode(inviteToken, loginMemberRequest.getId());
+                teamService.findTeamByInviteCode(inviteCode, loginMemberRequest.getId());
         return ResponseEntity.ok(teamResponseDto);
     }
 
@@ -150,7 +150,7 @@ public class TeamController {
     public ResponseEntity<Void> inviteJoin(@AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
                                            @RequestBody @Valid final InviteJoinRequest inviteJoinRequest) {
         teamService.inviteJoin(
-                inviteJoinRequest.getInviteToken(),
+                inviteJoinRequest.getInviteCode(),
                 loginMemberRequest.getId(),
                 inviteJoinRequest.getNickname()
         );
