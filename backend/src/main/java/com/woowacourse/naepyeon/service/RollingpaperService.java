@@ -43,22 +43,22 @@ public class RollingpaperService {
                                          final Long loginMemberId, final Long addresseeId) {
         final Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundTeamException(teamId));
-        final Member member = memberRepository.findById(addresseeId)
+        final Member addressee = memberRepository.findById(addresseeId)
                 .orElseThrow(() -> new NotFoundMemberException(addresseeId));
         validateTeamAndMember(teamId, loginMemberId, addresseeId);
         final TeamParticipation teamParticipation =
                 teamParticipationRepository.findByTeamIdAndMemberId(teamId, addresseeId);
-        final Rollingpaper rollingpaper = new Rollingpaper(title, Recipient.MEMBER, team, member, teamParticipation);
+        final Rollingpaper rollingpaper = new Rollingpaper(title, Recipient.MEMBER, team, addressee, teamParticipation);
         return rollingpaperRepository.save(rollingpaper)
                 .getId();
     }
 
-    private void validateTeamAndMember(final Long teamId, final Long loginMemberId, final Long memberId) {
+    private void validateTeamAndMember(final Long teamId, final Long loginMemberId, final Long addresseeId) {
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
             throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
-        if (checkMemberNotIncludedTeam(teamId, memberId)) {
-            throw new NotFoundTeamMemberException(memberId);
+        if (checkMemberNotIncludedTeam(teamId, addresseeId)) {
+            throw new NotFoundTeamMemberException(addresseeId);
         }
     }
 
@@ -119,7 +119,7 @@ public class RollingpaperService {
     public ReceivedRollingpapersResponseDto findReceivedRollingpapers(
             final Long loginMemberId, final Integer page, final int count) {
         final Pageable pageRequest = PageRequest.of(page, count);
-        final Page<Rollingpaper> rollingpapers = rollingpaperRepository.findByMemberId(loginMemberId, pageRequest);
+        final Page<Rollingpaper> rollingpapers = rollingpaperRepository.findByAddresseeId(loginMemberId, pageRequest);
         final List<ReceivedRollingpaperResponseDto> receivedRollingpaperResponseDtos = rollingpapers.stream()
                 .map(rollingpaper -> ReceivedRollingpaperResponseDto.of(
                         rollingpaper.getId(), rollingpaper.getTitle(), rollingpaper.getTeam())

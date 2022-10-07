@@ -22,10 +22,10 @@ public class RollingpaperRepositoryImpl implements RollingpaperRepositoryCustom 
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<Rollingpaper> findByMemberId(final Long memberId, final Pageable pageRequest) {
+    public Page<Rollingpaper> findByAddresseeId(final Long addresseeId, final Pageable pageRequest) {
         final List<Rollingpaper> content = queryFactory
                 .selectFrom(rollingpaper)
-                .where(isMemberIdEq(memberId))
+                .where(isAddresseeIdEq(addresseeId))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
@@ -33,7 +33,7 @@ public class RollingpaperRepositoryImpl implements RollingpaperRepositoryCustom 
         final JPAQuery<Long> countQuery = queryFactory
                 .select(rollingpaper.count())
                 .from(rollingpaper)
-                .where(isMemberIdEq(memberId));
+                .where(isAddresseeIdEq(addresseeId));
 
         return PageableExecutionUtils.getPage(content, pageRequest, countQuery::fetchOne);
     }
@@ -56,8 +56,8 @@ public class RollingpaperRepositoryImpl implements RollingpaperRepositoryCustom 
                 .fetchOne());
     }
 
-    private BooleanBuilder isMemberIdEq(final Long memberId) {
-        return nullSafeBuilder(() -> rollingpaper.member.id.eq(memberId));
+    private BooleanBuilder isAddresseeIdEq(final Long addresseeId) {
+        return nullSafeBuilder(() -> rollingpaper.addressee.id.eq(addresseeId));
     }
 
     private BooleanBuilder isTeamIdEq(final Long teamId) {

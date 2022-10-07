@@ -76,7 +76,7 @@ class RollingpaperRepositoryTest {
         final Rollingpaper findRollingPaper = rollingpaperRepository.findById(rollingPaperId)
                 .orElseThrow();
         final Team findRollingPaperTeam = findRollingPaper.getTeam();
-        final Member findRollingPaperMember = findRollingPaper.getMember();
+        final Member findRollingPaperMember = findRollingPaper.getAddressee();
 
         assertAll(
                 () -> assertThat(findRollingPaper)
@@ -118,7 +118,7 @@ class RollingpaperRepositoryTest {
         rollingpaperRepository.save(rollingPaper6);
         rollingpaperRepository.save(rollingPaper7);
 
-        final Page<Rollingpaper> actual = rollingpaperRepository.findByMemberId(member.getId(), PageRequest.of(1, 3));
+        final Page<Rollingpaper> actual = rollingpaperRepository.findByAddresseeId(member.getId(), PageRequest.of(1, 3));
 
         assertAll(
                 () -> assertThat(actual).contains(rollingPaper4, rollingPaper5, rollingPaper6),
