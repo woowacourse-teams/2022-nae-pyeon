@@ -44,6 +44,7 @@ public class MessageRepositoryImpl implements MessageRepositoryCustom {
                 .innerJoin(rollingpaper.team, team)
                 .leftJoin(rollingpaper.teamParticipation, teamParticipation)
                 .where(isAuthorIdEq(authorId))
+                .orderBy(message.createdDate.desc())
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
