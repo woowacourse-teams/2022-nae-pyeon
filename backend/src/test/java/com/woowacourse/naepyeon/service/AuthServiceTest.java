@@ -1,5 +1,10 @@
 package com.woowacourse.naepyeon.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.when;
+
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
@@ -16,11 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @Transactional
@@ -44,7 +44,8 @@ class AuthServiceTest {
 
     @BeforeEach
     void setUp() {
-        authService = new AuthService(memberService, jwtTokenProvider, kakaoPlatformUserProvider, googlePlatformUserProvider);
+        authService = new AuthService(memberService, jwtTokenProvider, kakaoPlatformUserProvider,
+                googlePlatformUserProvider);
     }
 
     @Test

@@ -4,6 +4,7 @@ package com.woowacourse.naepyeon.document;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.naepyeon.config.DatabaseCleaner;
 import com.woowacourse.naepyeon.config.logging.RequestBodyWrappingFilter;
+import com.woowacourse.naepyeon.repository.team.TeamRepository;
 import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.MessageService;
 import com.woowacourse.naepyeon.service.RollingpaperService;
@@ -54,6 +55,9 @@ public abstract class TestSupport {
 
     @Autowired
     private DatabaseCleaner databaseCleaner;
+
+    @Autowired
+    protected TeamRepository teamRepository;
 
     protected MockMvc mockMvc;
     protected String accessToken;

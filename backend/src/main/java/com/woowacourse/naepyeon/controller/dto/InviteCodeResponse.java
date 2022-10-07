@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class InviteTokenResponse {
+public class InviteCodeResponse {
 
-    private String inviteToken;
+    private String inviteCode;
 }
