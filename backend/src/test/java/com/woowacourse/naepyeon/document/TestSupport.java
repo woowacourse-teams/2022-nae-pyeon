@@ -2,6 +2,7 @@ package com.woowacourse.naepyeon.document;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.naepyeon.config.DatabaseCleaner;
 import com.woowacourse.naepyeon.config.logging.RequestBodyWrappingFilter;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;
 import com.woowacourse.naepyeon.service.MemberService;
@@ -55,6 +56,9 @@ public abstract class TestSupport {
     protected MessageService messageService;
 
     @Autowired
+    private DatabaseCleaner databaseCleaner;
+
+    @Autowired
     protected TeamRepository teamRepository;
 
     protected MockMvc mockMvc;
@@ -74,6 +78,7 @@ public abstract class TestSupport {
             final WebApplicationContext context,
             final RestDocumentationContextProvider provider
     ) {
+        databaseCleaner.execute();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
                 .addFilters(new RequestBodyWrappingFilter())

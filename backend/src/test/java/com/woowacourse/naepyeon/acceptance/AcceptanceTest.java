@@ -4,7 +4,7 @@ import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.naepyeon.acceptance.support.DatabaseCleaner;
+import com.woowacourse.naepyeon.config.DatabaseCleaner;
 import com.woowacourse.naepyeon.repository.invitecode.InviteCodeRepository;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;

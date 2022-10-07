@@ -3,6 +3,7 @@ package com.woowacourse.naepyeon.domain.rollingpaper;
 import com.woowacourse.naepyeon.domain.BaseEntity;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.exception.ExceedRollingpaperNameLengthException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,14 +49,24 @@ public class Rollingpaper extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Member addressee;
 
-    public Rollingpaper(final String title, final Recipient recipient, final Team team, final Member member) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_participation_id")
+    private TeamParticipation teamParticipation;
+
+    public Rollingpaper(final String title, final Recipient recipient, final Team team, final Member addressee,
+                        final TeamParticipation teamParticipation) {
         validateRollingpaper(title);
         this.title = title;
         this.recipient = recipient;
         this.team = team;
-        this.member = member;
+        this.addressee = addressee;
+        this.teamParticipation = teamParticipation;
+    }
+
+    public Rollingpaper(final String title, final Recipient recipient, final Team team, final Member addressee) {
+        this(title, recipient, team, addressee, null);
     }
 
     public void validateRollingpaper(final String title) {
@@ -69,16 +80,12 @@ public class Rollingpaper extends BaseEntity {
         this.title = title;
     }
 
-    public boolean isAddressee(final Long memberId) {
-        return this.member.isSameMember(memberId);
-    }
-
-    public Long getAddresseeId() {
-        return member.getId();
+    public boolean isAddressee(final Long addresseeId) {
+        return this.addressee.isSameMember(addresseeId);
     }
 
     public boolean isMemberNull() {
-        return this.member == null;
+        return this.addressee == null;
     }
 
     public boolean checkSameRecipient(Recipient recipient) {

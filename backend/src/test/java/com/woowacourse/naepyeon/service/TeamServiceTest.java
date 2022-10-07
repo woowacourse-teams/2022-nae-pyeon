@@ -355,8 +355,8 @@ class TeamServiceTest {
 
         teamService.updateMyInfo(team2.getId(), member2.getId(), expected);
 
-        final String actual = teamParticipationRepository.findNicknameByMemberIdAndTeamId(member2.getId(),
-                team2.getId());
+        final String actual =
+                teamParticipationRepository.findNicknameByTeamIdAndMemberId(team2.getId(), member2.getId());
         assertThat(actual).isEqualTo(expected);
     }
 

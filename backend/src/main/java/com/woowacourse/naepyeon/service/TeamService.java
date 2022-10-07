@@ -167,7 +167,7 @@ public class TeamService {
 
     public TeamMemberResponseDto findMyInfoInTeam(final Long teamId, final Long memberId) {
         checkMemberNotIncludedTeam(teamId, memberId);
-        final String nickname = teamParticipationRepository.findNicknameByMemberIdAndTeamId(memberId, teamId);
+        final String nickname = teamParticipationRepository.findNicknameByTeamIdAndMemberId(teamId, memberId);
         return new TeamMemberResponseDto(nickname);
     }
 

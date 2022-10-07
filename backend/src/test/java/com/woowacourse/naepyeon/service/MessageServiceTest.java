@@ -45,11 +45,13 @@ class MessageServiceTest {
     private final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
     private final Member author = new Member("author", "au@hello.com", Platform.KAKAO, "2");
     private final Member otherAuthor = new Member("author2", "aut@hello.com", Platform.KAKAO, "3");
-    private final Rollingpaper teamRollingpaper = new Rollingpaper("AlexAndKei", Recipient.TEAM, team, member);
-    private final Rollingpaper memberRollingpaper = new Rollingpaper("AlexAndKei", Recipient.MEMBER, team, member);
     private final TeamParticipation teamParticipation1 = new TeamParticipation(team, member, "일케이");
     private final TeamParticipation teamParticipation2 = new TeamParticipation(team, author, "이케이");
     private final TeamParticipation teamParticipation3 = new TeamParticipation(team, otherAuthor, "삼케이");
+    private final Rollingpaper teamRollingpaper =
+            new Rollingpaper("AlexAndKei", Recipient.TEAM, team, null, null);
+    private final Rollingpaper memberRollingpaper =
+            new Rollingpaper("AlexAndKei", Recipient.MEMBER, team, member, teamParticipation1);
 
     @Autowired
     private MessageService messageService;
@@ -69,11 +71,11 @@ class MessageServiceTest {
         memberRepository.save(member);
         memberRepository.save(author);
         memberRepository.save(otherAuthor);
-        rollingpaperRepository.save(memberRollingpaper);
-        rollingpaperRepository.save(teamRollingpaper);
         teamParticipationRepository.save(teamParticipation1);
         teamParticipationRepository.save(teamParticipation2);
         teamParticipationRepository.save(teamParticipation3);
+        rollingpaperRepository.save(memberRollingpaper);
+        rollingpaperRepository.save(teamRollingpaper);
     }
 
     @Test
