@@ -37,7 +37,7 @@ const MainPage = () => {
 
   return (
     <StyledMain>
-      <StyledTopButtonList>
+      <StyledNav>
         <RoundButton
           description="롤링페이퍼 시작하기"
           onClick={handleRollingpaperStartClick}
@@ -50,7 +50,7 @@ const MainPage = () => {
         <RoundButton description="모임 검색" onClick={handleTeamSearchClick}>
           🔍
         </RoundButton>
-      </StyledTopButtonList>
+      </StyledNav>
       <section>
         <SectionHeader
           title="내편들"
@@ -111,7 +111,7 @@ const StyledMain = styled.div`
   gap: 30px;
 `;
 
-const StyledTopButtonList = styled.div`
+const StyledNav = styled.nav`
   display: flex;
   gap: 20px;
 
