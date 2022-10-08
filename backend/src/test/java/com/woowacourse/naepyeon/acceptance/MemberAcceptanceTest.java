@@ -114,6 +114,8 @@ class MemberAcceptanceTest extends AcceptanceTest {
         final String messageContent3 = "테스트";
         final String messageColor1 = "green";
         final String messageColor2 = "red";
+
+        메시지_작성(kei, rollingpaperId2, new MessageRequest(messageContent3, "yellow", false, false));
         final Long messageId1 =
                 메시지_작성(kei, rollingpaperId1, new MessageRequest(messageContent1, messageColor1, false, false))
                         .as(CreateResponse.class)
@@ -122,23 +124,12 @@ class MemberAcceptanceTest extends AcceptanceTest {
                 메시지_작성(kei, rollingpaperId1, new MessageRequest(messageContent2, messageColor2, false, false))
                         .as(CreateResponse.class)
                         .getId();
-        메시지_작성(kei, rollingpaperId2, new MessageRequest(messageContent3, "yellow", false, false));
 
-        //내가 작성한 메시지를 2개만 조회
+        //내가 작성한 메시지를 최신순으로 2개만 조회
         final WrittenMessagesResponseDto writtenMessagesResponseDto = 나의_메시지_조회(kei, 0, 2)
                 .as(WrittenMessagesResponseDto.class);
         final List<WrittenMessageResponseDto> actual = writtenMessagesResponseDto.getMessages();
         final List<WrittenMessageResponseDto> expected = List.of(
-                new WrittenMessageResponseDto(
-                        messageId1,
-                        rollingpaperId1,
-                        rollingpaperTitle1,
-                        teamId,
-                        "woowacourse-4th",
-                        messageContent1,
-                        messageColor1,
-                        "나는야모임장"
-                ),
                 new WrittenMessageResponseDto(
                         messageId2,
                         rollingpaperId1,
@@ -147,6 +138,16 @@ class MemberAcceptanceTest extends AcceptanceTest {
                         "woowacourse-4th",
                         messageContent2,
                         messageColor2,
+                        "나는야모임장"
+                ),
+                new WrittenMessageResponseDto(
+                        messageId1,
+                        rollingpaperId1,
+                        rollingpaperTitle1,
+                        teamId,
+                        "woowacourse-4th",
+                        messageContent1,
+                        messageColor1,
                         "나는야모임장"
                 )
         );
@@ -189,21 +190,11 @@ class MemberAcceptanceTest extends AcceptanceTest {
                         .as(CreateResponse.class)
                         .getId();
 
-        //내가 작성한 메시지 조회
+        //내가 작성한 메시지 최신 순으로 조회
         final WrittenMessagesResponseDto writtenMessagesResponseDto = 나의_메시지_조회(kei, 0, 10)
                 .as(WrittenMessagesResponseDto.class);
         final List<WrittenMessageResponseDto> actual = writtenMessagesResponseDto.getMessages();
         final List<WrittenMessageResponseDto> expected = List.of(
-                new WrittenMessageResponseDto(
-                        messageId1,
-                        rollingpaperId1,
-                        rollingpaperTitle1,
-                        teamId,
-                        "woowacourse-4th",
-                        messageContent1,
-                        messageColor1,
-                        "나는야모임장"
-                ),
                 new WrittenMessageResponseDto(
                         messageId2,
                         rollingpaperId2,
@@ -213,6 +204,16 @@ class MemberAcceptanceTest extends AcceptanceTest {
                         messageContent2,
                         messageColor2,
                         "woowacourse-4th"
+                ),
+                new WrittenMessageResponseDto(
+                        messageId1,
+                        rollingpaperId1,
+                        rollingpaperTitle1,
+                        teamId,
+                        "woowacourse-4th",
+                        messageContent1,
+                        messageColor1,
+                        "나는야모임장"
                 )
         );
 

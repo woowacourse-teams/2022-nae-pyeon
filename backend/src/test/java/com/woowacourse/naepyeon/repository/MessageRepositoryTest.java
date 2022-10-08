@@ -126,7 +126,7 @@ class MessageRepositoryTest {
     }
 
     @Test
-    @DisplayName("본인이 작성한 메시지들을 찾는다.")
+    @DisplayName("본인이 작성한 메시지들을 최신 순으로 찾는다.")
     void findAllByMemberIdAndPageRequest() {
         final Rollingpaper rollingpaper2 =
                 new Rollingpaper("AlexAndKei2", Recipient.TEAM, team, member);
@@ -139,11 +139,11 @@ class MessageRepositoryTest {
             messageRepository.save(message);
         }
         final List<WrittenMessageResponseDto> expected = List.of(
-                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", messages.get(5)),
                 WrittenMessageResponseDto.of(rollingpaper, team, "멤버", messages.get(6)),
-                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", messages.get(7)),
-                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", messages.get(8)),
-                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", messages.get(9))
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", messages.get(5)),
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", messages.get(4)),
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", messages.get(3)),
+                WrittenMessageResponseDto.of(rollingpaper, team, "멤버", messages.get(2))
         );
 
         final Page<WrittenMessageResponseDto> writtenMessageResponseDtos =

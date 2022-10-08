@@ -236,16 +236,6 @@ class MessageServiceTest {
         final List<WrittenMessageResponseDto> actual = writtenMessagesResponseDto.getMessages();
         final List<WrittenMessageResponseDto> expected = List.of(
                 new WrittenMessageResponseDto(
-                        messageId,
-                        memberRollingpaper.getId(),
-                        memberRollingpaper.getTitle(),
-                        team.getId(),
-                        team.getName(),
-                        messageRequest.getContent(),
-                        messageRequest.getColor(),
-                        "일케이"
-                ),
-                new WrittenMessageResponseDto(
                         messageId2,
                         teamRollingpaper.getId(),
                         teamRollingpaper.getTitle(),
@@ -254,6 +244,16 @@ class MessageServiceTest {
                         messageRequest.getContent(),
                         messageRequest.getColor(),
                         TEAM_NAME
+                ),
+                new WrittenMessageResponseDto(
+                        messageId,
+                        memberRollingpaper.getId(),
+                        memberRollingpaper.getTitle(),
+                        team.getId(),
+                        team.getName(),
+                        messageRequest.getContent(),
+                        messageRequest.getColor(),
+                        "일케이"
                 )
         );
         assertThat(actual)
