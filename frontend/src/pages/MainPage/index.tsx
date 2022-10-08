@@ -39,15 +39,19 @@ const MainPage = () => {
     <StyledMain>
       <StyledNav>
         <RoundButton
-          description="롤링페이퍼 시작하기"
+          key={1}
+          description="롤링페이퍼\n시작하기"
           onClick={handleRollingpaperStartClick}
         >
           📜
         </RoundButton>
-        <RoundButton description="모임 생성" onClick={handleTeamCreateClick}>
+        <RoundButton description="모임\n만들기" onClick={handleTeamCreateClick}>
           💙
         </RoundButton>
-        <RoundButton description="모임 검색" onClick={handleTeamSearchClick}>
+        <RoundButton
+          description="모임\n검색하기"
+          onClick={handleTeamSearchClick}
+        >
           🔍
         </RoundButton>
       </StyledNav>
@@ -113,7 +117,7 @@ const StyledMain = styled.div`
 
 const StyledNav = styled.nav`
   display: flex;
-  gap: 20px;
+  gap: 32px;
 
   margin: 10px;
 
