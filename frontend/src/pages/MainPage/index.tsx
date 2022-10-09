@@ -26,19 +26,19 @@ const MainPage = () => {
       <StyledNav>
         <RoundButtonWithDescription
           key={1}
-          description="롤링페이퍼\n시작하기"
+          description={`롤링페이퍼\n시작하기`}
           onClick={handleRollingpaperStartClick}
         >
           📜
         </RoundButtonWithDescription>
         <RoundButtonWithDescription
-          description="모임\n만들기"
+          description={`모임\n만들기`}
           onClick={handleTeamCreateClick}
         >
           💙
         </RoundButtonWithDescription>
         <RoundButtonWithDescription
-          description="모임\n검색하기"
+          description={`모임\n검색하기`}
           onClick={handleTeamSearchClick}
         >
           🔍

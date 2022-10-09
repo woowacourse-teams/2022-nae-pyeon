@@ -17,16 +17,7 @@ const RoundButtonWithDescription = ({
       <StyledRoundButton type={type} onClick={onClick}>
         {children}
       </StyledRoundButton>
-      <StyledDescription>
-        {description?.split("\\n").map((str) => {
-          return (
-            <>
-              <span>{str}</span>
-              <br />
-            </>
-          );
-        })}
-      </StyledDescription>
+      <StyledDescription>{description}</StyledDescription>
     </StyledRoundButtonWithDescription>
   );
 };
