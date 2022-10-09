@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 
-import RoundButton from "@/components/RoundButtonWithDescription";
+import RoundButtonWithDescription from "@/components/RoundButtonWithDescription";
 import RollingpaperListItem from "@/components/RollinpaperListItem";
 import EmptyRollingpaperList from "@/components/EmptyRollingpaperList";
 
@@ -38,22 +38,25 @@ const MainPage = () => {
   return (
     <StyledMain>
       <StyledNav>
-        <RoundButton
+        <RoundButtonWithDescription
           key={1}
           description="롤링페이퍼\n시작하기"
           onClick={handleRollingpaperStartClick}
         >
           📜
-        </RoundButton>
-        <RoundButton description="모임\n만들기" onClick={handleTeamCreateClick}>
+        </RoundButtonWithDescription>
+        <RoundButtonWithDescription
+          description="모임\n만들기"
+          onClick={handleTeamCreateClick}
+        >
           💙
-        </RoundButton>
-        <RoundButton
+        </RoundButtonWithDescription>
+        <RoundButtonWithDescription
           description="모임\n검색하기"
           onClick={handleTeamSearchClick}
         >
           🔍
-        </RoundButton>
+        </RoundButtonWithDescription>
       </StyledNav>
       <section>
         <SectionHeader
