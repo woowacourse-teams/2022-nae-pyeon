@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 
 import RightIcon from "@/assets/icons/bx-chevron-right.svg";
 
-interface SectionHeaderAttributes {
+interface SectionHeaderProps {
   title: string;
   count?: number;
   moreLink?: string;
 }
 
-const SectionHeader = ({ title, count, moreLink }: SectionHeaderAttributes) => {
+const SectionHeader = ({ title, count, moreLink }: SectionHeaderProps) => {
   const navigate = useNavigate();
   return (
     <StyledSectionHeader>

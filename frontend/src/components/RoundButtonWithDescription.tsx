@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-interface ButtonAttributes
+interface RoundButtonWithDescripionProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   description?: string;
 }
@@ -11,7 +11,7 @@ const RoundButtonWithDescription = ({
   onClick,
   description,
   children,
-}: ButtonAttributes) => {
+}: RoundButtonWithDescripionProps) => {
   return (
     <StyledRoundButtonWithDescription>
       <StyledRoundButton type={type} onClick={onClick}>
