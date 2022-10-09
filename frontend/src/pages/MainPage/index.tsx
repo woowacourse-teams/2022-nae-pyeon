@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import RoundButtonWithDescription from "@/components/RoundButtonWithDescription";
 
-import MyTeamsSection from "./components/MyTeamsSection";
-import ReceivedRollingpapersSection from "./components/ReceivedRollingpapersSection";
+import MyTeamsSection from "@/pages/MainPage/components/MyTeamsSection";
+import ReceivedRollingpapersSection from "@/pages/MainPage/components/ReceivedRollingpapersSection";
 
 const MainPage = () => {
   const navigate = useNavigate();
