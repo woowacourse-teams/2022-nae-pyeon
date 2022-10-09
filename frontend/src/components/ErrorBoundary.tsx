@@ -1,30 +1,52 @@
-import React, { Component, ErrorInfo, ReactNode } from "react";
+import React from "react";
+import axios from "axios";
 
-interface Props {
-  children?: ReactNode;
-  fallback?: ReactNode;
+interface ErrorBoundaryProps {
+  children?: React.ReactNode;
+  fallback?: React.ReactNode;
 }
 
-interface State {
-  hasError: boolean;
+interface NoErrorState {
+  hasError: false;
 }
 
-class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
+interface CatchErrorState {
+  hasError: true;
+  errorStatus: "SERVER" | "UNDEFINED";
+}
+
+type ErrorBoundaryState = NoErrorState | CatchErrorState;
+
+class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
+  public state: ErrorBoundaryState = {
     hasError: false,
   };
 
-  public static getDerivedStateFromError(error: Error): State {
-    return { hasError: true };
+  public static getDerivedStateFromError(error: Error): CatchErrorState {
+    if (!axios.isAxiosError(error)) {
+      return { hasError: true, errorStatus: "UNDEFINED" };
+    }
+
+    const axiosErrorStatus = error?.response?.status;
+    if (axiosErrorStatus && axiosErrorStatus >= 500) {
+      return { hasError: true, errorStatus: "SERVER" };
+    }
+
+    return { hasError: true, errorStatus: "UNDEFINED" };
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  public componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error("Uncaught error:", error, errorInfo);
   }
 
   public render() {
     if (this.state.hasError) {
-      this.state.hasError = false;
+      this.state = {
+        hasError: false,
+      };
       return this.props.fallback;
     }
 
