@@ -59,10 +59,8 @@ public class MessageService {
 
     @Transactional(readOnly = true)
     public List<MessageResponseDto> findMessages(
-            final Long rollingpaperId, final Long teamId, final Long loginMemberId) {
-        final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
-                .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
-        return messageRepository.findAllByRollingpaperId(rollingpaperId)
+            final Rollingpaper rollingpaper, final Long teamId, final Long loginMemberId) {
+        return messageRepository.findAllByRollingpaper(rollingpaper)
                 .stream()
                 .map(message -> {
                     final Member author = message.getAuthor();
@@ -92,11 +90,6 @@ public class MessageService {
         );
     }
 
-    private String findMessageWriterNickname(final Long teamId, final Message message) {
-        final Member author = message.getAuthor();
-        return teamParticipationRepository.findNicknameByTeamIdAndMemberId(teamId, author.getId());
-    }
-
     @Transactional(readOnly = true)
     public MessageResponseDto findMessage(final Long messageId, final Long rollingpaperId, final Long loginMemberId) {
         final Message message = messageRepository.findById(messageId)
@@ -112,6 +105,11 @@ public class MessageService {
         final boolean visible = checkVisibleToLoginMember(message, rollingpaper, loginMemberId);
         final boolean editable = checkEditableToLoginMember(message, loginMemberId);
         return MessageResponseDto.of(message, responseContent, responseNickname, author.getId(), visible, editable);
+    }
+
+    private String findMessageWriterNickname(final Long teamId, final Message message) {
+        final Member author = message.getAuthor();
+        return teamParticipationRepository.findNicknameByTeamIdAndMemberId(teamId, author.getId());
     }
 
     private String hideAuthorNicknameWhenAnonymous(final Message message, final String nickname) {

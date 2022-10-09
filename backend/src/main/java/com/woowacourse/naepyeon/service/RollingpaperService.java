@@ -80,7 +80,7 @@ public class RollingpaperService {
 
         return RollingpaperResponseDto.of(
                 RollingpaperPreviewResponseDto.createPreviewRollingpaper(rollingpaper, addresseeNickname),
-                messageService.findMessages(rollingpaper.getId(), teamId, loginMemberId)
+                messageService.findMessages(rollingpaper, teamId, loginMemberId)
         );
     }
 

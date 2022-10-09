@@ -14,6 +14,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.naepyeon.domain.Message;
 import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
+import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import java.util.List;
 import java.util.function.Supplier;
@@ -28,10 +29,10 @@ public class MessageRepositoryImpl implements MessageRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Message> findAllByRollingpaperId(final Long rollingpaperId) {
+    public List<Message> findAllByRollingpaper(final Rollingpaper rollingpaper) {
         return queryFactory
                 .selectFrom(message)
-                .where(isRollingpaperIdEq(rollingpaperId))
+                .where(isRollingpaperEq(rollingpaper))
                 .fetch();
     }
 
@@ -75,12 +76,16 @@ public class MessageRepositoryImpl implements MessageRepositoryCustom {
         );
     }
 
-    private BooleanBuilder isRollingpaperIdEq(final Long rollingpaperId) {
-        return nullSafeBuilder(() -> message.rollingpaper.id.eq(rollingpaperId));
+    private BooleanBuilder isRollingpaperEq(final Rollingpaper rollingpaper) {
+        return nullSafeBuilder(() -> message.rollingpaper.eq(rollingpaper));
     }
 
     private BooleanBuilder isAuthorIdEq(final Long authorId) {
         return nullSafeBuilder(() -> message.author.id.eq(authorId));
+    }
+
+    private BooleanBuilder isMessageIdEq(final Long messageId) {
+        return nullSafeBuilder(() -> message.id.eq(messageId));
     }
 
     private BooleanBuilder nullSafeBuilder(Supplier<BooleanExpression> f) {

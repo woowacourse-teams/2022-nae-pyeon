@@ -113,14 +113,14 @@ class MessageRepositoryTest {
     }
 
     @Test
-    @DisplayName("롤링페이퍼 id로 메시지 전체를 찾는다.")
+    @DisplayName("특정 롤링페이퍼의 메시지 전체를 찾는다.")
     void findAllByRollingpaperId() {
         final Message message1 = createMessage();
         messageRepository.save(message1);
         final Message message2 = createMessage();
         messageRepository.save(message2);
 
-        final List<Message> findMessages = messageRepository.findAllByRollingpaperId(rollingpaper.getId());
+        final List<Message> findMessages = messageRepository.findAllByRollingpaper(rollingpaper);
 
         assertThat(findMessages.size()).isEqualTo(2);
     }
