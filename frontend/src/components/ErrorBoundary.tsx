@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { ValueOf } from "@/types";
 
 interface ErrorBoundaryProps {
   children?: React.ReactNode;
@@ -12,10 +13,15 @@ interface NoErrorState {
 
 interface CatchErrorState {
   hasError: true;
-  errorStatus: "SERVER" | "UNDEFINED";
+  errorStatus: ValueOf<typeof ERROR_STATUS>;
 }
 
 type ErrorBoundaryState = NoErrorState | CatchErrorState;
+
+const ERROR_STATUS = {
+  SERVER: "SERVER",
+  UNDEFINED: "UNDEFINED",
+} as const;
 
 class ErrorBoundary extends React.Component<
   ErrorBoundaryProps,
@@ -27,15 +33,15 @@ class ErrorBoundary extends React.Component<
 
   public static getDerivedStateFromError(error: Error): CatchErrorState {
     if (!axios.isAxiosError(error)) {
-      return { hasError: true, errorStatus: "UNDEFINED" };
+      return { hasError: true, errorStatus: ERROR_STATUS.UNDEFINED };
     }
 
     const axiosErrorStatus = error?.response?.status;
     if (axiosErrorStatus && axiosErrorStatus >= 500) {
-      return { hasError: true, errorStatus: "SERVER" };
+      return { hasError: true, errorStatus: ERROR_STATUS.SERVER };
     }
 
-    return { hasError: true, errorStatus: "UNDEFINED" };
+    return { hasError: true, errorStatus: ERROR_STATUS.UNDEFINED };
   }
 
   public componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
