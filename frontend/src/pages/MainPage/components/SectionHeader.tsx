@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import RightIcon from "@/assets/icons/bx-chevron-right.svg";
 
@@ -10,7 +10,6 @@ interface SectionHeaderProps {
 }
 
 const SectionHeader = ({ title, count, moreLink }: SectionHeaderProps) => {
-  const navigate = useNavigate();
   return (
     <StyledSectionHeader>
       <StyledTitleWithCount>
@@ -18,10 +17,10 @@ const SectionHeader = ({ title, count, moreLink }: SectionHeaderProps) => {
         {typeof count === "number" && <StyledCount>{count}</StyledCount>}
       </StyledTitleWithCount>
       {moreLink && (
-        <StyledMore onClick={() => navigate(`${moreLink}`)}>
+        <Link to={moreLink}>
           더보기
           <RightIcon />
-        </StyledMore>
+        </Link>
       )}
     </StyledSectionHeader>
   );
@@ -33,6 +32,19 @@ const StyledSectionHeader = styled.div`
 
   padding: 10px;
   margin-bottom: 10px;
+
+  a {
+    display: flex;
+    align-items: center;
+
+    color: ${({ theme }) => theme.colors.GRAY_500};
+    fill: ${({ theme }) => theme.colors.GRAY_500};
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.GRAY_600};
+      fill: ${({ theme }) => theme.colors.GRAY_600};
+    }
+  }
 `;
 
 const StyledTitleWithCount = styled.div`
@@ -51,19 +63,6 @@ const StyledTitle = styled.h2`
 const StyledCount = styled.div`
   color: ${({ theme }) => theme.colors.GRAY_500};
   line-height: 16px;
-`;
-
-const StyledMore = styled.button`
-  display: flex;
-  align-items: center;
-
-  color: ${({ theme }) => theme.colors.GRAY_500};
-  fill: ${({ theme }) => theme.colors.GRAY_500};
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.GRAY_600};
-    fill: ${({ theme }) => theme.colors.GRAY_600};
-  }
 `;
 
 export default SectionHeader;
