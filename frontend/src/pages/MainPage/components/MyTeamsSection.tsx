@@ -1,10 +1,12 @@
 import styled from "@emotion/styled";
+import { useNavigate } from "react-router-dom";
+
+import LineButton from "@/components/LineButton";
+
+import useReadMyTeams from "@/pages/MainPage/hooks/useReadMyTeams";
 
 import SectionHeader from "@/pages/MainPage/components/SectionHeader";
 import MyTeamCard from "@/pages/MainPage/components/MyTeamCard";
-import { useNavigate } from "react-router-dom";
-import LineButton from "@/components/LineButton";
-import useReadMyTeams from "../hooks/useReadMyTeams";
 
 const MyTeamsSection = () => {
   const { data: myTeamListResponse, isLoading: isLoadingTeams } =
