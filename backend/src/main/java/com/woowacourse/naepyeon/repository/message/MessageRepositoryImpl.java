@@ -84,10 +84,6 @@ public class MessageRepositoryImpl implements MessageRepositoryCustom {
         return nullSafeBuilder(() -> message.author.id.eq(authorId));
     }
 
-    private BooleanBuilder isMessageIdEq(final Long messageId) {
-        return nullSafeBuilder(() -> message.id.eq(messageId));
-    }
-
     private BooleanBuilder nullSafeBuilder(Supplier<BooleanExpression> f) {
         try {
             return new BooleanBuilder(f.get());
