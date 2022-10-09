@@ -67,7 +67,7 @@ const EmptyMyTeamList = () => {
 
 const StyledCardList = styled.div`
   display: flex;
-  overflow: scroll;
+  overflow-x: scroll;
   gap: 20px;
   align-items: center;
 
