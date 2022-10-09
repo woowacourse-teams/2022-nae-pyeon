@@ -6,11 +6,7 @@ import LineButton from "@/components/LineButton";
 
 import ErrorImg from "@/assets/images/empty-state.svg";
 
-interface ErrorPageProps {
-  onReset?: () => void;
-}
-
-const ErrorPage = ({ onReset }: ErrorPageProps) => {
+const ErrorPage = () => {
   const navigate = useNavigate();
 
   return (
@@ -19,7 +15,6 @@ const ErrorPage = ({ onReset }: ErrorPageProps) => {
       <StyledMessage>에러가 발생했어요.</StyledMessage>
       <LineButton
         onClick={() => {
-          onReset && onReset();
           navigate("/", { replace: true });
         }}
       >
