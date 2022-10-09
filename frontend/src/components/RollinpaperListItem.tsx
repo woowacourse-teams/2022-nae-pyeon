@@ -31,7 +31,7 @@ const StyledRollingpaperListItem = styled.div`
   border: 2px solid ${({ theme }) => theme.colors.SKY_BLUE_300};
   border-radius: 8px;
 
-  height: 90px;
+  height: 80px;
   padding: 10px 16px;
   gap: 8px;
 

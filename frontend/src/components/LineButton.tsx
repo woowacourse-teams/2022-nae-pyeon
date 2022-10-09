@@ -1,14 +1,15 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
+interface LineButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
 
 const LineButton = ({
   type = "button",
   onClick,
   disabled,
   children,
-}: ButtonAttributes) => {
+}: LineButtonProps) => {
   return (
     <StyledLineButton type={type} onClick={onClick} disabled={disabled}>
       {children}
