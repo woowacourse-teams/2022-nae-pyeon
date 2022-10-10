@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { useEffect, Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -37,9 +37,11 @@ import { setQueryClientErrorHandler } from "@/api";
 const App = () => {
   const { isOpened } = useSnackbar();
   const { data, isLoading, isFetching } = useAutoLogin();
-
   const apiErrorHandler = useApiErrorHandler();
-  setQueryClientErrorHandler(apiErrorHandler);
+
+  useEffect(() => {
+    setQueryClientErrorHandler(apiErrorHandler);
+  }, []);
 
   if (isLoading && isFetching) {
     return <PageContainer>초기 로딩 중</PageContainer>;
@@ -64,7 +66,6 @@ const App = () => {
                   <Route path="team/:teamId" element={<TeamDetailPage />} />
                   <Route path="search" element={<TeamSearchPage />} />
                   <Route path="mypage" element={<MyPage />} />
-                  <Route path="*" element={<ErrorPage />} />
                 </Route>
                 <Route path="team/new" element={<TeamCreationPage />} />
                 <Route
@@ -75,7 +76,6 @@ const App = () => {
                   path="team/:teamId/rollingpaper/:rollingpaperId"
                   element={<RollingpaperPage />}
                 />
-                <Route path="logout" element={<LogoutPage />} />
               </Route>
               <Route element={<RequireLogout />}>
                 <Route path="login" element={<LoginPage />} />
@@ -84,6 +84,8 @@ const App = () => {
               </Route>
               <Route path="invite/:inviteToken" element={<InvitePage />} />
               <Route path="policy" element={<PolicyPage />} />
+              <Route path="logout" element={<LogoutPage />} />
+              <Route path="*" element={<ErrorPage />} />
             </Routes>
           </PageContainer>
           {isOpened && <Snackbar />}
