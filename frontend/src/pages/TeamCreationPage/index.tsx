@@ -75,7 +75,7 @@ const TeamCreationPage = () => {
 
   return (
     <>
-      <PageTitleWithBackButton>모임 추가하기</PageTitleWithBackButton>
+      <PageTitleWithBackButton to={"/"}>모임 추가하기</PageTitleWithBackButton>
       <StyledForm>
         <LabeledInput
           labelText="모임명"

@@ -23,7 +23,9 @@ const RollingpaperPage = () => {
 
   return (
     <>
-      <PageTitleWithBackButton>{rollingpaper.title}</PageTitleWithBackButton>
+      <PageTitleWithBackButton to={`/team/${teamId}`}>
+        {rollingpaper.title}
+      </PageTitleWithBackButton>
       <main>
         <LetterPaper
           to={rollingpaper.to}
