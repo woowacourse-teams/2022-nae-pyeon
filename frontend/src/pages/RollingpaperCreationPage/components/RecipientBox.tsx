@@ -19,7 +19,7 @@ const CONTENTS = {
 
 interface RecipientBoxProps {
   type: Recipient;
-  onClick: (type: Recipient) => React.MouseEventHandler<HTMLDivElement>;
+  onClick: () => void;
 }
 
 interface StyledRecipientBoxProps {
@@ -30,7 +30,7 @@ export const RecipientBox = ({ type, onClick }: RecipientBoxProps) => {
   const { recipient, to, description } = CONTENTS[type];
 
   return (
-    <StyledRecipientBox type={type} onClick={onClick(recipient)}>
+    <StyledRecipientBox type={type} onClick={onClick}>
       <StyledTo>{to}</StyledTo>
       <StyledDescription>{description}</StyledDescription>
     </StyledRecipientBox>
@@ -43,7 +43,7 @@ const StyledRecipientBox = styled.div<StyledRecipientBoxProps>`
   align-items: center;
   justify-content: space-evenly;
 
-  width: 160px;
+  width: 150px;
   height: 190px;
 
   padding: 10px;
