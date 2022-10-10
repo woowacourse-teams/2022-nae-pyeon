@@ -22,7 +22,7 @@ const setQueryClientErrorHandler = (
       useErrorBoundary: (error) => {
         const axiosError = error as AxiosError<ApiErrorResponse>;
         const errorStatus = axiosError?.response?.status;
-        return errorStatus ? errorStatus >= 500 : true;
+        return !!errorStatus && errorStatus >= 500;
       },
       onError: (err) => errorHandler(err as AxiosError<ApiErrorResponse>),
     },
@@ -30,7 +30,7 @@ const setQueryClientErrorHandler = (
       useErrorBoundary: (error) => {
         const axiosError = error as AxiosError<ApiErrorResponse>;
         const errorStatus = axiosError?.response?.status;
-        return errorStatus ? errorStatus >= 500 : true;
+        return !!errorStatus && errorStatus >= 500;
       },
       onError: (error) => errorHandler(error as AxiosError<ApiErrorResponse>),
     },
