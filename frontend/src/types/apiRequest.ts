@@ -24,6 +24,10 @@ export interface GetMySentMessagesRequest {
 }
 
 // message
+export interface GetMessageRequest {
+  rollingpaperId: Rollingpaper["id"];
+  messageId: Message["id"];
+}
 export interface PostMessageRequest
   extends Pick<Message, "content" | "color" | "anonymous" | "secret"> {
   rollingpaperId: Rollingpaper["id"];

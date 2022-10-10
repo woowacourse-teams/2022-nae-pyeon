@@ -1,12 +1,16 @@
 import { appClient, requestApi } from "@/api";
 
-import { ApiOptions } from "@/types/api";
-
 import {
   PostMessageRequest,
   PutMessageRequest,
   DeleteMessageRequest,
+  GetMessageRequest,
 } from "@/types/apiRequest";
+
+const getMessage = async ({ rollingpaperId, messageId }: GetMessageRequest) =>
+  requestApi(() =>
+    appClient.get(`/rollingpapers/${rollingpaperId}/messages/${messageId}`)
+  );
 
 const postMessage = async ({
   rollingpaperId,
@@ -46,4 +50,4 @@ const deleteMessage = async ({ rollingpaperId, id }: DeleteMessageRequest) =>
     appClient.delete(`/rollingpapers/${rollingpaperId}/messages/${id}`)
   );
 
-export { putMessage, postMessage, deleteMessage };
+export { getMessage, putMessage, postMessage, deleteMessage };

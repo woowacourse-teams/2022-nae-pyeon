@@ -30,6 +30,9 @@ export interface GetMySentMessagesResponse {
 }
 
 // message
+export interface GetMessageResponse extends Message {
+  authorId: TeamMember["id"];
+}
 export interface PostMessageResponse {
   id: Message["id"];
 }
