@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 import { setAppClientHeaderAuthorization } from "@/api";
 import { getMyInfoWithAccessToken } from "@/api/member";
 
-import { getCookie } from "@/util/cookie";
+import { getCookie, deleteCookie } from "@/util/cookie";
 import { COOKIE_KEY } from "@/constants";
 
 import { GetUserProfileResponse } from "@/types/apiResponse";
@@ -19,6 +19,9 @@ function useAutoLogin() {
       enabled: !!accessTokenCookie,
       onSuccess: () => {
         setAppClientHeaderAuthorization(accessTokenCookie!);
+      },
+      onError: () => {
+        deleteCookie(COOKIE_KEY.ACCESS_TOKEN);
       },
     }
   );
