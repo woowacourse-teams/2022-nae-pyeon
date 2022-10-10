@@ -32,7 +32,7 @@ const RollingpaperList = () => {
         <IconButton
           size="small"
           onClick={() => {
-            navigate("rollingpaper/new");
+            navigate(`/rollingpaper/new?team-id=${teamId}`);
           }}
         >
           <PlusIcon />

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 
 import useCreateMemberRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateMemberRolliingpaper";
@@ -12,6 +12,7 @@ import ControlDots from "@/pages/RollingpaperCreationPage/components/ControlDots
 
 import { Recipient, Rollingpaper, Team, TeamMember } from "@/types";
 import { RECIPIENT } from "@/constants";
+import { useSearchParams } from "react-router-dom";
 interface Step {
   step1: Team["id"] | null;
   step2: { type: Recipient | null; to: TeamMember["id"] | null } | null;
@@ -25,9 +26,15 @@ const initialSelectedSteps = {
 };
 
 const RollingpaperCreationPage = () => {
-  const [step, setStep] = useState<number>(1);
-  const [selectedSteps, setSelectedSteps] =
-    useState<Step>(initialSelectedSteps);
+  const [searchParams] = useSearchParams();
+  const selectedTeamId = searchParams.get("team-id");
+
+  const [step, setStep] = useState<number>(selectedTeamId ? 2 : 1);
+  const [selectedSteps, setSelectedSteps] = useState<Step>(
+    selectedTeamId
+      ? { ...initialSelectedSteps, step1: +selectedTeamId }
+      : initialSelectedSteps
+  );
   const pageRef = useRef<HTMLDivElement[]>([]);
 
   const createMemberRollingpaper = useCreateMemberRollingpaper();
@@ -98,6 +105,10 @@ const RollingpaperCreationPage = () => {
 
     goToNextPage();
   };
+
+  useEffect(() => {
+    changePage(step - 1);
+  }, []);
 
   return (
     <StyledMain>
