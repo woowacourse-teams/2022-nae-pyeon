@@ -43,7 +43,7 @@ const StyledRecipientBox = styled.div<StyledRecipientBoxProps>`
   align-items: center;
   justify-content: space-evenly;
 
-  width: 150px;
+  width: 160px;
   height: 190px;
 
   padding: 10px;

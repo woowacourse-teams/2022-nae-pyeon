@@ -13,7 +13,7 @@ const ControlDots = ({ pages, step }: ControlDotsProps) => {
   return (
     <StyledControlDots>
       {Array.from({ length: pages }).map((value, index) => {
-        return <StyledDot now={index === step - 1} />;
+        return <StyledDot key={index} now={index === step - 1} />;
       })}
     </StyledControlDots>
   );
