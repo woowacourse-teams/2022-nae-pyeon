@@ -45,29 +45,33 @@ const useApiErrorHandler = () => {
   };
 
   const unauthorizedErrorHandler = (customErrorInfo: CustomError) => {
-    switch (customErrorInfo.errorCode) {
+    const { message, errorCode } = customErrorInfo;
+
+    switch (errorCode) {
       // 토큰 관련
       case 3011:
       case 3012:
       case 3013:
         navigate("/logout");
-        openSnackbar(customErrorInfo.message);
+        openSnackbar(message);
         break;
       // OAuth 로그인 실패
       case 3015:
       case 3016:
       case 3017:
         navigate("/login");
-        openSnackbar(customErrorInfo.message);
+        openSnackbar(message);
         break;
       default:
-        openSnackbar(customErrorInfo.message);
+        openSnackbar(message);
     }
   };
 
   const forbiddenErrorHandler = (customErrorInfo: CustomError) => {
+    const { message } = customErrorInfo;
+
     navigate(`/`);
-    openSnackbar(customErrorInfo.message);
+    openSnackbar(message);
   };
 
   const apiErrorHandler = (error: AxiosError<ApiErrorResponse>): void => {
