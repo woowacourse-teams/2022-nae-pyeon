@@ -29,14 +29,14 @@ const useApiErrorHandler = () => {
       // 이미 가입한 멤버가 모임에 재가입 시도
       case 4007:
       case 4008:
-        navigate(`/team/${teamIdIndex}`);
+        navigate(`/team/${requestUrlPaths[teamIdIndex]}`);
         openSnackbar(message);
         break;
       // 초대코드 관련
       case 4015:
       case 4016:
       case 4017:
-        navigate(`/team/${teamIdIndex}`);
+        navigate(`/team/${requestUrlPaths[teamIdIndex]}`);
         openSnackbar(message);
         break;
       default:
