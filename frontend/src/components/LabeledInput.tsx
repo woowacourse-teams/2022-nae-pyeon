@@ -5,7 +5,7 @@ import ErrorIcon from "@/assets/icons/bxs-error.svg";
 
 interface LabeledInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-  labelText: string;
+  labelText?: string;
   errorMessage?: string;
   showValueLength?: boolean;
 }
