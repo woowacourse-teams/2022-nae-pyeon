@@ -13,13 +13,24 @@ const ErrorPage = () => {
     <StyledContainer>
       <ErrorImg />
       <StyledMessage>에러가 발생했어요.</StyledMessage>
-      <LineButton
-        onClick={() => {
-          navigate("/", { replace: true });
-        }}
-      >
-        홈으로 돌아가기
-      </LineButton>
+      <StyledButtonContainer>
+        <LineButton
+          onClick={() => {
+            navigate("/", { replace: true });
+          }}
+        >
+          홈으로 돌아가기
+        </LineButton>
+        {
+          <LineButton
+            onClick={() => {
+              window.location.reload();
+            }}
+          >
+            새로고침
+          </LineButton>
+        }
+      </StyledButtonContainer>
     </StyledContainer>
   );
 };
@@ -43,6 +54,11 @@ const StyledMessage = styled.div`
   color: ${({ theme }) => theme.colors.GRAY_400};
 
   margin-bottom: 60px;
+`;
+
+const StyledButtonContainer = styled.div`
+  display: flex;
+  gap: 32px;
 `;
 
 export default ErrorPage;
