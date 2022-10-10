@@ -8,30 +8,28 @@ import { postTeamRollingpaper } from "@/api/rollingpaper";
 import { useSnackbar } from "@/context/SnackbarContext";
 
 import { PostTeamRollingpaperResponse } from "@/types/apiResponse";
-import { Rollingpaper } from "@/types";
+import { Rollingpaper, Team } from "@/types";
 
-type CreateTeamRollingpaperVariable = Rollingpaper["title"];
+interface CreateTeamrRollingpaperVariable {
+  teamId: Team["id"];
+  title: Rollingpaper["title"];
+}
 
-const useCreateTeamRollingpaper = (teamId: number) => {
+const useCreateTeamRollingpaper = () => {
   const { openSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
   const { mutate: createTeamRollingpaper } = useMutation<
     PostTeamRollingpaperResponse,
     AxiosError,
-    CreateTeamRollingpaperVariable
-  >(
-    (title) => {
-      return postTeamRollingpaper({ teamId, title });
+    CreateTeamrRollingpaperVariable
+  >(({ teamId, title }) => postTeamRollingpaper({ teamId, title }), {
+    onSuccess: (data, variable) => {
+      navigate(`/team/${variable.teamId}/rollingpaper/${data.id}`);
+      openSnackbar("롤링페이퍼 생성 완료");
     },
-    {
-      onSuccess: () => {
-        navigate(`/team/${teamId}`);
-        openSnackbar("롤링페이퍼 생성 완료");
-      },
-      useErrorBoundary: true,
-    }
-  );
+    useErrorBoundary: true,
+  });
 
   return createTeamRollingpaper;
 };
