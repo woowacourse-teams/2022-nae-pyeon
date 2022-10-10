@@ -9,6 +9,7 @@ import { Recipient, Rollingpaper, Team, TeamMember } from "@/types";
 import { RECIPIENT } from "@/constants";
 import useCreateMemberRollingpaper from "./hooks/useCreateMemberRolliingpaper";
 import useCreateTeamRollingpaper from "./hooks/useCreateTeamRollingpaper";
+import ControlDots from "./components/ControlDots";
 
 interface Step {
   step1: Team["id"] | null;
@@ -99,24 +100,36 @@ const RollingpaperCreationPage = () => {
 
   return (
     <StyledMain>
-      <Step1
-        ref={(el: HTMLDivElement) => (pageRef.current[0] = el)}
-        onClick={handleStep1Click}
-      />
-      <Step2
-        ref={(el: HTMLDivElement) => (pageRef.current[1] = el)}
-        teamId={selectedSteps.step1}
-        onClick={handleStep2Click}
-      />
-      <Step3
-        ref={(el: HTMLDivElement) => (pageRef.current[2] = el)}
-        onClick={handleStep3Click}
-      />
+      <StyledSteps>
+        <Step1
+          ref={(el: HTMLDivElement) => (pageRef.current[0] = el)}
+          onClick={handleStep1Click}
+        />
+        <Step2
+          ref={(el: HTMLDivElement) => (pageRef.current[1] = el)}
+          teamId={selectedSteps.step1}
+          onClick={handleStep2Click}
+        />
+        <Step3
+          ref={(el: HTMLDivElement) => (pageRef.current[2] = el)}
+          onClick={handleStep3Click}
+        />
+      </StyledSteps>
+      <ControlDots pages={3} step={step} />
     </StyledMain>
   );
 };
 
-const StyledMain = styled.div`
+const StyledMain = styled.main`
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  height: calc(100vh - 90px);
+`;
+
+const StyledSteps = styled.div`
   display: flex;
 
   overflow: hidden;
