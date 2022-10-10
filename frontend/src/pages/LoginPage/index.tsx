@@ -14,7 +14,7 @@ import {
 } from "@/constants";
 
 type LoginPageLocationState = {
-  inviteToken?: string;
+  inviteCode?: string;
 };
 
 const LoginPage = () => {
@@ -25,9 +25,9 @@ const LoginPage = () => {
     HTMLButtonElement
   > = () => {
     const locationState = state as LoginPageLocationState;
-    const inviteToken = locationState?.inviteToken || "";
+    const inviteCode = locationState?.inviteCode || "";
 
-    location.href = KAKAO_OAUTH_URL.AUTHORIZE_CODE(inviteToken);
+    location.href = KAKAO_OAUTH_URL.AUTHORIZE_CODE(inviteCode);
   };
 
   const handleNaverLoginButtonClick: React.MouseEventHandler<
@@ -40,9 +40,9 @@ const LoginPage = () => {
     HTMLButtonElement
   > = () => {
     const locationState = state as LoginPageLocationState;
-    const inviteToken = locationState?.inviteToken || "";
+    const inviteCode = locationState?.inviteCode || "";
 
-    location.href = GOOGLE_OAUTH_URL.AUTHORIZE_CODE(inviteToken);
+    location.href = GOOGLE_OAUTH_URL.AUTHORIZE_CODE(inviteCode);
   };
 
   return (

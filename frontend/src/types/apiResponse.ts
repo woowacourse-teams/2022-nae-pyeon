@@ -48,7 +48,7 @@ export interface PostMemberRollingpaperResponse {
 // team
 export interface GetTeamResponse extends Team {}
 
-export interface GetTeamWithInviteTokenResponse extends Team {}
+export interface GetTeamWithInviteCodeResponse extends Team {}
 
 export interface GetMyTeamsResponse {
   totalCount: number;
@@ -78,6 +78,6 @@ export interface PostTeamResponse {
   id: Team["id"];
 }
 
-export interface PostTeamWithInviteTokenResponse {
-  inviteToken: string;
+export interface PostTeamWithInviteCodeResponse {
+  inviteCode: string;
 }

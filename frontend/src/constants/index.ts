@@ -34,8 +34,8 @@ const SOCIAL_LOGIN_PLATFORM = {
 } as const;
 
 const KAKAO_OAUTH_URL = {
-  AUTHORIZE_CODE: (inviteToken = "") =>
-    `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.KAKAO_REST_API_KEY}&redirect_uri=${process.env.KAKAO_REDIRECT_URL}&response_type=code&state=${inviteToken}`,
+  AUTHORIZE_CODE: (inviteCode = "") =>
+    `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.KAKAO_REST_API_KEY}&redirect_uri=${process.env.KAKAO_REDIRECT_URL}&response_type=code&state=${inviteCode}`,
   TOKEN: (authorize_code: string) =>
     `https://kauth.kakao.com/oauth/token?client_id=${process.env.KAKAO_REST_API_KEY}&redirect_uri=${process.env.KAKAO_REDIRECT_URL}&grant_type=authorization_code&client_secret=${process.env.KAKAO_CLIENT_SECRET}&code=${authorize_code}`,
   USER_INFO:
@@ -43,8 +43,8 @@ const KAKAO_OAUTH_URL = {
 };
 
 const GOOGLE_OAUTH_URL = {
-  AUTHORIZE_CODE: (inviteToken = "") =>
-    `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_SECRET}&redirect_uri=${process.env.GOOGLE_REDIRECT_URL}&scope=https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile&response_type=code&state=${inviteToken}`,
+  AUTHORIZE_CODE: (inviteCode = "") =>
+    `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_SECRET}&redirect_uri=${process.env.GOOGLE_REDIRECT_URL}&scope=https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile&response_type=code&state=${inviteCode}`,
 };
 
 const RECIPIENT = {

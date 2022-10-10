@@ -53,7 +53,7 @@ const teamHandlers = [
 
   // 초대토큰으로 모임 정보 조회
   rest.get("/api/v1/teams/invite", (req, res, ctx) => {
-    const inviteToken = req.url.searchParams.get("inviteToken");
+    const inviteCode = req.url.searchParams.get("inviteCode");
 
     const team = totalTeams.find((team) => team.secret);
     const result = {
@@ -128,7 +128,7 @@ const teamHandlers = [
     const { teamId } = req.params;
 
     const result = {
-      inviteToken: "testInviteToken",
+      inviteCode: "testInviteCode",
     };
 
     return res(ctx.json(result));
@@ -136,7 +136,7 @@ const teamHandlers = [
 
   // 모임 가입 (초대토큰)
   rest.post("/api/v1/teams/invite/join", (req, res, ctx) => {
-    const { inviteToken, nickname } = req.body;
+    const { inviteCode, nickname } = req.body;
 
     return res(ctx.status(204));
   }),

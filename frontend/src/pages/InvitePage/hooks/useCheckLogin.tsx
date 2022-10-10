@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "@/context/SnackbarContext";
 import { UserContext } from "@/context/UserContext";
 
-const useCheckLogin = (inviteToken: string) => {
+const useCheckLogin = (inviteCode: string) => {
   const navigate = useNavigate();
 
   const { openSnackbar } = useSnackbar();
@@ -15,7 +15,7 @@ const useCheckLogin = (inviteToken: string) => {
       openSnackbar("로그인이 필요한 서비스입니다.");
       navigate("/login", {
         replace: true,
-        state: { inviteToken },
+        state: { inviteCode },
       });
     }
   };

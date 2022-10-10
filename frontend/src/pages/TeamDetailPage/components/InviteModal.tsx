@@ -55,11 +55,11 @@ const InviteModal = ({ onClickClose }: InviteModalProp) => {
         <StyledHeader>모임 초대하기</StyledHeader>
         <div>모임에 초대하려면 아래 링크를 공유하세요</div>
         <StyledLinkCopy>
-          <StyledLink>{`https://naepyeon.site/invite/${data?.inviteToken}`}</StyledLink>
+          <StyledLink>{`https://naepyeon.site/invite/${data?.inviteCode}`}</StyledLink>
           <IconButton
             size="small"
             onClick={handleCopyButton(
-              `https://naepyeon.site/invite/${data?.inviteToken}`
+              `https://naepyeon.site/invite/${data?.inviteCode}`
             )}
           >
             <CopyIcon />

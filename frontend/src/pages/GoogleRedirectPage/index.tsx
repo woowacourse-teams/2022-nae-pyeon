@@ -15,7 +15,7 @@ const GoogleRedirectPage = () => {
 
   const params = new URLSearchParams(useLocation().search);
   const authorizationCode = params.get("code");
-  const inviteToken = params.get("state");
+  const inviteCode = params.get("state");
 
   const { mutate: GoogleOauthLogin } = useMutation(
     ({ authorizationCode, redirectUri }: postGoogleOauthRequest) =>
@@ -28,8 +28,8 @@ const GoogleRedirectPage = () => {
         if (data) {
           login(data.accessToken, data.id);
 
-          if (inviteToken) {
-            navigate(`/invite/${inviteToken}`, { replace: true });
+          if (inviteCode) {
+            navigate(`/invite/${inviteCode}`, { replace: true });
             return;
           }
 
