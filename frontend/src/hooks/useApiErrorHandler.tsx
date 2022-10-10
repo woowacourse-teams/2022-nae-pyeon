@@ -68,10 +68,18 @@ const useApiErrorHandler = () => {
   };
 
   const forbiddenErrorHandler = (customErrorInfo: CustomError) => {
-    const { message } = customErrorInfo;
+    const { message, errorCode, requestUrl } = customErrorInfo;
+    const requestUrlPaths = requestUrl.split("/");
+    const teamIdIndex = requestUrlPaths.indexOf("teams") + 1;
 
-    navigate(`/`);
-    openSnackbar(message);
+    switch (errorCode) {
+      case 4013:
+        navigate(`/team/${requestUrlPaths[teamIdIndex]}`);
+        openSnackbar(message);
+        break;
+      default:
+        openSnackbar(message);
+    }
   };
 
   const apiErrorHandler = (error: AxiosError<ApiErrorResponse>): void => {
