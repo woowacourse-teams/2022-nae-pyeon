@@ -1,17 +1,21 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
 import { getMyTeams } from "@/api/team";
 import { GetMyTeamsResponse } from "@/types/apiResponse";
+import { MY_TEAM_COUNT } from "@/constants";
 
-const useReadMyTeams = () => {
-  return useQuery<GetMyTeamsResponse, AxiosError>(
-    ["myTeams", 0],
-    getMyTeams(10),
+const useReadMyTeams = () =>
+  useInfiniteQuery<GetMyTeamsResponse>(
+    ["my-teams"],
+    getMyTeams(MY_TEAM_COUNT),
     {
-      useErrorBoundary: true,
+      getNextPageParam: (lastPage) => {
+        if (lastPage.currentPage * MY_TEAM_COUNT < lastPage.totalCount) {
+          return lastPage.currentPage + 1;
+        }
+      },
     }
   );
-};
 
 export default useReadMyTeams;

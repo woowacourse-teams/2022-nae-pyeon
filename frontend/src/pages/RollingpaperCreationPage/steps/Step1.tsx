@@ -7,32 +7,52 @@ import StepTitleWithLayout from "@/pages/RollingpaperCreationPage/components/Ste
 import MyTeamCard from "@/pages/RollingpaperCreationPage/components/MyTeamCard";
 
 import { Team } from "@/types";
+import useIntersect from "@/hooks/useIntersect";
 
 interface Step1Props {
   onClick: (id: Team["id"]) => void;
 }
 
 const Step1 = ({ onClick }: Step1Props, ref: React.Ref<HTMLDivElement>) => {
-  const { data: myTeam } = useReadMyTeam();
+  const infiniteRef = useIntersect(
+    async (entry, observer) => {
+      observer.unobserve(entry.target);
+      if (hasNextPage && !isFetching) {
+        fetchNextPage();
+      }
+    },
+    { rootMargin: "10px", threshold: 1.0 }
+  );
 
-  if (!myTeam) {
+  const {
+    data: myTeamListResponse,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isLoading,
+  } = useReadMyTeam();
+
+  if (!myTeamListResponse) {
     return <div>내 팀 없음ㅠ</div>;
   }
 
   return (
     <StepTitleWithLayout title="모임을 선택해주세요" ref={ref}>
       <StyledCardList>
-        {myTeam.teams.map(({ id, name, description, emoji, color }) => (
-          <MyTeamCard
-            key={id}
-            id={id}
-            name={name}
-            description={description}
-            emoji={emoji}
-            color={color}
-            onClick={() => onClick(id)}
-          />
-        ))}
+        {myTeamListResponse.pages.map((page) =>
+          page.teams.map(({ id, name, description, emoji, color }) => (
+            <MyTeamCard
+              key={id}
+              id={id}
+              name={name}
+              description={description}
+              emoji={emoji}
+              color={color}
+              onClick={() => onClick(id)}
+            />
+          ))
+        )}
+        <div ref={infiniteRef} />
       </StyledCardList>
     </StepTitleWithLayout>
   );
