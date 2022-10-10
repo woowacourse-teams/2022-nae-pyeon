@@ -1,16 +1,17 @@
 import React, { useRef, useState } from "react";
 import styled from "@emotion/styled";
 
-import Step1 from "./steps/Step1";
-import Step2 from "./steps/Step2";
-import Step3 from "./steps/Step3";
+import useCreateMemberRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateMemberRolliingpaper";
+import useCreateTeamRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateTeamRollingpaper";
+
+import Step1 from "@/pages/RollingpaperCreationPage/steps/Step1";
+import Step2 from "@/pages/RollingpaperCreationPage/steps/Step2";
+import Step3 from "@/pages/RollingpaperCreationPage/steps/Step3";
+
+import ControlDots from "@/pages/RollingpaperCreationPage/components/ControlDots";
 
 import { Recipient, Rollingpaper, Team, TeamMember } from "@/types";
 import { RECIPIENT } from "@/constants";
-import useCreateMemberRollingpaper from "./hooks/useCreateMemberRolliingpaper";
-import useCreateTeamRollingpaper from "./hooks/useCreateTeamRollingpaper";
-import ControlDots from "./components/ControlDots";
-
 interface Step {
   step1: Team["id"] | null;
   step2: { type: Recipient | null; to: TeamMember["id"] | null } | null;

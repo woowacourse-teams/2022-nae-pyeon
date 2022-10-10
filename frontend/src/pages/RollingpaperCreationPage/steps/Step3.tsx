@@ -1,12 +1,15 @@
 import React, { forwardRef } from "react";
 import styled from "@emotion/styled";
 
-import { REGEX } from "@/constants";
-import StepTitleWithLayout from "../components/StepTitleWithLayout";
-import { Rollingpaper } from "@/types";
-import LabeledInput from "@/components/LabeledInput";
 import useInput from "@/hooks/useInput";
+
 import Button from "@/components/Button";
+import LabeledInput from "@/components/LabeledInput";
+
+import StepTitleWithLayout from "@/pages/RollingpaperCreationPage/components/StepTitleWithLayout";
+
+import { Rollingpaper } from "@/types";
+import { REGEX } from "@/constants";
 
 interface Step3Props {
   onClick: (title: Rollingpaper["title"]) => void;

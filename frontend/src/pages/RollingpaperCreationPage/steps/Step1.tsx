@@ -2,8 +2,9 @@ import React, { forwardRef } from "react";
 import styled from "@emotion/styled";
 
 import useReadMyTeam from "@/pages/RollingpaperCreationPage/hooks/useReadMyTeam";
-import MyTeamCard from "../components/MyTeamCard";
-import StepTitleWithLayout from "../components/StepTitleWithLayout";
+
+import StepTitleWithLayout from "@/pages/RollingpaperCreationPage/components/StepTitleWithLayout";
+import MyTeamCard from "@/pages/RollingpaperCreationPage/components/MyTeamCard";
 
 import { Team } from "@/types";
 

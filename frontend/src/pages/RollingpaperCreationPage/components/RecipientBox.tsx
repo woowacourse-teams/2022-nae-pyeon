@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import { RECIPIENT } from "@/constants";
 import { Recipient } from "@/types";
+import { RECIPIENT } from "@/constants";
 
 const CONTENTS = {
   [RECIPIENT.TEAM]: {
@@ -26,7 +26,7 @@ interface StyledRecipientBoxProps {
   type: Recipient;
 }
 
-export const RecipientBox = ({ type, onClick }: RecipientBoxProps) => {
+const RecipientBox = ({ type, onClick }: RecipientBoxProps) => {
   const { recipient, to, description } = CONTENTS[type];
 
   return (
@@ -74,3 +74,5 @@ const StyledDescription = styled.div`
   font-size: 16px;
   text-align: center;
 `;
+
+export default RecipientBox;

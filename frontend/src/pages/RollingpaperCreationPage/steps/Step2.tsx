@@ -1,16 +1,20 @@
 import React, { forwardRef, useState } from "react";
 import styled from "@emotion/styled";
 
-import { RecipientBox } from "@/pages/RollingpaperCreationPage/components/RecipientBox";
+import useAutoCompleteInput from "@/hooks/useAutoCompleteInput";
+
+import Button from "@/components/Button";
+import AutoCompleteInput from "@/components/AutoCompleteInput";
+
+import useReadTeamMembers from "@/pages/RollingpaperCreationPage/hooks/useReadTeamMembers";
+
+import StepTitleWithLayout from "@/pages/RollingpaperCreationPage/components/StepTitleWithLayout";
+import RecipientBox from "@/pages/RollingpaperCreationPage/components/RecipientBox";
+
+import { Recipient, Team, TeamMember } from "@/types";
+import { GetTeamMembersResponse } from "@/types/apiResponse";
 
 import { RECIPIENT } from "@/constants";
-import StepTitleWithLayout from "../components/StepTitleWithLayout";
-import { Recipient, Team, TeamMember } from "@/types";
-import AutoCompleteInput from "@/components/AutoCompleteInput";
-import useAutoCompleteInput from "@/hooks/useAutoCompleteInput";
-import { GetTeamMembersResponse } from "@/types/apiResponse";
-import useReadTeamMembers from "../hooks/useReadTeamMembers";
-import Button from "@/components/Button";
 
 interface Step2Props {
   teamId: Team["id"] | null;
