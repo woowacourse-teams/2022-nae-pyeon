@@ -8,14 +8,24 @@ import { GetRollingpaperResponse } from "@/types/apiResponse";
 interface UseReadRollingpaperArgs {
   teamId: number;
   rollingpaperId: number;
+  handleWriteEnd: () => void;
 }
 
-export const useReadRollingpaper = ({
+const useReadRollingpaper = ({
   teamId,
   rollingpaperId,
+  handleWriteEnd,
 }: UseReadRollingpaperArgs) =>
   useQuery<GetRollingpaperResponse, AxiosError>(
     ["rollingpaper", rollingpaperId],
     () => getRollingpaper({ teamId, id: rollingpaperId }),
-    { useErrorBoundary: true }
+    {
+      useErrorBoundary: true,
+      refetchOnWindowFocus: false,
+      onSuccess: () => {
+        handleWriteEnd();
+      },
+    }
   );
+
+export default useReadRollingpaper;

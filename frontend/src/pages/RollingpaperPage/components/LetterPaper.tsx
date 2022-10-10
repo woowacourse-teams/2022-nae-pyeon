@@ -9,22 +9,35 @@ import PencilIcon from "@/assets/icons/bx-pencil.svg";
 
 import MessageCreateForm from "@/pages/RollingpaperPage/components/MessageCreateForm";
 import MessageBox from "@/pages/RollingpaperPage/components/MessageBox";
-import useMessageWrite from "@/pages/RollingpaperPage/hooks/useMessageWrite";
-import useSliceMessageList from "../hooks/useSliceMessageList";
+import useSliceMessageList from "@/pages/RollingpaperPage/hooks/useSliceMessageList";
+
+import { ROLLINGPAPER_STATE_TYPE, RECIPIENT } from "@/constants";
 
 interface LetterPaperProp {
   to: string;
   recipientType: Recipient;
   messageList: Message[];
+  rollingpaperState: string;
+  handleWriteButtonClick: () => void;
+  handleEditButtonClick: () => void;
+  handleWriteEnd: () => void;
 }
 
-const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProp) => {
-  const { isWrite, handleWriteButtonClick, handleWriteEnd } = useMessageWrite();
-
+const LetterPaper = ({
+  to,
+  recipientType,
+  messageList,
+  rollingpaperState,
+  handleWriteButtonClick,
+  handleEditButtonClick,
+  handleWriteEnd,
+}: LetterPaperProp) => {
   const elementList = useMemo(() => {
     const elementList = messageList
       .map((message) => (
         <MessageBox
+          handleEditButtonClick={handleEditButtonClick}
+          handleWriteEnd={handleWriteEnd}
           key={message.id}
           recipientType={recipientType}
           {...message}
@@ -32,16 +45,16 @@ const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProp) => {
       ))
       .reverse();
 
-    return isWrite
+    return rollingpaperState === ROLLINGPAPER_STATE_TYPE.WRITE
       ? [
           <MessageCreateForm
-            enableSecretMessage={recipientType === "MEMBER"}
+            enableSecretMessage={recipientType === RECIPIENT.MEMBER}
             onEditEnd={handleWriteEnd}
           />,
           ...elementList,
         ]
       : [...elementList];
-  }, [messageList, isWrite]);
+  }, [rollingpaperState]);
 
   const slicedMessageLists = useSliceMessageList(elementList);
 
@@ -49,7 +62,7 @@ const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProp) => {
     <StyledLetterPaper>
       <StyledLetterPaperTop>
         <StyledTo>To. {to}</StyledTo>
-        {!isWrite && (
+        {rollingpaperState !== ROLLINGPAPER_STATE_TYPE.WRITE && (
           <IconButton size="small" onClick={handleWriteButtonClick}>
             <PencilIcon />
           </IconButton>

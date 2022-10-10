@@ -3,6 +3,8 @@ import styled from "@emotion/styled";
 
 import IconButton from "@/components/IconButton";
 
+import useValidatedParam from "@/hooks/useValidatedParam";
+
 import TrashIcon from "@/assets/icons/bx-trash.svg";
 import Pencil from "@/assets/icons/bx-pencil.svg";
 import LockIcon from "@/assets/icons/bx-lock-alt.svg";
@@ -12,7 +14,6 @@ import useMessageBox from "@/pages/RollingpaperPage/hooks/useMessageBox";
 import SecretMessage from "@/pages/RollingpaperPage/components/SecretMessage";
 
 import { Message, Recipient } from "@/types";
-import useValidatedParam from "@/hooks/useValidatedParam";
 
 const MessageBox = ({
   id,
@@ -24,7 +25,13 @@ const MessageBox = ({
   editable,
   visible,
   recipientType,
-}: Message & { recipientType: Recipient }) => {
+  handleEditButtonClick,
+  handleWriteEnd,
+}: Message & {
+  recipientType: Recipient;
+  handleEditButtonClick: () => void;
+  handleWriteEnd: () => void;
+}) => {
   const rollingpaperId = useValidatedParam<number>("rollingpaperId");
 
   const {
@@ -32,7 +39,11 @@ const MessageBox = ({
     handleWriteButtonClick,
     handleDeleteButtonClick,
     handleEditEnd,
-  } = useMessageBox({ id, rollingpaperId: rollingpaperId });
+  } = useMessageBox({
+    id,
+    rollingpaperId: rollingpaperId,
+    handleEditButtonClick,
+  });
 
   if (!visible) {
     return <SecretMessage from={from} />;
@@ -47,6 +58,7 @@ const MessageBox = ({
         anonymous={anonymous}
         secret={secret}
         onEditEnd={handleEditEnd}
+        handleWriteEnd={handleWriteEnd}
         enableSecretMessage={recipientType === "MEMBER"}
       />
     );

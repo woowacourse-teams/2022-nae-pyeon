@@ -36,11 +36,6 @@ const useMessageForm = ({
     setColor(color);
   };
 
-  const initMessage = () => {
-    setContent("");
-    setColor(INIT_COLOR);
-  };
-
   return {
     color,
     content,
@@ -50,7 +45,6 @@ const useMessageForm = ({
     handleColorClick,
     handleAnonymousCheckBoxChange,
     handleSecretCheckBoxChange,
-    initMessage,
   };
 };
 
