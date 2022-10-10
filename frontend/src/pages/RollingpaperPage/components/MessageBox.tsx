@@ -13,8 +13,15 @@ import SecretMessage from "@/pages/RollingpaperPage/components/SecretMessage";
 
 import { Message, Recipient } from "@/types";
 import useValidatedParam from "@/hooks/useValidatedParam";
+import useDeleteMessage from "../hooks/useDeleteMessage";
+
+interface MessageBoxProps extends Message {
+  setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
+  recipientType: Recipient;
+}
 
 const MessageBox = ({
+  setMessageList,
   id,
   content,
   from,
@@ -24,15 +31,19 @@ const MessageBox = ({
   editable,
   visible,
   recipientType,
-}: Message & { recipientType: Recipient }) => {
+}: MessageBoxProps) => {
   const rollingpaperId = useValidatedParam<number>("rollingpaperId");
 
-  const {
-    isEdit,
-    handleWriteButtonClick,
-    handleDeleteButtonClick,
-    handleEditEnd,
-  } = useMessageBox({ id, rollingpaperId: rollingpaperId });
+  const { isEdit, handleWriteButtonClick, handleEditEnd } = useMessageBox();
+
+  const { deleteRollingpaperMessage } = useDeleteMessage({
+    rollingpaperId,
+    setMessageList,
+  });
+
+  const handleDeleteButtonClick = () => {
+    deleteRollingpaperMessage(id);
+  };
 
   if (!visible) {
     return <SecretMessage from={from} />;
@@ -48,6 +59,7 @@ const MessageBox = ({
         secret={secret}
         onEditEnd={handleEditEnd}
         enableSecretMessage={recipientType === "MEMBER"}
+        setMessageList={setMessageList}
       />
     );
   }

@@ -5,15 +5,18 @@ import { AxiosError } from "axios";
 import useValidatedParam from "@/hooks/useValidatedParam";
 import { useSnackbar } from "@/context/SnackbarContext";
 
-import { queryClient } from "@/api";
 import { putMessage } from "@/api/message";
 
 import { Message } from "@/types";
 
+interface useUpdateMessageProps {
+  id: Message["id"];
+  setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
+}
 interface UpdateMessageVariable
   extends Pick<Message, "content" | "color" | "anonymous" | "secret"> {}
 
-const useUpdateMessage = (id: number) => {
+const useUpdateMessage = ({ id, setMessageList }: useUpdateMessageProps) => {
   const { openSnackbar } = useSnackbar();
   const rollingpaperId = useValidatedParam<number>("rollingpaperId");
 
@@ -34,7 +37,7 @@ const useUpdateMessage = (id: number) => {
     },
     {
       onSuccess: () => {
-        queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
+        // 여기서 data 가져와서 update 하면 될듯
         openSnackbar("메시지 수정 완료");
       },
       useErrorBoundary: true,

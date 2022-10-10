@@ -7,10 +7,12 @@ import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 
 import { Message } from "@/types";
 
-type MessageUpdateFormProps = {
+interface MessageUpdateFormProps
+  extends Pick<Message, "id" | "content" | "color" | "anonymous" | "secret"> {
   enableSecretMessage: boolean;
   onEditEnd: () => void;
-} & Pick<Message, "id" | "content" | "color" | "anonymous" | "secret">;
+  setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
+}
 
 export const MessageUpdateForm = ({
   enableSecretMessage,
@@ -20,6 +22,7 @@ export const MessageUpdateForm = ({
   anonymous,
   secret,
   onEditEnd,
+  setMessageList,
 }: MessageUpdateFormProps) => {
   const {
     content: newContent,
@@ -30,7 +33,6 @@ export const MessageUpdateForm = ({
     handleMessageChange,
     handleAnonymousCheckBoxChange,
     handleSecretCheckBoxChange,
-    initMessage,
   } = useMessageForm({
     initContent: content,
     initColor: color,
@@ -38,7 +40,7 @@ export const MessageUpdateForm = ({
     initSecret: secret,
   });
 
-  const { updateMessage } = useUpdateMessage(id);
+  const { updateMessage } = useUpdateMessage({ id, setMessageList });
 
   const handleMessageSubmit = () => {
     updateMessage({
@@ -47,13 +49,11 @@ export const MessageUpdateForm = ({
       anonymous: newAnonymous,
       secret: enableSecretMessage && newSecret,
     });
-    initMessage();
     onEditEnd();
   };
 
   const handleMessageCancel = () => {
     if (confirm("메시지 작성을 취소하시겠습니까?")) {
-      initMessage();
       onEditEnd();
     }
   };

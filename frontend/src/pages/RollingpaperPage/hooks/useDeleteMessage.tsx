@@ -3,14 +3,21 @@ import { AxiosError } from "axios";
 
 import { useSnackbar } from "@/context/SnackbarContext";
 
-import { queryClient } from "@/api";
 import { deleteMessage } from "@/api/message";
 
 import { Message } from "@/types";
 
+interface useDeleteMessageProps {
+  rollingpaperId: Message["id"];
+  setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
+}
+
 type DeleteRollingpaperMessageVariable = Message["id"];
 
-const useDeleteMessage = (rollingpaperId: number) => {
+const useDeleteMessage = ({
+  rollingpaperId,
+  setMessageList,
+}: useDeleteMessageProps) => {
   const { openSnackbar } = useSnackbar();
 
   const { mutate: deleteRollingpaperMessage } = useMutation<
@@ -18,8 +25,10 @@ const useDeleteMessage = (rollingpaperId: number) => {
     AxiosError,
     DeleteRollingpaperMessageVariable
   >((id) => deleteMessage({ rollingpaperId, id }), {
-    onSuccess: () => {
-      queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
+    onSuccess: (data, variable) => {
+      setMessageList((prev) =>
+        prev.filter((message) => message.id !== variable)
+      );
       openSnackbar("메시지 삭제 완료");
     },
     useErrorBoundary: true,
