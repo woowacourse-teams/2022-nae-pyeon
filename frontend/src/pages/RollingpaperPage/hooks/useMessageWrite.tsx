@@ -1,17 +1,40 @@
-import React, { useState } from "react";
+import { RECIPIENT } from "@/constants";
+import { ValueOf } from "@/types";
+import React, { ReactElement } from "react";
+import MessageCreateForm from "../components/MessageCreateForm";
 
-const useMessageWrite = () => {
-  const [isWrite, setIsWrite] = useState(false);
+interface useMessageWriteProp {
+  setMessageComponentList: React.Dispatch<
+    React.SetStateAction<
+      ReactElement<any, string | React.JSXElementConstructor<any>>[]
+    >
+  >;
+  recipientType: ValueOf<typeof RECIPIENT> | undefined;
+}
+
+const useMessageWrite = ({
+  setMessageComponentList,
+  recipientType,
+}: useMessageWriteProp) => {
+  const handleWriteEnd = () => {
+    setMessageComponentList((prev) => {
+      prev.shift();
+      return [...prev];
+    });
+  };
 
   const handleWriteButtonClick = () => {
-    setIsWrite(true);
+    setMessageComponentList((prev) => [
+      <MessageCreateForm
+        key="messageCreateForm"
+        enableSecretMessage={recipientType === RECIPIENT.MEMBER}
+        onEditEnd={handleWriteEnd}
+      />,
+      ...prev,
+    ]);
   };
 
-  const handleWriteEnd = () => {
-    setIsWrite(false);
-  };
-
-  return { isWrite, handleWriteButtonClick, handleWriteEnd };
+  return { handleWriteButtonClick, handleWriteEnd };
 };
 
 export default useMessageWrite;

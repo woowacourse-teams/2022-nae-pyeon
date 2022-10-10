@@ -25,7 +25,6 @@ export const MessageCreateForm = ({
     handleColorClick,
     handleAnonymousCheckBoxChange,
     handleSecretCheckBoxChange,
-    initMessage,
   } = useMessageForm({});
 
   const rollingpaperId = useValidatedParam<number>("rollingpaperId");
@@ -38,13 +37,10 @@ export const MessageCreateForm = ({
       anonymous,
       secret: enableSecretMessage && secret,
     });
-    initMessage();
-    onEditEnd();
   };
 
   const handleMessageCancel = () => {
     if (confirm("메시지 작성을 취소하시겠습니까?")) {
-      initMessage();
       onEditEnd();
     }
   };
