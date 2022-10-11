@@ -114,6 +114,8 @@ const StyledMessageBottom = styled.div`
   justify-content: space-between;
   align-items: flex-end;
 
+  height: 40px;
+
   padding-bottom: 4px;
 `;
 
@@ -122,7 +124,7 @@ const StyledLike = styled.div`
   align-self: flex-end;
   gap: 8px;
 
-  margin-top: 8px;
+  margin-top: 16px;
 
   color: ${({ theme }) => theme.colors.GRAY_700};
 
