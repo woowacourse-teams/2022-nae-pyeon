@@ -61,22 +61,24 @@ const Like = ({ id, likes, liked }: LikeProps) => {
 
 const StyledLikeContainer = styled.div<StyledLikeContainerProps>`
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  /* flex-direction: column; */
+  align-items: center;
   justify-content: center;
   gap: 2px;
+
+  padding: 0 16px 0px 4px;
 
   color: ${({ theme }) => theme.colors.GRAY_700};
 
   svg {
     fill: ${(props) =>
       props.isLiked ? props.theme.colors.RED_400 : props.theme.colors.GRAY_700};
-    font-size: 24px;
+    font-size: 28px;
   }
 `;
 
 const StyledLikeCount = styled.div`
-  width: 24px;
+  width: 28px;
   text-align: center;
 `;
 
