@@ -1,7 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
+import { useSearchParams } from "react-router-dom";
 
 import ControlDots from "@/components/ControlDots";
+
+import RightCircleIcon from "@/assets/icons/bx-chevron-right-circle.svg";
+import LeftCircleIcon from "@/assets/icons/bx-chevron-left-circle.svg";
 
 import useCreateMemberRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateMemberRolliingpaper";
 import useCreateTeamRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateTeamRollingpaper";
@@ -12,7 +16,10 @@ import Step3 from "@/pages/RollingpaperCreationPage/components/Step3";
 
 import { Recipient, Rollingpaper, Team, TeamMember } from "@/types";
 import { RECIPIENT } from "@/constants";
-import { useSearchParams } from "react-router-dom";
+import IconButton from "@/components/IconButton";
+
+const StepLength = 3;
+
 interface Step {
   step1: Team["id"] | null;
   step2: { type: Recipient | null; to: TeamMember["id"] | null } | null;
@@ -29,7 +36,7 @@ const RollingpaperCreationPage = () => {
   const [searchParams] = useSearchParams();
   const selectedTeamId = searchParams.get("team-id");
 
-  const [step, setStep] = useState<number>(selectedTeamId ? 2 : 1);
+  const [step, setStep] = useState<number>(selectedTeamId ? 1 : 0);
   const [selectedSteps, setSelectedSteps] = useState<Step>(
     selectedTeamId
       ? { ...initialSelectedSteps, step1: +selectedTeamId }
@@ -52,8 +59,23 @@ const RollingpaperCreationPage = () => {
       return;
     }
 
-    setStep((prev) => prev + 1);
-    changePage(step);
+    setStep((prev) => {
+      const target = prev + 1;
+      changePage(target);
+      return target;
+    });
+  };
+
+  const goToPrevPage = () => {
+    if (step < 0) {
+      return;
+    }
+
+    setStep((prev) => {
+      const target = prev - 1;
+      changePage(target);
+      return target;
+    });
   };
 
   const endSteps = () => {
@@ -106,28 +128,70 @@ const RollingpaperCreationPage = () => {
     goToNextPage();
   };
 
+  const validateMoveNextStep = () => {
+    if (step === 0) {
+      return !!selectedSteps["step1"];
+    }
+    if (step === 1) {
+      return !!selectedSteps["step2"]?.type;
+    }
+
+    return false;
+  };
+
+  const handleRightButtonClick = () => {
+    if (!validateMoveNextStep()) {
+      return;
+    }
+
+    goToNextPage();
+  };
+
+  const handleLeftButtonClick = () => {
+    goToPrevPage();
+  };
+
   useEffect(() => {
-    changePage(step - 1);
+    changePage(step);
   }, []);
 
   return (
     <StyledMain>
-      <StyledSteps>
-        <Step1
-          ref={(el: HTMLDivElement) => (pageRef.current[0] = el)}
-          onClick={handleStep1Click}
-        />
-        <Step2
-          ref={(el: HTMLDivElement) => (pageRef.current[1] = el)}
-          teamId={selectedSteps.step1}
-          onClick={handleStep2Click}
-        />
-        <Step3
-          ref={(el: HTMLDivElement) => (pageRef.current[2] = el)}
-          onClick={handleStep3Click}
-        />
-      </StyledSteps>
-      <ControlDots pages={3} step={step} />
+      <StyledStepsWithMoveButton>
+        {step > 0 ? (
+          <IconButton onClick={handleLeftButtonClick}>
+            <LeftCircleIcon />
+          </IconButton>
+        ) : (
+          <StyledSpace />
+        )}
+        <StyledSteps>
+          <Step1
+            ref={(el: HTMLDivElement) => (pageRef.current[0] = el)}
+            onClick={handleStep1Click}
+          />
+          <Step2
+            ref={(el: HTMLDivElement) => (pageRef.current[1] = el)}
+            teamId={selectedSteps.step1}
+            onClick={handleStep2Click}
+          />
+          <Step3
+            ref={(el: HTMLDivElement) => (pageRef.current[2] = el)}
+            onClick={handleStep3Click}
+          />
+        </StyledSteps>
+        {step < StepLength - 1 ? (
+          <IconButton
+            onClick={handleRightButtonClick}
+            disabled={!validateMoveNextStep()}
+          >
+            <RightCircleIcon />
+          </IconButton>
+        ) : (
+          <StyledSpace />
+        )}
+      </StyledStepsWithMoveButton>
+      <ControlDots pages={StepLength} step={step} />
     </StyledMain>
   );
 };
@@ -139,13 +203,44 @@ const StyledMain = styled.main`
   height: calc(100vh - 90px);
 `;
 
+const StyledStepsWithMoveButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 20px 0 20px;
+
+  button {
+    &:disabled {
+      svg {
+        pointer-events: none;
+        fill: ${({ theme }) => theme.colors.GRAY_300};
+      }
+    }
+  }
+
+  svg {
+    font-size: 30px;
+    fill: ${({ theme }) => theme.colors.SKY_BLUE_200};
+
+    &:hover {
+      fill: ${({ theme }) => theme.colors.SKY_BLUE_400};
+    }
+  }
+`;
+
 const StyledSteps = styled.div`
   display: flex;
   overflow: hidden;
   scroll-behavior: smooth;
+
   ::-webkit-scrollbar {
     display: none;
   }
+`;
+
+const StyledSpace = styled.div`
+  width: 30px;
 `;
 
 export default RollingpaperCreationPage;

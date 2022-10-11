@@ -21,18 +21,18 @@ const StyledTitleWithLayout = styled.div`
   display: flex;
   flex-direction: column;
 
-  width: calc(100vw - 48px);
+  width: calc(100vw - 108px);
 
   @media only screen and (min-width: 600px) {
-    width: calc(500px - 48px);
+    width: calc(500px - 108px);
   }
 
   @media only screen and (min-width: 960px) {
-    width: calc(760px - 48px);
+    width: calc(760px - 108px);
   }
 
   @media only screen and (min-width: 1280px) {
-    width: calc(1020px - 48px);
+    width: calc(1020px - 108px);
   }
 `;
 
@@ -45,18 +45,18 @@ const StyledTitle = styled.h2`
   font-size: 24px;
   font-weight: 600;
 
-  width: calc(100vw - 48px);
+  width: calc(100vw - 108px);
 
   @media only screen and (min-width: 600px) {
-    width: calc(500px - 48px);
+    width: calc(500px - 108px);
   }
 
   @media only screen and (min-width: 960px) {
-    width: calc(760px - 48px);
+    width: calc(760px - 108px);
   }
 
   @media only screen and (min-width: 1280px) {
-    width: calc(1020px - 48px);
+    width: calc(1020px - 108px);
   }
 `;
 
