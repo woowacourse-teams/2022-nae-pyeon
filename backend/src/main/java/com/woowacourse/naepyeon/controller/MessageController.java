@@ -6,9 +6,8 @@ import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageUpdateRequest;
 import com.woowacourse.naepyeon.service.MessageService;
+import com.woowacourse.naepyeon.service.dto.MessageLikeResponseDto;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
-import java.net.URI;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +18,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+import java.net.URI;
 
 @RequiredArgsConstructor
 @RestController
@@ -70,5 +72,25 @@ public class MessageController {
                                               @PathVariable final Long messageId) {
         messageService.deleteMessage(messageId, loginMemberRequest.getId());
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{messageId}/likes")
+    public ResponseEntity<MessageLikeResponseDto> likeMessage(
+            @AuthenticationPrincipal final LoginMemberRequest loginMemberRequest,
+            @PathVariable final Long rollingpaperId,
+            @PathVariable final Long messageId) {
+        final MessageLikeResponseDto messageLikeResponse =
+                messageService.likeMessage(loginMemberRequest.getId(), rollingpaperId, messageId);
+        return ResponseEntity.ok(messageLikeResponse);
+    }
+
+    @DeleteMapping("/{messageId}/likes")
+    public ResponseEntity<MessageLikeResponseDto> dislikeMessage(
+            @AuthenticationPrincipal final LoginMemberRequest loginMemberRequest,
+            @PathVariable final Long rollingpaperId,
+            @PathVariable final Long messageId) {
+        final MessageLikeResponseDto messageLikeResponse =
+                messageService.dislikeMessage(loginMemberRequest.getId(), rollingpaperId, messageId);
+        return ResponseEntity.ok(messageLikeResponse);
     }
 }
