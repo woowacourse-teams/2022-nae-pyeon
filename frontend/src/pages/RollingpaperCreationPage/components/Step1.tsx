@@ -1,10 +1,11 @@
 import React, { forwardRef } from "react";
 import styled from "@emotion/styled";
 
+import MyTeamCard from "@/components/MyTeamCard";
+
 import useReadMyTeam from "@/pages/RollingpaperCreationPage/hooks/useReadMyTeam";
 
 import StepTitleWithLayout from "@/pages/RollingpaperCreationPage/components/StepTitleWithLayout";
-import MyTeamCard from "@/pages/RollingpaperCreationPage/components/MyTeamCard";
 
 import { Team } from "@/types";
 import useIntersect from "@/hooks/useIntersect";

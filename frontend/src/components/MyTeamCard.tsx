@@ -1,12 +1,9 @@
+import { Team } from "@/types";
 import styled from "@emotion/styled";
 
-interface MyTeamCardProps {
-  id: number;
-  name: string;
-  description: string;
-  emoji: string;
-  color: string;
-  onClick: () => void;
+interface MyTeamCardProps
+  extends Pick<Team, "id" | "name" | "description" | "emoji" | "color"> {
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 interface StyledMyTeamCardProps {
