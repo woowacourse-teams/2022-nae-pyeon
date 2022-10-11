@@ -114,7 +114,7 @@ public class Message extends BaseEntity {
         likes = likes + 1;
     }
 
-    public void dislike() {
+    public void cancelLike() {
         likes = likes - 1;
     }
 }

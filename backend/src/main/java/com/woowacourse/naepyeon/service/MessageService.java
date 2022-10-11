@@ -5,13 +5,13 @@ import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.message.Message;
 import com.woowacourse.naepyeon.domain.message.MessageLike;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
-import com.woowacourse.naepyeon.exception.InvalidDisLikeMessageException;
+import com.woowacourse.naepyeon.exception.InvalidCancelLikeMessageException;
+import com.woowacourse.naepyeon.exception.InvalidLikeMessageException;
 import com.woowacourse.naepyeon.exception.InvalidSecretMessageToTeam;
 import com.woowacourse.naepyeon.exception.NotAuthorException;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundMessageException;
 import com.woowacourse.naepyeon.exception.NotFoundRollingpaperException;
-import com.woowacourse.naepyeon.exception.InvalidLikeMessageException;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.repository.message.MessageRepository;
 import com.woowacourse.naepyeon.repository.messagelike.MessageLikeRepository;
@@ -188,21 +188,20 @@ public class MessageService {
     public MessageLikeResponseDto likeMessage(Long memberId, Long rollingpaperId, Long messageId) {
         final Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new NotFoundMessageException(messageId));
-        if (messageLikeRepository.existsByMemberIdAndMessageId(memberId, messageId)){
+        if (messageLikeRepository.existsByMemberIdAndMessageId(memberId, messageId)) {
             throw new InvalidLikeMessageException(messageId, messageId);
         }
-
         message.like();
-        messageLikeRepository.save(new MessageLike(messageId, rollingpaperId, messageId));
+        messageLikeRepository.save(new MessageLike(memberId, rollingpaperId, messageId));
         return new MessageLikeResponseDto(message.getLikes(), true);
     }
 
-    public MessageLikeResponseDto dislikeMessage(Long memberId, Long rollingpaperId, Long messageId) {
+    public MessageLikeResponseDto cancelLikeMessage(Long memberId, Long messageId) {
         final Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new NotFoundMessageException(messageId));
         final MessageLike messageLike = messageLikeRepository.findByMemberIdAndMessageId(memberId, messageId)
-                .orElseThrow(() -> new InvalidDisLikeMessageException(memberId, messageId));
-        message.dislike();
+                .orElseThrow(() -> new InvalidCancelLikeMessageException(memberId, messageId));
+        message.cancelLike();
         messageLikeRepository.delete(messageLike);
         return new MessageLikeResponseDto(message.getLikes(), false);
     }
