@@ -19,7 +19,7 @@ const CONTENTS = {
 
 interface RecipientBoxProps {
   type: Recipient;
-  onClick: () => void;
+  onClick: React.MouseEventHandler<HTMLDivElement>;
 }
 
 interface StyledRecipientBoxProps {
