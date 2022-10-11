@@ -80,6 +80,7 @@ const StyledEmptyHeart = styled.div`
 
 const StyledLikeCount = styled.div`
   width: 20px;
+  text-align: center;
 `;
 
 export default Like;
