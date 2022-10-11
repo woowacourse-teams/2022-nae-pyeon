@@ -3,7 +3,6 @@ import styled from "@emotion/styled";
 import useValidatedParam from "@/hooks/useValidatedParam";
 
 import IconButton from "@/components/IconButton";
-import Like from "@/components/Like";
 
 import TrashIcon from "@/assets/icons/bx-trash.svg";
 import Pencil from "@/assets/icons/bx-pencil.svg";
@@ -12,6 +11,7 @@ import LockIcon from "@/assets/icons/bx-lock-alt.svg";
 import MessageUpdateForm from "@/pages/RollingpaperPage/components/MessageUpdateForm";
 import useMessageBox from "@/pages/RollingpaperPage/hooks/useMessageBox";
 import SecretMessage from "@/pages/RollingpaperPage/components/SecretMessage";
+import Like from "@/pages/RollingpaperPage/components/Like";
 
 import { Message, Recipient } from "@/types";
 
@@ -24,6 +24,8 @@ const MessageBox = ({
   secret,
   editable,
   visible,
+  likes,
+  liked,
   recipientType,
 }: Message & { recipientType: Recipient }) => {
   const rollingpaperId = useValidatedParam<number>("rollingpaperId");
@@ -58,7 +60,7 @@ const MessageBox = ({
       <StyledMessageContent>{content}</StyledMessageContent>
       <StyledMessageBottomInfo>
         <StyledLike>
-          <Like count={5} />
+          <Like id={id} count={likes} like={liked} />
         </StyledLike>
         <StyledMessageBottom>
           {editable && (

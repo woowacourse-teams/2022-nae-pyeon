@@ -1,18 +1,40 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 
-import EmptytHeart from "@/assets/icons/bx-heart-empty.svg";
+import EmptyHeart from "@/assets/icons/bx-heart-empty.svg";
 import FilledHeart from "@/assets/icons/bx-heart-fill.svg";
+import useUpdateLike from "../hooks/useUpdateLike";
+import useDeleteLiked from "../hooks/useDeleteLiked";
 
 interface LikeProps {
+  id: number;
   count: number;
+  like: boolean;
 }
 
-const Like = ({ count }: LikeProps) => {
-  const [liked, setLiked] = useState(false);
+const Like = ({ id, count = 0, like = false }: LikeProps) => {
+  const [liked, setLiked] = useState(like);
+  const [likes, setLikes] = useState(count);
+
+  const { updateLike } = useUpdateLike();
+  const { deleteLiked } = useDeleteLiked();
 
   const handleLikeToggle = () => {
-    setLiked((prev) => !prev);
+    if (!liked) {
+      updateLike(id, {
+        onSuccess: ({ liked, likes }) => {
+          setLiked(liked);
+          setLikes(likes);
+        },
+      });
+    } else {
+      deleteLiked(id, {
+        onSuccess: ({ liked, likes }) => {
+          setLiked(liked);
+          setLikes(likes);
+        },
+      });
+    }
   };
 
   return (
@@ -23,10 +45,10 @@ const Like = ({ count }: LikeProps) => {
         </StyledFilledHeart>
       ) : (
         <StyledEmptyHeart onClick={handleLikeToggle}>
-          <EmptytHeart />
+          <EmptyHeart />
         </StyledEmptyHeart>
       )}
-      <div>{count}</div>
+      <StyledLikeCount>{likes}</StyledLikeCount>
     </StyledLike>
   );
 };
@@ -54,6 +76,10 @@ const StyledEmptyHeart = styled.div`
     fill: ${({ theme }) => theme.colors.GRAY_700};
   }
   font-size: 20px;
+`;
+
+const StyledLikeCount = styled.div`
+  width: 20px;
 `;
 
 export default Like;
