@@ -10,7 +10,9 @@ public interface RollingpaperRepositoryCustom {
 
     Page<Rollingpaper> findByAddresseeId(final Long memberId, final Pageable pageRequest);
 
-    List<Rollingpaper> findByTeamIdAndOrder(final Long teamId, final String order);
+    List<Rollingpaper> findByTeamId(final Long teamId);
+
+    List<Rollingpaper> findByTeamIdOldestOrder(final Long teamId);
 
     Optional<String> findAddresseeNicknameByMemberRollingpaperId(final Long rollingpaperId);
 }

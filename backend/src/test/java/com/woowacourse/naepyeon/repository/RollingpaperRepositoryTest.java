@@ -17,6 +17,7 @@ import com.woowacourse.naepyeon.repository.team.TeamRepository;
 import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -95,9 +96,13 @@ class RollingpaperRepositoryTest {
         rollingpaperRepository.save(rollingPaper1);
         rollingpaperRepository.save(rollingPaper2);
 
-        final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByTeamIdAndOrder(team.getId(), "latest");
+        final List<Long> actual = rollingpaperRepository.findByTeamId(team.getId())
+                .stream()
+                .map(Rollingpaper::getId)
+                .collect(Collectors.toUnmodifiableList());
 
-        assertThat(rollingpapers).hasSize(2);
+        assertThat(actual)
+                .containsExactly(rollingPaper2.getId(), rollingPaper1.getId());
     }
 
     @Test
@@ -108,9 +113,13 @@ class RollingpaperRepositoryTest {
         rollingpaperRepository.save(rollingPaper1);
         rollingpaperRepository.save(rollingPaper2);
 
-        final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByTeamIdAndOrder(team.getId(), "oldest");
+        final List<Long> actual = rollingpaperRepository.findByTeamIdOldestOrder(team.getId())
+                .stream()
+                .map(Rollingpaper::getId)
+                .collect(Collectors.toUnmodifiableList());
 
-        assertThat(rollingpapers).hasSize(2);
+        assertThat(actual)
+                .containsExactly(rollingPaper1.getId(), rollingPaper2.getId());
     }
 
     @Test

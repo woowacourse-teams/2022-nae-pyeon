@@ -102,8 +102,9 @@ public class RollingpaperService {
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
             throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
-        final List<Rollingpaper> rollingpapers = filterRollingpapers(teamId, order, filter);
-        final List<RollingpaperPreviewResponseDto> rollingpaperPreviewResponseDtos = rollingpapers.stream()
+        final List<Rollingpaper> rollingpapers = orderRollingpapers(teamId, order);
+        final List<Rollingpaper> targetRollingpapers = filterRollingpapers(rollingpapers, filter);
+        final List<RollingpaperPreviewResponseDto> rollingpaperPreviewResponseDtos = targetRollingpapers.stream()
                 .map(rollingpaper -> RollingpaperPreviewResponseDto.createPreviewRollingpaper(
                         rollingpaper, findRollingpaperAddresseeNickname(rollingpaper))
                 )
@@ -111,8 +112,14 @@ public class RollingpaperService {
         return new RollingpapersResponseDto(rollingpaperPreviewResponseDtos);
     }
 
-    private List<Rollingpaper> filterRollingpapers(final Long teamId, final String order, final String filter) {
-        final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByTeamIdAndOrder(teamId, order);
+    private List<Rollingpaper> orderRollingpapers(final Long teamId, final String order) {
+        if (order.equals("oldest")) {
+            return rollingpaperRepository.findByTeamIdOldestOrder(teamId);
+        }
+        return rollingpaperRepository.findByTeamId(teamId);
+    }
+
+    private List<Rollingpaper> filterRollingpapers(final List<Rollingpaper> rollingpapers, final String filter) {
         // filter 값이 null일 경우
         if (!StringUtils.hasText(filter)) {
             return rollingpapers;
