@@ -8,8 +8,13 @@ import useUpdateLiked from "@/pages/RollingpaperPage/hooks/useUpdateLiked";
 import useDeleteLiked from "@/pages/RollingpaperPage/hooks/useDeleteLiked";
 
 import { Message } from "@/types";
+import IconButton from "@/components/IconButton";
 
 interface LikeProps extends Pick<Message, "id" | "likes" | "liked"> {}
+
+interface StyledLikeContainerProps {
+  isLiked: boolean;
+}
 
 const Like = ({ id, likes, liked }: LikeProps) => {
   const [count, setCount] = useState(likes);
@@ -39,48 +44,39 @@ const Like = ({ id, likes, liked }: LikeProps) => {
   };
 
   return (
-    <StyledLike>
+    <StyledLikeContainer isLiked={isLiked}>
       {isLiked ? (
-        <StyledFilledHeart onClick={handleLikeToggle}>
+        <IconButton onClick={handleLikeToggle}>
           <FilledHeart />
-        </StyledFilledHeart>
+        </IconButton>
       ) : (
-        <StyledEmptyHeart onClick={handleLikeToggle}>
+        <IconButton onClick={handleLikeToggle}>
           <EmptyHeart />
-        </StyledEmptyHeart>
+        </IconButton>
       )}
       <StyledLikeCount>{count}</StyledLikeCount>
-    </StyledLike>
+    </StyledLikeContainer>
   );
 };
 
-const StyledLike = styled.div`
+const StyledLikeContainer = styled.div<StyledLikeContainerProps>`
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  align-self: flex-end;
-  gap: 8px;
-
-  height: 20px;
+  justify-content: center;
+  gap: 2px;
 
   color: ${({ theme }) => theme.colors.GRAY_700};
-`;
 
-const StyledFilledHeart = styled.div`
   svg {
-    fill: ${({ theme }) => theme.colors.RED_300};
+    fill: ${(props) =>
+      props.isLiked ? props.theme.colors.RED_400 : props.theme.colors.GRAY_700};
+    font-size: 24px;
   }
-  font-size: 20px;
-`;
-
-const StyledEmptyHeart = styled.div`
-  svg {
-    fill: ${({ theme }) => theme.colors.GRAY_700};
-  }
-  font-size: 20px;
 `;
 
 const StyledLikeCount = styled.div`
-  width: 20px;
+  width: 24px;
   text-align: center;
 `;
 
