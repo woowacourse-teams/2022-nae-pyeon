@@ -11,7 +11,7 @@ import { Message } from "@/types";
 
 interface LikeProps extends Pick<Message, "id" | "likes" | "liked"> {}
 
-const Like = ({ id, likes = 0, liked = false }: LikeProps) => {
+const Like = ({ id, likes, liked }: LikeProps) => {
   const [count, setCount] = useState(likes);
   const [isLiked, setIsLiked] = useState(liked);
 
@@ -19,21 +19,23 @@ const Like = ({ id, likes = 0, liked = false }: LikeProps) => {
   const { deleteLiked } = useDeleteLiked();
 
   const handleLikeToggle = () => {
-    if (!liked) {
-      updateLike(id, {
-        onSuccess: ({ liked, likes }) => {
-          setCount(likes);
-          setIsLiked(liked);
-        },
-      });
-    } else {
+    if (isLiked) {
       deleteLiked(id, {
         onSuccess: ({ liked, likes }) => {
           setCount(likes);
           setIsLiked(liked);
         },
       });
+
+      return;
     }
+
+    updateLike(id, {
+      onSuccess: ({ liked, likes }) => {
+        setCount(likes);
+        setIsLiked(liked);
+      },
+    });
   };
 
   return (
