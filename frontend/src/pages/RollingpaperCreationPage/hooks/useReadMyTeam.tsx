@@ -1,5 +1,4 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { AxiosError } from "axios";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { getMyTeams } from "@/api/team";
 import { GetMyTeamsResponse } from "@/types/apiResponse";
