@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.controller.auth;
 
-import com.woowacourse.naepyeon.controller.dto.TokenRenewalRequest;
+import com.woowacourse.naepyeon.service.dto.RefreshTokenDto;
 import com.woowacourse.naepyeon.controller.dto.TokenRequest;
 import com.woowacourse.naepyeon.service.AuthService;
 import com.woowacourse.naepyeon.service.dto.AccessTokenDto;
@@ -35,8 +35,14 @@ public class AuthController {
     }
 
     @PostMapping("/renewal-token")
-    public ResponseEntity<AccessTokenDto> renewalToken(@RequestBody @Valid final TokenRenewalRequest renewalRequest) {
+    public ResponseEntity<AccessTokenDto> renewalToken(@RequestBody @Valid final RefreshTokenDto renewalRequest) {
         final AccessTokenDto accessTokenDto = authService.renewalToken(renewalRequest.getRefreshToken());
         return ResponseEntity.ok(accessTokenDto);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestBody @Valid final RefreshTokenDto refreshTokenDto) {
+        authService.logout(refreshTokenDto.getRefreshToken());
+        return ResponseEntity.noContent().build();
     }
 }

@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
     private static final int MAX_REFRESH_TOKEN_SIZE = 3;
-    public static final int REFRESH_TOKEN_EXTENDS_DAYS = 2;
 
     private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -112,5 +111,9 @@ public class AuthService {
                 platformUser.getPlatform(),
                 platformUser.getPlatformId()
         );
+    }
+
+    public void logout(final String refreshToken) {
+        refreshTokenRepository.deleteByValue(refreshToken);
     }
 }

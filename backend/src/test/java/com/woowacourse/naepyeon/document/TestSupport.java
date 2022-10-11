@@ -58,13 +58,8 @@ public abstract class TestSupport {
 
     @Autowired
     protected MessageService messageService;
-
-    @Autowired
-    private DatabaseCleaner databaseCleaner;
-
     @Autowired
     protected TeamRepository teamRepository;
-
     protected MockMvc mockMvc;
     protected String accessToken;
     protected String joinedMemberAccessToken;
@@ -76,6 +71,8 @@ public abstract class TestSupport {
     protected Long rollingpaperId1;
     protected Long rollingpaperId2;
     protected Long messageId;
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
 
     @BeforeEach
     void setUp(

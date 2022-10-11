@@ -1,16 +1,18 @@
 package com.woowacourse.naepyeon.document;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.naepyeon.controller.dto.TokenRenewalRequest;
 import com.woowacourse.naepyeon.controller.dto.TokenRequest;
 import com.woowacourse.naepyeon.domain.refreshtoken.RefreshToken;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
+import com.woowacourse.naepyeon.service.dto.RefreshTokenDto;
 import com.woowacourse.naepyeon.support.oauth.google.GooglePlatformUserProvider;
 import com.woowacourse.naepyeon.support.oauth.kakao.KakaoPlatformUserProvider;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -58,13 +60,32 @@ class AuthControllerTest extends TestSupport {
         final RefreshToken refreshToken = RefreshToken.createBy(1L, () -> "refreshToken");
         refreshTokenRepository.save(refreshToken);
 
-        final TokenRenewalRequest tokenRenewalRequest = new TokenRenewalRequest(refreshToken.getValue());
+        final RefreshTokenDto refreshTokenDto = new RefreshTokenDto(refreshToken.getValue());
         mockMvc.perform(
                         post("/api/v1/renewal-token")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(tokenRenewalRequest))
+                                .content(objectMapper.writeValueAsString(refreshTokenDto))
                 )
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());
+    }
+
+    @Test
+    void logout() throws Exception {
+        final RefreshToken refreshToken = RefreshToken.createBy(1L, () -> "refreshToken");
+        refreshTokenRepository.save(refreshToken);
+
+        final RefreshTokenDto refreshTokenDto = new RefreshTokenDto(refreshToken.getValue());
+        mockMvc.perform(
+                        post("/api/v1/logout")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(refreshTokenDto))
+                )
+                .andExpect(status().isNoContent())
+                .andDo(restDocs.document());
+
+        final Optional<RefreshToken> findRefreshToken = refreshTokenRepository.findByValue(refreshToken.getValue());
+
+        assertThat(findRefreshToken).isEmpty();
     }
 }

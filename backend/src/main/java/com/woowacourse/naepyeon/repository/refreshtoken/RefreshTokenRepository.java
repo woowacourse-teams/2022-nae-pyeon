@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long>, RefreshTokenRepositoryCustom {
 
     Optional<RefreshToken> findByValue(final String value);
+    int deleteByValue(final String value);
 }

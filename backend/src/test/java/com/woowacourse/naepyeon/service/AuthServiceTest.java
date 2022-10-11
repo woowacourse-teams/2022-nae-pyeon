@@ -243,4 +243,17 @@ class AuthServiceTest {
                         platformUserDto.getPlatformId()
                 );
     }
+
+    @Test
+    @DisplayName("리프레시 토큰을 무효화한다.")
+    void logout() {
+        final RefreshToken refreshToken = RefreshToken.createBy(1L, () -> "refreshToken");
+        refreshTokenRepository.save(refreshToken);
+
+        refreshTokenRepository.deleteByValue(refreshToken.getValue());
+
+        final Optional<RefreshToken> findRefreshToken = refreshTokenRepository.findByValue(refreshToken.getValue());
+
+        assertThat(findRefreshToken).isEmpty();
+    }
 }

@@ -1,14 +1,14 @@
-package com.woowacourse.naepyeon.controller.dto;
+package com.woowacourse.naepyeon.service.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Getter
-public class TokenRenewalRequest {
+public class RefreshTokenDto {
 
     private String refreshToken;
 }
