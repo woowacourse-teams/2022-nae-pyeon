@@ -48,7 +48,7 @@ const deleteMessage = async ({ rollingpaperId, id }: DeleteMessageRequest) =>
 
 const postLike = async ({ rollingpaperId, id }: PostLikeRequest) =>
   requestApi(() =>
-    appClient.get(`rollingpapers/${rollingpaperId}/messages/${id}/likes`)
+    appClient.post(`rollingpapers/${rollingpaperId}/messages/${id}/likes`)
   );
 
 const deleteLike = async ({ rollingpaperId, id }: DeleteLikeRequest) =>
