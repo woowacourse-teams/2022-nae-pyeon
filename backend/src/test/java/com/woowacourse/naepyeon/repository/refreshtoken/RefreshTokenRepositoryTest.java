@@ -35,16 +35,16 @@ class RefreshTokenRepositoryTest {
         final Member member = new Member("seungpang", "email@email.com", Platform.KAKAO, "1");
         final Long memberId = memberRepository.save(member)
                 .getId();
-        final RefreshToken refreshToken1 = RefreshToken.createBy(member, () -> UUID.randomUUID().toString());
-        final RefreshToken refreshToken2 = RefreshToken.createBy(member, () -> UUID.randomUUID().toString());
-        final RefreshToken refreshToken3 = RefreshToken.createBy(member, () -> UUID.randomUUID().toString());
+        final RefreshToken refreshToken1 = RefreshToken.createBy(memberId, () -> UUID.randomUUID().toString());
+        final RefreshToken refreshToken2 = RefreshToken.createBy(memberId, () -> UUID.randomUUID().toString());
+        final RefreshToken refreshToken3 = RefreshToken.createBy(memberId, () -> UUID.randomUUID().toString());
         refreshTokenRepository.save(refreshToken1);
         refreshTokenRepository.save(refreshToken2);
         refreshTokenRepository.save(refreshToken3);
         em.flush();
         em.clear();
 
-        final Long count = refreshTokenRepository.findCountByMemberId(memberId);
+        final int count = refreshTokenRepository.findByMemberId(memberId).size();
 
         assertThat(count).isEqualTo(3);
     }

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.naepyeon.config.DatabaseCleaner;
 import com.woowacourse.naepyeon.repository.invitecode.InviteCodeRepository;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
+import com.woowacourse.naepyeon.repository.refreshtoken.RefreshTokenRepository;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;
 import com.woowacourse.naepyeon.service.AuthService;
 import com.woowacourse.naepyeon.service.MemberService;
@@ -48,6 +49,8 @@ public class AcceptanceTest {
     protected InviteCodeRepository inviteCodeRepository;
     @Autowired
     protected TeamRepository teamRepository;
+    @Autowired
+    protected RefreshTokenRepository refreshTokenRepository;
 
     @LocalServerPort
     int port;
@@ -64,8 +67,13 @@ public class AcceptanceTest {
     public void setUp() {
         RestAssured.port = port;
         databaseCleaner.execute();
-        authService = new AuthService(memberService, jwtTokenProvider, kakaoPlatformUserProvider,
-                googlePlatformUserProvider);
+        authService = new AuthService(
+                memberService,
+                jwtTokenProvider,
+                kakaoPlatformUserProvider,
+                googlePlatformUserProvider,
+                refreshTokenRepository
+        );
 
         final String alexName = "alex";
         when(kakaoPlatformUserProvider.getPlatformUser(anyString(), anyString()))

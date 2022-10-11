@@ -34,19 +34,18 @@ public class RefreshToken {
     @Column(unique = true, nullable = false)
     private String value;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
 
     private LocalDateTime expiredTime;
 
-    private RefreshToken(final String value, final Member member, final LocalDateTime expiredTime) {
+    private RefreshToken(final String value, final Long memberId, final LocalDateTime expiredTime) {
         this.value = value;
-        this.member = member;
+        this.memberId = memberId;
         this.expiredTime = expiredTime;
     }
 
-    public static RefreshToken createBy(final Member member, final RefreshTokenGenerator generator) {
-        return new RefreshToken(generator.generate(), member, LocalDateTime.now().plusDays(EXPIRED_DAYS));
+    public static RefreshToken createBy(final Long memberId, final RefreshTokenGenerator generator) {
+        return new RefreshToken(generator.generate(), memberId, LocalDateTime.now().plusDays(EXPIRED_DAYS));
     }
 }
