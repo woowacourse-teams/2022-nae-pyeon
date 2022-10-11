@@ -135,18 +135,14 @@ const RollingpaperCreationPage = () => {
 const StyledMain = styled.main`
   display: flex;
   flex-direction: column;
-
   justify-content: space-between;
-
   height: calc(100vh - 90px);
 `;
 
 const StyledSteps = styled.div`
   display: flex;
-
   overflow: hidden;
   scroll-behavior: smooth;
-
   ::-webkit-scrollbar {
     display: none;
   }

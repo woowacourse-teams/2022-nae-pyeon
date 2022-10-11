@@ -1,4 +1,4 @@
-import { useEffect, Suspense, lazy } from "react";
+import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -11,10 +11,7 @@ import { UserProvider } from "@/context/UserContext";
 import { useSnackbar } from "@/context/SnackbarContext";
 
 import useAutoLogin from "@/hooks/useAutoLogin";
-import useApiErrorHandler from "@/hooks/useApiErrorHandler";
-
 import InvitePage from "@/pages/InvitePage";
-import LogoutPage from "@/pages/LogoutPage";
 
 const HeaderLayoutPage = lazy(() => import("@/pages/HeaderLayoutPage"));
 const RollingpaperPage = lazy(() => import("@/pages/RollingpaperPage"));
@@ -32,23 +29,16 @@ const GoogleRedirectPage = lazy(() => import("@/pages/GoogleRedirectPage"));
 const MyPage = lazy(() => import("@/pages/MyPage"));
 const PolicyPage = lazy(() => import("@/pages/PolicyPage"));
 
-import { setQueryClientErrorHandler } from "@/api";
-
 const App = () => {
   const { isOpened } = useSnackbar();
-  const { data, isLoading, isFetching } = useAutoLogin();
-  const apiErrorHandler = useApiErrorHandler();
-
-  useEffect(() => {
-    setQueryClientErrorHandler(apiErrorHandler);
-  }, []);
+  const { data, isLoading, isFetching, isError } = useAutoLogin();
 
   if (isLoading && isFetching) {
     return <PageContainer>초기 로딩 중</PageContainer>;
   }
 
   return (
-    <Suspense fallback={<div>global loading...</div>}>
+    <PageContainer>
       <ErrorBoundary fallback={<ErrorPage />}>
         <UserProvider
           initialData={
@@ -58,7 +48,7 @@ const App = () => {
             }
           }
         >
-          <PageContainer>
+          <Suspense fallback={<div>Loading..</div>}>
             <Routes>
               <Route element={<RequireLogin />}>
                 <Route path="/" element={<HeaderLayoutPage />}>
@@ -66,6 +56,11 @@ const App = () => {
                   <Route path="team/:teamId" element={<TeamDetailPage />} />
                   <Route path="search" element={<TeamSearchPage />} />
                   <Route path="mypage" element={<MyPage />} />
+                  <Route
+                    path="/rollingpaper/new"
+                    element={<RollingpaperCreationPage />}
+                  />
+                  <Route path="*" element={<ErrorPage />} />
                 </Route>
                 <Route path="team/new" element={<TeamCreationPage />} />
 
@@ -81,14 +76,12 @@ const App = () => {
               </Route>
               <Route path="invite/:inviteToken" element={<InvitePage />} />
               <Route path="policy" element={<PolicyPage />} />
-              <Route path="logout" element={<LogoutPage />} />
-              <Route path="*" element={<ErrorPage />} />
             </Routes>
-          </PageContainer>
+          </Suspense>
           {isOpened && <Snackbar />}
         </UserProvider>
       </ErrorBoundary>
-    </Suspense>
+    </PageContainer>
   );
 };
 
