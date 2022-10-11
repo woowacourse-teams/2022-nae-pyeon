@@ -1,7 +1,9 @@
-import React from "react";
 import styled from "@emotion/styled";
 
+import useValidatedParam from "@/hooks/useValidatedParam";
+
 import IconButton from "@/components/IconButton";
+import Like from "@/components/Like";
 
 import TrashIcon from "@/assets/icons/bx-trash.svg";
 import Pencil from "@/assets/icons/bx-pencil.svg";
@@ -12,7 +14,6 @@ import useMessageBox from "@/pages/RollingpaperPage/hooks/useMessageBox";
 import SecretMessage from "@/pages/RollingpaperPage/components/SecretMessage";
 
 import { Message, Recipient } from "@/types";
-import useValidatedParam from "@/hooks/useValidatedParam";
 
 const MessageBox = ({
   id,
@@ -55,22 +56,27 @@ const MessageBox = ({
   return (
     <StyledMessage color={color}>
       <StyledMessageContent>{content}</StyledMessageContent>
-      <StyledMessageBottom>
-        {editable && (
-          <StyledMessageButtonContainer>
-            <IconButton size="small" onClick={handleWriteButtonClick}>
-              <Pencil />
-            </IconButton>
-            <IconButton size="small" onClick={handleDeleteButtonClick}>
-              <TrashIcon />
-            </IconButton>
-          </StyledMessageButtonContainer>
-        )}
-        <StyledMessageFrom>
-          {secret && <LockIcon />}
-          {!anonymous && from}
-        </StyledMessageFrom>
-      </StyledMessageBottom>
+      <StyledMessageBottomInfo>
+        <StyledLike>
+          <Like count={5} />
+        </StyledLike>
+        <StyledMessageBottom>
+          {editable && (
+            <StyledMessageButtonContainer>
+              <IconButton size="small" onClick={handleWriteButtonClick}>
+                <Pencil />
+              </IconButton>
+              <IconButton size="small" onClick={handleDeleteButtonClick}>
+                <TrashIcon />
+              </IconButton>
+            </StyledMessageButtonContainer>
+          )}
+          <StyledMessageFrom>
+            {secret && <LockIcon />}
+            {!anonymous && from}
+          </StyledMessageFrom>
+        </StyledMessageBottom>
+      </StyledMessageBottomInfo>
     </StyledMessage>
   );
 };
@@ -96,13 +102,32 @@ const StyledMessageContent = styled.div`
   line-height: 22px;
 `;
 
+const StyledMessageBottomInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const StyledMessageBottom = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
 
-  margin-top: 12px;
-  padding: 4px 0 4px 0;
+  padding-bottom: 4px;
+`;
+
+const StyledLike = styled.div`
+  display: flex;
+  align-self: flex-end;
+  gap: 8px;
+
+  margin-top: 8px;
+
+  color: ${({ theme }) => theme.colors.GRAY_700};
+
+  svg {
+    fill: ${({ theme }) => theme.colors.GRAY_700};
+    font-size: 20px;
+  }
 `;
 
 const StyledMessageButtonContainer = styled.div`
