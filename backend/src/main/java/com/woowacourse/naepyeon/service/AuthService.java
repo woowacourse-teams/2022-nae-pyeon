@@ -99,7 +99,7 @@ public class AuthService {
     private List<Long> extractDeleteIds(final List<RefreshToken> memberRefreshTokens) {
         return memberRefreshTokens.stream()
                 .sorted(Comparator.comparing(RefreshToken::getExpiredTime))
-                .limit(memberRefreshTokens.size() - (MAX_REFRESH_TOKEN_SIZE - 1))
+                .limit((long) memberRefreshTokens.size() - (MAX_REFRESH_TOKEN_SIZE - 1))
                 .map(RefreshToken::getId)
                 .collect(Collectors.toList());
     }
