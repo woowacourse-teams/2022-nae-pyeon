@@ -10,7 +10,7 @@ docker-compose up -d
 ### source mysql 접속해서 복제 계정 생성
 ```shell
 docker ps
-docker exec -it {REPLICA_CONTAINER_ID} bash
+docker exec -it {SOURCE_CONTAINER_ID} bash
 mysql -uroot -p
 #비밀번호는 password
 
@@ -18,6 +18,13 @@ mysql -uroot -p
 CREATE USER 'repl_user'@'%' IDENTIFIED BY 'password';
 GRANT REPLICATION SLAVE ON *.* To 'repl_user'@'%';
 flush privileges;
+```
+
+### source 서버 host 알기
+```shell
+docker network ls
+docker inspect {CONTAINER ID}
+# docker_net-mysql
 ```
 
 ### replica mysql 접속하기
@@ -28,19 +35,12 @@ mysql -uroot -p
 #비밀번호는 password
 ```
 
-### source 서버 host 알기
-```shell
-docker network ls
-docker inspect {CONTAINER ID}
-# docker_net-mysql
-```
-
 ### replica 도커 접속해서 복제 설정 입력하기
 ```shell
 stop replica;
 
 CHANGE REPLICATION SOURCE TO
-SOURCE_HOST='source 서버 host 넣기',
+SOURCE_HOST='172.23.0.3',
 SOURCE_PORT=3306,
 SOURCE_USER='repl_user',
 SOURCE_PASSWORD='password',
@@ -68,3 +68,16 @@ show replica status\G;
  start replica;
 ```
 
+### 이중화가 정상적으로 이루어 지는지 확인하는 법
+```shell
+#mysql 접속
+#log상태 확인
+show variables like 'general%';
+
+#log 활성화
+set global general_log = ON;
+
+show variables like 'general%';
+
+#해당 위치에 있는 로그 파일을 확인하면서 CUD, R로 잘 분기되는지 확인해볼 수 있음
+```
