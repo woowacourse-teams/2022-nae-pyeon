@@ -82,7 +82,7 @@ const App = () => {
                 <Route path="oauth/kakao" element={<KakaoRedirectPage />} />
                 <Route path="oauth/google" element={<GoogleRedirectPage />} />
               </Route>
-              <Route path="invite/:inviteToken" element={<InvitePage />} />
+              <Route path="invite/:inviteCode" element={<InvitePage />} />
               <Route path="policy" element={<PolicyPage />} />
               <Route path="logout" element={<LogoutPage />} />
               <Route path="*" element={<ErrorPage />} />
