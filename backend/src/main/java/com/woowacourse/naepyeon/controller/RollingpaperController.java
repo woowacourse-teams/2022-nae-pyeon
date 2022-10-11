@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -65,9 +66,11 @@ public class RollingpaperController {
     @GetMapping("/rollingpapers")
     public ResponseEntity<RollingpapersResponseDto> findRollingpapersByTeamId(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest,
+            @RequestParam(value = "order", required = false, defaultValue = "latest") final String order,
+            @RequestParam(value = "filter", required = false) final String filter,
             @PathVariable final Long teamId) {
-        final RollingpapersResponseDto rollingpapersResponseDto = rollingpaperService.findByTeamId(teamId,
-                loginMemberRequest.getId());
+        final RollingpapersResponseDto rollingpapersResponseDto =
+                rollingpaperService.findByTeamId(teamId, loginMemberRequest.getId(), order, filter);
         return ResponseEntity.ok(rollingpapersResponseDto);
     }
 
