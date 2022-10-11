@@ -3,7 +3,7 @@ package com.woowacourse.naepyeon.support.db;
 public enum DatabaseType {
 
     SOURCE("SOURCE"),
-    REPLICA("REPLICA"),
+    REPLICA("REPLICA")
     ;
 
     private final String type;
