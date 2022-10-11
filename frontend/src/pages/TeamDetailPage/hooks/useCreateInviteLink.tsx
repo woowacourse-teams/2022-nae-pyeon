@@ -18,9 +18,7 @@ const useCreateInviteLink = () => {
     PostTeamWithInviteTokenResponse,
     AxiosError,
     CreateInviteLinkVariable
-  >((id) => postTeamInviteToken(id), {
-    useErrorBoundary: true,
-  });
+  >((id) => postTeamInviteToken(id), {});
 
   return { createInviteLink, isError, data };
 };

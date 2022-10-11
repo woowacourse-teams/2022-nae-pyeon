@@ -3,6 +3,6 @@ export type ApiOptions = {
 };
 
 export interface ApiErrorResponse {
-  errorCode: number;
+  errorCode: string;
   message: string;
 }

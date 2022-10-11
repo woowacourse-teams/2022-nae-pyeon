@@ -8,10 +8,7 @@ import { GetTeamMyNicknameResponse } from "@/types/apiResponse";
 const useReadTeamNickname = (teamId: number) =>
   useQuery<GetTeamMyNicknameResponse, AxiosError>(
     ["team-nickname", teamId],
-    () => getTeamMyNickname(teamId),
-    {
-      useErrorBoundary: true,
-    }
+    () => getTeamMyNickname(teamId)
   );
 
 export default useReadTeamNickname;

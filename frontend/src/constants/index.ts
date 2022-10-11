@@ -52,6 +52,10 @@ const RECIPIENT = {
   MEMBER: "MEMBER",
 } as const;
 
+const COOKIE_KEY = {
+  ACCESS_TOKEN: "accessToken",
+} as const;
+
 export {
   REGEX,
   COLORS,
@@ -64,4 +68,5 @@ export {
   KAKAO_OAUTH_URL,
   GOOGLE_OAUTH_URL,
   RECIPIENT,
+  COOKIE_KEY,
 };

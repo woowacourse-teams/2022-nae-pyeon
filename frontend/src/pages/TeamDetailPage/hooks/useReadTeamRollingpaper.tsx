@@ -8,8 +8,7 @@ import { GetTeamRollingpapersResponse } from "@/types/apiResponse";
 const useReadTeamRollingpaper = (teamId: number) =>
   useQuery<GetTeamRollingpapersResponse, AxiosError>(
     ["rollingpaperList", teamId],
-    () => getTeamRollingpapers(teamId),
-    { useErrorBoundary: true }
+    () => getTeamRollingpapers(teamId)
   );
 
 export default useReadTeamRollingpaper;

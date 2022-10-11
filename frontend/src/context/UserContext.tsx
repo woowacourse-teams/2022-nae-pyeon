@@ -2,10 +2,7 @@ import { useState, createContext, PropsWithChildren } from "react";
 
 import { setAppClientHeaderAuthorization } from "@/api";
 import { deleteCookie, setCookie } from "@/util/cookie";
-
-const COOKIE_KEY = {
-  ACCESS_TOKEN: "accessToken",
-};
+import { COOKIE_KEY } from "@/constants";
 
 interface UserContextType {
   isLoggedIn: boolean;

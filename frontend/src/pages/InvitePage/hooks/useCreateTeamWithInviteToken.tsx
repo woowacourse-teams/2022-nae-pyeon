@@ -39,7 +39,6 @@ const useCreateTeamWithInviteToken = (teamId?: number) => {
 
         navigate("/", { replace: true });
       },
-      useErrorBoundary: true,
     }
   );
 
