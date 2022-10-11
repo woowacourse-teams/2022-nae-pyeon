@@ -12,10 +12,10 @@ interface updateLikeResponse extends Pick<Message, "likes" | "liked"> {}
 
 type updateLikeVariable = Message["id"];
 
-const useUpdateLike = () => {
+const useUpdateLiked = () => {
   const rollingpaperId = useValidatedParam<number>("rollingpaperId");
 
-  const { mutate: updateLike } = useMutation<
+  const { mutate: updateLiked } = useMutation<
     updateLikeResponse,
     AxiosError,
     updateLikeVariable
@@ -25,7 +25,7 @@ const useUpdateLike = () => {
     },
   });
 
-  return { updateLike };
+  return { updateLiked };
 };
 
-export default useUpdateLike;
+export default useUpdateLiked;
