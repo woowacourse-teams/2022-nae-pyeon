@@ -6,9 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface MessageLikeRepository extends JpaRepository<MessageLike, Long> {
-
-    boolean existsByMemberIdAndMessageId(Long memberId, Long MessageId);
+public interface MessageLikeRepository extends JpaRepository<MessageLike, Long>, MessageLikeRepositoryCustom {
 
     Optional<MessageLike> findByMemberIdAndMessageId(Long memberId, Long MessageId);
 
