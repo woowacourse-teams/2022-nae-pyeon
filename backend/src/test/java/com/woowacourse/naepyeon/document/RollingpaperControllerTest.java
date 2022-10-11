@@ -52,6 +52,16 @@ class RollingpaperControllerTest extends TestSupport {
     }
 
     @Test
+    void findRollingpapersByTeamId() throws Exception {
+        mockMvc.perform(
+                        get("/api/v1/teams/{teamId}/rollingpapers", teamId)
+                                .header("Authorization", "Bearer " + accessToken)
+                )
+                .andExpect(status().isOk())
+                .andDo(restDocs.document());
+    }
+
+    @Test
     void findRollingpapersByTeamIdAndOldestOrder() throws Exception {
         mockMvc.perform(
                         get("/api/v1/teams/{teamId}/rollingpapers", teamId)
