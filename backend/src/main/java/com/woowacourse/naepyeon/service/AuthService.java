@@ -1,15 +1,19 @@
 package com.woowacourse.naepyeon.service;
 
+import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.refreshtoken.RefreshToken;
+import com.woowacourse.naepyeon.exception.NotFoundTeamMemberException;
 import com.woowacourse.naepyeon.exception.TokenInvalidExpiredException;
+import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.repository.refreshtoken.RefreshTokenRepository;
-import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.service.dto.AccessTokenDto;
+import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
 import com.woowacourse.naepyeon.support.oauth.google.GooglePlatformUserProvider;
 import com.woowacourse.naepyeon.support.oauth.kakao.KakaoPlatformUserProvider;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -30,6 +34,7 @@ public class AuthService {
     private final KakaoPlatformUserProvider kakaoPlatformUserProvider;
     private final GooglePlatformUserProvider googlePlatformUserProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final MemberRepository memberRepository;
 
     public TokenResponseDto createTokenWithKakaoOauth(final TokenRequestDto tokenRequestDto) {
         final PlatformUserDto platformUser = kakaoPlatformUserProvider.getPlatformUser(
@@ -77,7 +82,9 @@ public class AuthService {
 
     private RefreshToken createRefreshToken(final Long memberId) {
         deleteOverRefreshTokens(memberId);
-        final RefreshToken refreshToken = RefreshToken.createBy(memberId, () -> UUID.randomUUID().toString());
+        final Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundTeamMemberException(memberId));
+        final RefreshToken refreshToken = RefreshToken.createBy(member, () -> UUID.randomUUID().toString());
         return refreshTokenRepository.save(refreshToken);
     }
 
@@ -115,5 +122,9 @@ public class AuthService {
 
     public void logout(final String refreshToken) {
         refreshTokenRepository.deleteByValue(refreshToken);
+    }
+
+    public void deleteExpiredRefreshTokens() {
+        refreshTokenRepository.deleteExpired(LocalDateTime.now());
     }
 }

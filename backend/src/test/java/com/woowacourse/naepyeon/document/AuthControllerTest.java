@@ -7,6 +7,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.naepyeon.controller.dto.TokenRequest;
+import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.refreshtoken.RefreshToken;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.service.dto.RefreshTokenDto;
@@ -57,7 +58,8 @@ class AuthControllerTest extends TestSupport {
 
     @Test
     void renewalToken() throws Exception {
-        final RefreshToken refreshToken = RefreshToken.createBy(1L, () -> "refreshToken");
+        final Member member = memberRepository.findById(memberId1).get();
+        final RefreshToken refreshToken = RefreshToken.createBy(member, () -> "refreshToken");
         refreshTokenRepository.save(refreshToken);
 
         final RefreshTokenDto refreshTokenDto = new RefreshTokenDto(refreshToken.getValue());
@@ -72,7 +74,8 @@ class AuthControllerTest extends TestSupport {
 
     @Test
     void logout() throws Exception {
-        final RefreshToken refreshToken = RefreshToken.createBy(1L, () -> "refreshToken");
+        final Member member = memberRepository.findById(memberId1).get();
+        final RefreshToken refreshToken = RefreshToken.createBy(member, () -> "refreshToken");
         refreshTokenRepository.save(refreshToken);
 
         final RefreshTokenDto refreshTokenDto = new RefreshTokenDto(refreshToken.getValue());

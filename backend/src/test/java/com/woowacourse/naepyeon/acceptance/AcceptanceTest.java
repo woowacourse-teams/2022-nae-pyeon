@@ -72,7 +72,8 @@ public class AcceptanceTest {
                 jwtTokenProvider,
                 kakaoPlatformUserProvider,
                 googlePlatformUserProvider,
-                refreshTokenRepository
+                refreshTokenRepository,
+                memberRepository
         );
 
         final String alexName = "alex";

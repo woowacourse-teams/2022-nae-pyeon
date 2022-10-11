@@ -118,7 +118,8 @@ class RollingpaperRepositoryTest {
         rollingpaperRepository.save(rollingPaper6);
         rollingpaperRepository.save(rollingPaper7);
 
-        final Page<Rollingpaper> actual = rollingpaperRepository.findByAddresseeId(member.getId(), PageRequest.of(1, 3));
+        final Page<Rollingpaper> actual = rollingpaperRepository.findByAddresseeId(member.getId(),
+                PageRequest.of(1, 3));
 
         assertAll(
                 () -> assertThat(actual).contains(rollingPaper4, rollingPaper5, rollingPaper6),

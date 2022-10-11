@@ -2,8 +2,8 @@ package com.woowacourse.naepyeon.controller;
 
 import com.woowacourse.naepyeon.controller.auth.AuthenticationPrincipal;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
-import com.woowacourse.naepyeon.controller.dto.InviteJoinRequest;
 import com.woowacourse.naepyeon.controller.dto.InviteCodeResponse;
+import com.woowacourse.naepyeon.controller.dto.InviteJoinRequest;
 import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.LoginMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;

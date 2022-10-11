@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface InviteCodeRepositoryCustom {
 
-    long deleteExpired(final LocalDateTime now);
+    long deleteExpired(final LocalDateTime deleteTime);
 
     Optional<InviteCode> findByCode(final String code);
 }

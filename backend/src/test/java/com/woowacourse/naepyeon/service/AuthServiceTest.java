@@ -57,6 +57,8 @@ class AuthServiceTest {
 
     private AuthService authService;
 
+    private Member member;
+
     @BeforeEach
     void setUp() {
         authService = new AuthService(
@@ -64,8 +66,11 @@ class AuthServiceTest {
                 jwtTokenProvider,
                 kakaoPlatformUserProvider,
                 googlePlatformUserProvider,
-                refreshTokenRepository
+                refreshTokenRepository,
+                memberRepository
         );
+        member = new Member("name", "emailtesttest@email.com", Platform.KAKAO, "9999999");
+        memberRepository.save(member);
     }
 
     @Test
@@ -178,7 +183,8 @@ class AuthServiceTest {
                 jwtTokenProvider,
                 kakaoPlatformUserProvider,
                 googlePlatformUserProvider,
-                mockRefreshTokenRepository
+                mockRefreshTokenRepository,
+                memberRepository
         );
         final RefreshToken mockRefreshToken = mock(RefreshToken.class);
         when(mockRefreshTokenRepository.save(any())).thenReturn(mockRefreshToken);
@@ -203,9 +209,10 @@ class AuthServiceTest {
                 jwtTokenProvider,
                 kakaoPlatformUserProvider,
                 googlePlatformUserProvider,
-                mockRefreshTokenRepository
+                mockRefreshTokenRepository,
+                memberRepository
         );
-        final RefreshToken refreshToken = RefreshToken.createBy(1L, () -> "refreshToken");
+        final RefreshToken refreshToken = RefreshToken.createBy(member, () -> "refreshToken");
         final Field expiredTimeField = refreshToken.getClass().getDeclaredField("expiredTime");
         expiredTimeField.setAccessible(true);
         expiredTimeField.set(refreshToken, LocalDateTime.now().plusHours(47).plusMinutes(59));
@@ -247,7 +254,7 @@ class AuthServiceTest {
     @Test
     @DisplayName("리프레시 토큰을 무효화한다.")
     void logout() {
-        final RefreshToken refreshToken = RefreshToken.createBy(1L, () -> "refreshToken");
+        final RefreshToken refreshToken = RefreshToken.createBy(member, () -> "refreshToken");
         refreshTokenRepository.save(refreshToken);
 
         refreshTokenRepository.deleteByValue(refreshToken.getValue());
@@ -255,5 +262,29 @@ class AuthServiceTest {
         final Optional<RefreshToken> findRefreshToken = refreshTokenRepository.findByValue(refreshToken.getValue());
 
         assertThat(findRefreshToken).isEmpty();
+    }
+
+    @Test
+    @DisplayName("만료된 리프레시 토큰을 삭제한다.")
+    void deleteExpiredRefreshTokens() throws NoSuchFieldException, IllegalAccessException {
+        final Field expiredTimeField = RefreshToken.class.getDeclaredField("expiredTime");
+        expiredTimeField.setAccessible(true);
+        final RefreshToken refreshToken1 = RefreshToken.createBy(member, () -> "refreshToken1");
+        expiredTimeField.set(refreshToken1, LocalDateTime.now().minusMinutes(1));
+        final RefreshToken refreshToken2 = RefreshToken.createBy(member, () -> "refreshToken2");
+        expiredTimeField.set(refreshToken2, LocalDateTime.now().minusMinutes(1));
+        final RefreshToken refreshToken3 = RefreshToken.createBy(member, () -> "refreshToken3");
+        refreshTokenRepository.save(refreshToken1);
+        refreshTokenRepository.save(refreshToken2);
+        refreshTokenRepository.save(refreshToken3);
+
+        authService.deleteExpiredRefreshTokens();
+
+        final List<RefreshToken> refreshTokens = refreshTokenRepository.findByMemberId(member.getId());
+
+        assertAll(
+                () -> assertThat(refreshTokens).hasSize(1),
+                () -> assertThat(refreshTokens.get(0).getValue()).isEqualTo(refreshToken3.getValue())
+        );
     }
 }

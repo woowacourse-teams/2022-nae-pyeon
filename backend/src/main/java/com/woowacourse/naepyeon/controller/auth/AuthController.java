@@ -1,9 +1,9 @@
 package com.woowacourse.naepyeon.controller.auth;
 
-import com.woowacourse.naepyeon.service.dto.RefreshTokenDto;
 import com.woowacourse.naepyeon.controller.dto.TokenRequest;
 import com.woowacourse.naepyeon.service.AuthService;
 import com.woowacourse.naepyeon.service.dto.AccessTokenDto;
+import com.woowacourse.naepyeon.service.dto.RefreshTokenDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
