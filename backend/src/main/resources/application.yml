@@ -5,20 +5,20 @@ spring:
   datasource:
     source:
       hikari:
-        jdbc-url: jdbc:h2:mem:testdb;MODE=MYSQL
-        username: sa
-        password:
-        driver-class-name: org.h2.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/naepyeon?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useUnicode=true
+        username: user
+        password: password
+        driver-class-name: com.mysql.cj.jdbc.Driver
     replica:
       hikari:
-        jdbc-url: jdbc:h2:mem:testdb;MODE=MYSQL
-        username: sa
-        password:
-        driver-class-name: org.h2.Driver
+        jdbc-url: jdbc:mysql://localhost:3307/naepyeon?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useUnicode=true
+        username: user
+        password: password
+        driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
@@ -26,7 +26,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
     open-in-view: false
   flyway:
-    enabled: false
+    enabled: true
     baseline-on-migrate: true
 
 security:
