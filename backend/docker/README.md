@@ -40,7 +40,7 @@ mysql -uroot -p
 stop replica;
 
 CHANGE REPLICATION SOURCE TO
-SOURCE_HOST='172.23.0.3',
+SOURCE_HOST='소스서버 host주소',
 SOURCE_PORT=3306,
 SOURCE_USER='repl_user',
 SOURCE_PASSWORD='password',
