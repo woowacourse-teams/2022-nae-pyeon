@@ -148,6 +148,19 @@ const RollingpaperCreationPage = () => {
   };
 
   const handleLeftButtonClick = () => {
+    if (step === 1) {
+      setSelectedSteps((prev) => ({
+        ...prev,
+        step2: initialSelectedSteps["step2"],
+      }));
+    }
+    if (step === 2) {
+      setSelectedSteps((prev) => ({
+        ...prev,
+        step3: initialSelectedSteps["step3"],
+      }));
+    }
+
     goToPrevPage();
   };
 
