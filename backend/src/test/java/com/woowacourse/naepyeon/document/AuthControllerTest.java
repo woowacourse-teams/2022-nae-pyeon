@@ -5,7 +5,9 @@ import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.woowacourse.naepyeon.controller.dto.TokenRenewalRequest;
 import com.woowacourse.naepyeon.controller.dto.TokenRequest;
+import com.woowacourse.naepyeon.domain.refreshtoken.RefreshToken;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.support.oauth.google.GooglePlatformUserProvider;
 import com.woowacourse.naepyeon.support.oauth.kakao.KakaoPlatformUserProvider;
@@ -46,6 +48,21 @@ class AuthControllerTest extends TestSupport {
                         post("/api/v1/oauth/google")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(tokenRequest))
+                )
+                .andExpect(status().isOk())
+                .andDo(restDocs.document());
+    }
+
+    @Test
+    void renewalToken() throws Exception {
+        final RefreshToken refreshToken = RefreshToken.createBy(1L, () -> "refreshToken");
+        refreshTokenRepository.save(refreshToken);
+
+        final TokenRenewalRequest tokenRenewalRequest = new TokenRenewalRequest(refreshToken.getValue());
+        mockMvc.perform(
+                        post("/api/v1/renewal-token")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(tokenRenewalRequest))
                 )
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());

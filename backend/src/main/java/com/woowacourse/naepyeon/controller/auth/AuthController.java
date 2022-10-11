@@ -1,7 +1,9 @@
 package com.woowacourse.naepyeon.controller.auth;
 
+import com.woowacourse.naepyeon.controller.dto.TokenRenewalRequest;
 import com.woowacourse.naepyeon.controller.dto.TokenRequest;
 import com.woowacourse.naepyeon.service.AuthService;
+import com.woowacourse.naepyeon.service.dto.AccessTokenDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,22 +15,28 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/oauth")
+@RequestMapping("/api/v1")
 public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/kakao")
+    @PostMapping("/oauth/kakao")
     public ResponseEntity<TokenResponseDto> kakaoLogin(@RequestBody @Valid final TokenRequest tokenRequest) {
         final TokenResponseDto tokenResponseDto =
                 authService.createTokenWithKakaoOauth(tokenRequest.toServiceRequest());
         return ResponseEntity.ok(tokenResponseDto);
     }
 
-    @PostMapping("/google")
+    @PostMapping("/oauth/google")
     public ResponseEntity<TokenResponseDto> googleLogin(@RequestBody @Valid final TokenRequest tokenRequest) {
         final TokenResponseDto tokenResponseDto =
                 authService.createTokenWithGoogleOauth(tokenRequest.toServiceRequest());
         return ResponseEntity.ok(tokenResponseDto);
+    }
+
+    @PostMapping("/renewal-token")
+    public ResponseEntity<AccessTokenDto> renewalToken(@RequestBody @Valid final TokenRenewalRequest renewalRequest) {
+        final AccessTokenDto accessTokenDto = authService.renewalToken(renewalRequest.getRefreshToken());
+        return ResponseEntity.ok(accessTokenDto);
     }
 }

@@ -4,6 +4,7 @@ package com.woowacourse.naepyeon.document;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.naepyeon.config.DatabaseCleaner;
 import com.woowacourse.naepyeon.config.logging.RequestBodyWrappingFilter;
+import com.woowacourse.naepyeon.repository.refreshtoken.RefreshTokenRepository;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;
 import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.MessageService;
@@ -48,6 +49,9 @@ public abstract class TestSupport {
 
     @Autowired
     protected TeamService teamService;
+
+    @Autowired
+    protected RefreshTokenRepository refreshTokenRepository;
 
     @Autowired
     protected RollingpaperService rollingpaperService;
