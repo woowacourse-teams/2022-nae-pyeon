@@ -19,6 +19,7 @@ import { RECIPIENT } from "@/constants";
 interface Step2Props {
   teamId: Team["id"] | null;
   onClick: (recipient: Recipient, to?: TeamMember["id"]) => void;
+  selected: Recipient | null;
 }
 
 interface StyledShowProps {
@@ -26,7 +27,7 @@ interface StyledShowProps {
 }
 
 const Step2 = (
-  { teamId, onClick }: Step2Props,
+  { teamId, onClick, selected }: Step2Props,
   ref: React.Ref<HTMLDivElement>
 ) => {
   const [isToShown, setIsToShown] = useState(false);
@@ -83,8 +84,16 @@ const Step2 = (
       <StyledMain>
         <StyleShow isShown={isRecipeinetShown}>
           <StyleRecipientContainer>
-            <RecipientBox type={RECIPIENT.TEAM} onClick={handleTeamClick} />
-            <RecipientBox type={RECIPIENT.MEMBER} onClick={handleMemberClick} />
+            <RecipientBox
+              type={RECIPIENT.TEAM}
+              onClick={handleTeamClick}
+              selected={selected === RECIPIENT.TEAM}
+            />
+            <RecipientBox
+              type={RECIPIENT.MEMBER}
+              onClick={handleMemberClick}
+              selected={selected === RECIPIENT.MEMBER}
+            />
           </StyleRecipientContainer>
         </StyleShow>
         <StyleShow isShown={isToShown}>

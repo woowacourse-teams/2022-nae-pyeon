@@ -4,9 +4,15 @@ import styled from "@emotion/styled";
 interface MyTeamCardProps
   extends Pick<Team, "id" | "name" | "description" | "emoji" | "color"> {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
+  selected?: boolean;
 }
 
 interface StyledMyTeamCardProps {
+  color: string;
+  selected?: boolean;
+}
+
+interface StyledMyTeamCardEmojiProps {
   color: string;
 }
 
@@ -16,9 +22,10 @@ const MyTeamCard = ({
   emoji,
   color,
   onClick,
+  selected,
 }: MyTeamCardProps) => {
   return (
-    <StyledMyTeamCard color={color} onClick={onClick}>
+    <StyledMyTeamCard color={color} onClick={onClick} selected={selected}>
       <StyledEmoji color={color}>{emoji}</StyledEmoji>
       <StyledName>{name}</StyledName>
       <StyledDescription>{description}</StyledDescription>
@@ -39,6 +46,9 @@ const StyledMyTeamCard = styled.div<StyledMyTeamCardProps>`
   border-radius: 8px;
 
   transition-duration: 0.3s;
+
+  border: ${(props) =>
+    props.selected && `solid 4px ${props.theme.colors.PURPLE_400}`};
 
   cursor: pointer;
 
@@ -69,7 +79,7 @@ const StyledMyTeamCard = styled.div<StyledMyTeamCardProps>`
   }
 `;
 
-const StyledEmoji = styled.div<StyledMyTeamCardProps>`
+const StyledEmoji = styled.div<StyledMyTeamCardEmojiProps>`
   display: flex;
   align-items: center;
   justify-content: center;

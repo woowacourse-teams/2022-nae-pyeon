@@ -12,9 +12,13 @@ import useIntersect from "@/hooks/useIntersect";
 
 interface Step1Props {
   onClick: (id: Team["id"]) => void;
+  selected: Team["id"] | null;
 }
 
-const Step1 = ({ onClick }: Step1Props, ref: React.Ref<HTMLDivElement>) => {
+const Step1 = (
+  { onClick, selected }: Step1Props,
+  ref: React.Ref<HTMLDivElement>
+) => {
   const infiniteRef = useIntersect(
     async (entry, observer) => {
       observer.unobserve(entry.target);
@@ -50,6 +54,7 @@ const Step1 = ({ onClick }: Step1Props, ref: React.Ref<HTMLDivElement>) => {
               emoji={emoji}
               color={color}
               onClick={() => onClick(id)}
+              selected={id === selected}
             />
           ))
         )}

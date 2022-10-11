@@ -169,11 +169,13 @@ const RollingpaperCreationPage = () => {
           <Step1
             ref={(el: HTMLDivElement) => (pageRef.current[0] = el)}
             onClick={handleStep1Click}
+            selected={selectedSteps.step1}
           />
           <Step2
             ref={(el: HTMLDivElement) => (pageRef.current[1] = el)}
             teamId={selectedSteps.step1}
             onClick={handleStep2Click}
+            selected={selectedSteps.step2?.type ?? null}
           />
           <Step3
             ref={(el: HTMLDivElement) => (pageRef.current[2] = el)}
