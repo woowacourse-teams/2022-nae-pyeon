@@ -127,7 +127,7 @@ class RollingpaperServiceTest {
         final List<RollingpaperPreviewResponseDto> expected = convertPreviewDto(rollingpaperId1, rollingpaperId2);
 
         // when
-        final RollingpapersResponseDto responseDto = rollingpaperService.findByTeamId(teamId, memberId);
+        final RollingpapersResponseDto responseDto = rollingpaperService.findByTeamId(teamId, memberId, "", null);
         final List<RollingpaperPreviewResponseDto> rollingpaperPreviewResponseDtos = responseDto.getRollingpapers();
 
         // then
@@ -143,8 +143,7 @@ class RollingpaperServiceTest {
         return List.of(
                 RollingpaperPreviewResponseDto.createPreviewRollingpaper(
                         rollingpaper1,
-                        rollingpaperRepository.findAddresseeNicknameByMemberRollingpaperId(rollingpaperId1)
-                                .orElseThrow()
+                        MEMBER_NICKNAME
                 ),
                 RollingpaperPreviewResponseDto.createPreviewRollingpaper(
                         rollingpaper2,
@@ -154,11 +153,58 @@ class RollingpaperServiceTest {
     }
 
     @Test
+    @DisplayName("멤버 대상 롤링페이퍼들을 teamId로 찾는다.")
+    void findMemberRollingpapersByTeamId() {
+        // given
+        final Long rollingpaperId =
+                rollingpaperService.createMemberRollingpaper(ROLLINGPAPER_TITLE, teamId, member2Id, memberId);
+        rollingpaperService.createTeamRollingpaper(ROLLINGPAPER_TITLE, teamId, member2Id);
+        final List<RollingpaperPreviewResponseDto> expected = List.of(
+                RollingpaperPreviewResponseDto.createPreviewRollingpaper(
+                        rollingpaperRepository.findById(rollingpaperId).orElseThrow(),
+                        MEMBER_NICKNAME
+                ));
+
+        // when
+        final RollingpapersResponseDto responseDto =
+                rollingpaperService.findByTeamId(teamId, memberId, "oldest", "member");
+        final List<RollingpaperPreviewResponseDto> rollingpaperPreviewResponseDtos = responseDto.getRollingpapers();
+
+        // then
+        assertThat(rollingpaperPreviewResponseDtos)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("모임 대상 롤링페이퍼들을 teamId로 찾는다.")
+    void findTeamRollingpapersByTeamId() {
+        // given
+        rollingpaperService.createMemberRollingpaper(ROLLINGPAPER_TITLE, teamId, member2Id, memberId);
+        final Long rollingpaperId = rollingpaperService.createTeamRollingpaper(ROLLINGPAPER_TITLE, teamId, member2Id);
+        final List<RollingpaperPreviewResponseDto> expected = List.of(
+                RollingpaperPreviewResponseDto.createPreviewRollingpaper(
+                        rollingpaperRepository.findById(rollingpaperId).orElseThrow(),
+                        "nae-pyeon"
+                ));
+
+        // when
+        final RollingpapersResponseDto responseDto =
+                rollingpaperService.findByTeamId(teamId, memberId, "oldest", "team");
+        final List<RollingpaperPreviewResponseDto> rollingpaperPreviewResponseDtos = responseDto.getRollingpapers();
+
+        // then
+        assertThat(rollingpaperPreviewResponseDtos)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    @Test
     @DisplayName("모임에 속하지 않은 회원이 teamId값으로 롤링페이퍼를 찾을 때 예외를 발생시킨다.")
     void saveRollingpaperAndFindByTeamIdWithAnonymous() {
         rollingpaperService.createMemberRollingpaper(ROLLINGPAPER_TITLE, teamId, member2Id, memberId);
 
-        assertThatThrownBy(() -> rollingpaperService.findByTeamId(teamId, member3Id))
+        assertThatThrownBy(() -> rollingpaperService.findByTeamId(teamId, member3Id, "oldest", ""))
                 .isInstanceOf(UncertificationTeamMemberException.class);
     }
 

@@ -88,14 +88,27 @@ class RollingpaperRepositoryTest {
     }
 
     @Test
-    @DisplayName("롤링페이퍼들을 teamId로 찾는다.")
-    void findByTeamId() {
+    @DisplayName("롤링페이퍼들을 최신 순으로 teamId로 찾는다.")
+    void findLatestByTeamId() {
         final Rollingpaper rollingPaper1 = createRollingPaper();
         final Rollingpaper rollingPaper2 = createRollingPaper();
         rollingpaperRepository.save(rollingPaper1);
         rollingpaperRepository.save(rollingPaper2);
 
-        final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByTeamId(team.getId());
+        final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByTeamIdAndOrder(team.getId(), "latest");
+
+        assertThat(rollingpapers).hasSize(2);
+    }
+
+    @Test
+    @DisplayName("롤링페이퍼들을 오래된 순으로 teamId로 찾는다.")
+    void findOldestByTeamId() {
+        final Rollingpaper rollingPaper1 = createRollingPaper();
+        final Rollingpaper rollingPaper2 = createRollingPaper();
+        rollingpaperRepository.save(rollingPaper1);
+        rollingpaperRepository.save(rollingPaper2);
+
+        final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByTeamIdAndOrder(team.getId(), "oldest");
 
         assertThat(rollingpapers).hasSize(2);
     }

@@ -39,11 +39,16 @@ public class RollingpaperRepositoryImpl implements RollingpaperRepositoryCustom 
     }
 
     @Override
-    public List<Rollingpaper> findByTeamId(final Long teamId) {
-        return queryFactory
+    public List<Rollingpaper> findByTeamIdAndOrder(final Long teamId, final String order) {
+        final JPAQuery<Rollingpaper> jpaQuery = queryFactory
                 .selectFrom(rollingpaper)
-                .where(isTeamIdEq(teamId))
-                .fetch();
+                .where(isTeamIdEq(teamId));
+        if (order.equals("oldest")) {
+            return jpaQuery.orderBy(rollingpaper.createdDate.desc())
+                    .fetch();
+        }
+        // oldest 외의 파라미터 값은 전부 최신 순으로 리턴
+        return jpaQuery.fetch();
     }
 
     @Override
