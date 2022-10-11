@@ -1,8 +1,10 @@
 package com.woowacourse.naepyeon.service;
 
 import com.woowacourse.naepyeon.domain.refreshtoken.RefreshToken;
+import com.woowacourse.naepyeon.exception.TokenInvalidExpiredException;
 import com.woowacourse.naepyeon.repository.refreshtoken.RefreshTokenRepository;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
+import com.woowacourse.naepyeon.service.dto.AccessTokenDto;
 import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
     private static final int MAX_REFRESH_TOKEN_SIZE = 3;
+    public static final int REFRESH_TOKEN_EXTENDS_DAYS = 2;
 
     private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -45,6 +48,25 @@ public class AuthService {
         );
 
         return createTokenResponseDto(platformUser);
+    }
+
+    public AccessTokenDto renewalToken(final String refreshToken) {
+        final RefreshToken findRefreshToken = findValidRefreshToken(refreshToken);
+        findRefreshToken.extendsExpired();
+        final String accessToken = jwtTokenProvider.createToken(String.valueOf(findRefreshToken.getMemberId()));
+
+        return new AccessTokenDto(accessToken);
+    }
+
+    private RefreshToken findValidRefreshToken(final String refreshToken) {
+        final RefreshToken findRefreshToken = refreshTokenRepository.findByValue(refreshToken)
+                .orElseThrow(TokenInvalidExpiredException::new);
+
+        if (findRefreshToken.isExpired()) {
+            throw new TokenInvalidExpiredException();
+        }
+
+        return findRefreshToken;
     }
 
     private TokenResponseDto createTokenResponseDto(PlatformUserDto platformUser) {

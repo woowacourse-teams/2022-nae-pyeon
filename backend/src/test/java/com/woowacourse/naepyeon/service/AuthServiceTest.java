@@ -2,22 +2,30 @@ package com.woowacourse.naepyeon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.refreshtoken.RefreshToken;
+import com.woowacourse.naepyeon.exception.TokenInvalidExpiredException;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.repository.refreshtoken.RefreshTokenRepository;
+import com.woowacourse.naepyeon.service.dto.AccessTokenDto;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
 import com.woowacourse.naepyeon.support.oauth.google.GooglePlatformUserProvider;
 import com.woowacourse.naepyeon.support.oauth.kakao.KakaoPlatformUserProvider;
+import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -144,6 +152,74 @@ class AuthServiceTest {
 
         assertThatCode(() -> jwtTokenProvider.validateAbleToken(tokenResponseDto.getAccessToken()))
                 .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("유효한 리프레시 토큰으로 해당 유저의 새 엑세스 토큰을 반환한다.")
+    void renewalToken() {
+        final PlatformUserDto platformUserDto = new PlatformUserDto("zero", "email@email.com", "GOOGLE", "1");
+        when(googlePlatformUserProvider.getPlatformUser(anyString(), anyString())).thenReturn(platformUserDto);
+        final TokenRequestDto tokenRequestDto = new TokenRequestDto("authorizationCode", "https://...");
+        final TokenResponseDto tokenResponseDto = authService.createTokenWithGoogleOauth(tokenRequestDto);
+
+        final AccessTokenDto accessTokenDto = authService.renewalToken(tokenResponseDto.getRefreshToken());
+        final String oldAccessToken = tokenResponseDto.getAccessToken();
+        final String newAccessToken = accessTokenDto.getAccessToken();
+
+        assertThat(jwtTokenProvider.getPayload(newAccessToken)).isEqualTo(jwtTokenProvider.getPayload(oldAccessToken));
+    }
+
+    @Test
+    @DisplayName("기간이 만료된 리프레시 토큰으로 새 엑세스 토큰 요청시 예외가 발생한다.")
+    void renewalTokenByExpiredRefreshToken() {
+        final RefreshTokenRepository mockRefreshTokenRepository = mock(RefreshTokenRepository.class);
+        final AuthService authService = new AuthService(
+                memberService,
+                jwtTokenProvider,
+                kakaoPlatformUserProvider,
+                googlePlatformUserProvider,
+                mockRefreshTokenRepository
+        );
+        final RefreshToken mockRefreshToken = mock(RefreshToken.class);
+        when(mockRefreshTokenRepository.save(any())).thenReturn(mockRefreshToken);
+        when(mockRefreshTokenRepository.findByValue(anyString())).thenReturn(Optional.of(mockRefreshToken));
+        when(mockRefreshToken.isExpired()).thenReturn(true);
+        when(mockRefreshToken.getValue()).thenReturn("expiredRefreshToken");
+        final PlatformUserDto platformUserDto = new PlatformUserDto("zero", "email@email.com", "GOOGLE", "1");
+        when(googlePlatformUserProvider.getPlatformUser(anyString(), anyString())).thenReturn(platformUserDto);
+        final TokenRequestDto tokenRequestDto = new TokenRequestDto("authorizationCode", "https://...");
+        final TokenResponseDto tokenResponseDto = authService.createTokenWithGoogleOauth(tokenRequestDto);
+
+        assertThatThrownBy(() -> authService.renewalToken(tokenResponseDto.getRefreshToken()))
+                .isInstanceOf(TokenInvalidExpiredException.class);
+    }
+
+    @Test
+    @DisplayName("만료일이 2일 이하로 남은 리프레시 토큰으로 새 엑세스 토큰을 요청할 경우 리프레시 토큰의 만료기간이 7일로 갱신된다.")
+    void renewalAccessTokenAndRefreshToken() throws NoSuchFieldException, IllegalAccessException {
+        final RefreshTokenRepository mockRefreshTokenRepository = mock(RefreshTokenRepository.class);
+        final AuthService authService = new AuthService(
+                memberService,
+                jwtTokenProvider,
+                kakaoPlatformUserProvider,
+                googlePlatformUserProvider,
+                mockRefreshTokenRepository
+        );
+        final RefreshToken refreshToken = RefreshToken.createBy(1L, () -> "refreshToken");
+        final Field expiredTimeField = refreshToken.getClass().getDeclaredField("expiredTime");
+        expiredTimeField.setAccessible(true);
+        expiredTimeField.set(refreshToken, LocalDateTime.now().plusHours(47).plusMinutes(59));
+        when(mockRefreshTokenRepository.save(any())).thenReturn(refreshToken);
+        when(mockRefreshTokenRepository.findByValue(anyString())).thenReturn(Optional.of(refreshToken));
+        final PlatformUserDto platformUserDto = new PlatformUserDto("zero", "email@email.com", "GOOGLE", "1");
+        when(googlePlatformUserProvider.getPlatformUser(anyString(), anyString())).thenReturn(platformUserDto);
+        final TokenRequestDto tokenRequestDto = new TokenRequestDto("authorizationCode", "https://...");
+        final TokenResponseDto tokenResponseDto = authService.createTokenWithGoogleOauth(tokenRequestDto);
+
+        authService.renewalToken(tokenResponseDto.getRefreshToken());
+
+        assertThat(refreshToken.getExpiredTime())
+                .isAfter(LocalDateTime.now().plusDays(6).plusHours(23).plusMinutes(59));
     }
 
     @Test
