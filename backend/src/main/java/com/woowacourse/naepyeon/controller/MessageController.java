@@ -85,12 +85,12 @@ public class MessageController {
     }
 
     @DeleteMapping("/{messageId}/likes")
-    public ResponseEntity<MessageLikeResponseDto> dislikeMessage(
+    public ResponseEntity<MessageLikeResponseDto> cancelLikeMessage(
             @AuthenticationPrincipal final LoginMemberRequest loginMemberRequest,
             @PathVariable final Long rollingpaperId,
             @PathVariable final Long messageId) {
         final MessageLikeResponseDto messageLikeResponse =
-                messageService.dislikeMessage(loginMemberRequest.getId(), rollingpaperId, messageId);
+                messageService.cancelLikeMessage(loginMemberRequest.getId(), messageId);
         return ResponseEntity.ok(messageLikeResponse);
     }
 }

@@ -125,5 +125,6 @@ public abstract class TestSupport {
         messageService.saveMessage(
                 new MessageRequestDto("많은 가르침 받았습니다.", "#123456", false, false), rollingpaperId2, memberId2
         );
+        messageService.likeMessage(memberId1, rollingpaperId1, messageId);
     }
 }
