@@ -20,8 +20,8 @@ const Like = ({ id, likes, liked }: LikeProps) => {
   const [count, setCount] = useState(likes);
   const [isLiked, setIsLiked] = useState(liked);
 
-  const { updateLiked } = useUpdateLiked();
-  const { deleteLiked } = useDeleteLiked();
+  const { mutate: updateLiked } = useUpdateLiked();
+  const { mutate: deleteLiked } = useDeleteLiked();
 
   const handleLikeToggle = () => {
     if (isLiked) {

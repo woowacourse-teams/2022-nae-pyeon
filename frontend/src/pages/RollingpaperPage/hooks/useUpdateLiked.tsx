@@ -15,17 +15,14 @@ type updateLikeVariable = Message["id"];
 const useUpdateLiked = () => {
   const rollingpaperId = useValidatedParam<number>("rollingpaperId");
 
-  const { mutate: updateLiked } = useMutation<
-    updateLikeResponse,
-    AxiosError,
-    updateLikeVariable
-  >((id) => postLike({ rollingpaperId, id }), {
-    onSuccess: () => {
-      queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
-    },
-  });
-
-  return { updateLiked };
+  return useMutation<updateLikeResponse, AxiosError, updateLikeVariable>(
+    (id) => postLike({ rollingpaperId, id }),
+    {
+      onSuccess: () => {
+        queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
+      },
+    }
+  );
 };
 
 export default useUpdateLiked;

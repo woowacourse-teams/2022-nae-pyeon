@@ -15,17 +15,14 @@ type deleteLikeVariable = Message["id"];
 const useDeleteLiked = () => {
   const rollingpaperId = useValidatedParam<number>("rollingpaperId");
 
-  const { mutate: deleteLiked } = useMutation<
-    deleteLikeResponse,
-    AxiosError,
-    deleteLikeVariable
-  >((id) => deleteLike({ rollingpaperId, id }), {
-    onSuccess: () => {
-      queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
-    },
-  });
-
-  return { deleteLiked };
+  return useMutation<deleteLikeResponse, AxiosError, deleteLikeVariable>(
+    (id) => deleteLike({ rollingpaperId, id }),
+    {
+      onSuccess: () => {
+        queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
+      },
+    }
+  );
 };
 
 export default useDeleteLiked;
