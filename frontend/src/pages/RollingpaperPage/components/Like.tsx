@@ -3,18 +3,17 @@ import styled from "@emotion/styled";
 
 import EmptyHeart from "@/assets/icons/bx-heart-empty.svg";
 import FilledHeart from "@/assets/icons/bx-heart-fill.svg";
-import useUpdateLike from "../hooks/useUpdateLike";
-import useDeleteLiked from "../hooks/useDeleteLiked";
 
-interface LikeProps {
-  id: number;
-  count: number;
-  like: boolean;
-}
+import useUpdateLike from "@/pages/RollingpaperPage/hooks/useUpdateLike";
+import useDeleteLiked from "@/pages/RollingpaperPage/hooks/useDeleteLiked";
 
-const Like = ({ id, count = 0, like = false }: LikeProps) => {
-  const [liked, setLiked] = useState(like);
-  const [likes, setLikes] = useState(count);
+import { Message } from "@/types";
+
+interface LikeProps extends Pick<Message, "id" | "likes" | "liked"> {}
+
+const Like = ({ id, likes = 0, liked = false }: LikeProps) => {
+  const [count, setCount] = useState(likes);
+  const [isLiked, setIsLiked] = useState(liked);
 
   const { updateLike } = useUpdateLike();
   const { deleteLiked } = useDeleteLiked();
@@ -23,15 +22,15 @@ const Like = ({ id, count = 0, like = false }: LikeProps) => {
     if (!liked) {
       updateLike(id, {
         onSuccess: ({ liked, likes }) => {
-          setLiked(liked);
-          setLikes(likes);
+          setCount(likes);
+          setIsLiked(liked);
         },
       });
     } else {
       deleteLiked(id, {
         onSuccess: ({ liked, likes }) => {
-          setLiked(liked);
-          setLikes(likes);
+          setCount(likes);
+          setIsLiked(liked);
         },
       });
     }
@@ -39,7 +38,7 @@ const Like = ({ id, count = 0, like = false }: LikeProps) => {
 
   return (
     <StyledLike>
-      {liked ? (
+      {isLiked ? (
         <StyledFilledHeart onClick={handleLikeToggle}>
           <FilledHeart />
         </StyledFilledHeart>
@@ -48,7 +47,7 @@ const Like = ({ id, count = 0, like = false }: LikeProps) => {
           <EmptyHeart />
         </StyledEmptyHeart>
       )}
-      <StyledLikeCount>{likes}</StyledLikeCount>
+      <StyledLikeCount>{count}</StyledLikeCount>
     </StyledLike>
   );
 };

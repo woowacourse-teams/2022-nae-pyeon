@@ -60,7 +60,7 @@ const MessageBox = ({
       <StyledMessageContent>{content}</StyledMessageContent>
       <StyledMessageBottomInfo>
         <StyledLike>
-          <Like id={id} count={likes} like={liked} />
+          <Like id={id} likes={likes} liked={liked} />
         </StyledLike>
         <StyledMessageBottom>
           {editable && (
