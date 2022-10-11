@@ -38,6 +38,16 @@ export interface DeleteMessageRequest {
   id: Message["id"];
 }
 
+export interface PostLikeRequest {
+  rollingpaperId: Rollingpaper["id"];
+  id: Message["id"];
+}
+
+export interface DeleteLikeRequest {
+  rollingpaperId: Rollingpaper["id"];
+  id: Message["id"];
+}
+
 // rollingpaper
 export interface GetRollingpaperRequest {
   teamId: Team["id"];
