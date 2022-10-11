@@ -26,7 +26,6 @@ const useUpdateTeamNickname = (onClickCloseButton: () => void) => {
       onClickCloseButton();
       openSnackbar("닉네임 수정 완료");
     },
-    useErrorBoundary: true,
   });
 
   return updateTeamNickname;

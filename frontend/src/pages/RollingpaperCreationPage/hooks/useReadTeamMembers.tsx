@@ -14,7 +14,6 @@ const useReadTeamMembers = (
     () => getTeamMembers(+teamId!),
     {
       onSuccess,
-      enabled: !!teamId,
     }
   );
 };

@@ -41,7 +41,6 @@ const useCreateKakaoOauthLogin = (inviteToken: string | null) => {
           navigate("/", { replace: true });
         }
       },
-      useErrorBoundary: true,
     }
   );
 

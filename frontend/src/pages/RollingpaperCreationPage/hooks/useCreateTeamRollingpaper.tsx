@@ -28,8 +28,13 @@ const useCreateTeamRollingpaper = () => {
       navigate(`/team/${variable.teamId}/rollingpaper/${data.id}`);
       openSnackbar("롤링페이퍼 생성 완료");
     },
-    useErrorBoundary: true,
-  });
+    {
+      onSuccess: () => {
+        navigate(`/team/${teamId}`);
+        openSnackbar("롤링페이퍼 생성 완료");
+      },
+    }
+  );
 
   return createTeamRollingpaper;
 };
