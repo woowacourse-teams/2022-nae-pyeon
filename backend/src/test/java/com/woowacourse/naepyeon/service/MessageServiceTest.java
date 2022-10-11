@@ -285,7 +285,7 @@ class MessageServiceTest {
                 author.getId());
         final MessageResponseDto expected =
                 new MessageResponseDto(messageId, expectedContent, "이케이", author.getId(),
-                        expectedColor, false, false, true, true);
+                        expectedColor, false, false, true, true, 0L, false);
         assertThat(actual)
                 .usingRecursiveComparison()
                 .isEqualTo(expected);
@@ -314,7 +314,7 @@ class MessageServiceTest {
                 author.getId());
         final MessageResponseDto expected =
                 new MessageResponseDto(messageId, messageRequest.getContent(), "", author.getId(),
-                        messageRequest.getColor(), expectedAnonymous, false, true, true);
+                        messageRequest.getColor(), expectedAnonymous, false, true, true, 0L, false);
         assertThat(actual)
                 .usingRecursiveComparison()
                 .isEqualTo(expected);
@@ -343,7 +343,7 @@ class MessageServiceTest {
                 author.getId());
         final MessageResponseDto expected =
                 new MessageResponseDto(messageId, messageRequest.getContent(), "이케이", author.getId(),
-                        messageRequest.getColor(), false, expectedSecret, true, true);
+                        messageRequest.getColor(), false, expectedSecret, true, true, 0L, false);
         assertThat(actual)
                 .usingRecursiveComparison()
                 .isEqualTo(expected);

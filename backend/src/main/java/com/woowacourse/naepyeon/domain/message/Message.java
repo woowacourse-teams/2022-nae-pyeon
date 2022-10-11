@@ -1,9 +1,15 @@
-package com.woowacourse.naepyeon.domain;
+package com.woowacourse.naepyeon.domain.message;
 
+import com.woowacourse.naepyeon.domain.BaseEntity;
+import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.ExceedMessageContentLengthException;
 import com.woowacourse.naepyeon.exception.InvalidSecretMessageToTeam;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,9 +20,6 @@ import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -53,8 +56,11 @@ public class Message extends BaseEntity {
     @Column(name = "secret", nullable = false)
     private boolean secret;
 
+    @Column(name = "likes", nullable = false)
+    private Long likes;
+
     public Message(final String content, final String color, final Member author, final Rollingpaper rollingpaper,
-                   final boolean anonymous, final boolean secret) {
+                   final boolean anonymous, final boolean secret, final Long likes) {
         validateContentLength(content);
         validateCanSecret(rollingpaper, secret);
         this.content = content;
@@ -63,6 +69,12 @@ public class Message extends BaseEntity {
         this.rollingpaper = rollingpaper;
         this.anonymous = anonymous;
         this.secret = secret;
+        this.likes = likes;
+    }
+
+    public Message(final String content, final String color, final Member author, final Rollingpaper rollingpaper,
+                   final boolean anonymous, final boolean secret) {
+        this(content, color, author, rollingpaper, anonymous, secret, 0L);
     }
 
     private void validateCanSecret(final Rollingpaper rollingpaper, final boolean secret) {
@@ -96,5 +108,13 @@ public class Message extends BaseEntity {
 
     public boolean isAuthor(final Long memberId) {
         return this.author.isSameMember(memberId);
+    }
+
+    public void like() {
+        likes = likes + 1;
+    }
+
+    public void dislike() {
+        likes = likes - 1;
     }
 }
