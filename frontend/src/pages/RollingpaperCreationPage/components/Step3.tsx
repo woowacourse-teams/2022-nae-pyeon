@@ -50,10 +50,6 @@ const StyledMain = styled.div`
   align-items: center;
   justify-content: center;
   gap: 12px;
-
-  input {
-    width: 300px;
-  }
 `;
 
 const StyledForm = styled.form`
@@ -61,6 +57,12 @@ const StyledForm = styled.form`
   flex-direction: column;
 
   gap: 12px;
+
+  width: 200px;
+
+  @media only screen and (min-width: 600px) {
+    width: 320px;
+  }
 `;
 
 export default forwardRef(Step3);

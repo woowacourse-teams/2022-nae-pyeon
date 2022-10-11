@@ -215,14 +215,14 @@ const StyledStepsWithMoveButton = styled.div`
         fill: ${({ theme }) => theme.colors.GRAY_300};
       }
     }
-  }
 
-  svg {
-    font-size: 30px;
-    fill: ${({ theme }) => theme.colors.SKY_BLUE_200};
+    svg {
+      font-size: 30px;
+      fill: ${({ theme }) => theme.colors.SKY_BLUE_200};
 
-    &:hover {
-      fill: ${({ theme }) => theme.colors.SKY_BLUE_400};
+      &:hover {
+        fill: ${({ theme }) => theme.colors.SKY_BLUE_400};
+      }
     }
   }
 `;

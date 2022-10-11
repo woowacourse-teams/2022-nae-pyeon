@@ -136,6 +136,12 @@ const StyleShow = styled.div<StyledShowProps>`
 const StyleRecipientContainer = styled.div`
   display: flex;
   gap: 12px;
+
+  flex-direction: column;
+
+  @media only screen and (min-width: 960px) {
+    flex-direction: row;
+  }
 `;
 
 const StyleForm = styled.form`
