@@ -196,7 +196,8 @@ class AuthServiceTest {
         final TokenRequestDto tokenRequestDto = new TokenRequestDto("authorizationCode", "https://...");
         final TokenResponseDto tokenResponseDto = authService.createTokenWithGoogleOauth(tokenRequestDto);
 
-        assertThatThrownBy(() -> authService.renewalToken(tokenResponseDto.getRefreshToken()))
+        final String refreshToken = tokenResponseDto.getRefreshToken();
+        assertThatThrownBy(() -> authService.renewalToken(refreshToken))
                 .isInstanceOf(TokenInvalidExpiredException.class);
     }
 
