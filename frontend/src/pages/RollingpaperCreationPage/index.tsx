@@ -36,7 +36,7 @@ const RollingpaperCreationPage = () => {
   const [searchParams] = useSearchParams();
   const selectedTeamId = searchParams.get("team-id");
 
-  const [step, setStep] = useState<number>(selectedTeamId ? 1 : 0);
+  const [step, setStep] = useState<number>(0);
   const [selectedSteps, setSelectedSteps] = useState<Step>(
     selectedTeamId
       ? { ...initialSelectedSteps, step1: +selectedTeamId }
@@ -150,10 +150,6 @@ const RollingpaperCreationPage = () => {
   const handleLeftButtonClick = () => {
     goToPrevPage();
   };
-
-  useEffect(() => {
-    changePage(step);
-  }, []);
 
   return (
     <StyledMain>
