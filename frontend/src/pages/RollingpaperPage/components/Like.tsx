@@ -45,16 +45,10 @@ const Like = ({ id, likes, liked }: LikeProps) => {
 
   return (
     <StyledLikeContainer isLiked={isLiked}>
-      {isLiked ? (
-        <IconButton onClick={handleLikeToggle}>
-          <FilledHeart />
-        </IconButton>
-      ) : (
-        <IconButton onClick={handleLikeToggle}>
-          <EmptyHeart />
-        </IconButton>
-      )}
-      <StyledLikeCount>{count}</StyledLikeCount>
+      <IconButton onClick={handleLikeToggle}>
+        {isLiked ? <FilledHeart /> : <EmptyHeart />}
+      </IconButton>
+      <StyledLikeCount>좋아요 {count}개</StyledLikeCount>
     </StyledLikeContainer>
   );
 };
@@ -66,7 +60,7 @@ const StyledLikeContainer = styled.div<StyledLikeContainerProps>`
   justify-content: center;
   gap: 2px;
 
-  padding: 0 16px 0px 4px;
+  /* padding: 0 16px 0px 4px; */
 
   color: ${({ theme }) => theme.colors.GRAY_700};
 
@@ -78,8 +72,11 @@ const StyledLikeContainer = styled.div<StyledLikeContainerProps>`
 `;
 
 const StyledLikeCount = styled.div`
-  width: 28px;
-  text-align: center;
+  position: absolute;
+  top: 40px;
+  left: 4px;
+
+  width: max-content;
 `;
 
 export default Like;
