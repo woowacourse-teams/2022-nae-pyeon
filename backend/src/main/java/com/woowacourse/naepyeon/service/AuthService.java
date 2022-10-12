@@ -54,31 +54,27 @@ public class AuthService {
         return createTokenResponseDto(platformUser);
     }
 
-    public AccessTokenDto renewalToken(final String refreshToken) {
-        final RefreshToken findRefreshToken = findValidRefreshToken(refreshToken);
-        findRefreshToken.extendsExpired();
-        final String accessToken = jwtTokenProvider.createToken(String.valueOf(findRefreshToken.getMemberId()));
-
-        return new AccessTokenDto(accessToken);
-    }
-
-    private RefreshToken findValidRefreshToken(final String refreshToken) {
-        final RefreshToken findRefreshToken = refreshTokenRepository.findByValue(refreshToken)
-                .orElseThrow(TokenInvalidExpiredException::new);
-
-        if (findRefreshToken.isExpired()) {
-            refreshTokenRepository.deleteExpired(LocalDateTime.now());
-            throw new TokenInvalidExpiredException();
-        }
-
-        return findRefreshToken;
-    }
-
     private TokenResponseDto createTokenResponseDto(PlatformUserDto platformUser) {
         final Long memberId = createOrFindMemberId(platformUser);
         final String accessToken = jwtTokenProvider.createToken(String.valueOf(memberId));
         final RefreshToken refreshToken = createRefreshToken(memberId);
         return new TokenResponseDto(accessToken, refreshToken.getValue(), memberId);
+    }
+
+    private Long createOrFindMemberId(final PlatformUserDto platformUser) {
+        return memberService.findMemberIdByPlatformAndPlatformId(
+                platformUser.getPlatform(),
+                platformUser.getPlatformId()
+        ).orElseGet(() -> saveMember(platformUser));
+    }
+
+    private Long saveMember(final PlatformUserDto platformUser) {
+        return memberService.save(
+                platformUser.getUsername(),
+                platformUser.getEmail(),
+                platformUser.getPlatform(),
+                platformUser.getPlatformId()
+        );
     }
 
     private RefreshToken createRefreshToken(final Long memberId) {
@@ -105,20 +101,24 @@ public class AuthService {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    private Long createOrFindMemberId(final PlatformUserDto platformUser) {
-        return memberService.findMemberIdByPlatformAndPlatformId(
-                platformUser.getPlatform(),
-                platformUser.getPlatformId()
-        ).orElseGet(() -> saveMember(platformUser));
+    public AccessTokenDto renewalToken(final String refreshToken) {
+        final RefreshToken findRefreshToken = findValidRefreshToken(refreshToken);
+        findRefreshToken.extendsExpired();
+        final String accessToken = jwtTokenProvider.createToken(String.valueOf(findRefreshToken.getMemberId()));
+
+        return new AccessTokenDto(accessToken);
     }
 
-    private Long saveMember(final PlatformUserDto platformUser) {
-        return memberService.save(
-                platformUser.getUsername(),
-                platformUser.getEmail(),
-                platformUser.getPlatform(),
-                platformUser.getPlatformId()
-        );
+    private RefreshToken findValidRefreshToken(final String refreshToken) {
+        final RefreshToken findRefreshToken = refreshTokenRepository.findByValue(refreshToken)
+                .orElseThrow(TokenInvalidExpiredException::new);
+
+        if (findRefreshToken.isExpired()) {
+            refreshTokenRepository.deleteExpired(LocalDateTime.now());
+            throw new TokenInvalidExpiredException();
+        }
+
+        return findRefreshToken;
     }
 
     public void logout(final String refreshToken) {
