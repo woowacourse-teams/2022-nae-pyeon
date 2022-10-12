@@ -6,11 +6,18 @@ import ChevronIcon from "@/assets/icons/bx-chevron-left.svg";
 
 import IconButton from "@components/IconButton";
 
-const PageTitleWithBackButton = ({ children }: PropsWithChildren) => {
+interface PageTitleWithBackButtonProps extends PropsWithChildren {
+  to: string;
+}
+
+const PageTitleWithBackButton = ({
+  to,
+  children,
+}: PageTitleWithBackButtonProps) => {
   const navigate = useNavigate();
 
   const handleBackButtonClick = () => {
-    navigate(-1);
+    navigate(to);
   };
 
   return (

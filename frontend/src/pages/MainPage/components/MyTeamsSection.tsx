@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import LineButton from "@/components/LineButton";
+import MyTeamCard from "@/components/MyTeamCard";
 
 import useReadMyTeams from "@/pages/MainPage/hooks/useReadMyTeams";
 
 import SectionHeader from "@/pages/MainPage/components/SectionHeader";
-import MyTeamCard from "@/pages/MainPage/components/MyTeamCard";
 
 const MyTeamsSection = () => {
   const { data: myTeamListResponse, isLoading: isLoadingTeams } =
@@ -25,14 +25,15 @@ const MyTeamsSection = () => {
         ) : (
           myTeamListResponse?.teams.map(
             ({ id, name, description, emoji, color }) => (
-              <MyTeamCard
-                key={id}
-                id={id}
-                name={name}
-                description={description}
-                emoji={emoji}
-                color={color}
-              />
+              <Link to={`team/${id}`} key={id}>
+                <MyTeamCard
+                  id={id}
+                  name={name}
+                  description={description}
+                  emoji={emoji}
+                  color={color}
+                />
+              </Link>
             )
           )
         )}

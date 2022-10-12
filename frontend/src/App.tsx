@@ -66,12 +66,13 @@ const App = () => {
                   <Route path="team/:teamId" element={<TeamDetailPage />} />
                   <Route path="search" element={<TeamSearchPage />} />
                   <Route path="mypage" element={<MyPage />} />
+                  <Route
+                    path="rollingpaper/new"
+                    element={<RollingpaperCreationPage />}
+                  />
                 </Route>
                 <Route path="team/new" element={<TeamCreationPage />} />
-                <Route
-                  path="team/:teamId/rollingpaper/new"
-                  element={<RollingpaperCreationPage />}
-                />
+
                 <Route
                   path="team/:teamId/rollingpaper/:rollingpaperId"
                   element={<RollingpaperPage />}

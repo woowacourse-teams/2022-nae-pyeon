@@ -10,10 +10,16 @@ const IconButton = ({
   type,
   onClick,
   size = "large",
+  disabled,
   children,
 }: ButtonAttributes) => {
   return (
-    <StyledIconButton type={type} onClick={onClick} size={size}>
+    <StyledIconButton
+      type={type}
+      onClick={onClick}
+      size={size}
+      disabled={disabled}
+    >
       {children}
     </StyledIconButton>
   );
@@ -30,6 +36,10 @@ const StyledIconButton = styled.button<ButtonAttributes>`
       : props.size === "medium"
       ? "30px"
       : "40px"};
+
+  &:disabled {
+    cursor: default;
+  }
 `;
 
 export default IconButton;
