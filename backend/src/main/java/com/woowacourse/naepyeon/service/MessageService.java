@@ -69,8 +69,10 @@ public class MessageService {
             final Long rollingpaperId, final Long teamId, final Long loginMemberId) {
         final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
                 .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
-        final List<Long> messageIdsByLike = messageLikeRepository.findByMemberIdAndRollingpaperId(loginMemberId, rollingpaperId)
-                .stream().map(MessageLike::getMessageId)
+        final List<Long> messageIdsByLike = messageLikeRepository
+                .findByMemberIdAndRollingpaperId(loginMemberId, rollingpaperId)
+                .stream()
+                .map(MessageLike::getMessageId)
                 .collect(Collectors.toUnmodifiableList());
         return messageRepository.findAllByRollingpaperId(rollingpaperId)
                 .stream()
@@ -115,8 +117,10 @@ public class MessageService {
                 .orElseThrow(() -> new NotFoundMessageException(messageId));
         final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
                 .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
-        final List<Long> messageIdsByLike = messageLikeRepository.findByMemberIdAndRollingpaperId(loginMemberId, rollingpaperId)
-                .stream().map(MessageLike::getMessageId)
+        final List<Long> messageIdsByLike = messageLikeRepository
+                .findByMemberIdAndRollingpaperId(loginMemberId, rollingpaperId)
+                .stream()
+                .map(MessageLike::getMessageId)
                 .collect(Collectors.toUnmodifiableList());
         final Team team = rollingpaper.getTeam();
         final Member author = message.getAuthor();

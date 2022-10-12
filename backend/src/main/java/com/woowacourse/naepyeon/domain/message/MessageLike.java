@@ -10,12 +10,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 
 @Entity
 @Getter
-@Table(name = "message_like")
+@Table(name = "message_like", indexes = {
+        @Index(name = "message_rollingpaper_index", columnList = "member_id, message_id")
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MessageLike extends BaseEntity {
 

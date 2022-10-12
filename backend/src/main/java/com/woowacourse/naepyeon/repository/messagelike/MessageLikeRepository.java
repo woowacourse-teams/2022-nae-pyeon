@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface MessageLikeRepository extends JpaRepository<MessageLike, Long>, MessageLikeRepositoryCustom {
 
-    Optional<MessageLike> findByMemberIdAndMessageId(Long memberId, Long MessageId);
+    Optional<MessageLike> findByMemberIdAndMessageId(Long memberId, Long messageId);
 
     List<MessageLike> findByMemberIdAndRollingpaperId(Long memberId, Long rollingpaperId);
 }

@@ -12,3 +12,5 @@ CREATE TABLE message_like
     last_modified_at datetime not null,
     primary key (message_like_id)
 ) engine=InnoDB default charset utf8mb4;
+
+CREATE INDEX message_like_member_id_message_id_index ON message_like (member_id, message_id);
