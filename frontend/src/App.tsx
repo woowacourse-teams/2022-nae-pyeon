@@ -24,6 +24,7 @@ const RollingpaperCreationPage = lazy(
 const TeamDetailPage = lazy(() => import("@/pages/TeamDetailPage"));
 const TeamCreationPage = lazy(() => import("@/pages/TeamCreationPage"));
 const MainPage = lazy(() => import("@/pages/MainPage"));
+const MyTeamsPage = lazy(() => import("@/pages/MyTeamPage"));
 const LoginPage = lazy(() => import("@/pages/LoginPage"));
 const TeamSearchPage = lazy(() => import("@/pages/TeamSearchPage"));
 const ErrorPage = lazy(() => import("@/pages/ErrorPage"));
@@ -63,6 +64,7 @@ const App = () => {
               <Route element={<RequireLogin />}>
                 <Route path="/" element={<HeaderLayoutPage />}>
                   <Route path="/" element={<MainPage />} />
+                  <Route path="my-teams" element={<MyTeamsPage />} />
                   <Route path="team/:teamId" element={<TeamDetailPage />} />
                   <Route path="search" element={<TeamSearchPage />} />
                   <Route path="mypage" element={<MyPage />} />
