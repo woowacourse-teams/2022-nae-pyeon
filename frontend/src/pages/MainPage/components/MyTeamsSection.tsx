@@ -17,7 +17,7 @@ const MyTeamsSection = () => {
       <SectionHeader
         title="내편들"
         count={myTeamListResponse?.totalCount}
-        moreLink="/"
+        moreLink="/my-teams"
       />
       <StyledCardList>
         {myTeamListResponse?.teams.length === 0 ? (
