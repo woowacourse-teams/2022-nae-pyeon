@@ -236,4 +236,18 @@ public class AcceptanceFixture {
             final TokenResponseDto tokenResponseDto, final String inviteCode) {
         return get(tokenResponseDto, "/api/v1/teams/invite?inviteCode=" + inviteCode);
     }
+
+    public static ExtractableResponse<Response> 메세지_좋아요(final TokenResponseDto tokenResponseDto,
+                                                        final Long rollingpaperId,
+                                                        final Long messageId) {
+        return post(tokenResponseDto, "",
+                "/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId + "/likes");
+    }
+
+    public static ExtractableResponse<Response> 메세지_좋아요_취소(final TokenResponseDto tokenResponseDto,
+                                                           final Long rollingpaperId,
+                                                           final Long messageId) {
+        return delete(tokenResponseDto,
+                "/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId + "/likes");
+    }
 }

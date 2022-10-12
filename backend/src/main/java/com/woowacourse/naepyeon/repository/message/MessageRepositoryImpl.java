@@ -1,10 +1,5 @@
 package com.woowacourse.naepyeon.repository.message;
 
-import static com.woowacourse.naepyeon.domain.QMessage.message;
-import static com.woowacourse.naepyeon.domain.QTeam.team;
-import static com.woowacourse.naepyeon.domain.QTeamParticipation.teamParticipation;
-import static com.woowacourse.naepyeon.domain.rollingpaper.QRollingpaper.rollingpaper;
-
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Projections;
@@ -12,15 +7,21 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.woowacourse.naepyeon.domain.Message;
+import com.woowacourse.naepyeon.domain.message.Message;
 import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
-import java.util.List;
-import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
+
+import java.util.List;
+import java.util.function.Supplier;
+
+import static com.woowacourse.naepyeon.domain.QTeam.team;
+import static com.woowacourse.naepyeon.domain.QTeamParticipation.teamParticipation;
+import static com.woowacourse.naepyeon.domain.message.QMessage.message;
+import static com.woowacourse.naepyeon.domain.rollingpaper.QRollingpaper.rollingpaper;
 
 @RequiredArgsConstructor
 public class MessageRepositoryImpl implements MessageRepositoryCustom {

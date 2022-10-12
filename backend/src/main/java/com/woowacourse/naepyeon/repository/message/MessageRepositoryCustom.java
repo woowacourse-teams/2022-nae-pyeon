@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.repository.message;
 
-import com.woowacourse.naepyeon.domain.Message;
+import com.woowacourse.naepyeon.domain.message.Message;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import java.util.List;
 import org.springframework.data.domain.Page;

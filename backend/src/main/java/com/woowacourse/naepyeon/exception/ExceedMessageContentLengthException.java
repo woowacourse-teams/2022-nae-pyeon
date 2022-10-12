@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.exception;
 
-import com.woowacourse.naepyeon.domain.Message;
+import com.woowacourse.naepyeon.domain.message.Message;
 import org.springframework.http.HttpStatus;
 
 public final class ExceedMessageContentLengthException extends NaePyeonException {
