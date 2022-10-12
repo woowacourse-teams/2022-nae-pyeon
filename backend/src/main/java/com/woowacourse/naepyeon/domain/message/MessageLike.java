@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Getter
 @Table(name = "message_like", indexes = {
-        @Index(name = "message_rollingpaper_index", columnList = "member_id, message_id")
+        @Index(name = "message_like_member_id_message_id_index", columnList = "member_id, message_id")
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MessageLike extends BaseEntity {
