@@ -21,7 +21,7 @@ const StyledTitleWithLayout = styled.div`
   display: flex;
   flex-direction: column;
 
-  width: calc(100vw - 120px);
+  width: calc(100vw - 80px);
 
   @media only screen and (min-width: 600px) {
     width: calc(500px - 108px);
@@ -47,7 +47,7 @@ const StyledTitle = styled.h2`
   font-size: 24px;
   font-weight: 600;
 
-  width: calc(100vw - 120px);
+  width: calc(100vw - 80px);
   word-break: break-all;
 
   @media only screen and (min-width: 600px) {
@@ -65,7 +65,11 @@ const StyledTitle = styled.h2`
 
 const StyledLayout = styled.div`
   display: flex;
-  height: 70vh;
+  height: 65vh;
+
+  @media only screen and (min-width: 600px) {
+    height: 70vh;
+  }
 
   justify-content: center;
   padding: 10px;
