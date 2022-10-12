@@ -57,6 +57,36 @@ const messageHandlers = [
       return res(ctx.status(204));
     }
   ),
+
+  // 좋아요 추가
+  rest.post(
+    "/api/v1/rollingpapers/:rollingpaperId/messages/:messageId/likes",
+    (req, res, ctx) => {
+      const { rollingpaperId, messageId } = req.params;
+
+      const result = {
+        likes: 6,
+        liked: true,
+      };
+
+      return res(ctx.status(200), ctx.json(result));
+    }
+  ),
+
+  // 좋아요 삭제
+  rest.delete(
+    "/api/v1/rollingpapers/:rollingpaperId/messages/:messageId/likes",
+    (req, res, ctx) => {
+      const { rollingpaperId, messageId } = req.params;
+
+      const result = {
+        likes: 4,
+        liked: false,
+      };
+
+      return res(ctx.status(200), ctx.json(result));
+    }
+  ),
 ];
 
 export default messageHandlers;

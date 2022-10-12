@@ -1,5 +1,6 @@
-import React from "react";
 import styled from "@emotion/styled";
+
+import useValidatedParam from "@/hooks/useValidatedParam";
 
 import IconButton from "@/components/IconButton";
 
@@ -10,9 +11,9 @@ import LockIcon from "@/assets/icons/bx-lock-alt.svg";
 import MessageUpdateForm from "@/pages/RollingpaperPage/components/MessageUpdateForm";
 import useMessageBox from "@/pages/RollingpaperPage/hooks/useMessageBox";
 import SecretMessage from "@/pages/RollingpaperPage/components/SecretMessage";
+import Like from "@/pages/RollingpaperPage/components/Like";
 
 import { Message, Recipient } from "@/types";
-import useValidatedParam from "@/hooks/useValidatedParam";
 
 const MessageBox = ({
   id,
@@ -23,6 +24,8 @@ const MessageBox = ({
   secret,
   editable,
   visible,
+  likes,
+  liked,
   recipientType,
 }: Message & { recipientType: Recipient }) => {
   const rollingpaperId = useValidatedParam<number>("rollingpaperId");
@@ -55,21 +58,31 @@ const MessageBox = ({
   return (
     <StyledMessage color={color}>
       <StyledMessageContent>{content}</StyledMessageContent>
+
       <StyledMessageBottom>
-        {editable && (
+        <StyledMessageLikeContainer>
+          <Like id={id} likes={likes} liked={liked} />
+        </StyledMessageLikeContainer>
+
+        <StyledBottomRightContainer>
+          <StyledMessageFrom>
+            {secret && <LockIcon />}
+            {!anonymous && from}
+          </StyledMessageFrom>
+
           <StyledMessageButtonContainer>
-            <IconButton size="small" onClick={handleWriteButtonClick}>
-              <Pencil />
-            </IconButton>
-            <IconButton size="small" onClick={handleDeleteButtonClick}>
-              <TrashIcon />
-            </IconButton>
+            {editable && (
+              <>
+                <IconButton size="small" onClick={handleWriteButtonClick}>
+                  <Pencil />
+                </IconButton>
+                <IconButton size="small" onClick={handleDeleteButtonClick}>
+                  <TrashIcon />
+                </IconButton>
+              </>
+            )}
           </StyledMessageButtonContainer>
-        )}
-        <StyledMessageFrom>
-          {secret && <LockIcon />}
-          {!anonymous && from}
-        </StyledMessageFrom>
+        </StyledBottomRightContainer>
       </StyledMessageBottom>
     </StyledMessage>
   );
@@ -101,15 +114,35 @@ const StyledMessageBottom = styled.div`
   justify-content: space-between;
   align-items: flex-end;
 
-  margin-top: 12px;
-  padding: 4px 0 4px 0;
+  padding-bottom: 4px;
+  margin-top: 24px;
+`;
+
+const StyledBottomRightContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`;
+
+const StyledMessageLikeContainer = styled.div`
+  position: relative;
+  top: -16px;
+  left: -6px;
+
+  display: flex;
+  gap: 8px;
+
+  button {
+    padding: 6px;
+  }
+
+  svg {
+    fill: ${({ theme }) => theme.colors.GRAY_600};
+  }
 `;
 
 const StyledMessageButtonContainer = styled.div`
   position: relative;
-  left: -6px;
-  top: 6px;
-
   display: flex;
   gap: 8px;
 
@@ -126,11 +159,7 @@ const StyledMessageFrom = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
-
-  align-self: flex-end;
-  margin-left: auto;
-
-  max-width: 50%;
+  padding: 6px;
 
   font-size: 16px;
   color: ${({ theme }) => theme.colors.GRAY_700};
