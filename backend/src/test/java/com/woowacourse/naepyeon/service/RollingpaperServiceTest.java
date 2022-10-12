@@ -157,26 +157,6 @@ class RollingpaperServiceTest {
                 .isEqualTo(expected);
     }
 
-    private List<RollingpaperPreviewResponseDto> convertPreviewDto(final Long rollingpaperId1,
-                                                                   final Long rollingpaperId2) {
-        final Rollingpaper rollingpaper1 = rollingpaperRepository.findById(rollingpaperId1).orElseThrow();
-        final Rollingpaper rollingpaper2 = rollingpaperRepository.findById(rollingpaperId2).orElseThrow();
-        return List.of(
-                RollingpaperPreviewResponseDto.createPreviewRollingpaper(
-                        rollingpaper1,
-                        rollingpaper1.checkSameRecipient(Recipient.MEMBER)
-                                ? MEMBER_NICKNAME
-                                : rollingpaper1.getTeamName()
-                ),
-                RollingpaperPreviewResponseDto.createPreviewRollingpaper(
-                        rollingpaper2,
-                        rollingpaper2.checkSameRecipient(Recipient.MEMBER)
-                                ? MEMBER_NICKNAME
-                                : rollingpaper2.getTeamName()
-                )
-        );
-    }
-
     @Test
     @DisplayName("멤버 대상 롤링페이퍼들을 teamId로 찾는다.")
     void findMemberRollingpapersByTeamId() {
@@ -222,6 +202,47 @@ class RollingpaperServiceTest {
         assertThat(rollingpaperPreviewResponseDtos)
                 .usingRecursiveComparison()
                 .isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("필터링 값이 의도치 않을 경우 모든 롤링페이퍼를 teamId로 찾는다.")
+    void findRollingpapersByTeamIdAndStrangeFilterValue() {
+        // given
+        final Long rollingpaperId1 =
+                rollingpaperService.createMemberRollingpaper(ROLLINGPAPER_TITLE, teamId, member2Id, memberId);
+        final Long rollingpaperId2 =
+                rollingpaperService.createTeamRollingpaper(ROLLINGPAPER_TITLE, teamId, member2Id);
+        final List<RollingpaperPreviewResponseDto> expected = convertPreviewDto(rollingpaperId1, rollingpaperId2);
+
+        // when
+        final RollingpapersResponseDto responseDto =
+                rollingpaperService.findByTeamId(teamId, memberId, "oldest", "invalidFilter");
+        final List<RollingpaperPreviewResponseDto> rollingpaperPreviewResponseDtos = responseDto.getRollingpapers();
+
+        // then
+        assertThat(rollingpaperPreviewResponseDtos)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    private List<RollingpaperPreviewResponseDto> convertPreviewDto(final Long rollingpaperId1,
+                                                                   final Long rollingpaperId2) {
+        final Rollingpaper rollingpaper1 = rollingpaperRepository.findById(rollingpaperId1).orElseThrow();
+        final Rollingpaper rollingpaper2 = rollingpaperRepository.findById(rollingpaperId2).orElseThrow();
+        return List.of(
+                RollingpaperPreviewResponseDto.createPreviewRollingpaper(
+                        rollingpaper1,
+                        rollingpaper1.checkSameRecipient(Recipient.MEMBER)
+                                ? MEMBER_NICKNAME
+                                : rollingpaper1.getTeamName()
+                ),
+                RollingpaperPreviewResponseDto.createPreviewRollingpaper(
+                        rollingpaper2,
+                        rollingpaper2.checkSameRecipient(Recipient.MEMBER)
+                                ? MEMBER_NICKNAME
+                                : rollingpaper2.getTeamName()
+                )
+        );
     }
 
     @Test
