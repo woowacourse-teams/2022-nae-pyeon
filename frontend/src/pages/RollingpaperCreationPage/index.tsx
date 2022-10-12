@@ -1,11 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { useSearchParams } from "react-router-dom";
 
 import ControlDots from "@/components/ControlDots";
-
-import RightCircleIcon from "@/assets/icons/bx-chevron-right-circle.svg";
-import LeftCircleIcon from "@/assets/icons/bx-chevron-left-circle.svg";
 
 import useCreateMemberRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateMemberRolliingpaper";
 import useCreateTeamRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateTeamRollingpaper";
@@ -16,7 +13,6 @@ import Step3 from "@/pages/RollingpaperCreationPage/components/Step3";
 
 import { Recipient, Rollingpaper, Team, TeamMember } from "@/types";
 import { RECIPIENT } from "@/constants";
-import IconButton from "@/components/IconButton";
 
 const StepLength = 3;
 
@@ -167,13 +163,6 @@ const RollingpaperCreationPage = () => {
   return (
     <StyledMain>
       <StyledStepsWithMoveButton>
-        {step > 0 ? (
-          <IconButton onClick={handleLeftButtonClick}>
-            <LeftCircleIcon />
-          </IconButton>
-        ) : (
-          <StyledSpace />
-        )}
         <StyledSteps>
           <Step1
             ref={(el: HTMLDivElement) => (pageRef.current[0] = el)}
@@ -191,16 +180,6 @@ const RollingpaperCreationPage = () => {
             onClick={handleStep3Click}
           />
         </StyledSteps>
-        {step < StepLength - 1 ? (
-          <IconButton
-            onClick={handleRightButtonClick}
-            disabled={!validateMoveNextStep()}
-          >
-            <RightCircleIcon />
-          </IconButton>
-        ) : (
-          <StyledSpace />
-        )}
       </StyledStepsWithMoveButton>
       <ControlDots pages={StepLength} step={step} />
     </StyledMain>
