@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.mock;
@@ -84,10 +85,9 @@ class AuthServiceTest {
 
         final String accessToken = tokenResponseDto.getAccessToken();
         final RefreshToken refreshToken = refreshTokenRepository.findByValue(tokenResponseDto.getRefreshToken())
-                .get();
+                .orElseThrow();
         assertAll(
-                () -> assertThatCode(() -> jwtTokenProvider.validateAbleToken(accessToken))
-                        .doesNotThrowAnyException(),
+                () -> assertDoesNotThrow(() -> jwtTokenProvider.validateAbleToken(accessToken)),
                 () -> assertThat(refreshToken.getMemberId())
                         .isEqualTo(Long.valueOf(jwtTokenProvider.getPayload(accessToken)))
         );
@@ -107,11 +107,11 @@ class AuthServiceTest {
 
         refreshTokenRepository.findByValue(tokenResponseDto1.getRefreshToken());
         final RefreshToken refreshToken2 = refreshTokenRepository.findByValue(tokenResponseDto2.getRefreshToken())
-                .get();
+                .orElseThrow();
         final RefreshToken refreshToken3 = refreshTokenRepository.findByValue(tokenResponseDto3.getRefreshToken())
-                .get();
+                .orElseThrow();
         final RefreshToken refreshToken4 = refreshTokenRepository.findByValue(tokenResponseDto4.getRefreshToken())
-                .get();
+                .orElseThrow();
 
         final Long memberId = Long.valueOf(jwtTokenProvider.getPayload(tokenResponseDto4.getAccessToken()));
         final List<RefreshToken> refreshTokens = refreshTokenRepository.findByMemberId(memberId);
@@ -240,7 +240,7 @@ class AuthServiceTest {
         final TokenResponseDto tokenResponseDto = authService.createTokenWithGoogleOauth(tokenRequestDto);
         final Long memberId = tokenResponseDto.getId();
         final Member findMember = memberRepository.findById(memberId)
-                .get();
+                .orElseThrow();
 
         assertThat(findMember).extracting("id", "username", "email", "platform", "platformId")
                 .containsExactly(

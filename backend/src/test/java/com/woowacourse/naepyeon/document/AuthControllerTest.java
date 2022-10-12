@@ -1,6 +1,5 @@
 package com.woowacourse.naepyeon.document;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -13,7 +12,6 @@ import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.service.dto.RefreshTokenDto;
 import com.woowacourse.naepyeon.support.oauth.google.GooglePlatformUserProvider;
 import com.woowacourse.naepyeon.support.oauth.kakao.KakaoPlatformUserProvider;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -58,7 +56,7 @@ class AuthControllerTest extends TestSupport {
 
     @Test
     void renewalToken() throws Exception {
-        final Member member = memberRepository.findById(memberId1).get();
+        final Member member = memberRepository.findById(memberId1).orElseThrow();
         final RefreshToken refreshToken = RefreshToken.createBy(member, () -> "refreshToken");
         refreshTokenRepository.save(refreshToken);
 
@@ -74,7 +72,7 @@ class AuthControllerTest extends TestSupport {
 
     @Test
     void logout() throws Exception {
-        final Member member = memberRepository.findById(memberId1).get();
+        final Member member = memberRepository.findById(memberId1).orElseThrow();
         final RefreshToken refreshToken = RefreshToken.createBy(member, () -> "refreshToken");
         refreshTokenRepository.save(refreshToken);
 
@@ -86,9 +84,5 @@ class AuthControllerTest extends TestSupport {
                 )
                 .andExpect(status().isNoContent())
                 .andDo(restDocs.document());
-
-        final Optional<RefreshToken> findRefreshToken = refreshTokenRepository.findByValue(refreshToken.getValue());
-
-        assertThat(findRefreshToken).isEmpty();
     }
 }

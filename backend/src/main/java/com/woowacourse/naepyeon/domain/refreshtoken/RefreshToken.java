@@ -32,13 +32,14 @@ public class RefreshToken {
     @Column(name = "refresh_token_id")
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "value", unique = true, nullable = false)
     private String value;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    @Column(name = "expired_time")
     private LocalDateTime expiredTime;
 
     private RefreshToken(final String value, final Member member, final LocalDateTime expiredTime) {

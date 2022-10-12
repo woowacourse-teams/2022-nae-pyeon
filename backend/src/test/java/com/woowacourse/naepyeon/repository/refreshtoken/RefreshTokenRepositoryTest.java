@@ -16,7 +16,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
@@ -29,9 +28,6 @@ class RefreshTokenRepositoryTest {
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
 
-    @Autowired
-    private TestEntityManager em;
-
     @Test
     @DisplayName("멤버 아이디로 리프레시 토큰을 찾는다.")
     void findByMemberId() {
@@ -43,8 +39,6 @@ class RefreshTokenRepositoryTest {
         refreshTokenRepository.save(refreshToken1);
         refreshTokenRepository.save(refreshToken2);
         refreshTokenRepository.save(refreshToken3);
-        em.flush();
-        em.clear();
 
         final int count = refreshTokenRepository.findByMemberId(member.getId()).size();
 
@@ -59,7 +53,8 @@ class RefreshTokenRepositoryTest {
         final RefreshToken refreshToken = RefreshToken.createBy(member, () -> UUID.randomUUID().toString());
         refreshTokenRepository.save(refreshToken);
 
-        final RefreshToken findRefreshToken = refreshTokenRepository.findByValue(refreshToken.getValue()).get();
+        final RefreshToken findRefreshToken = refreshTokenRepository.findByValue(refreshToken.getValue())
+                .orElseThrow();
 
         assertThat(findRefreshToken).isSameAs(refreshToken);
     }
@@ -89,8 +84,6 @@ class RefreshTokenRepositoryTest {
         refreshTokenRepository.save(refreshToken1);
         refreshTokenRepository.save(refreshToken2);
         refreshTokenRepository.save(refreshToken3);
-        em.flush();
-        em.clear();
 
         refreshTokenRepository.deleteExpired(LocalDateTime.now().plusDays(7).plusMinutes(1));
 

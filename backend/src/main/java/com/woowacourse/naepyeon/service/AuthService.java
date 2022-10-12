@@ -67,6 +67,7 @@ public class AuthService {
                 .orElseThrow(TokenInvalidExpiredException::new);
 
         if (findRefreshToken.isExpired()) {
+            refreshTokenRepository.deleteExpired(LocalDateTime.now());
             throw new TokenInvalidExpiredException();
         }
 
@@ -101,7 +102,7 @@ public class AuthService {
                 .sorted(Comparator.comparing(RefreshToken::getExpiredTime))
                 .limit((long) memberRefreshTokens.size() - (MAX_REFRESH_TOKEN_SIZE - 1))
                 .map(RefreshToken::getId)
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private Long createOrFindMemberId(final PlatformUserDto platformUser) {
