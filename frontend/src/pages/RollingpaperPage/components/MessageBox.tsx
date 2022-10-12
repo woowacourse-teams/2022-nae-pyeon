@@ -60,28 +60,29 @@ const MessageBox = ({
       <StyledMessageContent>{content}</StyledMessageContent>
 
       <StyledMessageBottom>
-        {/* <StyledMessageLikeContainer></StyledMessageLikeContainer> */}
-
-        <StyledMessageButtonContainer>
+        <StyledMessageLikeContainer>
           <Like id={id} likes={likes} liked={liked} />
-          {editable && (
-            <>
-              <IconButton size="small" onClick={handleWriteButtonClick}>
-                <Pencil />
-              </IconButton>
-              <IconButton size="small" onClick={handleDeleteButtonClick}>
-                <TrashIcon />
-              </IconButton>
-            </>
-          )}
-        </StyledMessageButtonContainer>
+        </StyledMessageLikeContainer>
 
-        {/* <StyledBottomRightContainer> */}
-        <StyledMessageFrom>
-          {secret && <LockIcon />}
-          {!anonymous && from}
-        </StyledMessageFrom>
-        {/* </StyledBottomRightContainer> */}
+        <StyledBottomRightContainer>
+          <StyledMessageFrom>
+            {secret && <LockIcon />}
+            {!anonymous && from}
+          </StyledMessageFrom>
+
+          <StyledMessageButtonContainer>
+            {editable && (
+              <>
+                <IconButton size="small" onClick={handleWriteButtonClick}>
+                  <Pencil />
+                </IconButton>
+                <IconButton size="small" onClick={handleDeleteButtonClick}>
+                  <TrashIcon />
+                </IconButton>
+              </>
+            )}
+          </StyledMessageButtonContainer>
+        </StyledBottomRightContainer>
       </StyledMessageBottom>
     </StyledMessage>
   );
@@ -121,7 +122,6 @@ const StyledBottomRightContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  max-width: 50%;
 `;
 
 const StyledMessageLikeContainer = styled.div`
@@ -143,9 +143,6 @@ const StyledMessageLikeContainer = styled.div`
 
 const StyledMessageButtonContainer = styled.div`
   position: relative;
-  left: -6px;
-  top: -18px;
-
   display: flex;
   gap: 8px;
 
@@ -162,7 +159,6 @@ const StyledMessageFrom = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
-  max-width: 100%;
   padding: 6px;
 
   font-size: 16px;

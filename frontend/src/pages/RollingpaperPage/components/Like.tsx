@@ -55,12 +55,9 @@ const Like = ({ id, likes, liked }: LikeProps) => {
 
 const StyledLikeContainer = styled.div<StyledLikeContainerProps>`
   display: flex;
-  /* flex-direction: column; */
   align-items: center;
   justify-content: center;
   gap: 2px;
-
-  /* padding: 0 16px 0px 4px; */
 
   color: ${({ theme }) => theme.colors.GRAY_700};
 
