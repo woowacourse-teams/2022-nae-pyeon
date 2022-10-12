@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 
 import IconButton from "./IconButton";
 
+import FilledLogo from "@/assets/images/logo-fill.png";
 import SearchIcon from "@/assets/icons/bx-search.svg";
 import UserIcon from "@/assets/icons/bx-user.svg";
 
@@ -21,7 +22,10 @@ const Header = () => {
   return (
     <StyledHeader>
       <Link to={"/"}>
-        <StyledHome>내편</StyledHome>
+        <StyledHome>
+          <img src={FilledLogo} />
+          내편
+        </StyledHome>
       </Link>
       <StyledNav>
         <IconButton onClick={handleSearchClick} size="medium">
@@ -72,10 +76,19 @@ const StyledNav = styled.nav`
 `;
 
 const StyledHome = styled.div`
-  font-size: 30px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+
+  font-size: 28px;
   font-weight: 600;
 
   color: ${({ theme }) => theme.colors.SKY_BLUE_400};
+
+  img {
+    width: 30px;
+    height: 30px;
+  }
 `;
 
 export default Header;
