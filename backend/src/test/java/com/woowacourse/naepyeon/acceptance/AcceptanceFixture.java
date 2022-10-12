@@ -11,6 +11,7 @@ import com.woowacourse.naepyeon.controller.dto.RollingpaperUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.TokenRequest;
 import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
+import com.woowacourse.naepyeon.service.dto.RefreshTokenDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -235,5 +236,15 @@ public class AcceptanceFixture {
     public static ExtractableResponse<Response> 초대_코드로_팀_상세_조회(
             final TokenResponseDto tokenResponseDto, final String inviteCode) {
         return get(tokenResponseDto, "/api/v1/teams/invite?inviteCode=" + inviteCode);
+    }
+
+    public static ExtractableResponse<Response> 액세스_토큰_재발급(final TokenResponseDto tokenResponseDto,
+                                                           final RefreshTokenDto refreshTokenDto) {
+        return post(tokenResponseDto, refreshTokenDto, "/api/v1/renewal-token");
+    }
+
+    public static ExtractableResponse<Response> 리프레시_토큰_무효화(final TokenResponseDto tokenResponseDto,
+                                                           final RefreshTokenDto refreshTokenDto) {
+        return post(tokenResponseDto, refreshTokenDto, "/api/v1/logout");
     }
 }
