@@ -2,5 +2,5 @@ package com.woowacourse.naepyeon.repository.messagelike;
 
 public interface MessageLikeRepositoryCustom {
 
-    Boolean existsByMemberIdAndMessageId(Long memberId, Long messageId);
+    Boolean existsByMemberIdAndMessageId(final Long memberId, final Long messageId);
 }

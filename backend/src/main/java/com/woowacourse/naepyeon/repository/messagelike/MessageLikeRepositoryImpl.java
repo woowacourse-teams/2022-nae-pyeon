@@ -11,7 +11,7 @@ public class MessageLikeRepositoryImpl implements MessageLikeRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Boolean existsByMemberIdAndMessageId(Long memberId, Long messageId) {
+    public Boolean existsByMemberIdAndMessageId(final Long memberId, final Long messageId) {
         Integer fetchOne = queryFactory
                 .selectOne()
                 .from(messageLike)
