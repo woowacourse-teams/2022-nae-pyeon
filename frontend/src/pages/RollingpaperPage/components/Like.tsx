@@ -72,6 +72,7 @@ const StyledLikeCount = styled.div`
   position: absolute;
   top: 40px;
   left: 4px;
+  font-size: 14px;
 
   width: max-content;
 `;
