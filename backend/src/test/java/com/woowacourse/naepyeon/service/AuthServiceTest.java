@@ -213,7 +213,7 @@ class AuthServiceTest {
                 mockRefreshTokenRepository,
                 memberRepository
         );
-        final RefreshToken refreshToken = RefreshToken.createBy(member, () -> "refreshToken");
+        final RefreshToken refreshToken = RefreshToken.createBy(member.getId(), () -> "refreshToken");
         final Field expiredTimeField = refreshToken.getClass().getDeclaredField("expiredTime");
         expiredTimeField.setAccessible(true);
         expiredTimeField.set(refreshToken, LocalDateTime.now().plusHours(47).plusMinutes(59));
@@ -255,7 +255,7 @@ class AuthServiceTest {
     @Test
     @DisplayName("리프레시 토큰을 무효화한다.")
     void logout() {
-        final RefreshToken refreshToken = RefreshToken.createBy(member, () -> "refreshToken");
+        final RefreshToken refreshToken = RefreshToken.createBy(member.getId(), () -> "refreshToken");
         refreshTokenRepository.save(refreshToken);
 
         refreshTokenRepository.deleteByValue(refreshToken.getValue());
@@ -270,11 +270,11 @@ class AuthServiceTest {
     void deleteExpiredRefreshTokens() throws NoSuchFieldException, IllegalAccessException {
         final Field expiredTimeField = RefreshToken.class.getDeclaredField("expiredTime");
         expiredTimeField.setAccessible(true);
-        final RefreshToken refreshToken1 = RefreshToken.createBy(member, () -> "refreshToken1");
+        final RefreshToken refreshToken1 = RefreshToken.createBy(member.getId(), () -> "refreshToken1");
         expiredTimeField.set(refreshToken1, LocalDateTime.now().minusMinutes(1));
-        final RefreshToken refreshToken2 = RefreshToken.createBy(member, () -> "refreshToken2");
+        final RefreshToken refreshToken2 = RefreshToken.createBy(member.getId(), () -> "refreshToken2");
         expiredTimeField.set(refreshToken2, LocalDateTime.now().minusMinutes(1));
-        final RefreshToken refreshToken3 = RefreshToken.createBy(member, () -> "refreshToken3");
+        final RefreshToken refreshToken3 = RefreshToken.createBy(member.getId(), () -> "refreshToken3");
         refreshTokenRepository.save(refreshToken1);
         refreshTokenRepository.save(refreshToken2);
         refreshTokenRepository.save(refreshToken3);

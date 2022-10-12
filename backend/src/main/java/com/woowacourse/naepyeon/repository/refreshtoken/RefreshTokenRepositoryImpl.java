@@ -18,7 +18,7 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepositoryCustom 
     @Override
     public List<RefreshToken> findByMemberId(final Long memberId) {
         return queryFactory.selectFrom(refreshToken)
-                .where(refreshToken.member.id.eq(memberId))
+                .where(refreshToken.memberId.eq(memberId))
                 .fetch();
     }
 

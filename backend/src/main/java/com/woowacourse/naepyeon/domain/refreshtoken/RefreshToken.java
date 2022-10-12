@@ -1,16 +1,12 @@
 package com.woowacourse.naepyeon.domain.refreshtoken;
 
-import com.woowacourse.naepyeon.domain.Member;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -35,21 +31,20 @@ public class RefreshToken {
     @Column(name = "value", unique = true, nullable = false)
     private String value;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
 
     @Column(name = "expired_time")
     private LocalDateTime expiredTime;
 
-    private RefreshToken(final String value, final Member member, final LocalDateTime expiredTime) {
+    private RefreshToken(final String value, final Long memberId, final LocalDateTime expiredTime) {
         this.value = value;
-        this.member = member;
+        this.memberId = memberId;
         this.expiredTime = expiredTime;
     }
 
-    public static RefreshToken createBy(final Member member, final RefreshTokenGenerator generator) {
-        return new RefreshToken(generator.generate(), member, LocalDateTime.now().plusDays(EXPIRED_DAYS));
+    public static RefreshToken createBy(final Long memberId, final RefreshTokenGenerator generator) {
+        return new RefreshToken(generator.generate(), memberId, LocalDateTime.now().plusDays(EXPIRED_DAYS));
     }
 
     public boolean isExpired() {
@@ -61,9 +56,5 @@ public class RefreshToken {
         if (expiredTime.isBefore(now.plusDays(REMAINING_DAYS_TO_EXTENDS))) {
             expiredTime = now.plusDays(EXPIRED_DAYS);
         }
-    }
-
-    public Long getMemberId() {
-        return member.getId();
     }
 }

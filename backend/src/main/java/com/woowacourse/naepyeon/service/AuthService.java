@@ -81,7 +81,7 @@ public class AuthService {
         deleteOverRefreshTokens(memberId);
         final Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundTeamMemberException(memberId));
-        final RefreshToken refreshToken = RefreshToken.createBy(member, () -> UUID.randomUUID().toString());
+        final RefreshToken refreshToken = RefreshToken.createBy(member.getId(), () -> UUID.randomUUID().toString());
         return refreshTokenRepository.save(refreshToken);
     }
 

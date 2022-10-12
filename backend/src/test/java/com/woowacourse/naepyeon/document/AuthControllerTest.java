@@ -57,7 +57,7 @@ class AuthControllerTest extends TestSupport {
     @Test
     void renewalToken() throws Exception {
         final Member member = memberRepository.findById(memberId1).orElseThrow();
-        final RefreshToken refreshToken = RefreshToken.createBy(member, () -> "refreshToken");
+        final RefreshToken refreshToken = RefreshToken.createBy(member.getId(), () -> "refreshToken");
         refreshTokenRepository.save(refreshToken);
 
         final RefreshTokenDto refreshTokenDto = new RefreshTokenDto(refreshToken.getValue());
@@ -73,7 +73,7 @@ class AuthControllerTest extends TestSupport {
     @Test
     void logout() throws Exception {
         final Member member = memberRepository.findById(memberId1).orElseThrow();
-        final RefreshToken refreshToken = RefreshToken.createBy(member, () -> "refreshToken");
+        final RefreshToken refreshToken = RefreshToken.createBy(member.getId(), () -> "refreshToken");
         refreshTokenRepository.save(refreshToken);
 
         final RefreshTokenDto refreshTokenDto = new RefreshTokenDto(refreshToken.getValue());

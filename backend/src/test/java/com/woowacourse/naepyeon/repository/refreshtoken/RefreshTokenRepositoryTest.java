@@ -33,9 +33,9 @@ class RefreshTokenRepositoryTest {
     void findByMemberId() {
         final Member member = new Member("seungpang", "email@email.com", Platform.KAKAO, "1");
         memberRepository.save(member);
-        final RefreshToken refreshToken1 = RefreshToken.createBy(member, () -> UUID.randomUUID().toString());
-        final RefreshToken refreshToken2 = RefreshToken.createBy(member, () -> UUID.randomUUID().toString());
-        final RefreshToken refreshToken3 = RefreshToken.createBy(member, () -> UUID.randomUUID().toString());
+        final RefreshToken refreshToken1 = RefreshToken.createBy(member.getId(), () -> UUID.randomUUID().toString());
+        final RefreshToken refreshToken2 = RefreshToken.createBy(member.getId(), () -> UUID.randomUUID().toString());
+        final RefreshToken refreshToken3 = RefreshToken.createBy(member.getId(), () -> UUID.randomUUID().toString());
         refreshTokenRepository.save(refreshToken1);
         refreshTokenRepository.save(refreshToken2);
         refreshTokenRepository.save(refreshToken3);
@@ -50,7 +50,7 @@ class RefreshTokenRepositoryTest {
     void findByValue() {
         final Member member = new Member("seungpang", "email@email.com", Platform.KAKAO, "1");
         memberRepository.save(member);
-        final RefreshToken refreshToken = RefreshToken.createBy(member, () -> UUID.randomUUID().toString());
+        final RefreshToken refreshToken = RefreshToken.createBy(member.getId(), () -> UUID.randomUUID().toString());
         refreshTokenRepository.save(refreshToken);
 
         final RefreshToken findRefreshToken = refreshTokenRepository.findByValue(refreshToken.getValue())
@@ -64,7 +64,7 @@ class RefreshTokenRepositoryTest {
     void deleteByValue() {
         final Member member = new Member("seungpang", "email@email.com", Platform.KAKAO, "1");
         memberRepository.save(member);
-        final RefreshToken refreshToken = RefreshToken.createBy(member, () -> UUID.randomUUID().toString());
+        final RefreshToken refreshToken = RefreshToken.createBy(member.getId(), () -> UUID.randomUUID().toString());
         refreshTokenRepository.save(refreshToken);
 
         refreshTokenRepository.deleteByValue(refreshToken.getValue());
@@ -78,9 +78,9 @@ class RefreshTokenRepositoryTest {
     void deleteExpired() {
         final Member member = new Member("seungpang", "email@email.com", Platform.KAKAO, "1");
         memberRepository.save(member);
-        final RefreshToken refreshToken1 = RefreshToken.createBy(member, () -> UUID.randomUUID().toString());
-        final RefreshToken refreshToken2 = RefreshToken.createBy(member, () -> UUID.randomUUID().toString());
-        final RefreshToken refreshToken3 = RefreshToken.createBy(member, () -> UUID.randomUUID().toString());
+        final RefreshToken refreshToken1 = RefreshToken.createBy(member.getId(), () -> UUID.randomUUID().toString());
+        final RefreshToken refreshToken2 = RefreshToken.createBy(member.getId(), () -> UUID.randomUUID().toString());
+        final RefreshToken refreshToken3 = RefreshToken.createBy(member.getId(), () -> UUID.randomUUID().toString());
         refreshTokenRepository.save(refreshToken1);
         refreshTokenRepository.save(refreshToken2);
         refreshTokenRepository.save(refreshToken3);

@@ -54,9 +54,6 @@ public class Member extends BaseEntity {
     @Column(name = "platform_id", nullable = false)
     private String platformId;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member", orphanRemoval = true, cascade = CascadeType.REMOVE)
-    private final List<RefreshToken> refreshTokens = new ArrayList<>();
-
     public Member(final String username, final String email, final Platform platform, final String platformId) {
         validateMember(username, email);
         this.username = username;
