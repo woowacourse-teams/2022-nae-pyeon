@@ -51,7 +51,7 @@ const RollingpaperCreationPage = () => {
 
   const goToNextPage = () => {
     if (step >= pageRef.current.length) {
-      endSteps();
+      endSteps(selectedSteps);
       return;
     }
 
@@ -74,8 +74,8 @@ const RollingpaperCreationPage = () => {
     });
   };
 
-  const endSteps = () => {
-    const { step1: teamId, step2: recipient, step3: title } = selectedSteps;
+  const endSteps = (result: Step) => {
+    const { step1: teamId, step2: recipient, step3: title } = result;
 
     if (!teamId || !recipient || !title) {
       return;
@@ -116,10 +116,14 @@ const RollingpaperCreationPage = () => {
   };
 
   const handleStep3Click = (title: Rollingpaper["title"]) => {
-    setSelectedSteps((prev) => ({
-      ...prev,
-      step3: title,
-    }));
+    setSelectedSteps((prev) => {
+      const result = {
+        ...prev,
+        step3: title,
+      };
+      endSteps(result);
+      return result;
+    });
 
     goToNextPage();
   };
