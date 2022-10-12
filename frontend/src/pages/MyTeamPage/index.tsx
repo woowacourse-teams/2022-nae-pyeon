@@ -48,7 +48,8 @@ const MyTeamsPage = () => {
   }
 
   return (
-    <StyledMain>
+    <main>
+      <StyledTitle>내가 가입한 모임 목록</StyledTitle>
       <StyledCardList>
         {myTeamListResponse.pages.map((page) =>
           page.teams.map(({ id, name, description, emoji, color }: Team) => (
@@ -65,7 +66,7 @@ const MyTeamsPage = () => {
         )}
         <div ref={ref} />
       </StyledCardList>
-    </StyledMain>
+    </main>
   );
 };
 
@@ -109,12 +110,11 @@ const StyledEmptyMain = styled.main`
   }
 `;
 
-const StyledMain = styled.div`
-  button {
-    position: sticky;
-    bottom: 30px;
-    left: 90%;
-  }
+const StyledTitle = styled.h1`
+  font-size: 24px;
+  text-align: center;
+
+  margin-bottom: 28px;
 `;
 
 const StyledCardList = styled.div`
@@ -125,12 +125,16 @@ const StyledCardList = styled.div`
   justify-items: center;
   align-items: stretch;
   min-height: calc(100vh - 150px);
+
+  padding-bottom: 20px;
+
   @media only screen and (min-width: 960px) {
     grid-template-columns: repeat(3, 1fr);
   }
   @media only screen and (min-width: 1280px) {
     grid-template-columns: repeat(4, 1fr);
   }
+
   a {
     height: fit-content;
   }
