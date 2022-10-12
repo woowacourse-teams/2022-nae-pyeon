@@ -75,6 +75,12 @@ const StyledLayout = styled.div`
   padding: 10px;
 
   overflow: scroll;
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 `;
 
 export default forwardRef(StepTitleWithLayout);
