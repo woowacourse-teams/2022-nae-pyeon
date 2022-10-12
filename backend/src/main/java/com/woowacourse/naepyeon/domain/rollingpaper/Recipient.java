@@ -8,15 +8,15 @@ public enum Recipient {
     MEMBER("member"),
     TEAM("team");
 
-    private final String recipient;
+    private final String target;
 
-    Recipient(final String recipient) {
-        this.recipient = recipient;
+    Recipient(final String target) {
+        this.target = target;
     }
 
     public static Optional<Recipient> from(final String filter) {
         return Arrays.stream(values())
-                .filter(value -> value.recipient.equals(filter))
+                .filter(value -> value.target.equals(filter))
                 .findFirst();
     }
 }
