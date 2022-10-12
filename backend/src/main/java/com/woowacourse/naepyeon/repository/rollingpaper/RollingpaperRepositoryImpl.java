@@ -43,6 +43,16 @@ public class RollingpaperRepositoryImpl implements RollingpaperRepositoryCustom 
         return queryFactory
                 .selectFrom(rollingpaper)
                 .where(isTeamIdEq(teamId))
+                .orderBy(rollingpaper.createdDate.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<Rollingpaper> findByTeamIdOldestOrder(final Long teamId) {
+        return queryFactory
+                .selectFrom(rollingpaper)
+                .where(isTeamIdEq(teamId))
+                .orderBy(rollingpaper.createdDate.asc())
                 .fetch();
     }
 

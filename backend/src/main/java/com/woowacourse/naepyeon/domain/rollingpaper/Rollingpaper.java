@@ -88,7 +88,7 @@ public class Rollingpaper extends BaseEntity {
         return this.addressee == null;
     }
 
-    public boolean checkSameRecipient(Recipient recipient) {
+    public boolean checkSameRecipient(final Recipient recipient) {
         return this.recipient.equals(recipient);
     }
 
