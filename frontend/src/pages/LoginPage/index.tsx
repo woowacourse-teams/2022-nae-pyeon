@@ -173,7 +173,7 @@ const StyledLandingImage2 = styled(Landing2Image)`
 const StyledSocialLoginButtonContainer = styled.div`
   position: -webkit-sticky;
   position: sticky;
-  top: 80vh;
+  top: 70vh;
 
   display: flex;
   flex-direction: column;
@@ -182,6 +182,10 @@ const StyledSocialLoginButtonContainer = styled.div`
 
   width: 80%;
   margin: 0 auto;
+
+  @media only screen and (min-width: 600px) {
+    top: 80vh;
+  }
 
   @media only screen and (min-width: 960px) {
     width: 500px;
