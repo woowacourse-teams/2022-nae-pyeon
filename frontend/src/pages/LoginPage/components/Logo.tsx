@@ -7,7 +7,7 @@ const Logo = () => {
   return (
     <StyledLogo>
       <LogoImage />
-      <h1>내 편</h1>
+      <h1>내편</h1>
     </StyledLogo>
   );
 };
@@ -16,7 +16,9 @@ const StyledLogo = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
+
+  letter-spacing: 10px;
 
   svg {
     font-size: 80px;

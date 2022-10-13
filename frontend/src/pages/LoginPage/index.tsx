@@ -7,7 +7,8 @@ import { useSnackbar } from "@/context/SnackbarContext";
 import Logo from "@/pages/LoginPage/components/Logo";
 import SocialLoginButton from "@/pages/LoginPage/components/SocialLoginButton";
 
-import LandingImage from "@/assets/images/landing.svg";
+import Landing1Image from "@/assets/images/landing-1.svg";
+import Landing2Image from "@/assets/images/landing-2.svg";
 
 import {
   KAKAO_OAUTH_URL,
@@ -49,7 +50,8 @@ const LoginPage = () => {
         <Logo />
       </StyledTitle>
       <StyledImageContainer>
-        <StyledLadingImage />
+        <StyledLandingImage2 />
+        <StyledLandingImage1 />
       </StyledImageContainer>
 
       <StyledSocialLoginButtonContainer>
@@ -114,10 +116,11 @@ const StyledImageContainer = styled.div`
   height: fit-content;
 `;
 
-const StyledLadingImage = styled(LandingImage)`
+const StyledLandingImage1 = styled(Landing1Image)`
   position: absolute;
-  left: calc(100% / 2);
-  transform: translateX(-50%);
+  top: 40vh;
+  right: calc(-100% / 2);
+  transform: rotate(-0.05turn);
 
   display: flex;
   align-items: center;
@@ -125,7 +128,44 @@ const StyledLadingImage = styled(LandingImage)`
 
   padding-bottom: 20px;
 
+  @media only screen and (min-width: 600px) {
+    top: 30vh;
+    right: calc(-100% / 3);
+  }
+
   @media only screen and (min-width: 960px) {
+    right: calc(-100% / 3);
+    font-size: 700px;
+  }
+
+  @media only screen and (min-width: 1280px) {
+    right: calc(-100% / 4);
+    font-size: 700px;
+  }
+`;
+
+const StyledLandingImage2 = styled(Landing2Image)`
+  position: absolute;
+  left: calc(-100% / 2);
+  transform: rotate(0.05turn);
+
+  display: flex;
+  align-items: center;
+  font-size: 500px;
+
+  padding-bottom: 20px;
+
+  @media only screen and (min-width: 600px) {
+    left: calc(-100% / 3);
+  }
+
+  @media only screen and (min-width: 960px) {
+    left: calc(-100% / 3);
+    font-size: 700px;
+  }
+
+  @media only screen and (min-width: 1280px) {
+    left: calc(-100% / 4);
     font-size: 700px;
   }
 `;
