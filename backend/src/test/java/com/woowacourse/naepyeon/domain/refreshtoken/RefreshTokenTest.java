@@ -3,8 +3,6 @@ package com.woowacourse.naepyeon.domain.refreshtoken;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.naepyeon.domain.Member;
-import com.woowacourse.naepyeon.domain.Platform;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

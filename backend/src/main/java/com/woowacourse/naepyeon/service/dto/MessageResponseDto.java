@@ -24,7 +24,8 @@ public class MessageResponseDto {
     private boolean liked;
 
     public static MessageResponseDto of(final Message message, final String nickname, final Long authorId,
-                                        final boolean visible, final boolean editable, final Long likes, final boolean liked) {
+                                        final boolean visible, final boolean editable, final Long likes,
+                                        final boolean liked) {
         return new MessageResponseDto(
                 message.getId(),
                 message.getContent(),

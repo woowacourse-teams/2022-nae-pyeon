@@ -1,5 +1,8 @@
 package com.woowacourse.naepyeon.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.woowacourse.naepyeon.domain.message.Message;
 import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
@@ -7,9 +10,6 @@ import com.woowacourse.naepyeon.exception.ExceedMessageContentLengthException;
 import com.woowacourse.naepyeon.exception.InvalidSecretMessageToTeam;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class MessageTest {
 

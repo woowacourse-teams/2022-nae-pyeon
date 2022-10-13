@@ -1,9 +1,9 @@
 package com.woowacourse.naepyeon.repository.messagelike;
 
+import static com.woowacourse.naepyeon.domain.message.QMessageLike.messageLike;
+
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-
-import static com.woowacourse.naepyeon.domain.message.QMessageLike.messageLike;
 
 @RequiredArgsConstructor
 public class MessageLikeRepositoryImpl implements MessageLikeRepositoryCustom {

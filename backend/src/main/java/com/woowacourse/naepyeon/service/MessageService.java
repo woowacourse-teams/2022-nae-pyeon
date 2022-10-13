@@ -23,15 +23,14 @@ import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.MessageUpdateRequestDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -132,7 +131,8 @@ public class MessageService {
         final boolean editable = checkEditableToLoginMember(message, loginMemberId);
         final Long likes = message.getLikes();
         final boolean liked = messageIdsByLike.contains(messageId);
-        return MessageResponseDto.of(message, responseContent, responseNickname, author.getId(), visible, editable, likes, liked);
+        return MessageResponseDto.of(message, responseContent, responseNickname, author.getId(), visible, editable,
+                likes, liked);
     }
 
     private String hideAuthorNicknameWhenAnonymous(final Message message, final String nickname) {
