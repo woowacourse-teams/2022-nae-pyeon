@@ -1,9 +1,12 @@
 package com.woowacourse.naepyeon.service;
 
 import com.woowacourse.naepyeon.domain.Member;
-import com.woowacourse.naepyeon.domain.Message;
 import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.domain.message.Message;
+import com.woowacourse.naepyeon.domain.message.MessageLike;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
+import com.woowacourse.naepyeon.exception.InvalidCancelLikeMessageException;
+import com.woowacourse.naepyeon.exception.InvalidLikeMessageException;
 import com.woowacourse.naepyeon.exception.InvalidSecretMessageToTeam;
 import com.woowacourse.naepyeon.exception.NotAuthorException;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
@@ -11,8 +14,10 @@ import com.woowacourse.naepyeon.exception.NotFoundMessageException;
 import com.woowacourse.naepyeon.exception.NotFoundRollingpaperException;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.repository.message.MessageRepository;
+import com.woowacourse.naepyeon.repository.messagelike.MessageLikeRepository;
 import com.woowacourse.naepyeon.repository.rollingpaper.RollingpaperRepository;
 import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
+import com.woowacourse.naepyeon.service.dto.MessageLikeResponseDto;
 import com.woowacourse.naepyeon.service.dto.MessageRequestDto;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.MessageUpdateRequestDto;
@@ -33,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MessageService {
 
     private final MessageRepository messageRepository;
+    private final MessageLikeRepository messageLikeRepository;
     private final RollingpaperRepository rollingpaperRepository;
     private final MemberRepository memberRepository;
     private final TeamParticipationRepository teamParticipationRepository;
@@ -62,6 +68,11 @@ public class MessageService {
             final Long rollingpaperId, final Long teamId, final Long loginMemberId) {
         final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
                 .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
+        final List<Long> messageIdsByLike = messageLikeRepository
+                .findByMemberIdAndRollingpaperId(loginMemberId, rollingpaperId)
+                .stream()
+                .map(MessageLike::getMessageId)
+                .collect(Collectors.toUnmodifiableList());
         return messageRepository.findAllByRollingpaperId(rollingpaperId)
                 .stream()
                 .map(message -> {
@@ -73,7 +84,9 @@ public class MessageService {
                             hideAuthorNicknameWhenAnonymous(message, nickname),
                             author.getId(),
                             checkVisibleToLoginMember(message, rollingpaper, loginMemberId),
-                            checkEditableToLoginMember(message, loginMemberId)
+                            checkEditableToLoginMember(message, loginMemberId),
+                            message.getLikes(),
+                            messageIdsByLike.contains(message.getId())
                     );
                 })
                 .collect(Collectors.toUnmodifiableList());
@@ -94,7 +107,7 @@ public class MessageService {
 
     private String findMessageWriterNickname(final Long teamId, final Message message) {
         final Member author = message.getAuthor();
-        return teamParticipationRepository.findNicknameByMemberIdAndTeamId(author.getId(), teamId);
+        return teamParticipationRepository.findNicknameByTeamIdAndMemberId(teamId, author.getId());
     }
 
     @Transactional(readOnly = true)
@@ -103,6 +116,11 @@ public class MessageService {
                 .orElseThrow(() -> new NotFoundMessageException(messageId));
         final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
                 .orElseThrow(() -> new NotFoundRollingpaperException(rollingpaperId));
+        final List<Long> messageIdsByLike = messageLikeRepository
+                .findByMemberIdAndRollingpaperId(loginMemberId, rollingpaperId)
+                .stream()
+                .map(MessageLike::getMessageId)
+                .collect(Collectors.toUnmodifiableList());
         final Team team = rollingpaper.getTeam();
         final Member author = message.getAuthor();
         final String nickname = findMessageWriterNickname(team.getId(), message);
@@ -111,7 +129,10 @@ public class MessageService {
                 loginMemberId);
         final boolean visible = checkVisibleToLoginMember(message, rollingpaper, loginMemberId);
         final boolean editable = checkEditableToLoginMember(message, loginMemberId);
-        return MessageResponseDto.of(message, responseContent, responseNickname, author.getId(), visible, editable);
+        final Long likes = message.getLikes();
+        final boolean liked = messageIdsByLike.contains(messageId);
+        return MessageResponseDto.of(message, responseContent, responseNickname, author.getId(), visible, editable,
+                likes, liked);
     }
 
     private String hideAuthorNicknameWhenAnonymous(final Message message, final String nickname) {
@@ -160,11 +181,33 @@ public class MessageService {
                 .orElseThrow(() -> new NotFoundMessageException(messageId));
         validateAuthor(memberId, message);
         messageRepository.deleteById(messageId);
+        messageLikeRepository.deleteAllByMessageId(messageId);
     }
 
     private void validateAuthor(final Long memberId, final Message message) {
         if (!message.isAuthor(memberId)) {
             throw new NotAuthorException(memberId);
         }
+    }
+
+    public MessageLikeResponseDto likeMessage(Long memberId, Long rollingpaperId, Long messageId) {
+        final Message message = messageRepository.findById(messageId)
+                .orElseThrow(() -> new NotFoundMessageException(messageId));
+        if (messageLikeRepository.existsByMemberIdAndMessageId(memberId, messageId)) {
+            throw new InvalidLikeMessageException(messageId, messageId);
+        }
+        message.like();
+        messageLikeRepository.save(new MessageLike(memberId, rollingpaperId, messageId));
+        return new MessageLikeResponseDto(message.getLikes(), true);
+    }
+
+    public MessageLikeResponseDto cancelLikeMessage(Long memberId, Long messageId) {
+        final Message message = messageRepository.findById(messageId)
+                .orElseThrow(() -> new NotFoundMessageException(messageId));
+        final MessageLike messageLike = messageLikeRepository.findByMemberIdAndMessageId(memberId, messageId)
+                .orElseThrow(() -> new InvalidCancelLikeMessageException(memberId, messageId));
+        message.cancelLike();
+        messageLikeRepository.delete(messageLike);
+        return new MessageLikeResponseDto(message.getLikes(), false);
     }
 }

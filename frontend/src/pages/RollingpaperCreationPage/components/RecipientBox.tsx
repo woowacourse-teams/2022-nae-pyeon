@@ -1,36 +1,36 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import { RECIPIENT } from "@/constants";
 import { Recipient } from "@/types";
+import { RECIPIENT } from "@/constants";
 
 const CONTENTS = {
   [RECIPIENT.TEAM]: {
-    recipient: RECIPIENT.TEAM,
-    to: "모임",
-    description: "모임을 대상으로 한 롤링페이퍼 작성하기",
+    to: "👨‍👦‍👦 모임",
+    description: "모임 친구들과 다같이 공유하는 롤링페이퍼",
   },
   [RECIPIENT.MEMBER]: {
-    recipient: RECIPIENT.MEMBER,
-    to: "멤버",
-    description: "모임 내의 멤버에게 롤링페이퍼 작성하기",
+    to: "🙋‍♂️ 멤버",
+    description: "모임 친구 한명에게 쓰는 롤링페이퍼",
   },
 };
 
 interface RecipientBoxProps {
   type: Recipient;
-  onClick: (type: Recipient) => React.MouseEventHandler<HTMLDivElement>;
+  onClick: React.MouseEventHandler<HTMLDivElement>;
+  selected: boolean;
 }
 
 interface StyledRecipientBoxProps {
   type: Recipient;
+  selected: boolean;
 }
 
-export const RecipientBox = ({ type, onClick }: RecipientBoxProps) => {
-  const { recipient, to, description } = CONTENTS[type];
+const RecipientBox = ({ type, onClick, selected }: RecipientBoxProps) => {
+  const { to, description } = CONTENTS[type];
 
   return (
-    <StyledRecipientBox type={type} onClick={onClick(recipient)}>
+    <StyledRecipientBox type={type} onClick={onClick} selected={selected}>
       <StyledTo>{to}</StyledTo>
       <StyledDescription>{description}</StyledDescription>
     </StyledRecipientBox>
@@ -57,6 +57,9 @@ const StyledRecipientBox = styled.div<StyledRecipientBoxProps>`
 
   cursor: pointer;
 
+  border: ${(props) =>
+    props.selected && `solid 4px ${props.theme.colors.PURPLE_400}`};
+
   &:hover {
     background-color: ${({ theme, type }) =>
       type === RECIPIENT.TEAM
@@ -74,3 +77,5 @@ const StyledDescription = styled.div`
   font-size: 16px;
   text-align: center;
 `;
+
+export default RecipientBox;

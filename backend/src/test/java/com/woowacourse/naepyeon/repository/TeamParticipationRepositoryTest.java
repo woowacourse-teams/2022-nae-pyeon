@@ -74,6 +74,23 @@ class TeamParticipationRepositoryTest {
     }
 
     @Test
+    @DisplayName("회원을 모임에 가입시키고 가입 관계를 조회한다.")
+    void saveAndFindByTeamIdAndMemberId() {
+        final String nickname = "닉네임";
+        final TeamParticipation teamParticipation = new TeamParticipation(team1, member1, nickname);
+        final Long savedId = teamParticipationRepository.save(teamParticipation)
+                .getId();
+
+        final TeamParticipation findTeamParticipation =
+                teamParticipationRepository.findByTeamIdAndMemberId(team1.getId(), member1.getId());
+
+        assertAll(
+                () -> assertThat(findTeamParticipation.getId()).isEqualTo(savedId),
+                () -> assertThat(findTeamParticipation.getNickname()).isEqualTo(nickname)
+        );
+    }
+
+    @Test
     @DisplayName("모임에 가입한 회원들을 team id로 조회한다.")
     void findByTeamId() {
         final TeamParticipation teamParticipation1 = new TeamParticipation(team1, member1, "닉네임1");
@@ -105,8 +122,8 @@ class TeamParticipationRepositoryTest {
                 teamParticipationRepository.findTeamsByMemberId(member1.getId(), PageRequest.of(0, 1));
 
         assertAll(
-                () -> assertThat(joinedTeams).contains(team1),
-                () -> assertThat(joinedTeams).doesNotContain(team2, team3)
+                () -> assertThat(joinedTeams).contains(team3),
+                () -> assertThat(joinedTeams).doesNotContain(team2, team1)
         );
     }
 
@@ -119,7 +136,7 @@ class TeamParticipationRepositoryTest {
         teamParticipationRepository.save(teamParticipation1);
 
         final String actual =
-                teamParticipationRepository.findNicknameByMemberIdAndTeamId(member1.getId(), team1.getId());
+                teamParticipationRepository.findNicknameByTeamIdAndMemberId(team1.getId(), member1.getId());
 
         assertThat(actual).isEqualTo(expected);
     }

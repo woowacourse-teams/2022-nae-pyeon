@@ -11,3 +11,9 @@ operation::message-controller-test/update-message[snippets='http-request,http-re
 
 === 메시지 삭제
 operation::message-controller-test/delete-message[snippets='http-request,http-response']
+
+=== 메시지 좋아요
+operation::message-controller-test/like-message[snippets='http-request,http-response']
+
+=== 메시지 좋아요 취소
+operation::message-controller-test/cancel-like-message[snippets='http-request,http-response']

@@ -22,15 +22,9 @@ const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProp) => {
   const { isWrite, handleWriteButtonClick, handleWriteEnd } = useMessageWrite();
 
   const elementList = useMemo(() => {
-    const elementList = messageList
-      .map((message) => (
-        <MessageBox
-          key={message.id}
-          recipientType={recipientType}
-          {...message}
-        />
-      ))
-      .reverse();
+    const elementList = messageList.map((message) => (
+      <MessageBox key={message.id} recipientType={recipientType} {...message} />
+    ));
 
     return isWrite
       ? [

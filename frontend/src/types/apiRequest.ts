@@ -38,6 +38,16 @@ export interface DeleteMessageRequest {
   id: Message["id"];
 }
 
+export interface PostLikeRequest {
+  rollingpaperId: Rollingpaper["id"];
+  id: Message["id"];
+}
+
+export interface DeleteLikeRequest {
+  rollingpaperId: Rollingpaper["id"];
+  id: Message["id"];
+}
+
 // rollingpaper
 export interface GetRollingpaperRequest {
   teamId: Team["id"];
@@ -65,7 +75,7 @@ export interface PostTeamRequest extends Omit<Team, "id" | "joined"> {
   nickname: TeamMember["nickname"];
 }
 
-export interface PostTeamMemberWithInviteTokenRequest {
-  inviteToken: string;
+export interface PostTeamMemberWithInviteCodeRequest {
+  inviteCode: string;
   nickname: TeamMember["nickname"];
 }

@@ -58,7 +58,7 @@ class MemberControllerTest extends TestSupport {
     void deleteMember() throws Exception {
         mockMvc.perform(
                         delete("/api/v1/members/me")
-                                .header("Authorization", "Bearer " + accessToken)
+                                .header("Authorization", "Bearer " + notJoinedMemberAccessToken)
                 )
                 .andExpect(status().isNoContent());
     }

@@ -59,4 +59,24 @@ class MessageControllerTest extends TestSupport {
                 .andExpect(status().isNoContent())
                 .andDo(restDocs.document());
     }
+
+    @Test
+    void likeMessage() throws Exception {
+        mockMvc.perform(
+                        post("/api/v1/rollingpapers/{rollingpaperId}/messages/{messageId}/likes", rollingpaperId1, messageId)
+                                .header("Authorization", "Bearer " + joinedMemberAccessToken)
+                )
+                .andExpect(status().isOk())
+                .andDo(restDocs.document());
+    }
+
+    @Test
+    void cancelLikeMessage() throws Exception {
+        mockMvc.perform(
+                        delete("/api/v1/rollingpapers/{rollingpaperId}/messages/{messageId}/likes", rollingpaperId1, messageId)
+                                .header("Authorization", "Bearer " + accessToken)
+                )
+                .andExpect(status().isOk())
+                .andDo(restDocs.document());
+    }
 }

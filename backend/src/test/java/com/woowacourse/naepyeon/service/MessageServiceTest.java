@@ -11,13 +11,17 @@ import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.domain.rollingpaper.Recipient;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
+import com.woowacourse.naepyeon.exception.InvalidCancelLikeMessageException;
+import com.woowacourse.naepyeon.exception.InvalidLikeMessageException;
 import com.woowacourse.naepyeon.exception.InvalidSecretMessageToTeam;
 import com.woowacourse.naepyeon.exception.NotAuthorException;
 import com.woowacourse.naepyeon.exception.NotFoundMessageException;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
+import com.woowacourse.naepyeon.repository.messagelike.MessageLikeRepository;
 import com.woowacourse.naepyeon.repository.rollingpaper.RollingpaperRepository;
-import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;
+import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
+import com.woowacourse.naepyeon.service.dto.MessageLikeResponseDto;
 import com.woowacourse.naepyeon.service.dto.MessageRequestDto;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.MessageUpdateRequestDto;
@@ -45,11 +49,13 @@ class MessageServiceTest {
     private final Member member = new Member("member", "m@hello.com", Platform.KAKAO, "1");
     private final Member author = new Member("author", "au@hello.com", Platform.KAKAO, "2");
     private final Member otherAuthor = new Member("author2", "aut@hello.com", Platform.KAKAO, "3");
-    private final Rollingpaper teamRollingpaper = new Rollingpaper("AlexAndKei", Recipient.TEAM, team, member);
-    private final Rollingpaper memberRollingpaper = new Rollingpaper("AlexAndKei", Recipient.MEMBER, team, member);
     private final TeamParticipation teamParticipation1 = new TeamParticipation(team, member, "일케이");
     private final TeamParticipation teamParticipation2 = new TeamParticipation(team, author, "이케이");
     private final TeamParticipation teamParticipation3 = new TeamParticipation(team, otherAuthor, "삼케이");
+    private final Rollingpaper teamRollingpaper =
+            new Rollingpaper("AlexAndKei", Recipient.TEAM, team, null, null);
+    private final Rollingpaper memberRollingpaper =
+            new Rollingpaper("AlexAndKei", Recipient.MEMBER, team, member, teamParticipation1);
 
     @Autowired
     private MessageService messageService;
@@ -63,17 +69,20 @@ class MessageServiceTest {
     @Autowired
     private TeamParticipationRepository teamParticipationRepository;
 
+    @Autowired
+    private MessageLikeRepository messageLikeRepository;
+
     @BeforeEach
     void setUp() {
         teamRepository.save(team);
         memberRepository.save(member);
         memberRepository.save(author);
         memberRepository.save(otherAuthor);
-        rollingpaperRepository.save(memberRollingpaper);
-        rollingpaperRepository.save(teamRollingpaper);
         teamParticipationRepository.save(teamParticipation1);
         teamParticipationRepository.save(teamParticipation2);
         teamParticipationRepository.save(teamParticipation3);
+        rollingpaperRepository.save(memberRollingpaper);
+        rollingpaperRepository.save(teamRollingpaper);
     }
 
     @Test
@@ -234,16 +243,6 @@ class MessageServiceTest {
         final List<WrittenMessageResponseDto> actual = writtenMessagesResponseDto.getMessages();
         final List<WrittenMessageResponseDto> expected = List.of(
                 new WrittenMessageResponseDto(
-                        messageId,
-                        memberRollingpaper.getId(),
-                        memberRollingpaper.getTitle(),
-                        team.getId(),
-                        team.getName(),
-                        messageRequest.getContent(),
-                        messageRequest.getColor(),
-                        "일케이"
-                ),
-                new WrittenMessageResponseDto(
                         messageId2,
                         teamRollingpaper.getId(),
                         teamRollingpaper.getTitle(),
@@ -252,6 +251,16 @@ class MessageServiceTest {
                         messageRequest.getContent(),
                         messageRequest.getColor(),
                         TEAM_NAME
+                ),
+                new WrittenMessageResponseDto(
+                        messageId,
+                        memberRollingpaper.getId(),
+                        memberRollingpaper.getTitle(),
+                        team.getId(),
+                        team.getName(),
+                        messageRequest.getContent(),
+                        messageRequest.getColor(),
+                        "일케이"
                 )
         );
         assertThat(actual)
@@ -283,7 +292,7 @@ class MessageServiceTest {
                 author.getId());
         final MessageResponseDto expected =
                 new MessageResponseDto(messageId, expectedContent, "이케이", author.getId(),
-                        expectedColor, false, false, true, true);
+                        expectedColor, false, false, true, true, 0L, false);
         assertThat(actual)
                 .usingRecursiveComparison()
                 .isEqualTo(expected);
@@ -312,7 +321,7 @@ class MessageServiceTest {
                 author.getId());
         final MessageResponseDto expected =
                 new MessageResponseDto(messageId, messageRequest.getContent(), "", author.getId(),
-                        messageRequest.getColor(), expectedAnonymous, false, true, true);
+                        messageRequest.getColor(), expectedAnonymous, false, true, true, 0L, false);
         assertThat(actual)
                 .usingRecursiveComparison()
                 .isEqualTo(expected);
@@ -341,7 +350,7 @@ class MessageServiceTest {
                 author.getId());
         final MessageResponseDto expected =
                 new MessageResponseDto(messageId, messageRequest.getContent(), "이케이", author.getId(),
-                        messageRequest.getColor(), false, expectedSecret, true, true);
+                        messageRequest.getColor(), false, expectedSecret, true, true, 0L, false);
         assertThat(actual)
                 .usingRecursiveComparison()
                 .isEqualTo(expected);
@@ -395,6 +404,142 @@ class MessageServiceTest {
 
         assertThatThrownBy(() -> messageService.deleteMessage(messageId, 9999L))
                 .isInstanceOf(NotAuthorException.class);
+    }
+
+    @Test
+    @DisplayName("메시지에 좋아요를 누를 수 있다")
+    void likeMessage() {
+        // given
+        final MessageRequest messageRequest = createMessageRequest();
+        final Long messageId = messageService.saveMessage(
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
+                memberRollingpaper.getId(), member.getId()
+        );
+
+        // when
+        MessageLikeResponseDto messageLikeResponseDto = messageService.likeMessage(member.getId(),
+                memberRollingpaper.getId(), messageId);
+
+        // then
+        assertThat(messageLikeResponseDto)
+                .extracting("likes", "liked")
+                .containsExactly(1L, true);
+    }
+
+    @Test
+    @DisplayName("한 사람이 같은 메시지에 좋아요를 여러번 할 수 없다.")
+    void likeMessage_again() {
+        // given
+        final MessageRequest messageRequest = createMessageRequest();
+        final Long messageId = messageService.saveMessage(
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
+                memberRollingpaper.getId(), member.getId()
+        );
+
+        // when
+        messageService.likeMessage(member.getId(), memberRollingpaper.getId(), messageId);
+
+        // then
+        assertThatThrownBy(() -> messageService.likeMessage(member.getId(), memberRollingpaper.getId(), messageId))
+                .isInstanceOf(InvalidLikeMessageException.class);
+    }
+
+    @Test
+    @DisplayName("여러명이 같은 메시지에 좋아요를 누를 수 있다.")
+    void likeMessage_together() {
+        // given
+        final MessageRequest messageRequest = createMessageRequest();
+        final Long messageId = messageService.saveMessage(
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
+                memberRollingpaper.getId(), member.getId()
+        );
+
+        // when
+        messageService.likeMessage(member.getId(), memberRollingpaper.getId(), messageId);
+        messageService.likeMessage(author.getId(), memberRollingpaper.getId(), messageId);
+        MessageLikeResponseDto messageLikeResponseDto = messageService.likeMessage(otherAuthor.getId(),
+                memberRollingpaper.getId(), messageId);
+
+        // then
+        assertThat(messageLikeResponseDto)
+                .extracting("likes", "liked")
+                .containsExactly(3L, true);
+    }
+
+    @Test
+    @DisplayName("좋아요를 누르지 않아도 다른사람이 누른 좋아요 개수를 확인할 수 있다.")
+    void likeMessage_likes() {
+        // given
+        final MessageRequest messageRequest = createMessageRequest();
+        final Long messageId = messageService.saveMessage(
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
+                memberRollingpaper.getId(), member.getId()
+        );
+
+        // when
+        messageService.likeMessage(member.getId(), memberRollingpaper.getId(), messageId);
+        messageService.likeMessage(author.getId(), memberRollingpaper.getId(), messageId);
+        MessageResponseDto message = messageService.findMessage(messageId, memberRollingpaper.getId(),
+                otherAuthor.getId());
+
+        // then
+        assertThat(message)
+                .extracting("likes", "liked")
+                .containsExactly(2L, false);
+    }
+
+    @Test
+    @DisplayName("메시지에 좋아요 취소를 할 수 있다")
+    void cancelLikeMessage() {
+        // given
+        final MessageRequest messageRequest = createMessageRequest();
+        final Long messageId = messageService.saveMessage(
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
+                memberRollingpaper.getId(), member.getId()
+        );
+
+        // when
+        messageService.likeMessage(member.getId(), memberRollingpaper.getId(), messageId);
+        MessageLikeResponseDto messageLikeResponseDto = messageService.cancelLikeMessage(member.getId(), messageId);
+
+        // then
+        assertThat(messageLikeResponseDto)
+                .extracting("likes", "liked")
+                .containsExactly(0L, false);
+    }
+
+    @Test
+    @DisplayName("메시지 좋아요를 하지 않은 상태에서 좋아요 취소를 할 수 없다.")
+    void invalidCancelLikeMessage() {
+        // given
+        final MessageRequest messageRequest = createMessageRequest();
+        final Long messageId = messageService.saveMessage(
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
+                memberRollingpaper.getId(), member.getId()
+        );
+
+        // when & then
+        assertThatThrownBy(() -> messageService.cancelLikeMessage(member.getId(), messageId))
+                .isInstanceOf(InvalidCancelLikeMessageException.class);
+    }
+
+    @Test
+    @DisplayName("메시지 좋아요를 후 메세지를 삭제하면 메시지 좋아요 기록도 삭제된다.")
+    void LikeMessageAfterDeleteMessage() {
+        // given
+        final MessageRequest messageRequest = createMessageRequest();
+        final Long messageId = messageService.saveMessage(
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
+                memberRollingpaper.getId(), member.getId()
+        );
+
+        // when
+        messageService.likeMessage(member.getId(), memberRollingpaper.getId(), messageId);
+        messageService.deleteMessage(messageId, member.getId());
+
+        // then
+        assertThat(messageLikeRepository.findByMemberIdAndMessageId(member.getId(), messageId))
+                .isEmpty();
     }
 
     private MessageRequest createMessageRequest() {

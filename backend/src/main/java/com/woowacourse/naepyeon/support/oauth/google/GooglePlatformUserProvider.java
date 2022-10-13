@@ -7,14 +7,13 @@ import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.support.oauth.PlatformUserProvider;
 import com.woowacourse.naepyeon.support.oauth.dto.GoogleAccessTokenResponse;
 import com.woowacourse.naepyeon.support.oauth.dto.GoogleUserResponse;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class GooglePlatformUserProvider implements PlatformUserProvider {

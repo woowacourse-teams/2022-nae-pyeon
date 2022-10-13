@@ -24,6 +24,15 @@ public class TeamParticipationRepositoryImpl implements TeamParticipationReposit
     private final EntityManager em;
 
     @Override
+    public TeamParticipation findByTeamIdAndMemberId(final Long teamId, final Long memberId) {
+        return queryFactory
+                .selectFrom(teamParticipation)
+                .where(isTeamIdEq(teamId)
+                        .and(isMemberIdEq(memberId)))
+                .fetchOne();
+    }
+
+    @Override
     public List<TeamParticipation> findByTeamId(final Long teamId) {
         return queryFactory
                 .selectFrom(teamParticipation)
@@ -45,7 +54,9 @@ public class TeamParticipationRepositoryImpl implements TeamParticipationReposit
         final List<Team> content = queryFactory
                 .select(team)
                 .from(teamParticipation)
+                .innerJoin(teamParticipation.team, team)
                 .where(isMemberIdEq(memberId))
+                .orderBy(teamParticipation.id.desc())
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
@@ -53,14 +64,14 @@ public class TeamParticipationRepositoryImpl implements TeamParticipationReposit
         final JPAQuery<Long> countQuery = queryFactory
                 .select(team.count())
                 .from(teamParticipation)
+                .innerJoin(teamParticipation.team, team)
                 .where(isMemberIdEq(memberId));
 
         return PageableExecutionUtils.getPage(content, pageRequest, countQuery::fetchOne);
     }
 
-
     @Override
-    public String findNicknameByMemberIdAndTeamId(final Long memberId, final Long teamId) {
+    public String findNicknameByTeamIdAndMemberId(final Long teamId, final Long memberId) {
         return queryFactory
                 .select(teamParticipation.nickname)
                 .from(teamParticipation)

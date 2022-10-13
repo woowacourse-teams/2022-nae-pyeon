@@ -10,7 +10,9 @@ import com.woowacourse.naepyeon.controller.dto.JoinTeamMemberRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
-import com.woowacourse.naepyeon.support.invitetoken.InviteTokenProvider;
+import com.woowacourse.naepyeon.domain.Team;
+import com.woowacourse.naepyeon.domain.invitecode.InviteCode;
+import com.woowacourse.naepyeon.repository.invitecode.InviteCodeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,7 +20,7 @@ import org.springframework.http.MediaType;
 class TeamControllerTest extends TestSupport {
 
     @Autowired
-    private InviteTokenProvider inviteTokenProvider;
+    InviteCodeRepository inviteCodeRepository;
 
     @Test
     void getTeam() throws Exception {
@@ -135,7 +137,7 @@ class TeamControllerTest extends TestSupport {
     }
 
     @Test
-    void createInviteToken() throws Exception {
+    void createInviteCode() throws Exception {
         mockMvc.perform(
                         post("/api/v1/teams/{teamId}/invite", teamId)
                                 .header("Authorization", "Bearer " + joinedMemberAccessToken)
@@ -145,10 +147,12 @@ class TeamControllerTest extends TestSupport {
     }
 
     @Test
-    void getTeamIdByInviteToken() throws Exception {
-        final String inviteToken = inviteTokenProvider.createInviteToken(teamId);
+    void getTeamIdByInviteCode() throws Exception {
+        final Team team = teamRepository.findById(teamId).get();
+        final InviteCode inviteCode = team.createInviteCode(() -> "abc");
+        inviteCodeRepository.save(inviteCode);
         mockMvc.perform(
-                        get("/api/v1/teams/invite?inviteToken=" + inviteToken)
+                        get("/api/v1/teams/invite?inviteCode=" + inviteCode.getCode())
                                 .header("Authorization", "Bearer " + joinedMemberAccessToken)
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
@@ -157,8 +161,10 @@ class TeamControllerTest extends TestSupport {
 
     @Test
     void inviteJoin() throws Exception {
-        final String inviteToken = inviteTokenProvider.createInviteToken(teamId);
-        final InviteJoinRequest inviteJoinRequest = new InviteJoinRequest(inviteToken, "모임가입닉네임");
+        final Team team = teamRepository.findById(teamId).get();
+        final InviteCode inviteCode = team.createInviteCode(() -> "abc");
+        inviteCodeRepository.save(inviteCode);
+        final InviteJoinRequest inviteJoinRequest = new InviteJoinRequest(inviteCode.getCode(), "모임가입닉네임");
         mockMvc.perform(
                         post("/api/v1/teams/invite/join")
                                 .header("Authorization", "Bearer " + notJoinedMemberAccessToken)

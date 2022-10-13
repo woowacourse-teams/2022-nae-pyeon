@@ -11,6 +11,7 @@ import com.woowacourse.naepyeon.controller.dto.RollingpaperUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.TeamRequest;
 import com.woowacourse.naepyeon.controller.dto.TokenRequest;
 import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
+import com.woowacourse.naepyeon.service.dto.RefreshTokenDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -227,13 +228,37 @@ public class AcceptanceFixture {
         return get_search(tokenResponseDto, "/api/v1/members/me/messages/written", "", page, count);
     }
 
-    public static ExtractableResponse<Response> 초대_토큰_생성(
+    public static ExtractableResponse<Response> 초대_코드_생성(
             final TokenResponseDto tokenResponseDto, final Long teamId) {
         return post(tokenResponseDto, "", "/api/v1/teams/" + teamId + "/invite");
     }
 
-    public static ExtractableResponse<Response> 초대_토큰으로_팀_상세_조회(
-            final TokenResponseDto tokenResponseDto, final String inviteToken) {
-        return get(tokenResponseDto, "/api/v1/teams/invite?inviteToken=" + inviteToken);
+    public static ExtractableResponse<Response> 초대_코드로_팀_상세_조회(
+            final TokenResponseDto tokenResponseDto, final String inviteCode) {
+        return get(tokenResponseDto, "/api/v1/teams/invite?inviteCode=" + inviteCode);
+    }
+
+    public static ExtractableResponse<Response> 액세스_토큰_재발급(final TokenResponseDto tokenResponseDto,
+                                                           final RefreshTokenDto refreshTokenDto) {
+        return post(tokenResponseDto, refreshTokenDto, "/api/v1/renewal-token");
+    }
+
+    public static ExtractableResponse<Response> 리프레시_토큰_무효화(final TokenResponseDto tokenResponseDto,
+                                                            final RefreshTokenDto refreshTokenDto) {
+        return post(tokenResponseDto, refreshTokenDto, "/api/v1/logout");
+    }
+
+    public static ExtractableResponse<Response> 메세지_좋아요(final TokenResponseDto tokenResponseDto,
+                                                        final Long rollingpaperId,
+                                                        final Long messageId) {
+        return post(tokenResponseDto, "",
+                "/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId + "/likes");
+    }
+
+    public static ExtractableResponse<Response> 메세지_좋아요_취소(final TokenResponseDto tokenResponseDto,
+                                                           final Long rollingpaperId,
+                                                           final Long messageId) {
+        return delete(tokenResponseDto,
+                "/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId + "/likes");
     }
 }

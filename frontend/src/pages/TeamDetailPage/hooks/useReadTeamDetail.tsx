@@ -6,12 +6,8 @@ import { getTeam } from "@/api/team";
 import { GetTeamResponse } from "@/types/apiResponse";
 
 const useReadTeamDetail = (teamId: number) =>
-  useQuery<GetTeamResponse, AxiosError>(
-    ["team", teamId],
-    () => getTeam(teamId),
-    {
-      useErrorBoundary: true,
-    }
+  useQuery<GetTeamResponse, AxiosError>(["team", teamId], () =>
+    getTeam(teamId)
   );
 
 export default useReadTeamDetail;

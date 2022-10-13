@@ -34,7 +34,6 @@ const useCreateMessage = (rollingpaperId: number) => {
         queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
         openSnackbar("메시지 작성 완료");
       },
-      useErrorBoundary: true,
     }
   );
 

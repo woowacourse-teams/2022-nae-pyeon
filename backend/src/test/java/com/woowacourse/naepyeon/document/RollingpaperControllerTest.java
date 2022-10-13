@@ -15,7 +15,8 @@ class RollingpaperControllerTest extends TestSupport {
 
     @Test
     void createMemberRollingpaper() throws Exception {
-        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest = new CreateMemberRollingpaperRequest("어서오세요", memberId2);
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("어서오세요", memberId2);
         mockMvc.perform(
                         post("/api/v1/teams/{teamId}/rollingpapers", teamId)
                                 .header("Authorization", "Bearer " + accessToken)
@@ -55,6 +56,50 @@ class RollingpaperControllerTest extends TestSupport {
         mockMvc.perform(
                         get("/api/v1/teams/{teamId}/rollingpapers", teamId)
                                 .header("Authorization", "Bearer " + accessToken)
+                )
+                .andExpect(status().isOk())
+                .andDo(restDocs.document());
+    }
+
+    @Test
+    void findRollingpapersByTeamIdAndOldestOrder() throws Exception {
+        mockMvc.perform(
+                        get("/api/v1/teams/{teamId}/rollingpapers", teamId)
+                                .header("Authorization", "Bearer " + accessToken)
+                                .queryParam("order", "oldest")
+                )
+                .andExpect(status().isOk())
+                .andDo(restDocs.document());
+    }
+
+    @Test
+    void findRollingpapersByTeamIdAndLatestOrder() throws Exception {
+        mockMvc.perform(
+                        get("/api/v1/teams/{teamId}/rollingpapers", teamId)
+                                .header("Authorization", "Bearer " + accessToken)
+                                .queryParam("order", "latest")
+                )
+                .andExpect(status().isOk())
+                .andDo(restDocs.document());
+    }
+
+    @Test
+    void findMemberRollingpapersByTeamId() throws Exception {
+        mockMvc.perform(
+                        get("/api/v1/teams/{teamId}/rollingpapers", teamId)
+                                .header("Authorization", "Bearer " + accessToken)
+                                .queryParam("filter", "member")
+                )
+                .andExpect(status().isOk())
+                .andDo(restDocs.document());
+    }
+
+    @Test
+    void findTeamRollingpapersByTeamId() throws Exception {
+        mockMvc.perform(
+                        get("/api/v1/teams/{teamId}/rollingpapers", teamId)
+                                .header("Authorization", "Bearer " + accessToken)
+                                .param("filter", "team")
                 )
                 .andExpect(status().isOk())
                 .andDo(restDocs.document());

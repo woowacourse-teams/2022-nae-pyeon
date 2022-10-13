@@ -5,3 +5,9 @@ operation::auth-controller-test/kakao-login[snippets='http-request,http-response
 
 === 구글 Oauth
 operation::auth-controller-test/google-login[snippets='http-request,http-response']
+
+=== Access Token 재요청
+operation::auth-controller-test/renewal-token[snippets='http-request,http-response']
+
+=== 리프레시 토큰 무효화
+operation::auth-controller-test/logout[snippets='http-request,http-response']

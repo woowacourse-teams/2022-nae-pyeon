@@ -2,7 +2,11 @@ package com.woowacourse.naepyeon.document;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.naepyeon.config.DatabaseCleaner;
 import com.woowacourse.naepyeon.config.logging.RequestBodyWrappingFilter;
+import com.woowacourse.naepyeon.repository.member.MemberRepository;
+import com.woowacourse.naepyeon.repository.refreshtoken.RefreshTokenRepository;
+import com.woowacourse.naepyeon.repository.team.TeamRepository;
 import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.MessageService;
 import com.woowacourse.naepyeon.service.RollingpaperService;
@@ -48,11 +52,17 @@ public abstract class TestSupport {
     protected TeamService teamService;
 
     @Autowired
+    protected RefreshTokenRepository refreshTokenRepository;
+
+    @Autowired
     protected RollingpaperService rollingpaperService;
 
     @Autowired
     protected MessageService messageService;
-
+    @Autowired
+    protected TeamRepository teamRepository;
+    @Autowired
+    protected MemberRepository memberRepository;
     protected MockMvc mockMvc;
     protected String accessToken;
     protected String joinedMemberAccessToken;
@@ -64,12 +74,15 @@ public abstract class TestSupport {
     protected Long rollingpaperId1;
     protected Long rollingpaperId2;
     protected Long messageId;
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
 
     @BeforeEach
     void setUp(
             final WebApplicationContext context,
             final RestDocumentationContextProvider provider
     ) {
+        databaseCleaner.execute();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
                 .addFilters(new RequestBodyWrappingFilter())
@@ -116,5 +129,6 @@ public abstract class TestSupport {
         messageService.saveMessage(
                 new MessageRequestDto("많은 가르침 받았습니다.", "#123456", false, false), rollingpaperId2, memberId2
         );
+        messageService.likeMessage(memberId1, rollingpaperId1, messageId);
     }
 }

@@ -14,7 +14,7 @@ interface kakaoOauthLoginVariable {
   redirectUri: string;
 }
 
-const useCreateKakaoOauthLogin = (inviteToken: string | null) => {
+const useCreateKakaoOauthLogin = (inviteCode: string | null) => {
   const navigate = useNavigate();
   const { login } = useContext(UserContext);
 
@@ -33,15 +33,14 @@ const useCreateKakaoOauthLogin = (inviteToken: string | null) => {
         if (data) {
           login(data.accessToken, data.id);
 
-          if (inviteToken) {
-            navigate(`/invite/${inviteToken}`, { replace: true });
+          if (inviteCode) {
+            navigate(`/invite/${inviteCode}`, { replace: true });
             return;
           }
 
           navigate("/", { replace: true });
         }
       },
-      useErrorBoundary: true,
     }
   );
 

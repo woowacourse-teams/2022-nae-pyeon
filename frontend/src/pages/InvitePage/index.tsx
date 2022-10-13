@@ -5,8 +5,8 @@ import useValidatedParam from "@/hooks/useValidatedParam";
 import useInput from "@/hooks/useInput";
 import useCheckLogin from "@/pages/InvitePage/hooks/useCheckLogin";
 
-import useReadTeamDetailWithInviteToken from "@/pages/InvitePage/hooks/useReadTeamDetailWithInviteToken";
-import useCreateTeamWithInviteToken from "@/pages/InvitePage/hooks/useCreateTeamWithInviteToken";
+import useReadTeamDetailWithInviteCode from "@/pages/InvitePage/hooks/useReadTeamDetailWithInviteCode";
+import useCreateTeamWithInviteCode from "@/pages/InvitePage/hooks/useCreateTeamWithInviteCode";
 
 import UnderlineInput from "@/components/UnderlineInput";
 import LineButton from "@/components/LineButton";
@@ -16,17 +16,15 @@ import TeamDescriptionBox from "@/pages/InvitePage/components/TeamDescriptionBox
 import { REGEX } from "@/constants";
 
 const InvitePage = () => {
-  const inviteToken = useValidatedParam<string>("inviteToken");
+  const inviteCode = useValidatedParam<string>("inviteCode");
 
   const { value: nickname, handleInputChange } = useInput("");
-  const checkLogin = useCheckLogin(inviteToken);
+  const checkLogin = useCheckLogin(inviteCode);
 
   const { data: teamDetail, isLoading } =
-    useReadTeamDetailWithInviteToken(inviteToken);
+    useReadTeamDetailWithInviteCode(inviteCode);
 
-  const createTeamWithInviteToken = useCreateTeamWithInviteToken(
-    teamDetail?.id
-  );
+  const createTeamWithInviteCode = useCreateTeamWithInviteCode(teamDetail?.id);
 
   const isValidTeamNickname = (nickname: string) => {
     return REGEX.TEAM_NICKNAME.test(nickname);
@@ -39,9 +37,9 @@ const InvitePage = () => {
       return;
     }
 
-    createTeamWithInviteToken({
+    createTeamWithInviteCode({
       nickname,
-      inviteToken,
+      inviteCode,
     });
   };
 

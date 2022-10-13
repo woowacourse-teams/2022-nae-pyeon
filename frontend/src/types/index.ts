@@ -19,6 +19,8 @@ export interface Message {
   secret: boolean;
   editable: boolean;
   visible: boolean;
+  likes: number;
+  liked: boolean;
 }
 
 export interface Rollingpaper {

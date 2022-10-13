@@ -1,17 +1,15 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import Dropdown from "@/components/Dropdown";
 import NicknameEditModalForm from "@/pages/TeamDetailPage/components/NicknameEditModalForm";
 import InviteModal from "@/pages/TeamDetailPage/components/InviteModal";
 
 import useModal from "@/hooks/useModal";
 
-import MeatballIcon from "@/assets/icons/bx-dots-horizontal-rounded.svg";
-
 import { Team } from "@/types";
 
 type StyledTeamDescriptionContainerProps = Pick<Team, "color">;
+type StyledButtonContainerProps = Pick<Team, "color">;
 
 const TeamDescriptionBox = ({
   name,
@@ -31,43 +29,39 @@ const TeamDescriptionBox = ({
     handleModalOpen: handleInviteOpen,
   } = useModal();
 
-  const teamMoreOption = [
-    {
-      option: "초대하기",
-      callback: handleInviteOpen,
-    },
-    {
-      option: "모임 프로필 설정",
-      callback: handleTeamNicknameOpen,
-    },
-  ];
-
   return (
     <StyledTeamDescriptionContainer color={color}>
-      <StyledHeader>
-        <h3>{`${emoji} ${name}`}</h3>
-        {joined && (
-          <Dropdown
-            DropdownButton={<MeatballIcon />}
-            optionList={teamMoreOption}
-          />
-        )}
-      </StyledHeader>
-      <p>{description}</p>
+      <div>
+        <StyledHeader>
+          <h3>{`${emoji} ${name}`}</h3>
+        </StyledHeader>
+        <p>{description}</p>
+      </div>
       {isTeamNicknameOpen && (
         <NicknameEditModalForm onClickCloseButton={handleTeamNicknameClose} />
       )}
       {isInviteOpen && <InviteModal onClickClose={handleInviteClose} />}
+      {joined && (
+        <StyledButtonContainer color={color}>
+          <button onClick={handleInviteOpen}>초대하기</button>
+          <button onClick={handleTeamNicknameOpen}>모임 프로필 설정</button>
+        </StyledButtonContainer>
+      )}
     </StyledTeamDescriptionContainer>
   );
 };
 
 const StyledTeamDescriptionContainer = styled.div<StyledTeamDescriptionContainerProps>`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   width: 90%;
-  min-height: 150px;
+  min-height: 200px;
   padding: 20px 16px;
   border-radius: 8px;
   background-color: ${({ color }) => `${color}AB`};
+
   h3 {
     font-size: 32px;
     margin-bottom: 10px;
@@ -78,6 +72,26 @@ const StyledHeader = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 8px;
+`;
+
+const StyledButtonContainer = styled.div<StyledButtonContainerProps>`
+  position: relative;
+  top: 10px;
+  display: flex;
+  gap: 12px;
+  align-self: flex-end;
+
+  button {
+    padding: 10px;
+
+    font-size: 16px;
+    background-color: ${({ color }) => `${color}AB`};
+    border-radius: 4px;
+
+    &:hover {
+      background-color: ${({ color }) => color};
+    }
+  }
 `;
 
 export default TeamDescriptionBox;

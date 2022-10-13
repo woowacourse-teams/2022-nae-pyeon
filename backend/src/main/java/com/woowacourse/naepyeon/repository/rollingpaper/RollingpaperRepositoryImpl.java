@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.repository.rollingpaper;
 
+import static com.woowacourse.naepyeon.domain.QTeamParticipation.teamParticipation;
 import static com.woowacourse.naepyeon.domain.rollingpaper.QRollingpaper.rollingpaper;
 
 import com.querydsl.core.BooleanBuilder;
@@ -8,6 +9,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,10 +22,10 @@ public class RollingpaperRepositoryImpl implements RollingpaperRepositoryCustom 
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<Rollingpaper> findByMemberId(final Long memberId, final Pageable pageRequest) {
+    public Page<Rollingpaper> findByAddresseeId(final Long addresseeId, final Pageable pageRequest) {
         final List<Rollingpaper> content = queryFactory
                 .selectFrom(rollingpaper)
-                .where(isMemberIdEq(memberId))
+                .where(isAddresseeIdEq(addresseeId))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
@@ -31,7 +33,7 @@ public class RollingpaperRepositoryImpl implements RollingpaperRepositoryCustom 
         final JPAQuery<Long> countQuery = queryFactory
                 .select(rollingpaper.count())
                 .from(rollingpaper)
-                .where(isMemberIdEq(memberId));
+                .where(isAddresseeIdEq(addresseeId));
 
         return PageableExecutionUtils.getPage(content, pageRequest, countQuery::fetchOne);
     }
@@ -41,11 +43,31 @@ public class RollingpaperRepositoryImpl implements RollingpaperRepositoryCustom 
         return queryFactory
                 .selectFrom(rollingpaper)
                 .where(isTeamIdEq(teamId))
+                .orderBy(rollingpaper.createdDate.desc())
                 .fetch();
     }
 
-    private BooleanBuilder isMemberIdEq(final Long memberId) {
-        return nullSafeBuilder(() -> rollingpaper.member.id.eq(memberId));
+    @Override
+    public List<Rollingpaper> findByTeamIdOldestOrder(final Long teamId) {
+        return queryFactory
+                .selectFrom(rollingpaper)
+                .where(isTeamIdEq(teamId))
+                .orderBy(rollingpaper.createdDate.asc())
+                .fetch();
+    }
+
+    @Override
+    public Optional<String> findAddresseeNicknameByMemberRollingpaperId(final Long rollingpaperId) {
+        return Optional.ofNullable(queryFactory
+                .select(teamParticipation.nickname)
+                .from(rollingpaper)
+                .innerJoin(rollingpaper.teamParticipation, teamParticipation)
+                .where(rollingpaper.id.eq(rollingpaperId))
+                .fetchOne());
+    }
+
+    private BooleanBuilder isAddresseeIdEq(final Long addresseeId) {
+        return nullSafeBuilder(() -> rollingpaper.addressee.id.eq(addresseeId));
     }
 
     private BooleanBuilder isTeamIdEq(final Long teamId) {

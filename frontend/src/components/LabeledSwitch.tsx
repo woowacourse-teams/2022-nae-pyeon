@@ -16,7 +16,7 @@ export const LabeledSwitch = ({
   return (
     <StyledLabeledSwitch>
       {labelText}
-      <StyledInput type="checkbox" checked={isChecked} />
+      <StyledInput type="checkbox" checked={isChecked} readOnly />
       <StyledMessage>
         {isChecked ? (
           <>

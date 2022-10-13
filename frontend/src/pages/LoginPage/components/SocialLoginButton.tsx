@@ -42,14 +42,14 @@ const StyledSocialLoginButton = styled.button`
 
   padding: 0 20px;
 
-  background-color: ${({ theme }) => theme.colors.GRAY_100};
+  background-color: ${({ theme }) => theme.colors.GRAY_200};
   border-radius: 8px;
 
   font-size: 16px;
   font-weight: 600;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.GRAY_200};
+    background-color: ${({ theme }) => theme.colors.GRAY_300};
   }
 
   img {

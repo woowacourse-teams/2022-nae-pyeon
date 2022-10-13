@@ -5,14 +5,14 @@ import { Team, TeamMember } from "@/types";
 import {
   GetTeamSearchResultRequest,
   PostTeamRequest,
-  PostTeamMemberWithInviteTokenRequest,
+  PostTeamMemberWithInviteCodeRequest,
 } from "@/types/apiRequest";
 
 const getTeam = async (id: Team["id"]) =>
   requestApi(() => appClient.get(`/teams/${id}`));
 
-const getTeamWithInviteToken = async (inviteToken: string) =>
-  requestApi(() => appClient.get(`/teams/invite?inviteToken=${inviteToken}`));
+const getTeamWithInviteCode = async (inviteCode: string) =>
+  requestApi(() => appClient.get(`/teams/invite?inviteCode=${inviteCode}`));
 
 const getMyTeams =
   (teamPageCount = 5) =>
@@ -59,18 +59,18 @@ const postTeam = async ({
 const postTeamMember = async ({ id, nickname }: TeamMember) =>
   requestApi(() => appClient.post(`/teams/${id}`, { nickname }));
 
-const postTeamMemberWithInviteToken = async ({
-  inviteToken,
+const postTeamMemberWithInviteCode = async ({
+  inviteCode,
   nickname,
-}: PostTeamMemberWithInviteTokenRequest) =>
+}: PostTeamMemberWithInviteCodeRequest) =>
   requestApi(() =>
     appClient.post(`/teams/invite/join`, {
-      inviteToken,
+      inviteCode,
       nickname,
     })
   );
 
-const postTeamInviteToken = async (id: Team["id"]) =>
+const postTeamInviteCode = async (id: Team["id"]) =>
   requestApi(() => appClient.post(`/teams/${id}/invite`));
 
 const putTeamNickname = async ({ id, nickname }: TeamMember) =>
@@ -82,11 +82,11 @@ export {
   getTeam,
   getTeamMembers,
   getTeamRollingpapers,
-  getTeamWithInviteToken,
+  getTeamWithInviteCode,
   getTeamMyNickname,
   postTeam,
   postTeamMember,
-  postTeamMemberWithInviteToken,
-  postTeamInviteToken,
+  postTeamMemberWithInviteCode,
+  postTeamInviteCode,
   putTeamNickname,
 };

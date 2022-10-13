@@ -5,7 +5,9 @@ import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 const PolicyPage = () => {
   return (
     <>
-      <PageTitleWithBackButton>개인정보처리방침 </PageTitleWithBackButton>
+      <PageTitleWithBackButton to="/login">
+        개인정보처리방침{" "}
+      </PageTitleWithBackButton>
       <StyledContent>{`< 내편 >('https://www.naepyeon.site'이하 '내 편')은(는) 「개인정보 보호법」 제30조에 따라 정보주체의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보 처리방침을 수립·공개합니다.
 
 ○ 이 개인정보처리방침은 2022년 9월 20부터 적용됩니다.
@@ -193,10 +195,10 @@ const PolicyPage = () => {
 ① 내편 은(는) 개인정보 처리에 관한 업무를 총괄해서 책임지고, 개인정보 처리와 관련한 정보주체의 불만처리 및 피해구제 등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.
 
 ▶ 개인정보 보호책임자
-성명 :박선호
+성명 :박선호, 공재호
 직책 :팀원
 직급 :팀원
-연락처 :010-9286-3093, sunho620@naver.com,
+연락처 :010-9286-3093, sunho620@naver.com, asebn121@gmail.com
 ※ 개인정보 보호 담당부서로 연결됩니다.
 
 

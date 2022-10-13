@@ -3,33 +3,43 @@ package com.woowacourse.naepyeon.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
+import com.woowacourse.naepyeon.domain.invitecode.InviteCode;
 import com.woowacourse.naepyeon.exception.DuplicateNicknameException;
 import com.woowacourse.naepyeon.exception.DuplicateTeamPaticipateException;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
+import com.woowacourse.naepyeon.repository.invitecode.InviteCodeRepository;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
-import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;
+import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.AllTeamsResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamRequestDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
-import com.woowacourse.naepyeon.support.invitetoken.InviteTokenProvider;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -52,7 +62,10 @@ class TeamServiceTest {
     private TeamParticipationRepository teamParticipationRepository;
 
     @Autowired
-    private InviteTokenProvider inviteTokenProvider;
+    private InviteCodeRepository inviteCodeRepository;
+
+    @Autowired
+    private EntityManager em;
 
     @BeforeEach
     void setUp() {
@@ -342,8 +355,8 @@ class TeamServiceTest {
 
         teamService.updateMyInfo(team2.getId(), member2.getId(), expected);
 
-        final String actual = teamParticipationRepository.findNicknameByMemberIdAndTeamId(member2.getId(),
-                team2.getId());
+        final String actual =
+                teamParticipationRepository.findNicknameByTeamIdAndMemberId(team2.getId(), member2.getId());
         assertThat(actual).isEqualTo(expected);
     }
 
@@ -378,28 +391,52 @@ class TeamServiceTest {
     }
 
     @Test
-    @DisplayName("팀 id를 받아 해당 팀의 초대토큰을 생성한다.")
-    void createInviteToken() {
-        final String inviteToken = teamService.createInviteToken(team1.getId());
-
-        final Long tokenTeamId = inviteTokenProvider.getTeamId(inviteToken);
-
-        assertThat(tokenTeamId).isEqualTo(team1.getId());
-    }
-
-    @Test
-    @DisplayName("존재하지 않는 팀의 초대토큰을 생성하려 할 경우 예외를 발생시킨다.")
-    void createInviteTokenWithNotExistTeam() {
-        assertThatThrownBy(() -> teamService.createInviteToken(9999L))
+    @DisplayName("존재하지 않는 팀의 초대코드를 생성하려 할 경우 예외를 발생시킨다.")
+    void createInviteCodeWithNotExistTeam() {
+        assertThatThrownBy(() -> teamService.createInviteCode(9999L))
                 .isInstanceOf(NotFoundTeamException.class);
     }
 
     @Test
-    @DisplayName("초대 토큰으로 팀 정보를 조회한다.")
-    void getTeamByInviteToken() {
-        final String inviteToken = teamService.createInviteToken(team1.getId());
+    @DisplayName("알파벳 대문자, 소문자, 숫자로만 이루어진 초대코드를 생성한다.")
+    void createInviteCode() {
+        final String inviteCode = teamService.createInviteCode(team1.getId());
+        assertAll(
+                () -> assertThat(inviteCode).matches("^[a-zA-Z0-9]*$"),
+                () -> assertThat(inviteCode).hasSize(10)
+        );
+    }
 
-        final TeamResponseDto teamResponseDto = teamService.findTeamByInviteToken(inviteToken, member.getId());
+    @Test
+    @DisplayName("이미 존재하는 초대코드가 생성됐을 경우 재시도한다.")
+    void createInviteCodeDuplicate() {
+        final InviteCodeRepository inviteCodeRepository = mock(InviteCodeRepository.class);
+        final TeamRepository teamRepository = mock(TeamRepository.class);
+        final TeamService teamService = new TeamService(teamRepository, null, null, inviteCodeRepository);
+        final Team team = mock(Team.class);
+        when(teamRepository.findById(any())).thenReturn(Optional.of(team));
+        when(team.getId()).thenReturn(9999L);
+        final InviteCode duplicateInviteCode = new InviteCode("abc", LocalDateTime.now().plusHours(24), team);
+        final InviteCode recreateInviteCode = new InviteCode("def", LocalDateTime.now().plusHours(24), team);
+        when(team.createInviteCode(any())).thenReturn(duplicateInviteCode, recreateInviteCode);
+        when(inviteCodeRepository.save(duplicateInviteCode)).thenThrow(new DataIntegrityViolationException("중복코드"));
+        when(inviteCodeRepository.save(recreateInviteCode)).thenReturn(recreateInviteCode);
+
+        final String inviteCode = teamService.createInviteCode(team.getId());
+
+        assertAll(
+                () -> assertThat(inviteCode).isEqualTo(recreateInviteCode.getCode()),
+                () -> verify(inviteCodeRepository, times(2)).save(any()),
+                () -> verify(team, times(2)).createInviteCode(any())
+        );
+    }
+
+    @Test
+    @DisplayName("초대 코드로 팀 정보를 조회한다.")
+    void getTeamByInviteCode() {
+        final String inviteCode = teamService.createInviteCode(team1.getId());
+
+        final TeamResponseDto teamResponseDto = teamService.findTeamByInviteCode(inviteCode, member.getId());
 
         assertThat(teamResponseDto).extracting("id", "name", "description", "emoji", "color")
                 .containsExactly(
@@ -412,11 +449,11 @@ class TeamServiceTest {
     }
 
     @Test
-    @DisplayName("초대 토큰으로 멤버를 팀에 가입시킨다.")
+    @DisplayName("초대 코드로 멤버를 팀에 가입시킨다.")
     void inviteJoin() {
-        final String inviteToken = teamService.createInviteToken(team1.getId());
+        final String inviteCode = teamService.createInviteCode(team1.getId());
 
-        final Long teamParticipationId = teamService.inviteJoin(inviteToken, member.getId(), "가입할래요");
+        final Long teamParticipationId = teamService.inviteJoin(inviteCode, member.getId(), "가입할래요");
 
         final TeamParticipation teamParticipation = teamParticipationRepository.findById(teamParticipationId)
                 .orElseThrow();
@@ -425,5 +462,24 @@ class TeamServiceTest {
                 () -> assertThat(teamParticipation.getMember().getId()).isEqualTo(member.getId()),
                 () -> assertThat(teamParticipation.getTeam().getId()).isEqualTo(team1.getId())
         );
+    }
+
+    @Test
+    @DisplayName("만료된 초대 코드를 삭제한다.")
+    void deleteExpiredInviteCodes() {
+        final InviteCode inviteCode1 = new InviteCode("abc", LocalDateTime.now().minusHours(1), team1);
+        final InviteCode inviteCode2 = new InviteCode("def", LocalDateTime.now().minusHours(1), team2);
+        final InviteCode inviteCode3 = new InviteCode("ghi", LocalDateTime.now().plusHours(1), team3);
+        inviteCodeRepository.save(inviteCode1);
+        inviteCodeRepository.save(inviteCode2);
+        inviteCodeRepository.save(inviteCode3);
+        em.flush();
+        em.clear();
+
+        teamService.deleteExpiredInviteCodes();
+        final List<InviteCode> inviteCodes = inviteCodeRepository.findAll();
+
+        assertThat(inviteCodes).extracting("code")
+                .containsExactly(inviteCode3.getCode());
     }
 }

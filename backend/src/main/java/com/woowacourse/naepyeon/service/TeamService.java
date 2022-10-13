@@ -3,15 +3,18 @@ package com.woowacourse.naepyeon.service;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.TeamParticipation;
+import com.woowacourse.naepyeon.domain.invitecode.InviteCode;
 import com.woowacourse.naepyeon.exception.DuplicateNicknameException;
 import com.woowacourse.naepyeon.exception.DuplicateTeamNameException;
 import com.woowacourse.naepyeon.exception.DuplicateTeamPaticipateException;
+import com.woowacourse.naepyeon.exception.InviteCodeExpiredException;
 import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
+import com.woowacourse.naepyeon.repository.invitecode.InviteCodeRepository;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
-import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;
+import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.AllTeamsResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMembersResponseDto;
@@ -19,25 +22,31 @@ import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamRequestDto;
 import com.woowacourse.naepyeon.service.dto.TeamResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamsResponseDto;
-import com.woowacourse.naepyeon.support.invitetoken.InviteTokenProvider;
+import com.woowacourse.naepyeon.support.SecureRandomStringUtils;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class TeamService {
 
+    private static final int INVITE_CODE_LENGTH = 10;
+
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
     private final TeamParticipationRepository teamParticipationRepository;
-    private final InviteTokenProvider inviteTokenProvider;
+    private final InviteCodeRepository inviteCodeRepository;
 
     @Transactional
     public Long save(final TeamRequestDto teamRequestDto, final Long memberId) {
@@ -158,7 +167,7 @@ public class TeamService {
 
     public TeamMemberResponseDto findMyInfoInTeam(final Long teamId, final Long memberId) {
         checkMemberNotIncludedTeam(teamId, memberId);
-        final String nickname = teamParticipationRepository.findNicknameByMemberIdAndTeamId(memberId, teamId);
+        final String nickname = teamParticipationRepository.findNicknameByTeamIdAndMemberId(teamId, memberId);
         return new TeamMemberResponseDto(nickname);
     }
 
@@ -188,9 +197,24 @@ public class TeamService {
                 .anyMatch(team -> team.getId().equals(teamId));
     }
 
-    public String createInviteToken(final Long teamId) {
-        validateExistTeam(teamId);
-        return inviteTokenProvider.createInviteToken(teamId);
+    @Transactional
+    public String createInviteCode(final Long teamId) {
+        final Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new NotFoundTeamException(teamId));
+        return makeInviteCode(teamId, team);
+    }
+
+    private String makeInviteCode(final Long teamId, final Team team) {
+        final InviteCode inviteCode = team.createInviteCode(
+                () -> SecureRandomStringUtils.createRandomAlphanumericSecure(INVITE_CODE_LENGTH)
+        );
+        try {
+            return inviteCodeRepository.save(inviteCode)
+                    .getCode();
+        } catch (final DataIntegrityViolationException e) {
+            log.debug("초대 코드 중복 키 발생, 재시도");
+            return createInviteCode(teamId);
+        }
     }
 
     private void validateExistTeam(final Long teamId) {
@@ -199,17 +223,26 @@ public class TeamService {
         }
     }
 
-    public TeamResponseDto findTeamByInviteToken(final String inviteToken, final Long memberId) {
-        final Long teamId = inviteTokenProvider.getTeamId(inviteToken);
-        final Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new NotFoundTeamException(teamId));
-        return TeamResponseDto.of(team, isJoinedMember(memberId, teamId), team.isSecret());
+    @Transactional
+    public void deleteExpiredInviteCodes() {
+        inviteCodeRepository.deleteExpired(LocalDateTime.now());
+    }
+
+    public TeamResponseDto findTeamByInviteCode(final String code, final Long memberId) {
+        final InviteCode inviteCode = inviteCodeRepository.findByCode(code)
+                .filter(InviteCode::isAvailable)
+                .orElseThrow(InviteCodeExpiredException::new);
+        final Team team = teamRepository.findById(inviteCode.getTeamId())
+                .orElseThrow(() -> new NotFoundTeamException(inviteCode.getTeamId()));
+        return TeamResponseDto.of(team, isJoinedMember(memberId, inviteCode.getTeamId()), team.isSecret());
     }
 
     @Transactional
-    public Long inviteJoin(final String inviteToken, final Long memberId, final String nickname) {
-        final Long teamId = inviteTokenProvider.getTeamId(inviteToken);
+    public Long inviteJoin(final String code, final Long memberId, final String nickname) {
+        final InviteCode inviteCode = inviteCodeRepository.findByCode(code)
+                .filter(InviteCode::isAvailable)
+                .orElseThrow(InviteCodeExpiredException::new);
 
-        return joinMember(teamId, memberId, nickname);
+        return joinMember(inviteCode.getTeamId(), memberId, nickname);
     }
 }

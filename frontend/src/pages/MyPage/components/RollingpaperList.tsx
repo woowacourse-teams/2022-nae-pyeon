@@ -1,13 +1,12 @@
 import styled from "@emotion/styled";
 
-import RollingpaperListItem from "@/pages/MyPage/components/RollingpaperListItem";
+import RollingpaperListItem from "@/components/RollinpaperListItem";
 import Paging from "@/components/Paging";
+import EmptyRollingpaperList from "@/components/EmptyRollingpaperList";
 
 import usePaging from "@/hooks/usePaging";
 
 import useReadReceivedRollingpapers from "@/pages/MyPage/hooks/useReadReceivedRollingpapers";
-
-import EmptyStateImg from "@/assets/images/empty-state.svg";
 
 interface RollingpaperListProp {
   lastPage: number;
@@ -24,7 +23,7 @@ const RollingpaperList = ({ lastPage }: RollingpaperListProp) => {
   }
 
   if (data.rollingpapers.length === 0) {
-    return <EmptyState />;
+    return <EmptyRollingpaperList />;
   }
 
   return (
@@ -47,42 +46,12 @@ const RollingpaperList = ({ lastPage }: RollingpaperListProp) => {
   );
 };
 
-const EmptyState = () => {
-  return (
-    <StyledEmpty>
-      <EmptyStateImg />
-      <StyledEmptyMessage>아직 받은 롤링페이퍼가 없어요!</StyledEmptyMessage>
-    </StyledEmpty>
-  );
-};
-
 const StyledListWithPaging = styled.div`
   display: flex;
   flex-direction: column;
 
   justify-content: space-between;
   height: 580px;
-`;
-
-const StyledEmpty = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  margin-top: 30px;
-
-  svg {
-    font-size: 150px;
-  }
-`;
-
-const StyledEmptyMessage = styled.div`
-  font-size: 24px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.GRAY_400};
-
-  margin-bottom: 20px;
 `;
 
 const StyledRollingpaperList = styled.ul`

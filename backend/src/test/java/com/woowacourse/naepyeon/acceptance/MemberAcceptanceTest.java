@@ -44,7 +44,8 @@ class MemberAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("올바르지 않은 토큰으로 마이페이지를 조회할 경우 예외를 발생시킨다.")
     void loginInvalidToken() {
-        final ExtractableResponse<Response> response = 회원_조회(new TokenResponseDto("invalidToken", 9999L));
+        final ExtractableResponse<Response> response =
+                회원_조회(new TokenResponseDto("invalidToken", "refreshToken", 9999L));
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
     }
@@ -114,6 +115,8 @@ class MemberAcceptanceTest extends AcceptanceTest {
         final String messageContent3 = "테스트";
         final String messageColor1 = "green";
         final String messageColor2 = "red";
+
+        메시지_작성(kei, rollingpaperId2, new MessageRequest(messageContent3, "yellow", false, false));
         final Long messageId1 =
                 메시지_작성(kei, rollingpaperId1, new MessageRequest(messageContent1, messageColor1, false, false))
                         .as(CreateResponse.class)
@@ -122,23 +125,12 @@ class MemberAcceptanceTest extends AcceptanceTest {
                 메시지_작성(kei, rollingpaperId1, new MessageRequest(messageContent2, messageColor2, false, false))
                         .as(CreateResponse.class)
                         .getId();
-        메시지_작성(kei, rollingpaperId2, new MessageRequest(messageContent3, "yellow", false, false));
 
-        //내가 작성한 메시지를 2개만 조회
+        //내가 작성한 메시지를 최신순으로 2개만 조회
         final WrittenMessagesResponseDto writtenMessagesResponseDto = 나의_메시지_조회(kei, 0, 2)
                 .as(WrittenMessagesResponseDto.class);
         final List<WrittenMessageResponseDto> actual = writtenMessagesResponseDto.getMessages();
         final List<WrittenMessageResponseDto> expected = List.of(
-                new WrittenMessageResponseDto(
-                        messageId1,
-                        rollingpaperId1,
-                        rollingpaperTitle1,
-                        teamId,
-                        "woowacourse-4th",
-                        messageContent1,
-                        messageColor1,
-                        "나는야모임장"
-                ),
                 new WrittenMessageResponseDto(
                         messageId2,
                         rollingpaperId1,
@@ -147,6 +139,16 @@ class MemberAcceptanceTest extends AcceptanceTest {
                         "woowacourse-4th",
                         messageContent2,
                         messageColor2,
+                        "나는야모임장"
+                ),
+                new WrittenMessageResponseDto(
+                        messageId1,
+                        rollingpaperId1,
+                        rollingpaperTitle1,
+                        teamId,
+                        "woowacourse-4th",
+                        messageContent1,
+                        messageColor1,
                         "나는야모임장"
                 )
         );
@@ -189,21 +191,11 @@ class MemberAcceptanceTest extends AcceptanceTest {
                         .as(CreateResponse.class)
                         .getId();
 
-        //내가 작성한 메시지 조회
+        //내가 작성한 메시지 최신 순으로 조회
         final WrittenMessagesResponseDto writtenMessagesResponseDto = 나의_메시지_조회(kei, 0, 10)
                 .as(WrittenMessagesResponseDto.class);
         final List<WrittenMessageResponseDto> actual = writtenMessagesResponseDto.getMessages();
         final List<WrittenMessageResponseDto> expected = List.of(
-                new WrittenMessageResponseDto(
-                        messageId1,
-                        rollingpaperId1,
-                        rollingpaperTitle1,
-                        teamId,
-                        "woowacourse-4th",
-                        messageContent1,
-                        messageColor1,
-                        "나는야모임장"
-                ),
                 new WrittenMessageResponseDto(
                         messageId2,
                         rollingpaperId2,
@@ -213,6 +205,16 @@ class MemberAcceptanceTest extends AcceptanceTest {
                         messageContent2,
                         messageColor2,
                         "woowacourse-4th"
+                ),
+                new WrittenMessageResponseDto(
+                        messageId1,
+                        rollingpaperId1,
+                        rollingpaperTitle1,
+                        teamId,
+                        "woowacourse-4th",
+                        messageContent1,
+                        messageColor1,
+                        "나는야모임장"
                 )
         );
 
@@ -238,7 +240,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
         //회원정보 수정
         final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest("kingGodKei");
         final ExtractableResponse<Response> response =
-                회원_유저네임_수정(new TokenResponseDto("invalidToken", 9999L), memberUpdateRequest);
+                회원_유저네임_수정(new TokenResponseDto("invalidToken", "refreshToken", 9999L), memberUpdateRequest);
 
         //회원정보 수정 실패
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
@@ -258,7 +260,8 @@ class MemberAcceptanceTest extends AcceptanceTest {
     @DisplayName("올바르지 않은 토큰으로 삭제할 경우 예외가 발생한다.")
     void deleteInvalidToken() {
         //회원 삭제
-        final ExtractableResponse<Response> response = 회원_삭제(new TokenResponseDto("invalidToken", 999L));
+        final ExtractableResponse<Response> response =
+                회원_삭제(new TokenResponseDto("invalidToken", "refreshToken", 999L));
 
         //회원정보 삭제 실패
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
