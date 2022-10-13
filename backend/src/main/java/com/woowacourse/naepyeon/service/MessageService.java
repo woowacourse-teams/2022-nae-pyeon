@@ -181,6 +181,7 @@ public class MessageService {
                 .orElseThrow(() -> new NotFoundMessageException(messageId));
         validateAuthor(memberId, message);
         messageRepository.deleteById(messageId);
+        messageLikeRepository.deleteAllByMessageId(messageId);
     }
 
     private void validateAuthor(final Long memberId, final Message message) {

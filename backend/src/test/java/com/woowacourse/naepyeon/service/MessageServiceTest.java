@@ -17,6 +17,7 @@ import com.woowacourse.naepyeon.exception.InvalidSecretMessageToTeam;
 import com.woowacourse.naepyeon.exception.NotAuthorException;
 import com.woowacourse.naepyeon.exception.NotFoundMessageException;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
+import com.woowacourse.naepyeon.repository.messagelike.MessageLikeRepository;
 import com.woowacourse.naepyeon.repository.rollingpaper.RollingpaperRepository;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;
 import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
@@ -67,6 +68,9 @@ class MessageServiceTest {
     private RollingpaperRepository rollingpaperRepository;
     @Autowired
     private TeamParticipationRepository teamParticipationRepository;
+
+    @Autowired
+    private MessageLikeRepository messageLikeRepository;
 
     @BeforeEach
     void setUp() {
@@ -517,6 +521,25 @@ class MessageServiceTest {
         // when & then
         assertThatThrownBy(() -> messageService.cancelLikeMessage(member.getId(), messageId))
                 .isInstanceOf(InvalidCancelLikeMessageException.class);
+    }
+
+    @Test
+    @DisplayName("메시지 좋아요를 후 메세지를 삭제하면 메시지 좋아요 기록도 삭제된다.")
+    void LikeMessageAfterDeleteMessage() {
+        // given
+        final MessageRequest messageRequest = createMessageRequest();
+        final Long messageId = messageService.saveMessage(
+                new MessageRequestDto(messageRequest.getContent(), messageRequest.getColor(), false, false),
+                memberRollingpaper.getId(), member.getId()
+        );
+
+        // when
+        messageService.likeMessage(member.getId(), memberRollingpaper.getId(), messageId);
+        messageService.deleteMessage(messageId, member.getId());
+
+        // then
+        assertThat(messageLikeRepository.findByMemberIdAndMessageId(member.getId(), messageId))
+                .isEmpty();
     }
 
     private MessageRequest createMessageRequest() {

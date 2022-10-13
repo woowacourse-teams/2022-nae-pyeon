@@ -10,4 +10,6 @@ public interface MessageLikeRepository extends JpaRepository<MessageLike, Long>,
     Optional<MessageLike> findByMemberIdAndMessageId(final Long memberId, final Long messageId);
 
     List<MessageLike> findByMemberIdAndRollingpaperId(final Long memberId, final Long rollingpaperId);
+
+    void deleteAllByMessageId(final Long messageId);
 }
