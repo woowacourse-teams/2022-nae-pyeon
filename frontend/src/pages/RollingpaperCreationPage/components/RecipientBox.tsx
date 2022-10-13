@@ -6,12 +6,12 @@ import { RECIPIENT } from "@/constants";
 
 const CONTENTS = {
   [RECIPIENT.TEAM]: {
-    to: "모임",
-    description: "모임을 대상으로 한 롤링페이퍼 작성하기",
+    to: "👨‍👦‍👦 모임",
+    description: "모임 친구들과 다같이 공유하는 롤링페이퍼",
   },
   [RECIPIENT.MEMBER]: {
-    to: "멤버",
-    description: "모임 내의 멤버에게 롤링페이퍼 작성하기",
+    to: "🙋‍♂️ 멤버",
+    description: "모임 친구 한명에게 쓰는 롤링페이퍼",
   },
 };
 
