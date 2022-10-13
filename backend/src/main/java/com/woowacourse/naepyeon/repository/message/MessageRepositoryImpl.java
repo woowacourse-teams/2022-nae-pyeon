@@ -32,6 +32,7 @@ public class MessageRepositoryImpl implements MessageRepositoryCustom {
         return queryFactory
                 .selectFrom(message)
                 .where(isRollingpaperIdEq(rollingpaperId))
+                .orderBy(message.createdDate.desc())
                 .fetch();
     }
 

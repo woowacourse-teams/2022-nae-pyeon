@@ -122,7 +122,12 @@ class MessageRepositoryTest {
 
         final List<Message> findMessages = messageRepository.findAllByRollingpaperId(rollingpaper.getId());
 
-        assertThat(findMessages.size()).isEqualTo(2);
+        assertAll(
+                () -> assertThat(findMessages).hasSize(2),
+                () -> assertThat(findMessages)
+                        .extracting("id")
+                        .containsExactly(message2.getId(), message1.getId())
+        );
     }
 
     @Test
