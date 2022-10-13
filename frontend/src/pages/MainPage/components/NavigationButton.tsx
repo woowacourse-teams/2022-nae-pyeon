@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 interface NavigationButtonProps {
   icon: string;
   description: string;
-  onClick: React.MouseEventHandler<HTMLDivElement>;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const NavigationButton = ({
@@ -13,13 +13,13 @@ const NavigationButton = ({
 }: NavigationButtonProps) => {
   return (
     <StyledNavigationButton onClick={onClick}>
-      <StyledRoundButton>{icon}</StyledRoundButton>
+      <StyledRoundIcon>{icon}</StyledRoundIcon>
       <StyledDescription>{description}</StyledDescription>
     </StyledNavigationButton>
   );
 };
 
-const StyledNavigationButton = styled.div`
+const StyledNavigationButton = styled.button`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,13 +36,13 @@ const StyledNavigationButton = styled.div`
   }
 
   &:hover {
-    button {
+    div:first-child {
       background-color: ${({ theme }) => theme.colors.SKY_BLUE_300};
     }
   }
 `;
 
-const StyledRoundButton = styled.button`
+const StyledRoundIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -59,6 +59,7 @@ const StyledDescription = styled.div`
   text-align: center;
   width: 70px;
 
+  font-size: 16px;
   white-space: pre-wrap;
 
   @media only screen and (min-width: 960px) {
