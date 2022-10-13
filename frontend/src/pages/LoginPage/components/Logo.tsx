@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import logo from "@/assets/images/logo.png";
+import LogoImage from "@/assets/images/logo.svg";
 
 const Logo = () => {
   return (
     <StyledLogo>
-      <img src={logo} />
-      <h1>내 편</h1>
+      <LogoImage />
+      <h1>내편</h1>
     </StyledLogo>
   );
 };
@@ -16,26 +16,22 @@ const StyledLogo = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  gap: 14px;
 
-  img {
-    width: 56px;
-    height: 60px;
-    margin-right: 10px;
+  letter-spacing: 10px;
+
+  svg {
+    font-size: 80px;
 
     @media only screen and (min-width: 960px) {
-      width: 84px;
-      height: 90px;
-      margin-right: 15px;
+      font-size: 100px;
     }
   }
 
   h1 {
-    margin-top: 8px;
     font-size: 56px;
 
     @media only screen and (min-width: 960px) {
-      margin-top: 12px;
       font-size: 84px;
     }
   }
