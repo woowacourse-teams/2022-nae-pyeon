@@ -15,7 +15,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @Table(name = "refresh_token", indexes = {
-        @Index(name = "refresh_token_member_id", columnList = "member_id")
+        @Index(name = "refresh_token_member_id", columnList = "member_id"),
+        @Index(name = "refresh_token_expired_time", columnList = "expired_time")
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RefreshToken {

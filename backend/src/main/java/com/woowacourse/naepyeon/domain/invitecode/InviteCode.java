@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -17,7 +18,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "invite_code")
+@Table(name = "invite_code", indexes = {
+        @Index(name = "invite_code_expired", columnList = "expired")
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class InviteCode {
 

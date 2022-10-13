@@ -7,3 +7,5 @@ CREATE TABLE refresh_token (
 ) engine=InnoDB default charset utf8mb4;
 
 CREATE INDEX refresh_token_member_id ON refresh_token (member_id);
+CREATE INDEX refresh_token_expired_time ON refresh_token (expired_time);
+CREATE INDEX invite_code_expired ON invite_code (expired);
