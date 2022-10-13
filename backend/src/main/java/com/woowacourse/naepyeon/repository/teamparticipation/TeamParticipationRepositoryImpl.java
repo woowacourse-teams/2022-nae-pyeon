@@ -46,7 +46,6 @@ public class TeamParticipationRepositoryImpl implements TeamParticipationReposit
                 .select(team)
                 .from(teamParticipation)
                 .where(isMemberIdEq(memberId))
-                .orderBy(teamParticipation.id.desc())
                 .fetch();
     }
 
@@ -57,6 +56,7 @@ public class TeamParticipationRepositoryImpl implements TeamParticipationReposit
                 .from(teamParticipation)
                 .innerJoin(teamParticipation.team, team)
                 .where(isMemberIdEq(memberId))
+                .orderBy(teamParticipation.id.desc())
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
