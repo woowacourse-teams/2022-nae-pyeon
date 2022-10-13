@@ -18,9 +18,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "invite_code", indexes = {
-        @Index(name = "invite_code_expired", columnList = "expired")
-})
+@Table(name = "invite_code")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class InviteCode {
 
