@@ -268,9 +268,9 @@ class RollingpaperServiceTest {
                 rollingpaperService.findReceivedRollingpapers(memberId, 0, 2);
         final List<ReceivedRollingpaperResponseDto> actual = receivedRollingpapersResponseDto.getRollingpapers();
         final List<ReceivedRollingpaperResponseDto> expected = List.of(
-                new ReceivedRollingpaperResponseDto(rollingpaperId1, ROLLINGPAPER_TITLE, teamId,
-                        teamRequestDto.getName()),
                 new ReceivedRollingpaperResponseDto(rollingpaperId2, ROLLINGPAPER_TITLE, teamId,
+                        teamRequestDto.getName()),
+                new ReceivedRollingpaperResponseDto(rollingpaperId1, ROLLINGPAPER_TITLE, teamId,
                         teamRequestDto.getName())
         );
 

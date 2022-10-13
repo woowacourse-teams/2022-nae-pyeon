@@ -26,6 +26,7 @@ public class RollingpaperRepositoryImpl implements RollingpaperRepositoryCustom 
         final List<Rollingpaper> content = queryFactory
                 .selectFrom(rollingpaper)
                 .where(isAddresseeIdEq(addresseeId))
+                .orderBy(rollingpaper.id.desc())
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();

@@ -84,8 +84,8 @@ class MemberAcceptanceTest extends AcceptanceTest {
         final List<ReceivedRollingpaperResponseDto> actual = receivedRollingpapersResponseDto.getRollingpapers();
         final String teamName = "woowacourse-4th";
         final List<ReceivedRollingpaperResponseDto> expected = List.of(
-                new ReceivedRollingpaperResponseDto(rollingpaperId1, rollingpaperTitle1, teamId, teamName),
-                new ReceivedRollingpaperResponseDto(rollingpaperId2, rollingpaperTitle2, teamId, teamName)
+                new ReceivedRollingpaperResponseDto(rollingpaperId2, rollingpaperTitle2, teamId, teamName),
+                new ReceivedRollingpaperResponseDto(rollingpaperId1, rollingpaperTitle1, teamId, teamName)
         );
 
         assertThat(actual)

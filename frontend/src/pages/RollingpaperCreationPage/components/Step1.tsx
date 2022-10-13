@@ -66,7 +66,7 @@ const Step1 = (
 
 const StyledCardList = styled.div`
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-row-gap: 24px;
   grid-column-gap: 10px;
   justify-items: center;
