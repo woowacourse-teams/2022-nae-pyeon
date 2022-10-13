@@ -1,8 +1,6 @@
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 
-import RoundButtonWithDescription from "@/components/RoundButton";
-
 import MyTeamsSection from "@/pages/MainPage/components/MyTeamsSection";
 import ReceivedRollingpapersSection from "@/pages/MainPage/components/ReceivedRollingpapersSection";
 import NavigationButton from "./components/NavigationButton";
@@ -56,7 +54,7 @@ const StyledMain = styled.div`
 
 const StyledNav = styled.nav`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 
   margin: 10px;
 `;
