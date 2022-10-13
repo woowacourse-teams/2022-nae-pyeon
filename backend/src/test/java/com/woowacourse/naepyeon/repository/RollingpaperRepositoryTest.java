@@ -144,8 +144,8 @@ class RollingpaperRepositoryTest {
                 PageRequest.of(1, 3));
 
         assertAll(
-                () -> assertThat(actual).contains(rollingPaper4, rollingPaper5, rollingPaper6),
-                () -> assertThat(actual).doesNotContain(rollingPaper1, rollingPaper2, rollingPaper3, rollingPaper7)
+                () -> assertThat(actual).contains(rollingPaper4, rollingPaper3, rollingPaper2),
+                () -> assertThat(actual).doesNotContain(rollingPaper1, rollingPaper5, rollingPaper6, rollingPaper7)
         );
     }
 
