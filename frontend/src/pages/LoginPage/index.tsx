@@ -45,7 +45,7 @@ const LoginPage = () => {
     <StyledMain>
       <StyledTitle>
         <StyledDescription1>모임기반 롤링페이퍼 서비스</StyledDescription1>
-        <StyledDescription2>내 마음을 편지로 💌</StyledDescription2>
+        <StyledDescription2>내 마음을 편지로</StyledDescription2>
         <Logo />
       </StyledTitle>
       <StyledImageContainer>
