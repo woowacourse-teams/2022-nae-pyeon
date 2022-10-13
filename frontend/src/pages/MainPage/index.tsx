@@ -1,10 +1,9 @@
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 
-import RoundButtonWithDescription from "@/components/RoundButtonWithDescription";
-
 import MyTeamsSection from "@/pages/MainPage/components/MyTeamsSection";
 import ReceivedRollingpapersSection from "@/pages/MainPage/components/ReceivedRollingpapersSection";
+import NavigationButton from "./components/NavigationButton";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -24,24 +23,21 @@ const MainPage = () => {
   return (
     <StyledMain>
       <StyledNav>
-        <RoundButtonWithDescription
+        <NavigationButton
+          icon="📜"
           description={`롤링페이퍼\n시작하기`}
           onClick={handleRollingpaperStartClick}
-        >
-          📜
-        </RoundButtonWithDescription>
-        <RoundButtonWithDescription
+        />
+        <NavigationButton
+          icon="💙"
           description={`모임\n만들기`}
           onClick={handleTeamCreateClick}
-        >
-          💙
-        </RoundButtonWithDescription>
-        <RoundButtonWithDescription
+        />
+        <NavigationButton
+          icon="🔍"
           description={`모임\n검색하기`}
           onClick={handleTeamSearchClick}
-        >
-          🔍
-        </RoundButtonWithDescription>
+        />
       </StyledNav>
       <MyTeamsSection />
       <ReceivedRollingpapersSection />
@@ -58,13 +54,9 @@ const StyledMain = styled.div`
 
 const StyledNav = styled.nav`
   display: flex;
-  gap: 32px;
+  justify-content: space-around;
 
   margin: 10px;
-
-  @media only screen and (max-width: 600px) {
-    justify-content: space-between;
-  }
 `;
 
 export default MainPage;
