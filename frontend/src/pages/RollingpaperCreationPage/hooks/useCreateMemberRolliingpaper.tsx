@@ -7,14 +7,15 @@ import { postMemberRollingpaper } from "@/api/rollingpaper";
 import { useSnackbar } from "@/context/SnackbarContext";
 
 import { PostMemberRollingpaperResponse } from "@/types/apiResponse";
-import { Rollingpaper, TeamMember } from "@/types";
+import { Rollingpaper, Team, TeamMember } from "@/types";
 
 interface CreateMemberRollingpaperVariable {
+  teamId: Team["id"];
   title: Rollingpaper["title"];
   addresseeId: TeamMember["id"];
 }
 
-const useCreateMemberRollingpaper = (teamId: number) => {
+const useCreateMemberRollingpaper = () => {
   const { openSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
@@ -23,12 +24,11 @@ const useCreateMemberRollingpaper = (teamId: number) => {
     AxiosError,
     CreateMemberRollingpaperVariable
   >(
-    ({ title, addresseeId }) =>
+    ({ teamId, title, addresseeId }) =>
       postMemberRollingpaper({ teamId, title, addresseeId }),
     {
-      useErrorBoundary: true,
-      onSuccess: () => {
-        navigate(`/team/${teamId}`);
+      onSuccess: (data, variable) => {
+        navigate(`/team/${variable.teamId}`);
         openSnackbar("롤링페이퍼 생성 완료");
       },
     }

@@ -10,7 +10,7 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   const handleRollingpaperStartClick = () => {
-    navigate("/");
+    navigate("/rollingpaper/new");
   };
 
   const handleTeamCreateClick = () => {

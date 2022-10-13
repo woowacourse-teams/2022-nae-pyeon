@@ -5,9 +5,9 @@ import useCreateKakaoOauthLogin from "./hooks/useCreateKakaoOauthLogin";
 const KakaoRedirectPage = () => {
   const params = new URLSearchParams(useLocation().search);
   const authorizationCode = params.get("code");
-  const inviteToken = params.get("state");
+  const inviteCode = params.get("state");
 
-  const kakaoOauthLogin = useCreateKakaoOauthLogin(inviteToken);
+  const kakaoOauthLogin = useCreateKakaoOauthLogin(inviteCode);
 
   useEffect(() => {
     const redirectUri = process.env.KAKAO_REDIRECT_URL;

@@ -1,11 +1,11 @@
 import { appClient, requestApi } from "@/api";
 
-import { ApiOptions } from "@/types/api";
-
 import {
   PostMessageRequest,
   PutMessageRequest,
   DeleteMessageRequest,
+  PostLikeRequest,
+  DeleteLikeRequest,
 } from "@/types/apiRequest";
 
 const postMessage = async ({
@@ -46,4 +46,14 @@ const deleteMessage = async ({ rollingpaperId, id }: DeleteMessageRequest) =>
     appClient.delete(`/rollingpapers/${rollingpaperId}/messages/${id}`)
   );
 
-export { putMessage, postMessage, deleteMessage };
+const postLike = async ({ rollingpaperId, id }: PostLikeRequest) =>
+  requestApi(() =>
+    appClient.post(`rollingpapers/${rollingpaperId}/messages/${id}/likes`)
+  );
+
+const deleteLike = async ({ rollingpaperId, id }: DeleteLikeRequest) =>
+  requestApi(() =>
+    appClient.delete(`rollingpapers/${rollingpaperId}/messages/${id}/likes`)
+  );
+
+export { putMessage, postMessage, deleteMessage, postLike, deleteLike };

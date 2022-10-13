@@ -20,6 +20,7 @@ import com.woowacourse.naepyeon.service.dto.RollingpaperPreviewResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpapersResponseDto;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -94,17 +96,41 @@ public class RollingpaperService {
     }
 
     @Transactional(readOnly = true)
-    public RollingpapersResponseDto findByTeamId(final Long teamId, final Long loginMemberId) {
+    public RollingpapersResponseDto findByTeamId(
+            final Long teamId, final Long loginMemberId, final String order, final String filter
+    ) {
         if (checkMemberNotIncludedTeam(teamId, loginMemberId)) {
             throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
-        final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByTeamId(teamId);
-        final List<RollingpaperPreviewResponseDto> rollingpaperPreviewResponseDtos = rollingpapers.stream()
+        final List<Rollingpaper> rollingpapers = orderRollingpapers(teamId, order);
+        final List<Rollingpaper> targetRollingpapers = filterRollingpapers(rollingpapers, filter);
+        final List<RollingpaperPreviewResponseDto> rollingpaperPreviewResponseDtos = targetRollingpapers.stream()
                 .map(rollingpaper -> RollingpaperPreviewResponseDto.createPreviewRollingpaper(
                         rollingpaper, findRollingpaperAddresseeNickname(rollingpaper))
                 )
                 .collect(Collectors.toUnmodifiableList());
         return new RollingpapersResponseDto(rollingpaperPreviewResponseDtos);
+    }
+
+    private List<Rollingpaper> orderRollingpapers(final Long teamId, final String order) {
+        if (order.equals("oldest")) {
+            return rollingpaperRepository.findByTeamIdOldestOrder(teamId);
+        }
+        return rollingpaperRepository.findByTeamId(teamId);
+    }
+
+    private List<Rollingpaper> filterRollingpapers(final List<Rollingpaper> rollingpapers, final String filter) {
+        // filter 값이 null일 경우
+        if (!StringUtils.hasText(filter)) {
+            return rollingpapers;
+        }
+        final Optional<Recipient> recipient = Recipient.from(filter);
+        if (recipient.isEmpty()) {
+            return rollingpapers;   // filter 값이 member, team 외의 값일 경우 전부 리턴
+        }
+        return rollingpapers.stream()
+                .filter(rollingpaper -> rollingpaper.checkSameRecipient(recipient.get()))
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private String findRollingpaperAddresseeNickname(final Rollingpaper rollingpaper) {

@@ -4,28 +4,28 @@ import { AxiosError } from "axios";
 
 import { useSnackbar } from "@/context/SnackbarContext";
 
-import { postTeamMemberWithInviteToken } from "@/api/team";
+import { postTeamMemberWithInviteCode } from "@/api/team";
 
-import { PostTeamWithInviteTokenResponse } from "@/types/apiResponse";
+import { PostTeamWithInviteCodeResponse } from "@/types/apiResponse";
 import { TeamMember } from "@/types";
 
-interface CreateTeamWithInviteTokenVariable {
-  inviteToken: string;
+interface CreateTeamWithInviteCodeVariable {
+  inviteCode: string;
   nickname: TeamMember["nickname"];
 }
 
-const useCreateTeamWithInviteToken = (teamId?: number) => {
+const useCreateTeamWithInviteCode = (teamId?: number) => {
   const navigate = useNavigate();
   const { openSnackbar } = useSnackbar();
 
-  const { mutate: createTeamWithInviteToken } = useMutation<
-    PostTeamWithInviteTokenResponse,
+  const { mutate: createTeamWithInviteCode } = useMutation<
+    PostTeamWithInviteCodeResponse,
     AxiosError,
-    CreateTeamWithInviteTokenVariable
+    CreateTeamWithInviteCodeVariable
   >(
-    ({ inviteToken, nickname }) =>
-      postTeamMemberWithInviteToken({
-        inviteToken,
+    ({ inviteCode, nickname }) =>
+      postTeamMemberWithInviteCode({
+        inviteCode,
         nickname,
       }),
     {
@@ -39,11 +39,10 @@ const useCreateTeamWithInviteToken = (teamId?: number) => {
 
         navigate("/", { replace: true });
       },
-      useErrorBoundary: true,
     }
   );
 
-  return createTeamWithInviteToken;
+  return createTeamWithInviteCode;
 };
 
-export default useCreateTeamWithInviteToken;
+export default useCreateTeamWithInviteCode;

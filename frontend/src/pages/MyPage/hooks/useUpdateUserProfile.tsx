@@ -27,7 +27,6 @@ const useUpdateUserProfile = () => {
         queryClient.refetchQueries(["user-profile"]);
         openSnackbar("이름 수정 완료");
       },
-      useErrorBoundary: true,
     }
   );
 

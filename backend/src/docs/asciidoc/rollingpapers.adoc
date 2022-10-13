@@ -9,8 +9,20 @@ operation::rollingpaper-controller-test/create-team-rollingpaper[snippets='http-
 === 롤링페이퍼 단건 조회
 operation::rollingpaper-controller-test/find-rollingpaper-by-id[snippets='http-request,http-response']
 
-=== 모임 내 롤링페이퍼 목록 조회
+=== 모임 내 전체 롤링페이퍼 목록 조회
 operation::rollingpaper-controller-test/find-rollingpapers-by-team-id[snippets='http-request,http-response']
+
+=== 모임 내 팀 롤링페이퍼 목록 조회
+operation::rollingpaper-controller-test/find-team-rollingpapers-by-team-id[snippets='http-request,http-response']
+
+=== 모임 내 멤버 롤링페이퍼 목록 조회
+operation::rollingpaper-controller-test/find-member-rollingpapers-by-team-id[snippets='http-request,http-response']
+
+=== 모임 내 롤링페이퍼 목록 최신 순 조회
+operation::rollingpaper-controller-test/find-rollingpapers-by-team-id-and-latest-order[snippets='http-request,http-response']
+
+=== 모임 내 롤링페이퍼 목록 오래된 순 조회
+operation::rollingpaper-controller-test/find-rollingpapers-by-team-id-and-oldest-order[snippets='http-request,http-response']
 
 === 모임에서 받은 내 롤링페이퍼들 조회
 operation::rollingpaper-controller-test/find-rollingpaper-by-id[snippets='http-request,http-response']

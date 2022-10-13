@@ -1,17 +1,5 @@
 package com.woowacourse.naepyeon.acceptance;
 
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.롤링페이퍼_특정_조회;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_삭제;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_수정;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_작성;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_조회;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_롤링페이퍼_생성;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_추가;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_롤링페이퍼_생성;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
 import com.woowacourse.naepyeon.controller.dto.CreateMemberRollingpaperRequest;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.CreateTeamRollingpaperRequest;
@@ -26,6 +14,20 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.롤링페이퍼_특정_조회;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메세지_좋아요;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메세지_좋아요_취소;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_삭제;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_수정;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_작성;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_조회;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_롤링페이퍼_생성;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_추가;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_롤링페이퍼_생성;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class MessageAcceptanceTest extends AcceptanceTest {
 
@@ -121,7 +123,9 @@ class MessageAcceptanceTest extends AcceptanceTest {
         final MessageResponseDto actual = 메시지_조회(seungpang, rollingpaperId, messageId)
                 .as(MessageResponseDto.class);
         final MessageResponseDto expected = new MessageResponseDto(actual.getId(), "오늘 뭐해??", actual.getFrom(),
-                actual.getAuthorId(), "red", false, false, true, true);
+                actual.getAuthorId(), "red", false, false, true, true,
+                actual.getLikes(),
+                false);
 
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value()),
@@ -157,7 +161,9 @@ class MessageAcceptanceTest extends AcceptanceTest {
                 .as(MessageResponseDto.class);
         final MessageResponseDto expected = new MessageResponseDto(actual.getId(), messageRequest.getContent(),
                 actual.getFrom(),
-                actual.getAuthorId(), messageRequest.getColor(), true, false, true, true);
+                actual.getAuthorId(), messageRequest.getColor(), true, false, true, true,
+                actual.getLikes(),
+                false);
 
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value()),
@@ -201,7 +207,9 @@ class MessageAcceptanceTest extends AcceptanceTest {
                         false,
                         true,
                         true,
-                        true
+                        true,
+                        actual.getLikes(),
+                        false
                 );
 
         assertAll(
@@ -369,5 +377,82 @@ class MessageAcceptanceTest extends AcceptanceTest {
                         .extracting("id", "content", "color", "from", "authorId")
                         .containsExactly(messageId, content, color, nickname, alex.getId())
         );
+    }
+
+    @Test
+    @DisplayName("롤링페이퍼에 작성된 메시지에 좋아요를 누르고 취소할 수 있다.")
+    void cancelLikeMessageWithRollingpaper() {
+        // 알렉스 롤링페이퍼 생성
+        final Long teamId = 모임_추가(zero, teamRequest).as(CreateResponse.class)
+                .getId();
+        모임_가입(alex, teamId, new JoinTeamMemberRequest("알렉스당"));
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이알렉스", alex.getId());
+        final Long rollingpaperId = 회원_롤링페이퍼_생성(zero, teamId, createMemberRollingpaperRequest).as(CreateResponse.class)
+                .getId();
+
+        // 제로가 알렉스에게 메시지 작성
+        final Long messageId1 =
+                메시지_작성(zero, rollingpaperId, new MessageRequest("제로가 알렉스에게", "green", false, false))
+                        .as(CreateResponse.class)
+                        .getId();
+
+        // 제로가 messageId1에 좋아요 누름
+        메세지_좋아요(zero, rollingpaperId, messageId1);
+        메세지_좋아요_취소(zero, rollingpaperId, messageId1);
+
+        // 메시지 조회
+        MessageResponseDto messageResponse1 = 메시지_조회(zero, rollingpaperId, messageId1)
+                .as(MessageResponseDto.class);
+
+        // then
+        assertThat(messageResponse1)
+                .extracting("likes", "liked")
+                .containsExactly(0L, false);
+    }
+
+    @Test
+    @DisplayName("롤링페이퍼에 작성된 메시지에 좋아요를 누른다.")
+    void likeMessageWithRollingpaper() {
+        // 알렉스 롤링페이퍼 생성
+        final Long teamId = 모임_추가(zero, teamRequest).as(CreateResponse.class)
+                .getId();
+        모임_가입(alex, teamId, new JoinTeamMemberRequest("알렉스당"));
+        final CreateMemberRollingpaperRequest createMemberRollingpaperRequest =
+                new CreateMemberRollingpaperRequest("하이알렉스", alex.getId());
+        final Long rollingpaperId = 회원_롤링페이퍼_생성(zero, teamId, createMemberRollingpaperRequest).as(CreateResponse.class)
+                .getId();
+
+        // 제로가 알렉스에게 메시지 작성
+        final Long messageId1 =
+                메시지_작성(zero, rollingpaperId, new MessageRequest("제로가 알렉스에게", "green", false, false))
+                        .as(CreateResponse.class)
+                        .getId();
+        // 알렉스가 알렉스에게 메시지 작성
+        final Long messageId2 =
+                메시지_작성(alex, rollingpaperId, new MessageRequest("알렉스가 알렉스에게", "green", false, false))
+                        .as(CreateResponse.class)
+                        .getId();
+
+        // 제로가 messageId1에 좋아요 누름
+        메세지_좋아요(zero, rollingpaperId, messageId1);
+        // 제로가 messageId2에 좋아요 누름
+        메세지_좋아요(zero, rollingpaperId, messageId2);
+        // 알렉스가 messageId1에 좋아요 누름
+        메세지_좋아요(alex, rollingpaperId, messageId1);
+
+        // 메시지를 회원마다 조회한다
+        MessageResponseDto messageResponse1 = 메시지_조회(zero, rollingpaperId, messageId1)
+                .as(MessageResponseDto.class);
+        MessageResponseDto messageResponse2 = 메시지_조회(alex, rollingpaperId, messageId2)
+                .as(MessageResponseDto.class);
+
+        // then
+        assertThat(messageResponse1)
+                .extracting("likes", "liked")
+                .containsExactly(2L, true);
+        assertThat(messageResponse2)
+                .extracting("likes", "liked")
+                .containsExactly(1L, false);
     }
 }

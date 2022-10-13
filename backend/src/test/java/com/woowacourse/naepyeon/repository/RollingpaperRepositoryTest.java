@@ -17,6 +17,7 @@ import com.woowacourse.naepyeon.repository.team.TeamRepository;
 import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -88,16 +89,37 @@ class RollingpaperRepositoryTest {
     }
 
     @Test
-    @DisplayName("롤링페이퍼들을 teamId로 찾는다.")
-    void findByTeamId() {
+    @DisplayName("롤링페이퍼들을 최신 순으로 teamId로 찾는다.")
+    void findLatestByTeamId() {
         final Rollingpaper rollingPaper1 = createRollingPaper();
         final Rollingpaper rollingPaper2 = createRollingPaper();
         rollingpaperRepository.save(rollingPaper1);
         rollingpaperRepository.save(rollingPaper2);
 
-        final List<Rollingpaper> rollingpapers = rollingpaperRepository.findByTeamId(team.getId());
+        final List<Long> actual = rollingpaperRepository.findByTeamId(team.getId())
+                .stream()
+                .map(Rollingpaper::getId)
+                .collect(Collectors.toUnmodifiableList());
 
-        assertThat(rollingpapers).hasSize(2);
+        assertThat(actual)
+                .containsExactly(rollingPaper2.getId(), rollingPaper1.getId());
+    }
+
+    @Test
+    @DisplayName("롤링페이퍼들을 오래된 순으로 teamId로 찾는다.")
+    void findOldestByTeamId() {
+        final Rollingpaper rollingPaper1 = createRollingPaper();
+        final Rollingpaper rollingPaper2 = createRollingPaper();
+        rollingpaperRepository.save(rollingPaper1);
+        rollingpaperRepository.save(rollingPaper2);
+
+        final List<Long> actual = rollingpaperRepository.findByTeamIdOldestOrder(team.getId())
+                .stream()
+                .map(Rollingpaper::getId)
+                .collect(Collectors.toUnmodifiableList());
+
+        assertThat(actual)
+                .containsExactly(rollingPaper1.getId(), rollingPaper2.getId());
     }
 
     @Test

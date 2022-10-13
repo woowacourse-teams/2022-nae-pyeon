@@ -37,7 +37,6 @@ const useUpdateMessage = (id: number) => {
         queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
         openSnackbar("메시지 수정 완료");
       },
-      useErrorBoundary: true,
     }
   );
 

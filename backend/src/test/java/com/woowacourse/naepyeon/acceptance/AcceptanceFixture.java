@@ -244,7 +244,21 @@ public class AcceptanceFixture {
     }
 
     public static ExtractableResponse<Response> 리프레시_토큰_무효화(final TokenResponseDto tokenResponseDto,
-                                                           final RefreshTokenDto refreshTokenDto) {
+                                                            final RefreshTokenDto refreshTokenDto) {
         return post(tokenResponseDto, refreshTokenDto, "/api/v1/logout");
+    }
+
+    public static ExtractableResponse<Response> 메세지_좋아요(final TokenResponseDto tokenResponseDto,
+                                                        final Long rollingpaperId,
+                                                        final Long messageId) {
+        return post(tokenResponseDto, "",
+                "/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId + "/likes");
+    }
+
+    public static ExtractableResponse<Response> 메세지_좋아요_취소(final TokenResponseDto tokenResponseDto,
+                                                           final Long rollingpaperId,
+                                                           final Long messageId) {
+        return delete(tokenResponseDto,
+                "/api/v1/rollingpapers/" + rollingpaperId + "/messages/" + messageId + "/likes");
     }
 }

@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageUpdateRequest;
+import com.woowacourse.naepyeon.service.dto.MessageLikeResponseDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
@@ -57,6 +58,26 @@ class MessageControllerTest extends TestSupport {
                                 .header("Authorization", "Bearer " + joinedMemberAccessToken)
                 )
                 .andExpect(status().isNoContent())
+                .andDo(restDocs.document());
+    }
+
+    @Test
+    void likeMessage() throws Exception {
+        mockMvc.perform(
+                        post("/api/v1/rollingpapers/{rollingpaperId}/messages/{messageId}/likes", rollingpaperId1, messageId)
+                                .header("Authorization", "Bearer " + joinedMemberAccessToken)
+                )
+                .andExpect(status().isOk())
+                .andDo(restDocs.document());
+    }
+
+    @Test
+    void cancelLikeMessage() throws Exception {
+        mockMvc.perform(
+                        delete("/api/v1/rollingpapers/{rollingpaperId}/messages/{messageId}/likes", rollingpaperId1, messageId)
+                                .header("Authorization", "Bearer " + accessToken)
+                )
+                .andExpect(status().isOk())
                 .andDo(restDocs.document());
     }
 }

@@ -12,5 +12,7 @@ public interface RollingpaperRepositoryCustom {
 
     List<Rollingpaper> findByTeamId(final Long teamId);
 
+    List<Rollingpaper> findByTeamIdOldestOrder(final Long teamId);
+
     Optional<String> findAddresseeNicknameByMemberRollingpaperId(final Long rollingpaperId);
 }

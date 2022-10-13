@@ -22,7 +22,6 @@ const useDeleteMessage = (rollingpaperId: number) => {
       queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
       openSnackbar("메시지 삭제 완료");
     },
-    useErrorBoundary: true,
   });
 
   return { deleteRollingpaperMessage };

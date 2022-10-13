@@ -1,33 +1,35 @@
-import { Link } from "react-router-dom";
+import { Team } from "@/types";
 import styled from "@emotion/styled";
 
-interface MyTeamCardProps {
-  id: number;
-  name: string;
-  description: string;
-  emoji: string;
-  color: string;
+interface MyTeamCardProps
+  extends Pick<Team, "id" | "name" | "description" | "emoji" | "color"> {
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  selected?: boolean;
 }
 
 interface StyledMyTeamCardProps {
   color: string;
+  selected?: boolean;
+}
+
+interface StyledMyTeamCardEmojiProps {
+  color: string;
 }
 
 const MyTeamCard = ({
-  id,
   name,
   description,
   emoji,
   color,
+  onClick,
+  selected,
 }: MyTeamCardProps) => {
   return (
-    <Link to={`team/${id}`}>
-      <StyledMyTeamCard color={color}>
-        <StyledEmoji color={color}>{emoji}</StyledEmoji>
-        <StyledName>{name}</StyledName>
-        <StyledDescription>{description}</StyledDescription>
-      </StyledMyTeamCard>
-    </Link>
+    <StyledMyTeamCard color={color} onClick={onClick} selected={selected}>
+      <StyledEmoji color={color}>{emoji}</StyledEmoji>
+      <StyledName>{name}</StyledName>
+      <StyledDescription>{description}</StyledDescription>
+    </StyledMyTeamCard>
   );
 };
 
@@ -44,6 +46,9 @@ const StyledMyTeamCard = styled.div<StyledMyTeamCardProps>`
   border-radius: 8px;
 
   transition-duration: 0.3s;
+
+  border: ${(props) =>
+    props.selected && `solid 4px ${props.theme.colors.PURPLE_400}`};
 
   cursor: pointer;
 
@@ -74,7 +79,7 @@ const StyledMyTeamCard = styled.div<StyledMyTeamCardProps>`
   }
 `;
 
-const StyledEmoji = styled.div<StyledMyTeamCardProps>`
+const StyledEmoji = styled.div<StyledMyTeamCardEmojiProps>`
   display: flex;
   align-items: center;
   justify-content: center;
