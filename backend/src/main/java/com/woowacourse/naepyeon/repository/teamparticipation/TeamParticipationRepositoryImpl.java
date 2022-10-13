@@ -46,7 +46,6 @@ public class TeamParticipationRepositoryImpl implements TeamParticipationReposit
                 .select(team)
                 .from(teamParticipation)
                 .where(isMemberIdEq(memberId))
-                .orderBy(teamParticipation.id.desc())
                 .fetch();
     }
 
