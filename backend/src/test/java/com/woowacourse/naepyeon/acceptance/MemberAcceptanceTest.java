@@ -44,7 +44,8 @@ class MemberAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("올바르지 않은 토큰으로 마이페이지를 조회할 경우 예외를 발생시킨다.")
     void loginInvalidToken() {
-        final ExtractableResponse<Response> response = 회원_조회(new TokenResponseDto("invalidToken", 9999L));
+        final ExtractableResponse<Response> response =
+                회원_조회(new TokenResponseDto("invalidToken", "refreshToken", 9999L));
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
     }
@@ -239,7 +240,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
         //회원정보 수정
         final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest("kingGodKei");
         final ExtractableResponse<Response> response =
-                회원_유저네임_수정(new TokenResponseDto("invalidToken", 9999L), memberUpdateRequest);
+                회원_유저네임_수정(new TokenResponseDto("invalidToken", "refreshToken", 9999L), memberUpdateRequest);
 
         //회원정보 수정 실패
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
@@ -259,7 +260,8 @@ class MemberAcceptanceTest extends AcceptanceTest {
     @DisplayName("올바르지 않은 토큰으로 삭제할 경우 예외가 발생한다.")
     void deleteInvalidToken() {
         //회원 삭제
-        final ExtractableResponse<Response> response = 회원_삭제(new TokenResponseDto("invalidToken", 999L));
+        final ExtractableResponse<Response> response =
+                회원_삭제(new TokenResponseDto("invalidToken", "refreshToken", 999L));
 
         //회원정보 삭제 실패
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());

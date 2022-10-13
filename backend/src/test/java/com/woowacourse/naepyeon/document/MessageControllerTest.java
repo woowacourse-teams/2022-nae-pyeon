@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.controller.dto.MessageUpdateRequest;
-import com.woowacourse.naepyeon.service.dto.MessageLikeResponseDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 

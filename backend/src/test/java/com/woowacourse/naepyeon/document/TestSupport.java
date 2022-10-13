@@ -4,6 +4,8 @@ package com.woowacourse.naepyeon.document;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.naepyeon.config.DatabaseCleaner;
 import com.woowacourse.naepyeon.config.logging.RequestBodyWrappingFilter;
+import com.woowacourse.naepyeon.repository.member.MemberRepository;
+import com.woowacourse.naepyeon.repository.refreshtoken.RefreshTokenRepository;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;
 import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.MessageService;
@@ -50,17 +52,17 @@ public abstract class TestSupport {
     protected TeamService teamService;
 
     @Autowired
+    protected RefreshTokenRepository refreshTokenRepository;
+
+    @Autowired
     protected RollingpaperService rollingpaperService;
 
     @Autowired
     protected MessageService messageService;
-
-    @Autowired
-    private DatabaseCleaner databaseCleaner;
-
     @Autowired
     protected TeamRepository teamRepository;
-
+    @Autowired
+    protected MemberRepository memberRepository;
     protected MockMvc mockMvc;
     protected String accessToken;
     protected String joinedMemberAccessToken;
@@ -72,6 +74,8 @@ public abstract class TestSupport {
     protected Long rollingpaperId1;
     protected Long rollingpaperId2;
     protected Long messageId;
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
 
     @BeforeEach
     void setUp(

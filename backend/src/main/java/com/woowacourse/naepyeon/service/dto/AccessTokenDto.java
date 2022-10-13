@@ -5,12 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Getter
-public class TokenResponseDto {
+public class AccessTokenDto {
 
     private String accessToken;
-    private String refreshToken;
-    private Long id;
 }

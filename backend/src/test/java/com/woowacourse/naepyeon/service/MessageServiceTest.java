@@ -1,5 +1,9 @@
 package com.woowacourse.naepyeon.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import com.woowacourse.naepyeon.controller.dto.MessageRequest;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
@@ -22,18 +26,13 @@ import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.MessageUpdateRequestDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest
 @Transactional
@@ -414,7 +413,8 @@ class MessageServiceTest {
         );
 
         // when
-        MessageLikeResponseDto messageLikeResponseDto = messageService.likeMessage(member.getId(), memberRollingpaper.getId(), messageId);
+        MessageLikeResponseDto messageLikeResponseDto = messageService.likeMessage(member.getId(),
+                memberRollingpaper.getId(), messageId);
 
         // then
         assertThat(messageLikeResponseDto)
@@ -453,7 +453,8 @@ class MessageServiceTest {
         // when
         messageService.likeMessage(member.getId(), memberRollingpaper.getId(), messageId);
         messageService.likeMessage(author.getId(), memberRollingpaper.getId(), messageId);
-        MessageLikeResponseDto messageLikeResponseDto = messageService.likeMessage(otherAuthor.getId(), memberRollingpaper.getId(), messageId);
+        MessageLikeResponseDto messageLikeResponseDto = messageService.likeMessage(otherAuthor.getId(),
+                memberRollingpaper.getId(), messageId);
 
         // then
         assertThat(messageLikeResponseDto)
@@ -474,7 +475,8 @@ class MessageServiceTest {
         // when
         messageService.likeMessage(member.getId(), memberRollingpaper.getId(), messageId);
         messageService.likeMessage(author.getId(), memberRollingpaper.getId(), messageId);
-        MessageResponseDto message = messageService.findMessage(messageId, memberRollingpaper.getId(), otherAuthor.getId());
+        MessageResponseDto message = messageService.findMessage(messageId, memberRollingpaper.getId(),
+                otherAuthor.getId());
 
         // then
         assertThat(message)

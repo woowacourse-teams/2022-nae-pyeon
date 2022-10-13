@@ -1,5 +1,19 @@
 package com.woowacourse.naepyeon.acceptance;
 
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.롤링페이퍼_특정_조회;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메세지_좋아요;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메세지_좋아요_취소;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_삭제;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_수정;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_작성;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_조회;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_롤링페이퍼_생성;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_추가;
+import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_롤링페이퍼_생성;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import com.woowacourse.naepyeon.controller.dto.CreateMemberRollingpaperRequest;
 import com.woowacourse.naepyeon.controller.dto.CreateResponse;
 import com.woowacourse.naepyeon.controller.dto.CreateTeamRollingpaperRequest;
@@ -14,20 +28,6 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.롤링페이퍼_특정_조회;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메세지_좋아요;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메세지_좋아요_취소;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_삭제;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_수정;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_작성;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.메시지_조회;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_가입;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_롤링페이퍼_생성;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.모임_추가;
-import static com.woowacourse.naepyeon.acceptance.AcceptanceFixture.회원_롤링페이퍼_생성;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 class MessageAcceptanceTest extends AcceptanceTest {
 

@@ -16,9 +16,9 @@ public class InviteCodeRepositoryImpl implements InviteCodeRepositoryCustom {
     private final EntityManager em;
 
     @Override
-    public long deleteExpired(final LocalDateTime now) {
+    public long deleteExpired(final LocalDateTime deleteTime) {
         final long deletedRowCount = queryFactory.delete(inviteCode)
-                .where(inviteCode.expired.before(now))
+                .where(inviteCode.expired.before(deleteTime))
                 .execute();
         em.flush();
         em.clear();
