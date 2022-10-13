@@ -122,8 +122,8 @@ class TeamParticipationRepositoryTest {
                 teamParticipationRepository.findTeamsByMemberId(member1.getId(), PageRequest.of(0, 1));
 
         assertAll(
-                () -> assertThat(joinedTeams).contains(team1),
-                () -> assertThat(joinedTeams).doesNotContain(team2, team3)
+                () -> assertThat(joinedTeams).contains(team3),
+                () -> assertThat(joinedTeams).doesNotContain(team2, team1)
         );
     }
 
