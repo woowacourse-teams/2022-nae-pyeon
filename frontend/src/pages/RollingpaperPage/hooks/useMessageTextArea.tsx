@@ -23,6 +23,9 @@ export const useMessageTextArea = (
   const handleTextAreaKeyPress: React.KeyboardEventHandler<
     HTMLTextAreaElement
   > = (e) => {
+    if (e.nativeEvent.isComposing) {
+      return;
+    }
     if (e.key === "Enter") {
       if (enterRef.current >= 1) {
         e.preventDefault();
