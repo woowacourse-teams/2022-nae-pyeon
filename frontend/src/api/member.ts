@@ -39,10 +39,18 @@ const getMySentMessages = async ({
 const putMyNickname = async (username: User["username"]) =>
   requestApi(() => appClient.put("/members/me", { username }));
 
+const postRenewalToken = async (refreshToken: string) =>
+  requestApi(() =>
+    appClient.post("/renewal-token", {
+      refreshToken,
+    })
+  );
+
 export {
   getMyInfo,
   getMyInfoWithAccessToken,
   getMyReceivedRollingpapers,
   getMySentMessages,
   putMyNickname,
+  postRenewalToken,
 };

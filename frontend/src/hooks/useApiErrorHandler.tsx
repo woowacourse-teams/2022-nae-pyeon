@@ -3,7 +3,11 @@ import { useNavigate } from "react-router-dom";
 
 import { useSnackbar } from "@/context/SnackbarContext";
 
+import useCreateRenewalToken from "@/hooks/useCreateRenewalToken";
+
 import { ApiErrorResponse } from "@/types/api";
+import { getCookie } from "@/util/cookie";
+import { COOKIE_KEY } from "@/constants";
 
 interface CustomError {
   message: string;
@@ -13,6 +17,7 @@ interface CustomError {
 
 const useApiErrorHandler = () => {
   const { openSnackbar } = useSnackbar();
+  const renewalToken = useCreateRenewalToken();
   const navigate = useNavigate();
 
   const badRequestErrorHandler = (customErrorInfo: CustomError) => {
@@ -48,9 +53,20 @@ const useApiErrorHandler = () => {
     const { message, errorCode } = customErrorInfo;
 
     switch (errorCode) {
-      // 토큰 관련
+      // 잘못된 access token, access token 만료
       case 3011:
-      case 3012:
+      case 3012: {
+        const refreshToken = getCookie(COOKIE_KEY.REFRESH_TOKEN);
+        if (!refreshToken) {
+          navigate("/logout");
+          openSnackbar(message);
+          break;
+        }
+
+        renewalToken(refreshToken);
+        break;
+      }
+      // 토큰 관련
       case 3013:
         navigate("/logout");
         openSnackbar(message);

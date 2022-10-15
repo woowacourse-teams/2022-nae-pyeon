@@ -37,6 +37,10 @@ export interface GetMySentMessagesResponse {
   messages: SentMessage[];
 }
 
+export interface PostRenewalTokenResponse {
+  accessToken: string;
+}
+
 // message
 export interface PostMessageResponse {
   id: Message["id"];
