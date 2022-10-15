@@ -57,6 +57,11 @@ const COOKIE_KEY = {
   REFRESH_TOKEN: "refreshToken",
 } as const;
 
+const TOKEN_MAX_AGE = {
+  ACCESS_TOKEN: 1800,
+  REFRESH_TOKEN: 604800,
+} as const;
+
 export {
   REGEX,
   COLORS,
@@ -70,4 +75,5 @@ export {
   GOOGLE_OAUTH_URL,
   RECIPIENT,
   COOKIE_KEY,
+  TOKEN_MAX_AGE,
 };

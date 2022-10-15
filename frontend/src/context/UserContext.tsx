@@ -2,7 +2,7 @@ import { useState, createContext, PropsWithChildren } from "react";
 
 import { setAppClientHeaderAuthorization } from "@/api";
 import { deleteCookie, setCookie } from "@/util/cookie";
-import { COOKIE_KEY } from "@/constants";
+import { COOKIE_KEY, TOKEN_MAX_AGE } from "@/constants";
 
 interface loginProps {
   accessToken: string;
@@ -43,12 +43,12 @@ const UserProvider = ({
     setCookie({
       name: COOKIE_KEY.ACCESS_TOKEN,
       value: accessToken,
-      maxAge: 1800,
+      maxAge: TOKEN_MAX_AGE.ACCESS_TOKEN,
     });
     setCookie({
       name: COOKIE_KEY.REFRESH_TOKEN,
       value: refreshToken,
-      maxAge: 604800,
+      maxAge: TOKEN_MAX_AGE.REFRESH_TOKEN,
     });
     setIsLoggedIn(true);
     setMemberId(memberId);
