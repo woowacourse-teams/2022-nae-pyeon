@@ -10,6 +10,9 @@ import IconButton from "@/components/IconButton";
 import LineButton from "@/components/LineButton";
 import UnderlineInput from "@/components/UnderlineInput";
 
+import useInput from "@/hooks/useInput";
+import useUpdateUserProfile from "@/pages/MyPage/hooks/useUpdateUserProfile";
+
 import { REGEX } from "@/constants";
 import { ValueOf } from "@/types";
 
@@ -42,13 +45,17 @@ const UserProfile = ({ username, email }: UserProfileProps) => {
     }
   };
 
-  const handleEditCancelButtonClick = () => {
+  const handleEditCancelButtonClick: React.MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
     if (confirm("이름 변경을 취소하시겠습니까?")) {
       setMode(MODE.NORMAL);
     }
   };
 
-  const handleEditSaveButtonClick = () => {
+  const handleUserProfileEditFormSubmit: React.FormEventHandler<
+    HTMLFormElement
+  > = () => {
     if (mode === MODE.EDIT) {
       updateUserProfile({ username: editName });
       setMode(MODE.NORMAL);
@@ -73,18 +80,22 @@ const UserProfile = ({ username, email }: UserProfileProps) => {
           <LineButton onClick={handleLogoutButtonClick}>로그아웃</LineButton>
         </>
       ) : (
-        <StyledUserProfileEditForm>
-          <UnderlineInput
-            value={editName}
-            pattern={REGEX.USERNAME.source}
-            errorMessage="1 ~ 64자 사이의 이름을 입력해주세요"
-            onChange={handleEditNameChange}
-          />
-          <StyledEditLineButtonContainer>
-            <LineButton onClick={handleEditCancelButtonClick}>취소</LineButton>
-            <LineButton onClick={handleEditSaveButtonClick}>완료</LineButton>
-          </StyledEditLineButtonContainer>
-        </StyledUserProfileEditForm>
+        <>
+          <StyledUserProfileEditForm onSubmit={handleUserProfileEditFormSubmit}>
+            <UnderlineInput
+              value={editName}
+              pattern={REGEX.USERNAME.source}
+              errorMessage="1 ~ 64자 사이의 이름을 입력해주세요"
+              onChange={handleEditNameChange}
+            />
+            <StyledEditLineButtonContainer>
+              <LineButton onClick={handleEditCancelButtonClick}>
+                취소
+              </LineButton>
+              <LineButton type="submit">완료</LineButton>
+            </StyledEditLineButtonContainer>
+          </StyledUserProfileEditForm>
+        </>
       )}
     </StyledProfile>
   );
