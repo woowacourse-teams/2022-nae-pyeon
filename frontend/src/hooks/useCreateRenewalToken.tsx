@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 import { queryClient } from "@/api";
 import { postRenewalToken } from "@/api/member";
 
-import { COOKIE_KEY } from "@/constants";
+import { COOKIE_KEY, TOKEN_MAX_AGE } from "@/constants";
 import { PostRenewalTokenResponse } from "@/types/apiResponse";
 import { setCookie } from "@/util/cookie";
 
@@ -21,7 +21,7 @@ const useCreateRenewalToken = () => {
         setCookie({
           name: COOKIE_KEY.ACCESS_TOKEN,
           value: accessToken,
-          maxAge: 1800,
+          maxAge: TOKEN_MAX_AGE.ACCESS_TOKEN,
         });
         queryClient.refetchQueries({ stale: true });
       }
