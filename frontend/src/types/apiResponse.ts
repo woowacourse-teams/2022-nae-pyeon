@@ -11,6 +11,14 @@ import {
 // Kakao OAuth
 export interface PostKakaoOauthResponse {
   accessToken: string;
+  refreshToken: string;
+  id: User["id"];
+}
+
+// Google OAuth
+export interface PostGoogleOauthResponse {
+  accessToken: string;
+  refreshToken: string;
   id: User["id"];
 }
 

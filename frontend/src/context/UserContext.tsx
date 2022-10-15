@@ -4,10 +4,16 @@ import { setAppClientHeaderAuthorization } from "@/api";
 import { deleteCookie, setCookie } from "@/util/cookie";
 import { COOKIE_KEY } from "@/constants";
 
+interface loginProps {
+  accessToken: string;
+  refreshToken: string;
+  memberId: number;
+}
+
 interface UserContextType {
   isLoggedIn: boolean;
   memberId: number | null;
-  login: (accessToken: string, memberId: number) => void;
+  login: ({ accessToken, refreshToken, memberId }: loginProps) => void;
   logout: () => void;
 }
 
@@ -32,9 +38,18 @@ const UserProvider = ({
   const [isLoggedIn, setIsLoggedIn] = useState(initialData.isLoggedIn);
   const [memberId, setMemberId] = useState<number | null>(initialData.memberId);
 
-  const login = (accessToken: string, memberId: number) => {
+  const login = ({ accessToken, refreshToken, memberId }: loginProps) => {
     setAppClientHeaderAuthorization(accessToken);
-    setCookie(COOKIE_KEY.ACCESS_TOKEN, accessToken);
+    setCookie({
+      name: COOKIE_KEY.ACCESS_TOKEN,
+      value: accessToken,
+      maxAge: 1800,
+    });
+    setCookie({
+      name: COOKIE_KEY.REFRESH_TOKEN,
+      value: refreshToken,
+      maxAge: 604800,
+    });
     setIsLoggedIn(true);
     setMemberId(memberId);
   };

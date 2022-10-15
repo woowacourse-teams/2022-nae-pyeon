@@ -1,7 +1,7 @@
+import { useContext } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
 
 import { UserContext } from "@/context/UserContext";
 
@@ -31,7 +31,8 @@ const useCreateKakaoOauthLogin = (inviteCode: string | null) => {
     {
       onSuccess: (data) => {
         if (data) {
-          login(data.accessToken, data.id);
+          const { accessToken, refreshToken, id } = data;
+          login({ accessToken, refreshToken, memberId: id });
 
           if (inviteCode) {
             navigate(`/invite/${inviteCode}`, { replace: true });

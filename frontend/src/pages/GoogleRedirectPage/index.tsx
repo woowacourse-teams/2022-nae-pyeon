@@ -1,13 +1,19 @@
 import { useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import { AxiosError } from "axios";
 
 import { postGoogleOauth } from "@/api/googleOauth";
+
 import { UserContext } from "@/context/UserContext";
 
-import { CustomError } from "@/types";
 import { postGoogleOauthRequest } from "@/types/apiRequest";
+import { PostGoogleOauthResponse } from "@/types/apiResponse";
+
+interface googleOauthLoginVariable {
+  authorizationCode: string;
+  redirectUri: string;
+}
 
 const GoogleRedirectPage = () => {
   const navigate = useNavigate();
@@ -17,7 +23,11 @@ const GoogleRedirectPage = () => {
   const authorizationCode = params.get("code");
   const inviteCode = params.get("state");
 
-  const { mutate: GoogleOauthLogin } = useMutation(
+  const { mutate: GoogleOauthLogin } = useMutation<
+    PostGoogleOauthResponse,
+    AxiosError,
+    googleOauthLoginVariable
+  >(
     ({ authorizationCode, redirectUri }: postGoogleOauthRequest) =>
       postGoogleOauth({
         authorizationCode,
@@ -25,8 +35,9 @@ const GoogleRedirectPage = () => {
       }),
     {
       onSuccess: (data) => {
+        const { accessToken, refreshToken, id } = data;
         if (data) {
-          login(data.accessToken, data.id);
+          login({ accessToken, refreshToken, memberId: id });
 
           if (inviteCode) {
             navigate(`/invite/${inviteCode}`, { replace: true });
@@ -34,12 +45,6 @@ const GoogleRedirectPage = () => {
           }
 
           navigate("/", { replace: true });
-        }
-      },
-      onError: (error) => {
-        if (axios.isAxiosError(error) && error.response) {
-          const customError = error.response.data as CustomError;
-          console.error(customError.message);
         }
       },
     }
