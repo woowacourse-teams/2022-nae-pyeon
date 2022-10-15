@@ -4,9 +4,10 @@ import styled from "@emotion/styled";
 import IconButton from "@/components/IconButton";
 import RollingpaperListItem from "@/pages/TeamDetailPage/components/RollingpaperListItem";
 
-import PlusIcon from "@/assets/icons/bx-plus.svg";
 import useValidateParam from "@/hooks/useValidateParam";
 import useReadTeamRollingpaper from "@/pages/TeamDetailPage/hooks/useReadTeamRollingpaper";
+
+import PlusIcon from "@/assets/icons/bx-plus.svg";
 
 const RollingpaperList = () => {
   const navigate = useNavigate();
@@ -15,7 +16,11 @@ const RollingpaperList = () => {
   const {
     isLoading: isLoadingGetTeamRollingpaperList,
     data: teamRollinpaperListResponse,
-  } = useReadTeamRollingpaper(teamId);
+  } = useReadTeamRollingpaper({
+    id: teamId,
+    order: "latest",
+    filter: "member",
+  });
 
   if (isLoadingGetTeamRollingpaperList) {
     return <div>로딩중</div>;

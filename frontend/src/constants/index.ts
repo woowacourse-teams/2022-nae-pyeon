@@ -59,6 +59,11 @@ const COOKIE_KEY = {
   ACCESS_TOKEN: "accessToken",
 } as const;
 
+const ROLLINGPAPER_ORDER = {
+  LATEST: "latest",
+  OLDEST: "oldest",
+} as const;
+
 export {
   REGEX,
   COLORS,
@@ -72,4 +77,5 @@ export {
   GOOGLE_OAUTH_URL,
   RECIPIENT,
   COOKIE_KEY,
+  ROLLINGPAPER_ORDER,
 };
