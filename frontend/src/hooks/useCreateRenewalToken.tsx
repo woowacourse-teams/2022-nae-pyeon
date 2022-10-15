@@ -23,7 +23,7 @@ const useCreateRenewalToken = () => {
           value: accessToken,
           maxAge: 1800,
         });
-        queryClient.refetchQueries();
+        queryClient.refetchQueries({ stale: true });
       }
     },
   });
