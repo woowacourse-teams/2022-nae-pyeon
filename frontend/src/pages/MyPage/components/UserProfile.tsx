@@ -68,16 +68,20 @@ const UserProfile = ({ username, email }: UserProfileProps) => {
         <>
           <StyledNormal>
             <StyledName>{username}</StyledName>
-            <IconButton
-              onClick={() => {
-                setMode(MODE.EDIT);
-              }}
-            >
-              <Pencil />
-            </IconButton>
+            <StyledEmail>{email}</StyledEmail>
+            <StyledEditLineButtonContainer>
+              <LineButton
+                onClick={() => {
+                  setMode(MODE.EDIT);
+                }}
+              >
+                이름 수정하기
+              </LineButton>
+              <LineButton onClick={handleLogoutButtonClick}>
+                로그아웃
+              </LineButton>
+            </StyledEditLineButtonContainer>
           </StyledNormal>
-          <StyledEmail>{email}</StyledEmail>
-          <LineButton onClick={handleLogoutButtonClick}>로그아웃</LineButton>
         </>
       ) : (
         <>
@@ -107,13 +111,10 @@ const StyledProfile = styled.div`
 
 const StyledNormal = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 
-  width: 160px;
-
-  svg {
-    font-size: 20px;
-  }
+  gap: 12px;
 `;
 
 const StyledUserProfileEditForm = styled.form`
@@ -123,7 +124,6 @@ const StyledUserProfileEditForm = styled.form`
   font-size: 14px;
 
   input {
-    width: 160px;
     font-size: 24px;
   }
 `;
@@ -135,7 +135,6 @@ const StyledName = styled.div`
 
 const StyledEmail = styled.div`
   color: ${({ theme }) => theme.colors.GRAY_700};
-  margin-bottom: 12px;
 `;
 
 const StyledEditLineButtonContainer = styled.div`
