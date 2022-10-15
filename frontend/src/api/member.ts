@@ -46,6 +46,13 @@ const postRenewalToken = async (refreshToken: string) =>
     })
   );
 
+const postLogout = async (refreshToken: string) =>
+  requestApi(() =>
+    appClient.post("/logout", {
+      refreshToken,
+    })
+  );
+
 export {
   getMyInfo,
   getMyInfoWithAccessToken,
@@ -53,4 +60,5 @@ export {
   getMySentMessages,
   putMyNickname,
   postRenewalToken,
+  postLogout,
 };

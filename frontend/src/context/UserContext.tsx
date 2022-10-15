@@ -1,7 +1,9 @@
 import { useState, createContext, PropsWithChildren } from "react";
 
+import useCreateLogout from "@/hooks/useCreateLogout";
+
 import { setAppClientHeaderAuthorization } from "@/api";
-import { deleteCookie, setCookie } from "@/util/cookie";
+import { deleteCookie, getCookie, setCookie } from "@/util/cookie";
 import { COOKIE_KEY, TOKEN_MAX_AGE } from "@/constants";
 
 interface loginProps {
@@ -38,6 +40,8 @@ const UserProvider = ({
   const [isLoggedIn, setIsLoggedIn] = useState(initialData.isLoggedIn);
   const [memberId, setMemberId] = useState<number | null>(initialData.memberId);
 
+  const logoutRefreshToken = useCreateLogout();
+
   const login = ({ accessToken, refreshToken, memberId }: loginProps) => {
     setAppClientHeaderAuthorization(accessToken);
     setCookie({
@@ -55,8 +59,12 @@ const UserProvider = ({
   };
 
   const logout = () => {
+    const refreshToken = getCookie(COOKIE_KEY.REFRESH_TOKEN)!;
+
+    logoutRefreshToken(refreshToken);
     setAppClientHeaderAuthorization("");
     deleteCookie(COOKIE_KEY.ACCESS_TOKEN);
+    deleteCookie(COOKIE_KEY.REFRESH_TOKEN);
     setIsLoggedIn(false);
     setMemberId(null);
   };
