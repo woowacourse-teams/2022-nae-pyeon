@@ -26,10 +26,7 @@ interface StyledShowProps {
   isShown: boolean;
 }
 
-const Step2 = (
-  { teamId, onClick, selected }: Step2Props,
-  ref: React.Ref<HTMLDivElement>
-) => {
+const Step2 = ({ teamId, onClick, selected }: Step2Props) => {
   const [isToShown, setIsToShown] = useState(false);
   const [isRecipeinetShown, setIsRecipeinetShown] = useState(true);
   const {
@@ -80,7 +77,7 @@ const Step2 = (
   };
 
   return (
-    <StepTitleWithLayout title="롤링페이퍼 대상을 선택해주세요" ref={ref}>
+    <StepTitleWithLayout title="롤링페이퍼 대상을 선택해주세요">
       <StyledMain>
         <StyleShow isShown={isRecipeinetShown}>
           <StyleRecipientContainer>
@@ -153,4 +150,4 @@ const StyleForm = styled.form`
   width: 300px;
 `;
 
-export default forwardRef(Step2);
+export default Step2;
