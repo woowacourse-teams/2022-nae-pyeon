@@ -16,8 +16,8 @@ const Header = () => {
     navigate("/search");
   };
 
-  const handleAlarmClick = () => {
-    alert("준비중!");
+  const handleNotificationClick = () => {
+    navigate("/notification");
   };
 
   const handleMyPageClick = () => {
@@ -37,7 +37,7 @@ const Header = () => {
           <SearchIcon />
         </IconButton>
         <Badge variant="dot" invisible={false}>
-          <IconButton onClick={handleAlarmClick} size="medium">
+          <IconButton onClick={handleNotificationClick} size="medium">
             <BellIcon />
           </IconButton>
         </Badge>

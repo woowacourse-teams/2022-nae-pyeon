@@ -32,6 +32,7 @@ const KakaoRedirectPage = lazy(() => import("@/pages/KakaoRedirectPage"));
 const GoogleRedirectPage = lazy(() => import("@/pages/GoogleRedirectPage"));
 const MyPage = lazy(() => import("@/pages/MyPage"));
 const PolicyPage = lazy(() => import("@/pages/PolicyPage"));
+const NotificationPage = lazy(() => import("@/pages/NotificationPage"));
 
 import { setQueryClientErrorHandler } from "@/api";
 
@@ -72,6 +73,7 @@ const App = () => {
                     path="rollingpaper/new"
                     element={<RollingpaperCreationPage />}
                   />
+                  <Route path="notification" element={<NotificationPage />} />
                 </Route>
                 <Route path="team/new" element={<TeamCreationPage />} />
 
