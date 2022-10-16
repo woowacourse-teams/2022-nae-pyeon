@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import { Navigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
@@ -16,10 +16,7 @@ interface Step1Props {
   selected: Team["id"] | null;
 }
 
-const Step1 = (
-  { onClick, selected }: Step1Props,
-  ref: React.Ref<HTMLDivElement>
-) => {
+const Step1 = ({ onClick, selected }: Step1Props) => {
   const infiniteRef = useIntersect({
     onIntersect: async (entry, observer) => {
       observer.unobserve(entry.target);
@@ -47,7 +44,7 @@ const Step1 = (
   }
 
   return (
-    <StepTitleWithLayout title="모임을 선택해주세요" ref={ref}>
+    <StepTitleWithLayout title="모임을 선택해주세요">
       <StyledCardList>
         {myTeamListResponse.pages.map((page) =>
           page.teams.map(({ id, name, description, emoji, color }) => (
@@ -90,4 +87,4 @@ const StyledCardList = styled.div`
   }
 `;
 
-export default forwardRef(Step1);
+export default Step1;

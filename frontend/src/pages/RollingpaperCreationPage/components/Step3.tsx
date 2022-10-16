@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
 import useInput from "@/hooks/useInput";
@@ -14,7 +14,7 @@ import { REGEX } from "@/constants";
 interface Step3Props {
   onClick: (title: Rollingpaper["title"]) => void;
 }
-const Step3 = ({ onClick }: Step3Props, ref: React.Ref<HTMLDivElement>) => {
+const Step3 = ({ onClick }: Step3Props) => {
   const { value: title, handleInputChange } = useInput("");
 
   const handleTitleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -23,7 +23,7 @@ const Step3 = ({ onClick }: Step3Props, ref: React.Ref<HTMLDivElement>) => {
   };
 
   return (
-    <StepTitleWithLayout title="롤링페이퍼 제목을 작성해주세요" ref={ref}>
+    <StepTitleWithLayout title="롤링페이퍼 제목을 작성해주세요">
       <StyledMain>
         <StyledForm>
           <LabeledInput
@@ -65,4 +65,4 @@ const StyledForm = styled.form`
   }
 `;
 
-export default forwardRef(Step3);
+export default Step3;
