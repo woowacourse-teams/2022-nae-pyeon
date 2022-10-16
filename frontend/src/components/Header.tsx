@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
-import IconButton from "./IconButton";
+import IconButton from "@/components/IconButton";
+import Badge from "@/components/Badge";
 
 import FilledLogo from "@/assets/images/logo-fill.png";
 import BellIcon from "@/assets/icons/bx-bell.svg";
@@ -35,9 +36,11 @@ const Header = () => {
         <IconButton onClick={handleSearchClick} size="medium">
           <SearchIcon />
         </IconButton>
-        <IconButton onClick={handleAlarmClick} size="medium">
-          <BellIcon />
-        </IconButton>
+        <Badge variant="dot" invisible={false}>
+          <IconButton onClick={handleAlarmClick} size="medium">
+            <BellIcon />
+          </IconButton>
+        </Badge>
         <IconButton onClick={handleMyPageClick} size="medium">
           <UserIcon />
         </IconButton>
