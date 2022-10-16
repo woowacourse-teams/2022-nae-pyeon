@@ -1,10 +1,10 @@
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import IconButton from "./IconButton";
 
 import FilledLogo from "@/assets/images/logo-fill.png";
+import BellIcon from "@/assets/icons/bx-bell.svg";
 import SearchIcon from "@/assets/icons/bx-search.svg";
 import UserIcon from "@/assets/icons/bx-user.svg";
 
@@ -13,6 +13,10 @@ const Header = () => {
 
   const handleSearchClick = () => {
     navigate("/search");
+  };
+
+  const handleAlarmClick = () => {
+    alert("준비중!");
   };
 
   const handleMyPageClick = () => {
@@ -30,6 +34,9 @@ const Header = () => {
       <StyledNav>
         <IconButton onClick={handleSearchClick} size="medium">
           <SearchIcon />
+        </IconButton>
+        <IconButton onClick={handleAlarmClick} size="medium">
+          <BellIcon />
         </IconButton>
         <IconButton onClick={handleMyPageClick} size="medium">
           <UserIcon />
