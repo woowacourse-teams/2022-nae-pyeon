@@ -17,7 +17,7 @@ interface CustomError {
 
 const useApiErrorHandler = () => {
   const { openSnackbar } = useSnackbar();
-  const renewalToken = useCreateRenewalToken();
+  const { mutate: renewalToken } = useCreateRenewalToken();
   const navigate = useNavigate();
 
   const badRequestErrorHandler = (customErrorInfo: CustomError) => {

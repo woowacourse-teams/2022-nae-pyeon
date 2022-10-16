@@ -8,27 +8,23 @@ import { COOKIE_KEY, TOKEN_MAX_AGE } from "@/constants";
 import { PostRenewalTokenResponse } from "@/types/apiResponse";
 import { setCookie } from "@/util/cookie";
 
-type postRenewalTokenVariable = string;
 const useCreateRenewalToken = () => {
-  const { mutate: renewalToken } = useMutation<
-    PostRenewalTokenResponse,
-    AxiosError,
-    postRenewalTokenVariable
-  >((refreshToken) => postRenewalToken(refreshToken), {
-    onSuccess: (data) => {
-      if (data) {
-        const { accessToken } = data;
-        setCookie({
-          name: COOKIE_KEY.ACCESS_TOKEN,
-          value: accessToken,
-          maxAge: TOKEN_MAX_AGE.ACCESS_TOKEN,
-        });
-        queryClient.refetchQueries({ stale: true });
-      }
-    },
-  });
-
-  return renewalToken;
+  return useMutation<PostRenewalTokenResponse, AxiosError, string>(
+    (refreshToken) => postRenewalToken(refreshToken),
+    {
+      onSuccess: (data) => {
+        if (data) {
+          const { accessToken } = data;
+          setCookie({
+            name: COOKIE_KEY.ACCESS_TOKEN,
+            value: accessToken,
+            maxAge: TOKEN_MAX_AGE.ACCESS_TOKEN,
+          });
+          queryClient.refetchQueries({ stale: true });
+        }
+      },
+    }
+  );
 };
 
 export default useCreateRenewalToken;
