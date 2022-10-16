@@ -6,7 +6,7 @@ import { setAppClientHeaderAuthorization } from "@/api";
 import { deleteCookie, getCookie, setCookie } from "@/util/cookie";
 import { COOKIE_KEY, TOKEN_MAX_AGE } from "@/constants";
 
-interface loginProps {
+interface LoginProps {
   accessToken: string;
   refreshToken: string;
   memberId: number;
@@ -15,7 +15,7 @@ interface loginProps {
 interface UserContextType {
   isLoggedIn: boolean;
   memberId: number | null;
-  login: ({ accessToken, refreshToken, memberId }: loginProps) => void;
+  login: ({ accessToken, refreshToken, memberId }: LoginProps) => void;
   logout: () => void;
 }
 
@@ -42,7 +42,7 @@ const UserProvider = ({
 
   const logoutRefreshToken = useCreateLogout();
 
-  const login = ({ accessToken, refreshToken, memberId }: loginProps) => {
+  const login = ({ accessToken, refreshToken, memberId }: LoginProps) => {
     setAppClientHeaderAuthorization(accessToken);
     setCookie({
       name: COOKIE_KEY.ACCESS_TOKEN,

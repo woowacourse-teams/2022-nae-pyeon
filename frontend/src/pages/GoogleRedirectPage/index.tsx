@@ -10,7 +10,7 @@ import { UserContext } from "@/context/UserContext";
 import { postGoogleOauthRequest } from "@/types/apiRequest";
 import { PostGoogleOauthResponse } from "@/types/apiResponse";
 
-interface googleOauthLoginVariable {
+interface GoogleOauthLoginVariable {
   authorizationCode: string;
   redirectUri: string;
 }
@@ -26,7 +26,7 @@ const GoogleRedirectPage = () => {
   const { mutate: GoogleOauthLogin } = useMutation<
     PostGoogleOauthResponse,
     AxiosError,
-    googleOauthLoginVariable
+    GoogleOauthLoginVariable
   >(
     ({ authorizationCode, redirectUri }: postGoogleOauthRequest) =>
       postGoogleOauth({
