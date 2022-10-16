@@ -19,8 +19,7 @@ export const MessageTextArea = ({
   placeholder,
   backgroundColor,
 }: MessageTextAreaProps) => {
-  const { textareaRef, handleTextAreaChange, handleTextAreaKeyPress } =
-    useMessageTextArea(onChange);
+  const { textareaRef, handleTextAreaChange } = useMessageTextArea(onChange);
 
   return (
     <StyledMessageContainer backgroundColor={backgroundColor}>
@@ -28,7 +27,6 @@ export const MessageTextArea = ({
         ref={textareaRef}
         value={value}
         onChange={handleTextAreaChange}
-        onKeyDown={handleTextAreaKeyPress}
         placeholder={placeholder}
         maxLength={500}
       >
