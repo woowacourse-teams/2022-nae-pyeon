@@ -11,12 +11,12 @@ import UserIcon from "@/assets/icons/bx-user.svg";
 const Header = () => {
   const navigate = useNavigate();
 
-  const handleMyPageClick = () => {
-    navigate("/mypage");
-  };
-
   const handleSearchClick = () => {
     navigate("/search");
+  };
+
+  const handleMyPageClick = () => {
+    navigate("/mypage");
   };
 
   return (
@@ -51,7 +51,7 @@ const StyledHeader = styled.header`
   margin-bottom: 12px;
 
   width: 100%;
-  height: 70px;
+  height: fit-content;
   background-color: ${({ theme }) => `${theme.colors.WHITE}e8`};
 
   img {
@@ -64,13 +64,12 @@ const StyledNav = styled.nav`
   display: flex;
   gap: 12px;
 
-  font-size: 32px;
-
   height: 100%;
+  font-size: 32px;
 
   button {
     &:hover {
-      color: ${({ theme }) => theme.colors.GRAY_600};
+      background-color: ${({ theme }) => theme.colors.GRAY_200};
     }
   }
 `;
