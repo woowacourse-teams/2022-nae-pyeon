@@ -1,16 +1,13 @@
-import React, { forwardRef, LegacyRef, PropsWithChildren } from "react";
+import React, { forwardRef, PropsWithChildren } from "react";
 import styled from "@emotion/styled";
 
-interface StepTitleWithLayoutProps {
+interface StepTitleWithLayoutProps extends PropsWithChildren {
   title: string;
 }
 
-const StepTitleWithLayout = (
-  { title, children }: PropsWithChildren<StepTitleWithLayoutProps>,
-  ref: LegacyRef<HTMLDivElement>
-) => {
+const StepTitleWithLayout = ({ title, children }: StepTitleWithLayoutProps) => {
   return (
-    <StyledTitleWithLayout ref={ref}>
+    <StyledTitleWithLayout>
       <StyledTitle>{title}</StyledTitle>
       <StyledLayout>{children}</StyledLayout>
     </StyledTitleWithLayout>
@@ -20,20 +17,6 @@ const StepTitleWithLayout = (
 const StyledTitleWithLayout = styled.div`
   display: flex;
   flex-direction: column;
-
-  width: calc(100vw - 80px);
-
-  @media only screen and (min-width: 600px) {
-    width: calc(500px - 108px);
-  }
-
-  @media only screen and (min-width: 960px) {
-    width: calc(760px - 108px);
-  }
-
-  @media only screen and (min-width: 1280px) {
-    width: calc(1020px - 108px);
-  }
 `;
 
 const StyledTitle = styled.h2`
@@ -47,19 +30,20 @@ const StyledTitle = styled.h2`
   font-size: 24px;
   font-weight: 600;
 
-  width: calc(100vw - 80px);
   word-break: break-all;
 
+  width: calc(100vw - 48px);
+
   @media only screen and (min-width: 600px) {
-    width: calc(500px - 108px);
+    width: calc(500px - 48px);
   }
 
   @media only screen and (min-width: 960px) {
-    width: calc(760px - 108px);
+    width: calc(760px - 48px);
   }
 
   @media only screen and (min-width: 1280px) {
-    width: calc(1020px - 108px);
+    width: calc(1020px - 48px);
   }
 `;
 

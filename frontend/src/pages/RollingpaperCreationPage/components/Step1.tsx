@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
 import MyTeamCard from "@/components/MyTeamCard";
@@ -15,19 +15,16 @@ interface Step1Props {
   selected: Team["id"] | null;
 }
 
-const Step1 = (
-  { onClick, selected }: Step1Props,
-  ref: React.Ref<HTMLDivElement>
-) => {
-  const infiniteRef = useIntersect({
-    onIntersect: async (entry, observer) => {
+const Step1 = ({ onClick, selected }: Step1Props) => {
+  const infiniteRef = useIntersect(
+    async (entry, observer) => {
       observer.unobserve(entry.target);
       if (hasNextPage && !isFetching) {
         fetchNextPage();
       }
     },
-    options: { rootMargin: "10px", threshold: 1.0 },
-  });
+    { rootMargin: "10px", threshold: 1.0 }
+  );
 
   const {
     data: myTeamListResponse,
@@ -42,7 +39,7 @@ const Step1 = (
   }
 
   return (
-    <StepTitleWithLayout title="모임을 선택해주세요" ref={ref}>
+    <StepTitleWithLayout title="모임을 선택해주세요">
       <StyledCardList>
         {myTeamListResponse.pages.map((page) =>
           page.teams.map(({ id, name, description, emoji, color }) => (
@@ -85,4 +82,4 @@ const StyledCardList = styled.div`
   }
 `;
 
-export default forwardRef(Step1);
+export default Step1;

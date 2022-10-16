@@ -37,39 +37,35 @@ const RollingpaperCreationPage = () => {
       ? { ...initialSelectedSteps, step1: +selectedTeamId }
       : initialSelectedSteps
   );
-  const pageRef = useRef<HTMLDivElement[]>([]);
+  const pageRef = useRef<HTMLDivElement>(null);
 
   const { mutate: createMemberRollingpaper } = useCreateMemberRollingpaper();
   const { mutate: createTeamRollingpaper } = useCreateTeamRollingpaper();
 
-  const changePage = (page: number) => {
-    pageRef.current[page]?.scrollIntoView({
-      behavior: "smooth",
-    });
+  const changePage = () => {
+    const width = window.innerWidth;
+    let left = width;
+
+    if (width >= 1280) {
+      left = 1020;
+    } else if (width >= 960) {
+      left = 760;
+    } else if (width >= 600) {
+      left = 500;
+    }
+
+    pageRef.current?.scrollBy({ top: 0, left: left - 48, behavior: "smooth" });
   };
 
   const goToNextPage = () => {
-    if (step >= pageRef.current.length) {
+    if (step >= StepLength) {
       endSteps(selectedSteps);
       return;
     }
 
     setStep((prev) => {
-      const target = prev + 1;
-      changePage(target);
-      return target;
-    });
-  };
-
-  const goToPrevPage = () => {
-    if (step < 0) {
-      return;
-    }
-
-    setStep((prev) => {
-      const target = prev - 1;
-      changePage(target);
-      return target;
+      changePage();
+      return prev + 1;
     });
   };
 
@@ -127,63 +123,17 @@ const RollingpaperCreationPage = () => {
     goToNextPage();
   };
 
-  const validateMoveNextStep = () => {
-    if (step === 0) {
-      return !!selectedSteps["step1"];
-    }
-    if (step === 1) {
-      return !!selectedSteps["step2"]?.type;
-    }
-
-    return false;
-  };
-
-  const handleRightButtonClick = () => {
-    if (!validateMoveNextStep()) {
-      return;
-    }
-
-    goToNextPage();
-  };
-
-  const handleLeftButtonClick = () => {
-    if (step === 1) {
-      setSelectedSteps((prev) => ({
-        ...prev,
-        step2: initialSelectedSteps["step2"],
-      }));
-    }
-    if (step === 2) {
-      setSelectedSteps((prev) => ({
-        ...prev,
-        step3: initialSelectedSteps["step3"],
-      }));
-    }
-
-    goToPrevPage();
-  };
-
   return (
     <StyledMain>
-      <StyledStepsWithMoveButton>
-        <StyledSteps>
-          <Step1
-            ref={(el: HTMLDivElement) => (pageRef.current[0] = el)}
-            onClick={handleStep1Click}
-            selected={selectedSteps.step1}
-          />
-          <Step2
-            ref={(el: HTMLDivElement) => (pageRef.current[1] = el)}
-            teamId={selectedSteps.step1}
-            onClick={handleStep2Click}
-            selected={selectedSteps.step2?.type ?? null}
-          />
-          <Step3
-            ref={(el: HTMLDivElement) => (pageRef.current[2] = el)}
-            onClick={handleStep3Click}
-          />
-        </StyledSteps>
-      </StyledStepsWithMoveButton>
+      <StyledSteps ref={pageRef}>
+        <Step1 onClick={handleStep1Click} selected={selectedSteps.step1} />
+        <Step2
+          teamId={selectedSteps.step1}
+          onClick={handleStep2Click}
+          selected={selectedSteps.step2?.type ?? null}
+        />
+        <Step3 onClick={handleStep3Click} />
+      </StyledSteps>
       <ControlDots pages={StepLength} step={step} />
     </StyledMain>
   );
@@ -196,32 +146,6 @@ const StyledMain = styled.main`
   height: calc(100vh - 90px);
 `;
 
-const StyledStepsWithMoveButton = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 0 20px 0 20px;
-
-  button {
-    &:disabled {
-      svg {
-        pointer-events: none;
-        fill: ${({ theme }) => theme.colors.GRAY_300};
-      }
-    }
-
-    svg {
-      font-size: 30px;
-      fill: ${({ theme }) => theme.colors.SKY_BLUE_200};
-
-      &:hover {
-        fill: ${({ theme }) => theme.colors.SKY_BLUE_400};
-      }
-    }
-  }
-`;
-
 const StyledSteps = styled.div`
   display: flex;
   overflow: hidden;
@@ -230,10 +154,6 @@ const StyledSteps = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
-`;
-
-const StyledSpace = styled.div`
-  width: 30px;
 `;
 
 export default RollingpaperCreationPage;
