@@ -30,7 +30,7 @@ const useMessageForm = ({
     e
   ) => {
     const { value } = e.target;
-    const replacedValue = value.replace(/\n\n/, "\n");
+    const replacedValue = value.replace(/\n\n\n/, "\n\n");
     setContent(replacedValue);
   };
 
