@@ -29,7 +29,9 @@ const useMessageForm = ({
   const handleMessageChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
     e
   ) => {
-    setContent(e.target.value);
+    const { value } = e.target;
+    const replacedValue = value.replace(/\n\n\n/, "\n\n");
+    setContent(replacedValue);
   };
 
   const handleColorClick = (color: string) => {
