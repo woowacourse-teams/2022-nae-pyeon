@@ -5,7 +5,7 @@ import { useContext } from "react";
 
 import { UserContext } from "@/context/UserContext";
 
-import { postKakaoOauth } from "@/api/kakaoOauth";
+import { postKakaoOauth } from "@/api/oauth";
 
 import { PostKakaoOauthResponse } from "@/types/apiResponse";
 
