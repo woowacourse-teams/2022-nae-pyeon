@@ -9,7 +9,7 @@ import { postTeamMemberWithInviteCode } from "@/api/team";
 import { PostTeamWithInviteCodeResponse } from "@/types/apiResponse";
 import { TeamMember } from "@/types";
 
-interface CreateTeamWithInviteCodeVariable {
+interface CreateTeamWithInviteCodeVariables {
   inviteCode: string;
   nickname: TeamMember["nickname"];
 }
@@ -21,7 +21,7 @@ const useCreateTeamWithInviteCode = (teamId?: number) => {
   const { mutate: createTeamWithInviteCode } = useMutation<
     PostTeamWithInviteCodeResponse,
     AxiosError,
-    CreateTeamWithInviteCodeVariable
+    CreateTeamWithInviteCodeVariables
   >(
     ({ inviteCode, nickname }) =>
       postTeamMemberWithInviteCode({

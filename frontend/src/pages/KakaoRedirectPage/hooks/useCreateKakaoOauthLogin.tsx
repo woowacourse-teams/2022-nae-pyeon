@@ -9,7 +9,7 @@ import { postKakaoOauth } from "@/api/kakaoOauth";
 
 import { PostKakaoOauthResponse } from "@/types/apiResponse";
 
-interface kakaoOauthLoginVariable {
+interface PostKakaoOauthVariables {
   authorizationCode: string;
   redirectUri: string;
 }
@@ -21,7 +21,7 @@ const useCreateKakaoOauthLogin = (inviteCode: string | null) => {
   const { mutate: kakaoOauthLogin } = useMutation<
     PostKakaoOauthResponse,
     AxiosError,
-    kakaoOauthLoginVariable
+    PostKakaoOauthVariables
   >(
     ({ authorizationCode, redirectUri }) =>
       postKakaoOauth({

@@ -7,15 +7,14 @@ import { queryClient } from "@/api";
 import { deleteLike } from "@/api/message";
 
 import { Message } from "@/types";
+import { DeleteLikeResponse } from "@/types/apiResponse";
 
-interface deleteLikeResponse extends Pick<Message, "likes" | "liked"> {}
+type DeleteLikeVariables = Message["id"];
 
-type deleteLikeVariable = Message["id"];
-
-const useDeleteLiked = () => {
+const useDeleteLike = () => {
   const rollingpaperId = useValidatedParam<number>("rollingpaperId");
 
-  return useMutation<deleteLikeResponse, AxiosError, deleteLikeVariable>(
+  return useMutation<DeleteLikeResponse, AxiosError, DeleteLikeVariables>(
     (id) => deleteLike({ rollingpaperId, id }),
     {
       onSuccess: () => {
@@ -25,4 +24,4 @@ const useDeleteLiked = () => {
   );
 };
 
-export default useDeleteLiked;
+export default useDeleteLike;

@@ -23,13 +23,14 @@ const MessageColorPicker = ({ onClickRadio, color }: ColorPickerProps) => {
       {Object.values(COLORS).map((radio) => {
         return (
           <label key={radio}>
+            {color}
             <StyledInput
               type="radio"
               value={radio}
               checked={color === radio}
               onChange={handleRadioChange(radio)}
             />
-            <StyledRadio backgroundColor={radio} />
+            <StyledRadio backgroundColor={radio} aria-hidden={true} />
           </label>
         );
       })}

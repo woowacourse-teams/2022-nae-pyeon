@@ -4,8 +4,8 @@ import styled from "@emotion/styled";
 import EmptyHeart from "@/assets/icons/bx-heart-empty.svg";
 import FilledHeart from "@/assets/icons/bx-heart-fill.svg";
 
-import useUpdateLiked from "@/pages/RollingpaperPage/hooks/useUpdateLiked";
-import useDeleteLiked from "@/pages/RollingpaperPage/hooks/useDeleteLiked";
+import useUpdateLike from "@/pages/RollingpaperPage/hooks/useUpdateLike";
+import useDeleteLike from "@/pages/RollingpaperPage/hooks/useDeleteLike";
 
 import { Message } from "@/types";
 import IconButton from "@/components/IconButton";
@@ -20,12 +20,12 @@ const Like = ({ id, likes, liked }: LikeProps) => {
   const [count, setCount] = useState(likes);
   const [isLiked, setIsLiked] = useState(liked);
 
-  const { mutate: updateLiked } = useUpdateLiked();
-  const { mutate: deleteLiked } = useDeleteLiked();
+  const { mutate: updateLike } = useUpdateLike();
+  const { mutate: deleteLike } = useDeleteLike();
 
   const handleLikeToggle = () => {
     if (isLiked) {
-      deleteLiked(id, {
+      deleteLike(id, {
         onSuccess: ({ liked, likes }) => {
           setCount(likes);
           setIsLiked(liked);
@@ -35,7 +35,7 @@ const Like = ({ id, likes, liked }: LikeProps) => {
       return;
     }
 
-    updateLiked(id, {
+    updateLike(id, {
       onSuccess: ({ liked, likes }) => {
         setCount(likes);
         setIsLiked(liked);

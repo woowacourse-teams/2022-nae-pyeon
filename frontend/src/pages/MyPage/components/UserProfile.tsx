@@ -49,7 +49,7 @@ const UserProfile = ({ username, email }: UserProfileProp) => {
 
   const handleEditSaveButtonClick = () => {
     if (mode === MODE.EDIT) {
-      updateUserProfile({ username: editName });
+      updateUserProfile(editName);
       setMode(MODE.NORMAL);
     }
   };

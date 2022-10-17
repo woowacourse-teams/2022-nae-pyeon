@@ -21,15 +21,15 @@ const MyTeamsPage = () => {
     isLoading,
   } = useReadMyTeams();
 
-  const ref = useIntersect(
-    async (entry, observer) => {
+  const ref = useIntersect({
+    onIntersect: async (entry, observer) => {
       observer.unobserve(entry.target);
       if (hasNextPage && !isFetching) {
         fetchNextPage();
       }
     },
-    { rootMargin: "10px", threshold: 1.0 }
-  );
+    options: { rootMargin: "10px", threshold: 1.0 },
+  });
 
   if (isLoading) {
     return <div>로딩 중</div>;

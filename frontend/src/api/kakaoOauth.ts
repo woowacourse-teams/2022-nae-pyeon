@@ -1,11 +1,11 @@
 import { appClient, requestApi } from "@/api";
 
-import { postKakaoOauthRequest } from "@/types/apiRequest";
+import { PostKakaoOauthRequest } from "@/types/apiRequest";
 
 const postKakaoOauth = async ({
   authorizationCode,
   redirectUri,
-}: postKakaoOauthRequest) =>
+}: PostKakaoOauthRequest) =>
   requestApi(() =>
     appClient.post("/oauth/kakao", {
       authorizationCode,

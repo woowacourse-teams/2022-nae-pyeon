@@ -6,7 +6,7 @@ import { Team } from "@/types";
 import { PostTeamWithInviteCodeResponse } from "@/types/apiResponse";
 import { AxiosError } from "axios";
 
-type CreateInviteLinkVariable = Team["id"];
+type CreateInviteLinkVariables = Team["id"];
 
 const useCreateInviteLink = () => {
   const {
@@ -16,7 +16,7 @@ const useCreateInviteLink = () => {
   } = useMutation<
     PostTeamWithInviteCodeResponse,
     AxiosError,
-    CreateInviteLinkVariable
+    CreateInviteLinkVariables
   >((id) => postTeamInviteCode(id), {});
 
   return { createInviteLink, isError, data };

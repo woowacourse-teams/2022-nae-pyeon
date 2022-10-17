@@ -7,9 +7,7 @@ import { queryClient } from "@/api";
 import { putMyNickname } from "@/api/member";
 import { TeamMember } from "@/types";
 
-interface UpdateUserProfileVariable {
-  username: TeamMember["nickname"];
-}
+type PutMyNicknameVariables = TeamMember["nickname"];
 
 const useUpdateUserProfile = () => {
   const { openSnackbar } = useSnackbar();
@@ -17,9 +15,9 @@ const useUpdateUserProfile = () => {
   const { mutate: updateUserProfile } = useMutation<
     null,
     AxiosError,
-    UpdateUserProfileVariable
+    PutMyNicknameVariables
   >(
-    async ({ username }) => {
+    async (username) => {
       return putMyNickname(username);
     },
     {

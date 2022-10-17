@@ -9,7 +9,7 @@ import { putTeamNickname } from "@/api/team";
 
 import { Team, TeamMember } from "@/types";
 
-type UpdateTeamNicknameVariable = TeamMember["nickname"];
+type UpdateTeamNicknameVariables = TeamMember["nickname"];
 
 const useUpdateTeamNickname = (onClickCloseButton: () => void) => {
   const teamId = useValidatedParam<Team["id"]>("teamId");
@@ -18,8 +18,8 @@ const useUpdateTeamNickname = (onClickCloseButton: () => void) => {
   const { mutate: updateTeamNickname } = useMutation<
     null,
     AxiosError,
-    UpdateTeamNicknameVariable
-  >((nickname: string) => putTeamNickname({ id: teamId, nickname }), {
+    UpdateTeamNicknameVariables
+  >((nickname) => putTeamNickname({ id: teamId, nickname }), {
     onSuccess: () => {
       queryClient.refetchQueries(["team", teamId]);
       queryClient.refetchQueries(["rollingpaperList", teamId]);

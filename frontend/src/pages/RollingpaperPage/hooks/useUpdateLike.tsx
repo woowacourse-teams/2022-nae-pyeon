@@ -7,15 +7,14 @@ import { queryClient } from "@/api";
 import { postLike } from "@/api/message";
 
 import { Message } from "@/types";
+import { UpdateLikeResponse } from "@/types/apiResponse";
 
-interface updateLikeResponse extends Pick<Message, "likes" | "liked"> {}
+type UpdateLikeVariables = Message["id"];
 
-type updateLikeVariable = Message["id"];
-
-const useUpdateLiked = () => {
+const useUpdateLike = () => {
   const rollingpaperId = useValidatedParam<number>("rollingpaperId");
 
-  return useMutation<updateLikeResponse, AxiosError, updateLikeVariable>(
+  return useMutation<UpdateLikeResponse, AxiosError, UpdateLikeVariables>(
     (id) => postLike({ rollingpaperId, id }),
     {
       onSuccess: () => {
@@ -25,4 +24,4 @@ const useUpdateLiked = () => {
   );
 };
 
-export default useUpdateLiked;
+export default useUpdateLike;

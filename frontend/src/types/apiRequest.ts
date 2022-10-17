@@ -1,13 +1,13 @@
 import { Message, Rollingpaper, Team, TeamMember } from ".";
 
 // kakao oauth
-export interface postKakaoOauthRequest {
+export interface PostKakaoOauthRequest {
   authorizationCode: string;
   redirectUri: string;
 }
 
 // google oauth
-export interface postGoogleOauthRequest {
+export interface PostGoogleOauthRequest {
   authorizationCode: string;
   redirectUri: string;
 }

@@ -9,7 +9,7 @@ import { postTeamMember } from "@/api/team";
 import { AxiosError } from "axios";
 import { TeamMember } from "@/types";
 
-type createTeamMemberVariable = TeamMember["nickname"];
+type CreateTeamMemberVariables = TeamMember["nickname"];
 
 const useCreateTeamMember = (onClickCloseButton: () => void) => {
   const { openSnackbar } = useSnackbar();
@@ -18,7 +18,7 @@ const useCreateTeamMember = (onClickCloseButton: () => void) => {
   const { mutate: createTeamMember } = useMutation<
     null,
     AxiosError,
-    createTeamMemberVariable
+    CreateTeamMemberVariables
   >((nickname) => postTeamMember({ id: teamId, nickname }), {
     onSuccess: () => {
       queryClient.refetchQueries(["team", teamId]);

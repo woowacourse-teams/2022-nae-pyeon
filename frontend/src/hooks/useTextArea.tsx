@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-type useTextAreaArgs = {
+interface UseTextAreaParams {
   initialValue: string;
   onChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
-};
+}
 
-const useTextArea = ({ initialValue, onChange }: useTextAreaArgs) => {
+const useTextArea = ({ initialValue, onChange }: UseTextAreaParams) => {
   const [value, setValue] = useState(initialValue);
 
   const handleChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {

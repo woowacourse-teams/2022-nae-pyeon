@@ -1,10 +1,10 @@
 import { appClient, requestApi } from "@/api";
-import { postGoogleOauthRequest } from "@/types/apiRequest";
+import { PostGoogleOauthRequest } from "@/types/apiRequest";
 
 const postGoogleOauth = async ({
   authorizationCode,
   redirectUri,
-}: postGoogleOauthRequest) =>
+}: PostGoogleOauthRequest) =>
   requestApi(() =>
     appClient.post("/oauth/google", {
       authorizationCode,

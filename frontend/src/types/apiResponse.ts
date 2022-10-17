@@ -81,3 +81,8 @@ export interface PostTeamResponse {
 export interface PostTeamWithInviteCodeResponse {
   inviteCode: string;
 }
+
+// likes
+export interface DeleteLikeResponse extends Pick<Message, "likes" | "liked"> {}
+
+export interface UpdateLikeResponse extends Pick<Message, "likes" | "liked"> {}

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import useDeleteMessage from "@/pages/RollingpaperPage/hooks/useDeleteMessage";
 
-interface UseMessageProps {
+interface UseMessageParams {
   id: number;
   rollingpaperId: number;
 }
 
-const useMessage = ({ id, rollingpaperId }: UseMessageProps) => {
+const useMessageBox = ({ id, rollingpaperId }: UseMessageParams) => {
   const [isEdit, setIsEdit] = useState(false);
   const { deleteRollingpaperMessage } = useDeleteMessage(rollingpaperId);
 
@@ -34,4 +34,4 @@ const useMessage = ({ id, rollingpaperId }: UseMessageProps) => {
   };
 };
 
-export default useMessage;
+export default useMessageBox;

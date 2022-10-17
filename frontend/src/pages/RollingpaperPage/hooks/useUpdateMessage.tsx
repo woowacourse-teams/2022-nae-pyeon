@@ -10,17 +10,17 @@ import { putMessage } from "@/api/message";
 
 import { Message } from "@/types";
 
-interface UpdateMessageVariable
+interface UpdateMessageVariables
   extends Pick<Message, "content" | "color" | "anonymous" | "secret"> {}
 
-const useUpdateMessage = (id: number) => {
+const useUpdateMessage = (id: Message["id"]) => {
   const { openSnackbar } = useSnackbar();
   const rollingpaperId = useValidatedParam<number>("rollingpaperId");
 
   const { mutate: updateMessage } = useMutation<
     null,
     AxiosError,
-    UpdateMessageVariable
+    UpdateMessageVariables
   >(
     ({ content, color, anonymous, secret }) => {
       return putMessage({

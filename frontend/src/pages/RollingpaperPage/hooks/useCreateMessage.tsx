@@ -9,7 +9,7 @@ import { postMessage } from "@/api/message";
 import { PostMessageResponse } from "@/types/apiResponse";
 import { Message } from "@/types";
 
-interface createMessageVariable
+interface CreateMessageVariables
   extends Pick<Message, "content" | "color" | "anonymous" | "secret"> {}
 
 const useCreateMessage = (rollingpaperId: number) => {
@@ -18,7 +18,7 @@ const useCreateMessage = (rollingpaperId: number) => {
   const { mutate: createMessage } = useMutation<
     PostMessageResponse,
     AxiosError,
-    createMessageVariable
+    CreateMessageVariables
   >(
     ({ content, color, anonymous, secret }) => {
       return postMessage({

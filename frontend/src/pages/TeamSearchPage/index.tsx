@@ -18,15 +18,15 @@ import { Team, CustomError } from "@/types";
 const TeamSearch = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
-  const ref = useIntersect(
-    async (entry, observer) => {
+  const ref = useIntersect({
+    onIntersect: async (entry, observer) => {
       observer.unobserve(entry.target);
       if (hasNextPage && !isFetching) {
         fetchNextPage();
       }
     },
-    { rootMargin: "10px", threshold: 1.0 }
-  );
+    options: { rootMargin: "10px", threshold: 1.0 },
+  });
 
   const {
     data: totalTeamResponse,
