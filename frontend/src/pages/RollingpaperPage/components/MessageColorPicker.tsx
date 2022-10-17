@@ -23,7 +23,6 @@ const MessageColorPicker = ({ onClickRadio, color }: ColorPickerProps) => {
       {Object.values(COLORS).map((radio) => {
         return (
           <label key={radio}>
-            {color}
             <StyledInput
               type="radio"
               value={radio}
