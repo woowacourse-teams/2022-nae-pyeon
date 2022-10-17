@@ -19,14 +19,15 @@ const MODE = {
   NORMAL: "normal",
   EDIT: "edit",
 } as const;
-interface UserProfileProp {
+
+interface UserProfileProps {
   username: string;
   email: string;
 }
 
 type UserProfileMode = ValueOf<typeof MODE>;
 
-const UserProfile = ({ username, email }: UserProfileProp) => {
+const UserProfile = ({ username, email }: UserProfileProps) => {
   const [mode, setMode] = useState<UserProfileMode>(MODE.NORMAL);
   const { value: editName, handleInputChange: handleEditNameChange } =
     useInput(username);

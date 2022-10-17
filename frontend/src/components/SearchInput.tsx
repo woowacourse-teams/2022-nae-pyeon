@@ -3,13 +3,12 @@ import styled from "@emotion/styled";
 
 import SearchIcon from "@/assets/icons/bx-search.svg";
 
-type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
-type InputAttributes = React.InputHTMLAttributes<HTMLInputElement>;
+interface SearchInputProps {
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+}
 
-const SearchInput = ({
-  onClick,
-  onChange,
-}: Pick<ButtonAttributes, "onClick"> & Pick<InputAttributes, "onChange">) => {
+const SearchInput = ({ onClick, onChange }: SearchInputProps) => {
   return (
     <StyledSearch>
       <StyledInput onChange={onChange} />

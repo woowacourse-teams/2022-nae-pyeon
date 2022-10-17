@@ -7,10 +7,10 @@ import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 
 import useValidatedParam from "@/hooks/useValidatedParam";
 
-type MessageCreateFormProps = {
+interface MessageCreateFormProps {
   enableSecretMessage: boolean;
   onEditEnd: () => void;
-};
+}
 
 export const MessageCreateForm = ({
   enableSecretMessage,

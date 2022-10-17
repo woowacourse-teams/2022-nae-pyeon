@@ -7,10 +7,11 @@ import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 
 import { Message } from "@/types";
 
-type MessageUpdateFormProps = {
+interface MessageUpdateFormProps
+  extends Pick<Message, "id" | "content" | "color" | "anonymous" | "secret"> {
   enableSecretMessage: boolean;
   onEditEnd: () => void;
-} & Pick<Message, "id" | "content" | "color" | "anonymous" | "secret">;
+}
 
 export const MessageUpdateForm = ({
   enableSecretMessage,

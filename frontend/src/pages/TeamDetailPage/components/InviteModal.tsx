@@ -12,11 +12,11 @@ import IconButton from "@/components/IconButton";
 import copyClipboard from "@/util/copyClipboard";
 import CopyIcon from "@/assets/icons/bx-copy.svg";
 
-interface InviteModalProp {
+interface InviteModalProps {
   onClickClose: () => void;
 }
 
-const InviteModal = ({ onClickClose }: InviteModalProp) => {
+const InviteModal = ({ onClickClose }: InviteModalProps) => {
   const { openSnackbar } = useSnackbar();
   const teamId = useValidatedParam<number>("teamId");
   const { createInviteLink, isError, data } = useCreateInviteLink();

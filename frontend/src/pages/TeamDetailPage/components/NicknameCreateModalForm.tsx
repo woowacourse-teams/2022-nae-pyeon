@@ -10,13 +10,13 @@ import { REGEX } from "@/constants";
 import useInput from "@/hooks/useInput";
 import useCreateTeamMember from "../hooks/useCreateTeamMember";
 
-interface NicknameCreateModalFormProp {
+interface NicknameCreateModalFormProps {
   onClickCloseButton: () => void;
 }
 
 const NicknameCreateModalForm = ({
   onClickCloseButton,
-}: NicknameCreateModalFormProp) => {
+}: NicknameCreateModalFormProps) => {
   const { value: nickname, handleInputChange: handleNicknameChange } =
     useInput("");
   const createTeamMember = useCreateTeamMember(onClickCloseButton);

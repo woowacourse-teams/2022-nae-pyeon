@@ -3,13 +3,13 @@ import styled from "@emotion/styled";
 
 import LockIcon from "@/assets/icons/bx-lock-alt.svg";
 
-interface SearchResultProp {
+interface SearchResultProps {
   onClick: () => void;
   secret: boolean;
   name: string;
 }
 
-const SearchResultItem = ({ onClick, secret, name }: SearchResultProp) => {
+const SearchResultItem = ({ onClick, secret, name }: SearchResultProps) => {
   return (
     <StyledItem onClick={onClick}>
       {secret && (

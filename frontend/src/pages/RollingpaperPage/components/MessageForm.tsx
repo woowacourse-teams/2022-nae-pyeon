@@ -10,7 +10,8 @@ import XIcon from "@/assets/icons/bx-x.svg";
 
 import { Message } from "@/types";
 
-type MessageFormProps = {
+interface MessageFormProps
+  extends Pick<Message, "content" | "color" | "anonymous" | "secret"> {
   enableSecretMessage: boolean;
 
   handleColorClick: (color: string) => void;
@@ -20,11 +21,11 @@ type MessageFormProps = {
 
   handleMessageSubmit: () => void;
   handleMessageCancel: () => void;
-} & Pick<Message, "content" | "color" | "anonymous" | "secret">;
+}
 
-type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
-
-const MessageSubmitButton = ({ onClick }: ButtonAttributes) => {
+const MessageSubmitButton = ({
+  onClick,
+}: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <StyledMessageFormButton type="button" onClick={onClick}>
       <CheckIcon />
@@ -33,7 +34,9 @@ const MessageSubmitButton = ({ onClick }: ButtonAttributes) => {
   );
 };
 
-const MessageCancelButton = ({ onClick }: ButtonAttributes) => {
+const MessageCancelButton = ({
+  onClick,
+}: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <StyledMessageFormButton type="button" onClick={onClick}>
       <XIcon />

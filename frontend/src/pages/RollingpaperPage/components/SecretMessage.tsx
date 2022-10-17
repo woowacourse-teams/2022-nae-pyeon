@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-interface SecretMessageProp {
+interface SecretMessageProps {
   from: string;
 }
 
-const SecretMessage = ({ from }: SecretMessageProp) => {
+const SecretMessage = ({ from }: SecretMessageProps) => {
   return (
     <StyledSecretMessageContainer>
       <StyledContent>

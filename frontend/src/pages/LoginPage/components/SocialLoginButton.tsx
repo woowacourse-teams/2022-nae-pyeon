@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
 import { ValueOf } from "@/types";
@@ -20,9 +20,10 @@ const BUTTON_TEXT = {
   NAVER: "네이버로 시작하기",
 };
 
-type SocialLoginButtonProps = HTMLAttributes<HTMLButtonElement> & {
+interface SocialLoginButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   platform: ValueOf<typeof SOCIAL_LOGIN_PLATFORM>;
-};
+}
 
 const SocialLoginButton = ({ onClick, platform }: SocialLoginButtonProps) => {
   return (
