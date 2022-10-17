@@ -47,10 +47,10 @@ const Step2 = (
     setKeywordList(data.members.map((member) => member.nickname));
   };
 
-  const { data: teamMemberResponse } = useReadTeamMembers(
+  const { data: teamMemberResponse } = useReadTeamMembers({
     teamId,
-    handleReadTeamMembersSuccess
-  );
+    onSuccess: handleReadTeamMembersSuccess,
+  });
 
   const findReceiverWithNickName = (nickname: string) => {
     return teamMemberResponse?.members.find(
