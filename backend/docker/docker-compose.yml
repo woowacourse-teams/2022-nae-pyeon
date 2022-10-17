@@ -1,0 +1,46 @@
+version: "3"
+services:
+  db-source:
+    build:
+      context: ./
+      dockerfile: source/Dockerfile
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'naepyeon'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+    # Where our data will be persisted
+    volumes:
+      - my-db-source:/var/lib/mysql
+      - my-db-source:/var/lib/mysql-files
+    networks:
+      - net-mysql
+
+  db-replica:
+    build:
+      context: ./
+      dockerfile: replica/Dockerfile
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'naepyeon'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3307:3306'
+    # Where our data will be persisted
+    volumes:
+      - my-db-replica:/var/lib/mysql
+      - my-db-replica:/var/lib/mysql-files
+    networks:
+      - net-mysql
+
+# Names our volume
+volumes:
+  my-db-source:
+  my-db-replica:
+
+networks:
+  net-mysql:
+    driver: bridge
