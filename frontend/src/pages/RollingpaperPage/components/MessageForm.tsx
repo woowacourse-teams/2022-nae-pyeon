@@ -62,6 +62,9 @@ export const MessageForm = ({
     <>
       <StyledBackground />
       <StyledMessageForm>
+        <StyledMessageColorPickerWrapper>
+          <MessageColorPicker onClickRadio={handleColorClick} color={color} />
+        </StyledMessageColorPickerWrapper>
         <MessageTextArea
           placeholder="메시지를 입력해보세요!"
           value={content}
@@ -85,9 +88,6 @@ export const MessageForm = ({
           </StyledCheckBoxContainer>
           <StyledTextLength>{content.length}/500</StyledTextLength>
         </StyledMessageFormBottom>
-        <StyledMessageColorPickerWrapper>
-          <MessageColorPicker onClickRadio={handleColorClick} color={color} />
-        </StyledMessageColorPickerWrapper>
         <StyledIconButtonContainer>
           <MessageCancelButton onClick={handleMessageCancel} />
           <MessageSubmitButton onClick={handleMessageSubmit} />
