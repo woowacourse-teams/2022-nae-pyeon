@@ -5,7 +5,7 @@ import useCreateMessage from "@/pages/RollingpaperPage/hooks/useCreateMessage";
 
 import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 
-import useValidatedParam from "@/hooks/useValidatedParam";
+import useValidateParam from "@/hooks/useValidateParam";
 
 interface MessageCreateFormProps {
   enableSecretMessage: boolean;
@@ -28,7 +28,7 @@ export const MessageCreateForm = ({
     initMessage,
   } = useMessageForm({});
 
-  const rollingpaperId = useValidatedParam<number>("rollingpaperId");
+  const rollingpaperId = useValidateParam<number>("rollingpaperId");
   const { createMessage } = useCreateMessage(rollingpaperId);
 
   const handleMessageSubmit = () => {

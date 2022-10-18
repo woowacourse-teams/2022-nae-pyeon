@@ -69,7 +69,10 @@ export interface PostTeamRequest extends Omit<Team, "id" | "joined"> {
   nickname: TeamMember["nickname"];
 }
 
+export interface PostTeamMemberRequest extends TeamMember {}
 export interface PostTeamMemberWithInviteCodeRequest {
   inviteCode: string;
   nickname: TeamMember["nickname"];
 }
+
+export interface PutTeamNicknameRequest extends TeamMember {}

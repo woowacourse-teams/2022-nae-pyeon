@@ -1,24 +1,18 @@
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
-import useValidatedParam from "@/hooks/useValidatedParam";
-
 import { queryClient } from "@/api";
 import { postLike } from "@/api/message";
 
-import { Message } from "@/types";
-import { UpdateLikeResponse } from "@/types/apiResponse";
-
-type UpdateLikeVariables = Message["id"];
+import { PostLikeResponse } from "@/types/apiResponse";
+import { PostLikeRequest } from "@/types/apiRequest";
 
 const useUpdateLike = () => {
-  const rollingpaperId = useValidatedParam<number>("rollingpaperId");
-
-  return useMutation<UpdateLikeResponse, AxiosError, UpdateLikeVariables>(
-    (id) => postLike({ rollingpaperId, id }),
+  return useMutation<PostLikeResponse, AxiosError, PostLikeRequest>(
+    ({ rollingpaperId, id }) => postLike({ rollingpaperId, id }),
     {
-      onSuccess: () => {
-        queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
+      onSuccess: (data, variables) => {
+        queryClient.refetchQueries(["rollingpaper", variables.rollingpaperId]);
       },
     }
   );

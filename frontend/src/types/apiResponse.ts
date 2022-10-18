@@ -83,6 +83,6 @@ export interface PostTeamWithInviteCodeResponse {
 }
 
 // likes
-export interface DeleteLikeResponse extends Pick<Message, "likes" | "liked"> {}
+export interface PostLikeResponse extends Pick<Message, "likes" | "liked"> {}
 
-export interface UpdateLikeResponse extends Pick<Message, "likes" | "liked"> {}
+export interface DeleteLikeResponse extends Pick<Message, "likes" | "liked"> {}

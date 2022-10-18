@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 
-import EmptyHeart from "@/assets/icons/bx-heart-empty.svg";
-import FilledHeart from "@/assets/icons/bx-heart-fill.svg";
+import useValidateParam from "@/hooks/useValidateParam";
 
 import useUpdateLike from "@/pages/RollingpaperPage/hooks/useUpdateLike";
 import useDeleteLike from "@/pages/RollingpaperPage/hooks/useDeleteLike";
 
-import { Message } from "@/types";
 import IconButton from "@/components/IconButton";
+
+import EmptyHeart from "@/assets/icons/bx-heart-empty.svg";
+import FilledHeart from "@/assets/icons/bx-heart-fill.svg";
+
+import { Message } from "@/types";
 
 interface LikeProps extends Pick<Message, "id" | "likes" | "liked"> {}
 
@@ -17,6 +20,8 @@ interface StyledLikeContainerProps {
 }
 
 const Like = ({ id, likes, liked }: LikeProps) => {
+  const rollingpaperId = useValidateParam<number>("rollingpaperId");
+
   const [count, setCount] = useState(likes);
   const [isLiked, setIsLiked] = useState(liked);
 
@@ -25,22 +30,28 @@ const Like = ({ id, likes, liked }: LikeProps) => {
 
   const handleLikeToggle = () => {
     if (isLiked) {
-      deleteLike(id, {
-        onSuccess: ({ liked, likes }) => {
-          setCount(likes);
-          setIsLiked(liked);
-        },
-      });
+      deleteLike(
+        { rollingpaperId, id },
+        {
+          onSuccess: ({ liked, likes }) => {
+            setCount(likes);
+            setIsLiked(liked);
+          },
+        }
+      );
 
       return;
     }
 
-    updateLike(id, {
-      onSuccess: ({ liked, likes }) => {
-        setCount(likes);
-        setIsLiked(liked);
-      },
-    });
+    updateLike(
+      { rollingpaperId, id },
+      {
+        onSuccess: ({ liked, likes }) => {
+          setCount(likes);
+          setIsLiked(liked);
+        },
+      }
+    );
   };
 
   return (

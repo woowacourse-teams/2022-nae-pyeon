@@ -2,28 +2,28 @@ import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
 import { useSnackbar } from "@/context/SnackbarContext";
-import useValidatedParam from "@/hooks/useValidatedParam";
 
 import { queryClient } from "@/api";
 import { putTeamNickname } from "@/api/team";
 
-import { Team, TeamMember } from "@/types";
+import { PutTeamNicknameRequest } from "@/types/apiRequest";
 
-type UpdateTeamNicknameVariables = TeamMember["nickname"];
+interface UseUpdateTeamNicknameParams {
+  onSuccess: () => void;
+}
 
-const useUpdateTeamNickname = (onClickCloseButton: () => void) => {
-  const teamId = useValidatedParam<Team["id"]>("teamId");
+const useUpdateTeamNickname = ({ onSuccess }: UseUpdateTeamNicknameParams) => {
   const { openSnackbar } = useSnackbar();
 
   const { mutate: updateTeamNickname } = useMutation<
     null,
     AxiosError,
-    UpdateTeamNicknameVariables
-  >((nickname) => putTeamNickname({ id: teamId, nickname }), {
-    onSuccess: () => {
-      queryClient.refetchQueries(["team", teamId]);
-      queryClient.refetchQueries(["rollingpaperList", teamId]);
-      onClickCloseButton();
+    PutTeamNicknameRequest
+  >(({ id, nickname }) => putTeamNickname({ id, nickname }), {
+    onSuccess: (data, variables) => {
+      queryClient.refetchQueries(["team", variables.id]);
+      queryClient.refetchQueries(["rollingpaperList", variables.id]);
+      onSuccess();
       openSnackbar("닉네임 수정 완료");
     },
   });
