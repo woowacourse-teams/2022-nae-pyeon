@@ -22,7 +22,7 @@ const PageTitleWithBackButton = ({
 
   return (
     <StyledPageTitleContainer>
-      <IconButton onClick={handleBackButtonClick}>
+      <IconButton onClick={handleBackButtonClick} ariaLabel="뒤로가기">
         <ChevronIcon />
       </IconButton>
       <h1>{children}</h1>

@@ -56,7 +56,7 @@ const Like = ({ id, likes, liked }: LikeProps) => {
 
   return (
     <StyledLikeContainer isLiked={isLiked}>
-      <IconButton onClick={handleLikeToggle}>
+      <IconButton onClick={handleLikeToggle} ariaLabel="좋아요">
         {isLiked ? <FilledHeart /> : <EmptyHeart />}
       </IconButton>
       <StyledLikeCount>좋아요 {count}개</StyledLikeCount>
