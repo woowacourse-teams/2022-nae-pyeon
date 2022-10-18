@@ -4,6 +4,7 @@ import { Team } from "@/types";
 
 import {
   GetTeamSearchResultRequest,
+  GetTeamRollingpapersRequest,
   PostTeamRequest,
   PostTeamMemberWithInviteCodeRequest,
   PostTeamMemberRequest,
@@ -34,8 +35,22 @@ const getTeamSearchResult =
 const getTeamMembers = async (id: Team["id"]) =>
   requestApi(() => appClient.get(`/teams/${id}/members`));
 
-const getTeamRollingpapers = async (id: Team["id"]) =>
-  requestApi(() => appClient.get(`/teams/${id}/rollingpapers`));
+const getTeamRollingpapers = async ({
+  id,
+  order,
+  filter,
+}: GetTeamRollingpapersRequest) =>
+  requestApi(() => {
+    const params = new URLSearchParams();
+    if (order) {
+      params.append("order", order);
+    }
+    if (filter) {
+      params.append("filter", filter);
+    }
+
+    return appClient.get(`/teams/${id}/rollingpapers?${params.toString()}`);
+  });
 
 const getTeamMyNickname = async (id: Team["id"]) =>
   requestApi(() => appClient.get(`/teams/${id}/me`));
