@@ -73,10 +73,18 @@ const MessageBox = ({
           <StyledMessageButtonContainer>
             {editable && (
               <>
-                <IconButton size="small" onClick={handleWriteButtonClick}>
+                <IconButton
+                  size="small"
+                  onClick={handleWriteButtonClick}
+                  ariaLabel="메시지 수정"
+                >
                   <Pencil />
                 </IconButton>
-                <IconButton size="small" onClick={handleDeleteButtonClick}>
+                <IconButton
+                  size="small"
+                  onClick={handleDeleteButtonClick}
+                  ariaLabel="메시지 삭제"
+                >
                   <TrashIcon />
                 </IconButton>
               </>

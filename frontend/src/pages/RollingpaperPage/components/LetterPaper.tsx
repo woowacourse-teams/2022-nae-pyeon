@@ -44,7 +44,11 @@ const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProps) => {
       <StyledLetterPaperTop>
         <StyledTo>To. {to}</StyledTo>
         {!isWrite && (
-          <IconButton size="small" onClick={handleWriteButtonClick}>
+          <IconButton
+            size="small"
+            onClick={handleWriteButtonClick}
+            ariaLabel="새 메시지 작성"
+          >
             <PencilIcon />
           </IconButton>
         )}
