@@ -40,7 +40,7 @@ const UserProvider = ({
   const [isLoggedIn, setIsLoggedIn] = useState(initialData.isLoggedIn);
   const [memberId, setMemberId] = useState<number | null>(initialData.memberId);
 
-  const { mutate: logoutRefreshToken } = useCreateLogout();
+  const { mutate: deleteRefreshToken } = useCreateLogout();
 
   const login = ({ accessToken, refreshToken, memberId }: LoginProps) => {
     setAppClientHeaderAuthorization(accessToken);
@@ -61,7 +61,7 @@ const UserProvider = ({
   const logout = () => {
     const refreshToken = getCookie(COOKIE_KEY.REFRESH_TOKEN)!;
 
-    logoutRefreshToken(refreshToken);
+    deleteRefreshToken(refreshToken);
     setAppClientHeaderAuthorization("");
     deleteCookie(COOKIE_KEY.ACCESS_TOKEN);
     deleteCookie(COOKIE_KEY.REFRESH_TOKEN);
