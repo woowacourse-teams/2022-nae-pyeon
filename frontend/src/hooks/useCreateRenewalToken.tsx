@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
-import { queryClient } from "@/api";
+import { queryClient, setAppClientHeaderAuthorization } from "@/api";
 import { postRenewalToken } from "@/api/member";
 
 import { COOKIE_KEY, TOKEN_MAX_AGE } from "@/constants";
@@ -20,6 +20,7 @@ const useCreateRenewalToken = () => {
             value: accessToken,
             maxAge: TOKEN_MAX_AGE.ACCESS_TOKEN,
           });
+          setAppClientHeaderAuthorization(accessToken);
           queryClient.refetchQueries({ stale: true });
         }
       },
