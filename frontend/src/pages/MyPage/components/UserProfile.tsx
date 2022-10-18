@@ -100,7 +100,7 @@ const UserProfile = ({ username, email }: UserProfileProps) => {
 };
 
 const StyledProfile = styled.div`
-  margin: 10px 0 40px 10px;
+  margin: 24px 10px;
 `;
 
 const StyledNormal = styled.div`
@@ -119,6 +119,18 @@ const StyledUserProfileEditForm = styled.form`
 
   input {
     font-size: 24px;
+  }
+
+  @media only screen and (min-width: 600px) {
+    input {
+      width: 70%;
+    }
+  }
+
+  @media only screen and (min-width: 960px) {
+    input {
+      width: 50%;
+    }
   }
 `;
 
