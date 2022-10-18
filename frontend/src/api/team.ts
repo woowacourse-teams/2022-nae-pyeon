@@ -48,7 +48,7 @@ const getTeamRollingpapers = async ({
     if (filter) {
       params.append("filter", filter);
     }
-    console.log(params, params.toString());
+
     return appClient.get(`/teams/${id}/rollingpapers?${params.toString()}`);
   });
 
