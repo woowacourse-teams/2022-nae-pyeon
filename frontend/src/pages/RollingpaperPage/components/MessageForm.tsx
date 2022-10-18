@@ -63,7 +63,10 @@ export const MessageForm = ({
       <StyledBackground />
       <StyledMessageForm>
         <StyledMessageColorPickerWrapper>
-          <MessageColorPicker onClickRadio={handleColorClick} color={color} />
+          <MessageColorPicker
+            onClickRadio={handleColorClick}
+            selectedColor={color}
+          />
         </StyledMessageColorPickerWrapper>
         <MessageTextArea
           placeholder="메시지를 입력해보세요!"
