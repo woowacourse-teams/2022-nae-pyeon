@@ -8,8 +8,8 @@ import {
   TeamMember,
 } from "@/types";
 
-// Kakao OAuth
-export interface PostKakaoOauthResponse {
+// OAuth
+export interface OauthResponse {
   accessToken: string;
   refreshToken: string;
   id: User["id"];
@@ -90,6 +90,11 @@ export interface PostTeamResponse {
   id: Team["id"];
 }
 
-export interface PostTeamWithInviteCodeResponse {
+export interface PostTeamInviteCodeResponse {
   inviteCode: string;
 }
+
+// likes
+export interface PostLikeResponse extends Pick<Message, "likes" | "liked"> {}
+
+export interface DeleteLikeResponse extends Pick<Message, "likes" | "liked"> {}

@@ -12,13 +12,13 @@ import MessageBox from "@/pages/RollingpaperPage/components/MessageBox";
 import useMessageWrite from "@/pages/RollingpaperPage/hooks/useMessageWrite";
 import useSliceMessageList from "../hooks/useSliceMessageList";
 
-interface LetterPaperProp {
+interface LetterPaperProps {
   to: string;
   recipientType: Recipient;
   messageList: Message[];
 }
 
-const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProp) => {
+const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProps) => {
   const { isWrite, handleWriteButtonClick, handleWriteEnd } = useMessageWrite();
 
   const elementList = useMemo(() => {

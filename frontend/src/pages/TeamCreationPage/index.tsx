@@ -42,7 +42,7 @@ const TeamCreationPage = () => {
     handleSwitchClick,
   } = useTeamCreationForm();
 
-  const createTeam = useCreateTeam();
+  const { mutate: createTeam } = useCreateTeam();
 
   const handleTeamCreationSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

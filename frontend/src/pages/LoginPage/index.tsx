@@ -14,9 +14,9 @@ import {
   SOCIAL_LOGIN_PLATFORM,
 } from "@/constants";
 
-type LoginPageLocationState = {
+interface LoginPageLocationState {
   inviteCode?: string;
-};
+}
 
 const LoginPage = () => {
   const { state } = useLocation();

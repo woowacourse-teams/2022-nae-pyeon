@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { useState, createContext, PropsWithChildren, useContext } from "react";
 
-interface SnackbarContextType {
+interface SnackbarContextValue {
   openSnackbar: (message: string) => void;
   closeSnackbar: () => void;
   message: string;
   isOpened: boolean;
 }
 
-const SnackbarContext = createContext<SnackbarContextType>({
+const SnackbarContext = createContext<SnackbarContextValue>({
   openSnackbar: () => {},
   closeSnackbar: () => {},
   message: "",

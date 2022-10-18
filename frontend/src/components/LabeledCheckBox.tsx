@@ -2,13 +2,14 @@ import React from "react";
 import styled from "@emotion/styled";
 import CheckBox from "@/components/CheckBox";
 
-type LabeledCheckBoxProps = {
+interface LabeledCheckBoxProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   labeledText: string;
-} & React.InputHTMLAttributes<HTMLInputElement>;
+}
 
-type StyledLabelProps = {
+interface StyledLabelProps {
   checked?: boolean | undefined;
-};
+}
 
 const LabeledCheckBox = ({
   onChange,

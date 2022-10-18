@@ -1,12 +1,12 @@
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
 
-import useValidatedParam from "@/hooks/useValidatedParam";
+import useValidateParam from "@/hooks/useValidateParam";
 import { useReadRollingpaper } from "@/pages/RollingpaperPage/hooks/useReadRollingpaper";
 
 const RollingpaperPage = () => {
-  const teamId = useValidatedParam<number>("teamId");
-  const rollingpaperId = useValidatedParam<number>("rollingpaperId");
+  const teamId = useValidateParam<number>("teamId");
+  const rollingpaperId = useValidateParam<number>("rollingpaperId");
 
   const { isLoading, data: rollingpaper } = useReadRollingpaper({
     teamId,

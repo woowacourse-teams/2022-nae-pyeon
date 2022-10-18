@@ -1,11 +1,14 @@
 import { appClient, requestApi } from "@/api";
 
-import { Team, TeamMember } from "@/types";
+import { Team } from "@/types";
 
 import {
   GetTeamSearchResultRequest,
   PostTeamRequest,
   PostTeamMemberWithInviteCodeRequest,
+  PostTeamMemberRequest,
+  PutTeamNicknameRequest,
+  PostTeamInviteCodeRequest,
 } from "@/types/apiRequest";
 
 const getTeam = async (id: Team["id"]) =>
@@ -56,7 +59,7 @@ const postTeam = async ({
     })
   );
 
-const postTeamMember = async ({ id, nickname }: TeamMember) =>
+const postTeamMember = async ({ id, nickname }: PostTeamMemberRequest) =>
   requestApi(() => appClient.post(`/teams/${id}`, { nickname }));
 
 const postTeamMemberWithInviteCode = async ({
@@ -70,10 +73,10 @@ const postTeamMemberWithInviteCode = async ({
     })
   );
 
-const postTeamInviteCode = async (id: Team["id"]) =>
+const postTeamInviteCode = async ({ id }: PostTeamInviteCodeRequest) =>
   requestApi(() => appClient.post(`/teams/${id}/invite`));
 
-const putTeamNickname = async ({ id, nickname }: TeamMember) =>
+const putTeamNickname = async ({ id, nickname }: PutTeamNicknameRequest) =>
   requestApi(() => appClient.put(`/teams/${id}/me`, { nickname }));
 
 export {

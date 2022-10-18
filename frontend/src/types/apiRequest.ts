@@ -1,13 +1,7 @@
-import { Message, Rollingpaper, Team, TeamMember } from ".";
+import { Message, Rollingpaper, Team, TeamMember, User } from ".";
 
-// kakao oauth
-export interface postKakaoOauthRequest {
-  authorizationCode: string;
-  redirectUri: string;
-}
-
-// google oauth
-export interface postGoogleOauthRequest {
+// oauth
+export interface OauthRequest {
   authorizationCode: string;
   redirectUri: string;
 }
@@ -21,6 +15,10 @@ export interface GetMyReceivedRollingpapersRequest {
 export interface GetMySentMessagesRequest {
   page: number;
   count: number;
+}
+
+export interface PutMyUsernameRequest {
+  username: User["username"];
 }
 
 // message
@@ -75,7 +73,14 @@ export interface PostTeamRequest extends Omit<Team, "id" | "joined"> {
   nickname: TeamMember["nickname"];
 }
 
+export interface PostTeamMemberRequest extends TeamMember {}
+
+export interface PostTeamInviteCodeRequest {
+  id: Team["id"];
+}
 export interface PostTeamMemberWithInviteCodeRequest {
   inviteCode: string;
   nickname: TeamMember["nickname"];
 }
+
+export interface PutTeamNicknameRequest extends TeamMember {}

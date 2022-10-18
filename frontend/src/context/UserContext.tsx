@@ -12,23 +12,23 @@ interface LoginProps {
   memberId: number;
 }
 
-interface UserContextType {
+interface UserContextValue {
   isLoggedIn: boolean;
   memberId: number | null;
   login: ({ accessToken, refreshToken, memberId }: LoginProps) => void;
   logout: () => void;
 }
 
-type UserContextState = {
+interface UserContextState {
   isLoggedIn: boolean;
   memberId: number | null;
-};
+}
 
 interface UserProvideProps {
   initialData: UserContextState | undefined;
 }
 
-const UserContext = createContext<UserContextType>(null!);
+const UserContext = createContext<UserContextValue>(null!);
 
 const UserProvider = ({
   children,

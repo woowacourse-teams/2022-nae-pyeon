@@ -1,28 +1,20 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useNavigate } from "react-router-dom";
 
 import { UserContext } from "@/context/UserContext";
 
-import { postKakaoOauth } from "@/api/kakaoOauth";
+import { postKakaoOauth } from "@/api/oauth";
 
-import { PostKakaoOauthResponse } from "@/types/apiResponse";
-
-interface kakaoOauthLoginVariable {
-  authorizationCode: string;
-  redirectUri: string;
-}
+import { OauthResponse } from "@/types/apiResponse";
+import { OauthRequest } from "@/types/apiRequest";
 
 const useCreateKakaoOauthLogin = (inviteCode: string | null) => {
   const navigate = useNavigate();
   const { login } = useContext(UserContext);
 
-  const { mutate: kakaoOauthLogin } = useMutation<
-    PostKakaoOauthResponse,
-    AxiosError,
-    kakaoOauthLoginVariable
-  >(
+  return useMutation<OauthResponse, AxiosError, OauthRequest>(
     ({ authorizationCode, redirectUri }) =>
       postKakaoOauth({
         authorizationCode,
@@ -44,8 +36,6 @@ const useCreateKakaoOauthLogin = (inviteCode: string | null) => {
       },
     }
   );
-
-  return kakaoOauthLogin;
 };
 
 export default useCreateKakaoOauthLogin;

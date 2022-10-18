@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-interface RollingpaperListItemProp {
+interface RollingpaperListItemProps {
   title: string;
   to: string;
 }
 
-const RollingpaperListItem = ({ title, to }: RollingpaperListItemProp) => {
+const RollingpaperListItem = ({ title, to }: RollingpaperListItemProps) => {
   return (
     <StyledRollingpaperListItem>
       <StyledTitle>{title}</StyledTitle>

@@ -1,7 +1,10 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import styled from "@emotion/styled";
 
 import { UserContext } from "@/context/UserContext";
+
+import useInput from "@/hooks/useInput";
+import useUpdateUserProfile from "@/pages/MyPage/hooks/useUpdateUserProfile";
 
 import IconButton from "@/components/IconButton";
 import LineButton from "@/components/LineButton";
@@ -12,26 +15,24 @@ import { ValueOf } from "@/types";
 
 import Pencil from "@/assets/icons/bx-pencil.svg";
 
-import useInput from "@/hooks/useInput";
-import useUpdateUserProfile from "@/pages/MyPage/hooks/useUpdateUserProfile";
-
 const MODE = {
   NORMAL: "normal",
   EDIT: "edit",
 } as const;
-interface UserProfileProp {
+
+interface UserProfileProps {
   username: string;
   email: string;
 }
 
 type UserProfileMode = ValueOf<typeof MODE>;
 
-const UserProfile = ({ username, email }: UserProfileProp) => {
+const UserProfile = ({ username, email }: UserProfileProps) => {
   const [mode, setMode] = useState<UserProfileMode>(MODE.NORMAL);
   const { value: editName, handleInputChange: handleEditNameChange } =
     useInput(username);
 
-  const updateUserProfile = useUpdateUserProfile();
+  const { mutate: updateUserProfile } = useUpdateUserProfile();
 
   const { logout } = useContext(UserContext);
 

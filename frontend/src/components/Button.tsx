@@ -1,14 +1,12 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
-
 const Button = ({
   type = "button",
   onClick,
   disabled,
   children,
-}: ButtonAttributes) => {
+}: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <StyledButton type={type} onClick={onClick} disabled={disabled}>
       {children}

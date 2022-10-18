@@ -5,7 +5,7 @@ import useCheckBox from "@/hooks/useCheckBox";
 
 const INIT_COLOR = COLORS.YELLOW;
 
-interface UseMessageFormArgs {
+interface UseMessageFormParams {
   initContent?: string;
   initColor?: string;
   initAnonymous?: boolean;
@@ -17,7 +17,7 @@ const useMessageForm = ({
   initColor = INIT_COLOR,
   initAnonymous = false,
   initSecret = false,
-}: UseMessageFormArgs) => {
+}: UseMessageFormParams) => {
   const [content, setContent] = useState(initContent);
   const [color, setColor] = useState(initColor);
 
@@ -29,7 +29,9 @@ const useMessageForm = ({
   const handleMessageChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
     e
   ) => {
-    setContent(e.target.value);
+    const { value } = e.target;
+    const replacedValue = value.replace(/\n\n\n/, "\n\n");
+    setContent(replacedValue);
   };
 
   const handleColorClick = (color: string) => {

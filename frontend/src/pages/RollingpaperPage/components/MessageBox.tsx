@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-import useValidatedParam from "@/hooks/useValidatedParam";
+import useValidateParam from "@/hooks/useValidateParam";
 
 import IconButton from "@/components/IconButton";
 
@@ -28,7 +28,7 @@ const MessageBox = ({
   liked,
   recipientType,
 }: Message & { recipientType: Recipient }) => {
-  const rollingpaperId = useValidatedParam<number>("rollingpaperId");
+  const rollingpaperId = useValidateParam<number>("rollingpaperId");
 
   const {
     isEdit,

@@ -1,14 +1,14 @@
 import { useEffect, useRef } from "react";
 
-type IntersectHandler = (
-  entry: IntersectionObserverEntry,
-  observer: IntersectionObserver
-) => void;
+interface UseIntersectParams {
+  onIntersect: (
+    entry: IntersectionObserverEntry,
+    observer: IntersectionObserver
+  ) => void;
+  options?: IntersectionObserverInit;
+}
 
-const useIntersect = (
-  onIntersect: IntersectHandler,
-  options?: IntersectionObserverInit
-) => {
+const useIntersect = ({ onIntersect, options }: UseIntersectParams) => {
   const ref = useRef<HTMLDivElement>(null);
   const callback = (
     entries: IntersectionObserverEntry[],

@@ -1,9 +1,18 @@
 spring:
   datasource:
-    url: ${MYSQL_URL}
-    password: ${MYSQL_PASSWORD}
-    username: ${MYSQL_USERNAME}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    source:
+      hikari:
+        jdbc-url: ${SOURCE_MYSQL_URL}
+        password: ${SOURCE_MYSQL_PASSWORD}
+        username: ${SOURCE_MYSQL_USERNAME}
+        driver-class-name: com.mysql.cj.jdbc.Driver
+    replica:
+      hikari:
+        jdbc-url: ${REPLICA_MYSQL_URL}
+        password: ${REPLICA_MYSQL_PASSWORD}
+        username: ${REPLICA_MYSQL_USERNAME}
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
 
   jpa:
     hibernate:

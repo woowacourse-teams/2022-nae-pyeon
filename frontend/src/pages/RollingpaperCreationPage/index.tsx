@@ -1,18 +1,17 @@
 import { useRef, useState } from "react";
-import styled from "@emotion/styled";
 import { useSearchParams } from "react-router-dom";
-
-import ControlDots from "@/components/ControlDots";
+import styled from "@emotion/styled";
 
 import useCreateMemberRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateMemberRolliingpaper";
 import useCreateTeamRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateTeamRollingpaper";
 
+import ControlDots from "@/components/ControlDots";
 import Step1 from "@/pages/RollingpaperCreationPage/components/Step1";
 import Step2 from "@/pages/RollingpaperCreationPage/components/Step2";
 import Step3 from "@/pages/RollingpaperCreationPage/components/Step3";
 
-import { Recipient, Rollingpaper, Team, TeamMember } from "@/types";
 import { RECIPIENT } from "@/constants";
+import { Recipient, Rollingpaper, Team, TeamMember } from "@/types";
 
 const StepLength = 3;
 
@@ -40,8 +39,8 @@ const RollingpaperCreationPage = () => {
   );
   const pageRef = useRef<HTMLDivElement[]>([]);
 
-  const createMemberRollingpaper = useCreateMemberRollingpaper();
-  const createTeamRollingpaper = useCreateTeamRollingpaper();
+  const { mutate: createMemberRollingpaper } = useCreateMemberRollingpaper();
+  const { mutate: createTeamRollingpaper } = useCreateTeamRollingpaper();
 
   const changePage = (page: number) => {
     pageRef.current[page]?.scrollIntoView({
