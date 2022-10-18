@@ -9,7 +9,7 @@ const Snackbar = () => {
   const { message } = useSnackbar();
 
   return ReactDom.createPortal(
-    <StyledSnackbar>{message}</StyledSnackbar>,
+    <StyledSnackbar role={"status"}>{message}</StyledSnackbar>,
     document.getElementById("snackbar__root")!
   );
 };

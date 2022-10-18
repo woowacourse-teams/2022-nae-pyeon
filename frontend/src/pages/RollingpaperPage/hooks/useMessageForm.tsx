@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { COLORS } from "@/constants";
 import useCheckBox from "@/hooks/useCheckBox";
 
-const INIT_COLOR = COLORS.YELLOW;
+const INIT_COLOR = COLORS.YELLOW.value;
 
 interface UseMessageFormParams {
   initContent?: string;
