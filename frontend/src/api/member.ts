@@ -1,7 +1,5 @@
 import { appClient, requestApi } from "@/api";
 
-import { User } from "@/types";
-
 import {
   GetMyReceivedRollingpapersRequest,
   GetMySentMessagesRequest,
