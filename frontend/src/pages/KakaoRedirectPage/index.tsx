@@ -7,7 +7,7 @@ const KakaoRedirectPage = () => {
   const authorizationCode = params.get("code");
   const inviteCode = params.get("state");
 
-  const kakaoOauthLogin = useCreateKakaoOauthLogin(inviteCode);
+  const { mutate: kakaoOauthLogin } = useCreateKakaoOauthLogin(inviteCode);
 
   useEffect(() => {
     const redirectUri = process.env.KAKAO_REDIRECT_URL;

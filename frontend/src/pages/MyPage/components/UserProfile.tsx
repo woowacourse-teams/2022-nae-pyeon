@@ -1,7 +1,10 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import styled from "@emotion/styled";
 
 import { UserContext } from "@/context/UserContext";
+
+import useInput from "@/hooks/useInput";
+import useUpdateUserProfile from "@/pages/MyPage/hooks/useUpdateUserProfile";
 
 import IconButton from "@/components/IconButton";
 import LineButton from "@/components/LineButton";
@@ -11,9 +14,6 @@ import { REGEX } from "@/constants";
 import { ValueOf } from "@/types";
 
 import Pencil from "@/assets/icons/bx-pencil.svg";
-
-import useInput from "@/hooks/useInput";
-import useUpdateUserProfile from "@/pages/MyPage/hooks/useUpdateUserProfile";
 
 const MODE = {
   NORMAL: "normal",
@@ -32,7 +32,7 @@ const UserProfile = ({ username, email }: UserProfileProps) => {
   const { value: editName, handleInputChange: handleEditNameChange } =
     useInput(username);
 
-  const updateUserProfile = useUpdateUserProfile();
+  const { mutate: updateUserProfile } = useUpdateUserProfile();
 
   const { logout } = useContext(UserContext);
 
@@ -50,7 +50,7 @@ const UserProfile = ({ username, email }: UserProfileProps) => {
 
   const handleEditSaveButtonClick = () => {
     if (mode === MODE.EDIT) {
-      updateUserProfile(editName);
+      updateUserProfile({ username: editName });
       setMode(MODE.NORMAL);
     }
   };

@@ -1,25 +1,17 @@
 import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 import { postTeamInviteCode } from "@/api/team";
 
-import { Team } from "@/types";
-import { PostTeamWithInviteCodeResponse } from "@/types/apiResponse";
-import { AxiosError } from "axios";
-
-type CreateInviteLinkVariables = Team["id"];
+import { PostTeamInviteCodeResponse } from "@/types/apiResponse";
+import { PostTeamInviteCodeRequest } from "@/types/apiRequest";
 
 const useCreateInviteLink = () => {
-  const {
-    mutate: createInviteLink,
-    isError,
-    data,
-  } = useMutation<
-    PostTeamWithInviteCodeResponse,
+  return useMutation<
+    PostTeamInviteCodeResponse,
     AxiosError,
-    CreateInviteLinkVariables
-  >((id) => postTeamInviteCode(id), {});
-
-  return { createInviteLink, isError, data };
+    PostTeamInviteCodeRequest
+  >(({ id }) => postTeamInviteCode({ id }), {});
 };
 
 export default useCreateInviteLink;

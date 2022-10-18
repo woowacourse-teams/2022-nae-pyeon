@@ -4,13 +4,11 @@ import styled from "@emotion/styled";
 import useValidateParam from "@/hooks/useValidateParam";
 import useInput from "@/hooks/useInput";
 import useCheckLogin from "@/pages/InvitePage/hooks/useCheckLogin";
-
 import useReadTeamDetailWithInviteCode from "@/pages/InvitePage/hooks/useReadTeamDetailWithInviteCode";
-import useCreateTeamWithInviteCode from "@/pages/InvitePage/hooks/useCreateTeamWithInviteCode";
+import useCreateTeamMemberWithInviteCode from "@/pages/InvitePage/hooks/useCreateTeamMemberWithInviteCode";
 
 import UnderlineInput from "@/components/UnderlineInput";
 import LineButton from "@/components/LineButton";
-
 import TeamDescriptionBox from "@/pages/InvitePage/components/TeamDescriptionBox";
 
 import { REGEX } from "@/constants";
@@ -24,7 +22,8 @@ const InvitePage = () => {
   const { data: teamDetail, isLoading } =
     useReadTeamDetailWithInviteCode(inviteCode);
 
-  const createTeamWithInviteCode = useCreateTeamWithInviteCode(teamDetail?.id);
+  const { mutate: createTeamMemberWithInviteCode } =
+    useCreateTeamMemberWithInviteCode(teamDetail?.id);
 
   const isValidTeamNickname = (nickname: string) => {
     return REGEX.TEAM_NICKNAME.test(nickname);
@@ -37,7 +36,7 @@ const InvitePage = () => {
       return;
     }
 
-    createTeamWithInviteCode({
+    createTeamMemberWithInviteCode({
       nickname,
       inviteCode,
     });

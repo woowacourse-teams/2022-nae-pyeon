@@ -10,6 +10,7 @@ import Modal from "@/components/Modal";
 import IconButton from "@/components/IconButton";
 
 import copyClipboard from "@/util/copyClipboard";
+
 import CopyIcon from "@/assets/icons/bx-copy.svg";
 
 interface InviteModalProps {
@@ -19,7 +20,7 @@ interface InviteModalProps {
 const InviteModal = ({ onClickClose }: InviteModalProps) => {
   const { openSnackbar } = useSnackbar();
   const teamId = useValidateParam<number>("teamId");
-  const { createInviteLink, isError, data } = useCreateInviteLink();
+  const { mutate: createInviteLink, isError, data } = useCreateInviteLink();
 
   const handleCopyButton =
     (link: string): React.MouseEventHandler =>
@@ -34,7 +35,7 @@ const InviteModal = ({ onClickClose }: InviteModalProps) => {
     };
 
   useEffect(() => {
-    createInviteLink(teamId);
+    createInviteLink({ id: teamId });
   }, []);
 
   // 이부분을 어떻게 처리할지...?

@@ -6,23 +6,13 @@ import { useSnackbar } from "@/context/SnackbarContext";
 
 import { postTeamMemberWithInviteCode } from "@/api/team";
 
-import { PostTeamWithInviteCodeResponse } from "@/types/apiResponse";
-import { TeamMember } from "@/types";
+import { PostTeamMemberWithInviteCodeRequest } from "@/types/apiRequest";
 
-interface CreateTeamWithInviteCodeVariables {
-  inviteCode: string;
-  nickname: TeamMember["nickname"];
-}
-
-const useCreateTeamWithInviteCode = (teamId?: number) => {
+const useCreateTeamMemberWithInviteCode = (teamId?: number) => {
   const navigate = useNavigate();
   const { openSnackbar } = useSnackbar();
 
-  const { mutate: createTeamWithInviteCode } = useMutation<
-    PostTeamWithInviteCodeResponse,
-    AxiosError,
-    CreateTeamWithInviteCodeVariables
-  >(
+  return useMutation<null, AxiosError, PostTeamMemberWithInviteCodeRequest>(
     ({ inviteCode, nickname }) =>
       postTeamMemberWithInviteCode({
         inviteCode,
@@ -41,8 +31,6 @@ const useCreateTeamWithInviteCode = (teamId?: number) => {
       },
     }
   );
-
-  return createTeamWithInviteCode;
 };
 
-export default useCreateTeamWithInviteCode;
+export default useCreateTeamMemberWithInviteCode;

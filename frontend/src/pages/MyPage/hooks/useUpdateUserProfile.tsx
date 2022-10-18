@@ -4,21 +4,16 @@ import { AxiosError } from "axios";
 import { useSnackbar } from "@/context/SnackbarContext";
 
 import { queryClient } from "@/api";
-import { putMyNickname } from "@/api/member";
-import { TeamMember } from "@/types";
+import { putMyUsername } from "@/api/member";
 
-type PutMyNicknameVariables = TeamMember["nickname"];
+import { PutMyUsernameRequest } from "@/types/apiRequest";
 
 const useUpdateUserProfile = () => {
   const { openSnackbar } = useSnackbar();
 
-  const { mutate: updateUserProfile } = useMutation<
-    null,
-    AxiosError,
-    PutMyNicknameVariables
-  >(
-    async (username) => {
-      return putMyNickname(username);
+  return useMutation<null, AxiosError, PutMyUsernameRequest>(
+    async ({ username }) => {
+      return putMyUsername({ username });
     },
     {
       onSuccess: () => {
@@ -27,8 +22,6 @@ const useUpdateUserProfile = () => {
       },
     }
   );
-
-  return updateUserProfile;
 };
 
 export default useUpdateUserProfile;

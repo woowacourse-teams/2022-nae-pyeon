@@ -22,7 +22,7 @@ const NicknameCreateModalForm = ({
 }: NicknameCreateModalFormProps) => {
   const { value: nickname, handleInputChange: handleNicknameChange } =
     useInput("");
-  const createTeamMember = useCreateTeamMember(onClickCloseButton);
+  const { mutate: createTeamMember } = useCreateTeamMember(onClickCloseButton);
   const teamId = useValidateParam<Team["id"]>("teamId");
 
   const handleTeamJoinSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {

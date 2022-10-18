@@ -1,4 +1,4 @@
-import { Message, Rollingpaper, Team, TeamMember } from ".";
+import { Message, Rollingpaper, Team, TeamMember, User } from ".";
 
 // oauth
 export interface OauthRequest {
@@ -15,6 +15,10 @@ export interface GetMyReceivedRollingpapersRequest {
 export interface GetMySentMessagesRequest {
   page: number;
   count: number;
+}
+
+export interface PutMyUsernameRequest {
+  username: User["username"];
 }
 
 // message
@@ -70,6 +74,10 @@ export interface PostTeamRequest extends Omit<Team, "id" | "joined"> {
 }
 
 export interface PostTeamMemberRequest extends TeamMember {}
+
+export interface PostTeamInviteCodeRequest {
+  id: Team["id"];
+}
 export interface PostTeamMemberWithInviteCodeRequest {
   inviteCode: string;
   nickname: TeamMember["nickname"];

@@ -22,7 +22,7 @@ const NicknameEditModalForm = ({
   onClickCloseButton,
 }: NicknameEditModalForm) => {
   const teamId = useValidateParam<Team["id"]>("teamId");
-  const updateTeamNickname = useUpdateTeamNickname({
+  const { mutate: updateTeamNickname } = useUpdateTeamNickname({
     onSuccess: onClickCloseButton,
   });
 

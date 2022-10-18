@@ -48,7 +48,7 @@ const Step2 = (
   };
 
   const { data: teamMemberResponse } = useReadTeamMembers({
-    teamId,
+    teamId: teamId!,
     onSuccess: handleReadTeamMembersSuccess,
   });
 

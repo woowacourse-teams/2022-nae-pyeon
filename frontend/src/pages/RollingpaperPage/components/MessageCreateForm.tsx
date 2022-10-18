@@ -29,10 +29,11 @@ export const MessageCreateForm = ({
   } = useMessageForm({});
 
   const rollingpaperId = useValidateParam<number>("rollingpaperId");
-  const { createMessage } = useCreateMessage(rollingpaperId);
+  const { mutate: createMessage } = useCreateMessage();
 
   const handleMessageSubmit = () => {
     createMessage({
+      rollingpaperId,
       content,
       color,
       anonymous,

@@ -6,25 +6,20 @@ import { useSnackbar } from "@/context/SnackbarContext";
 import { queryClient } from "@/api";
 import { deleteMessage } from "@/api/message";
 
-import { Rollingpaper, Message } from "@/types";
+import { DeleteMessageRequest } from "@/types/apiRequest";
 
-type DeleteMessageVariables = Message["id"];
-
-const useDeleteMessage = (rollingpaperId: Rollingpaper["id"]) => {
+const useDeleteMessage = () => {
   const { openSnackbar } = useSnackbar();
 
-  const { mutate: deleteRollingpaperMessage } = useMutation<
-    null,
-    AxiosError,
-    DeleteMessageVariables
-  >((id) => deleteMessage({ rollingpaperId, id }), {
-    onSuccess: () => {
-      queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
-      openSnackbar("메시지 삭제 완료");
-    },
-  });
-
-  return { deleteRollingpaperMessage };
+  return useMutation<null, AxiosError, DeleteMessageRequest>(
+    ({ rollingpaperId, id }) => deleteMessage({ rollingpaperId, id }),
+    {
+      onSuccess: (data, variables) => {
+        queryClient.refetchQueries(["rollingpaper", variables.rollingpaperId]);
+        openSnackbar("메시지 삭제 완료");
+      },
+    }
+  );
 };
 
 export default useDeleteMessage;

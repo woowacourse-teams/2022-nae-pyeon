@@ -7,20 +7,13 @@ import { queryClient } from "@/api";
 import { postMessage } from "@/api/message";
 
 import { PostMessageResponse } from "@/types/apiResponse";
-import { Message } from "@/types";
+import { PostMessageRequest } from "@/types/apiRequest";
 
-interface CreateMessageVariables
-  extends Pick<Message, "content" | "color" | "anonymous" | "secret"> {}
-
-const useCreateMessage = (rollingpaperId: number) => {
+const useCreateMessage = () => {
   const { openSnackbar } = useSnackbar();
 
-  const { mutate: createMessage } = useMutation<
-    PostMessageResponse,
-    AxiosError,
-    CreateMessageVariables
-  >(
-    ({ content, color, anonymous, secret }) => {
+  return useMutation<PostMessageResponse, AxiosError, PostMessageRequest>(
+    ({ rollingpaperId, content, color, anonymous, secret }) => {
       return postMessage({
         rollingpaperId,
         content,
@@ -30,16 +23,12 @@ const useCreateMessage = (rollingpaperId: number) => {
       });
     },
     {
-      onSuccess: () => {
-        queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
+      onSuccess: (data, variables) => {
+        queryClient.refetchQueries(["rollingpaper", variables.rollingpaperId]);
         openSnackbar("메시지 작성 완료");
       },
     }
   );
-
-  return {
-    createMessage,
-  };
 };
 
 export default useCreateMessage;

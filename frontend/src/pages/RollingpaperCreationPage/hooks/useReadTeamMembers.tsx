@@ -6,7 +6,7 @@ import { getTeamMembers } from "@/api/team";
 import { GetTeamMembersResponse } from "@/types/apiResponse";
 
 interface UseReadTeamMembersParams {
-  teamId: number | null;
+  teamId: number;
   onSuccess: (data: GetTeamMembersResponse) => void;
 }
 
@@ -16,7 +16,7 @@ const useReadTeamMembers = ({
 }: UseReadTeamMembersParams) => {
   return useQuery<GetTeamMembersResponse, AxiosError>(
     ["team-member", teamId],
-    () => getTeamMembers(+teamId!),
+    () => getTeamMembers(teamId),
     {
       onSuccess,
       enabled: !!teamId,

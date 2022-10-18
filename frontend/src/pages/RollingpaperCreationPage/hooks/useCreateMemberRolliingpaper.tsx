@@ -1,28 +1,22 @@
+import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useNavigate } from "react-router-dom";
-
-import { postMemberRollingpaper } from "@/api/rollingpaper";
 
 import { useSnackbar } from "@/context/SnackbarContext";
 
-import { PostMemberRollingpaperResponse } from "@/types/apiResponse";
-import { Rollingpaper, Team, TeamMember } from "@/types";
+import { postMemberRollingpaper } from "@/api/rollingpaper";
 
-interface CreateMemberRollingpaperVariables {
-  teamId: Team["id"];
-  title: Rollingpaper["title"];
-  addresseeId: TeamMember["id"];
-}
+import { PostMemberRollingpaperResponse } from "@/types/apiResponse";
+import { PostMemberRollingpaperRequest } from "@/types/apiRequest";
 
 const useCreateMemberRollingpaper = () => {
   const { openSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
-  const { mutate: createMemberRollingpaper } = useMutation<
+  return useMutation<
     PostMemberRollingpaperResponse,
     AxiosError,
-    CreateMemberRollingpaperVariables
+    PostMemberRollingpaperRequest
   >(
     ({ teamId, title, addresseeId }) =>
       postMemberRollingpaper({ teamId, title, addresseeId }),
@@ -33,8 +27,6 @@ const useCreateMemberRollingpaper = () => {
       },
     }
   );
-
-  return createMemberRollingpaper;
 };
 
 export default useCreateMemberRollingpaper;

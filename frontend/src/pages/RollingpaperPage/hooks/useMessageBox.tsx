@@ -8,7 +8,7 @@ interface UseMessageParams {
 
 const useMessageBox = ({ id, rollingpaperId }: UseMessageParams) => {
   const [isEdit, setIsEdit] = useState(false);
-  const { deleteRollingpaperMessage } = useDeleteMessage(rollingpaperId);
+  const { mutate: deleteRollingpaperMessage } = useDeleteMessage();
 
   const handleWriteButtonClick: React.MouseEventHandler<
     HTMLButtonElement
@@ -18,7 +18,7 @@ const useMessageBox = ({ id, rollingpaperId }: UseMessageParams) => {
 
   const handleDeleteButtonClick = () => {
     if (confirm("메시지를 정말 삭제하시겠습니까?") && id) {
-      deleteRollingpaperMessage(id);
+      deleteRollingpaperMessage({ rollingpaperId, id });
     }
   };
 

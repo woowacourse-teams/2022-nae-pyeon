@@ -11,11 +11,7 @@ import { PutMessageRequest } from "@/types/apiRequest";
 const useUpdateMessage = () => {
   const { openSnackbar } = useSnackbar();
 
-  const { mutate: updateMessage } = useMutation<
-    null,
-    AxiosError,
-    PutMessageRequest
-  >(
+  return useMutation<null, AxiosError, PutMessageRequest>(
     ({ rollingpaperId, id, content, color, anonymous, secret }) => {
       return putMessage({
         rollingpaperId,
@@ -33,10 +29,6 @@ const useUpdateMessage = () => {
       },
     }
   );
-
-  return {
-    updateMessage,
-  };
 };
 
 export default useUpdateMessage;

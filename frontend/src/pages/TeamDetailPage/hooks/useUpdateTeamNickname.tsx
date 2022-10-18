@@ -15,20 +15,17 @@ interface UseUpdateTeamNicknameParams {
 const useUpdateTeamNickname = ({ onSuccess }: UseUpdateTeamNicknameParams) => {
   const { openSnackbar } = useSnackbar();
 
-  const { mutate: updateTeamNickname } = useMutation<
-    null,
-    AxiosError,
-    PutTeamNicknameRequest
-  >(({ id, nickname }) => putTeamNickname({ id, nickname }), {
-    onSuccess: (data, variables) => {
-      queryClient.refetchQueries(["team", variables.id]);
-      queryClient.refetchQueries(["rollingpaperList", variables.id]);
-      onSuccess();
-      openSnackbar("닉네임 수정 완료");
-    },
-  });
-
-  return updateTeamNickname;
+  return useMutation<null, AxiosError, PutTeamNicknameRequest>(
+    ({ id, nickname }) => putTeamNickname({ id, nickname }),
+    {
+      onSuccess: (data, variables) => {
+        queryClient.refetchQueries(["team", variables.id]);
+        queryClient.refetchQueries(["rollingpaperList", variables.id]);
+        onSuccess();
+        openSnackbar("닉네임 수정 완료");
+      },
+    }
+  );
 };
 
 export default useUpdateTeamNickname;

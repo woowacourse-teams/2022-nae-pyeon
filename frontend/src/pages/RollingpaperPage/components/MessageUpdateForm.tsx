@@ -2,7 +2,6 @@ import useValidateParam from "@/hooks/useValidateParam";
 
 import useUpdateMessage from "@/pages/RollingpaperPage/hooks/useUpdateMessage";
 import useMessageForm from "@/pages/RollingpaperPage/hooks/useMessageForm";
-
 import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 
 import { Message, Rollingpaper } from "@/types";
@@ -39,7 +38,7 @@ export const MessageUpdateForm = ({
     initAnonymous: anonymous,
     initSecret: secret,
   });
-  const { updateMessage } = useUpdateMessage();
+  const { mutate: updateMessage } = useUpdateMessage();
 
   const handleMessageSubmit = () => {
     updateMessage({
