@@ -2,16 +2,12 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-interface SwitchProp {
+interface SwitchProps {
   onClick: React.MouseEventHandler<HTMLDivElement>;
   isChecked: boolean;
 }
 
-interface StyledCircleProp {
-  checked: boolean;
-}
-
-const Switch = ({ onClick, isChecked }: SwitchProp) => {
+const Switch = ({ onClick, isChecked }: SwitchProps) => {
   return (
     <StyledSwitch onClick={onClick}>
       <StyledCircle checked={isChecked} />
@@ -38,7 +34,9 @@ const StyledSwitch = styled.div`
   transition: all 0.5s ease-in-out;
 `;
 
-const StyledCircle = styled.div<StyledCircleProp>`
+const StyledCircle = styled.div<{
+  checked: boolean;
+}>`
   background-color: white;
   width: 24px;
   height: 24px;

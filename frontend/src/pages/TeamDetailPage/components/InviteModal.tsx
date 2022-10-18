@@ -3,23 +3,24 @@ import styled from "@emotion/styled";
 
 import { useSnackbar } from "@/context/SnackbarContext";
 
-import useValidatedParam from "@/hooks/useValidatedParam";
+import useValidateParam from "@/hooks/useValidateParam";
 import useCreateInviteLink from "@/pages/TeamDetailPage/hooks/useCreateInviteLink";
 
 import Modal from "@/components/Modal";
 import IconButton from "@/components/IconButton";
 
 import copyClipboard from "@/util/copyClipboard";
+
 import CopyIcon from "@/assets/icons/bx-copy.svg";
 
-interface InviteModalProp {
+interface InviteModalProps {
   onClickClose: () => void;
 }
 
-const InviteModal = ({ onClickClose }: InviteModalProp) => {
+const InviteModal = ({ onClickClose }: InviteModalProps) => {
   const { openSnackbar } = useSnackbar();
-  const teamId = useValidatedParam<number>("teamId");
-  const { createInviteLink, isError, data } = useCreateInviteLink();
+  const teamId = useValidateParam<number>("teamId");
+  const { mutate: createInviteLink, isError, data } = useCreateInviteLink();
 
   const handleCopyButton =
     (link: string): React.MouseEventHandler =>
@@ -34,7 +35,7 @@ const InviteModal = ({ onClickClose }: InviteModalProp) => {
     };
 
   useEffect(() => {
-    createInviteLink(teamId);
+    createInviteLink({ id: teamId });
   }, []);
 
   // 이부분을 어떻게 처리할지...?

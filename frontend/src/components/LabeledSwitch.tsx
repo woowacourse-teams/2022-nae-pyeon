@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import Switch from "@/components/Switch";
 
-interface LabeledSwitchProp {
+interface LabeledSwitchProps {
   labelText: string;
   isChecked: boolean;
   onClick: React.MouseEventHandler<HTMLDivElement>;
@@ -12,7 +12,7 @@ export const LabeledSwitch = ({
   labelText,
   isChecked,
   onClick,
-}: LabeledSwitchProp) => {
+}: LabeledSwitchProps) => {
   return (
     <StyledLabeledSwitch>
       {labelText}

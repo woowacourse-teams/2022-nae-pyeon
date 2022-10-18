@@ -1,17 +1,18 @@
 import React from "react";
 import styled from "@emotion/styled";
 
+import useValidateParam from "@/hooks/useValidateParam";
+import useInput from "@/hooks/useInput";
+import useReadTeamNickname from "@/pages/TeamDetailPage/hooks/useReadTeamNickname";
+import useUpdateTeamNickname from "@/pages/TeamDetailPage/hooks/useUpdateTeamNickname";
+
 import LineButton from "@/components/LineButton";
 import Modal from "@/components/Modal";
 import UnderlineInput from "@/components/UnderlineInput";
 
-import useValidatedParam from "@/hooks/useValidatedParam";
-import useInput from "@/hooks/useInput";
-
 import { REGEX } from "@/constants";
 
-import useReadTeamNickname from "@/pages/TeamDetailPage/hooks/useReadTeamNickname";
-import useUpdateTeamNickname from "@/pages/TeamDetailPage/hooks/useUpdateTeamNickname";
+import { Team } from "@/types";
 
 interface NicknameEditModalForm {
   onClickCloseButton: () => void;
@@ -20,8 +21,10 @@ interface NicknameEditModalForm {
 const NicknameEditModalForm = ({
   onClickCloseButton,
 }: NicknameEditModalForm) => {
-  const teamId = useValidatedParam<number>("teamId");
-  const updateTeamNickname = useUpdateTeamNickname(onClickCloseButton);
+  const teamId = useValidateParam<Team["id"]>("teamId");
+  const { mutate: updateTeamNickname } = useUpdateTeamNickname({
+    onSuccess: onClickCloseButton,
+  });
 
   const { data: teamNicknameResponse } = useReadTeamNickname(teamId);
 
@@ -36,7 +39,7 @@ const NicknameEditModalForm = ({
       alert("1 ~ 20자 사이의 닉네임을 입력해주세요");
       return;
     }
-    updateTeamNickname(nickname);
+    updateTeamNickname({ id: teamId, nickname });
   };
 
   return (

@@ -5,6 +5,7 @@ import { User } from "@/types";
 import {
   GetMyReceivedRollingpapersRequest,
   GetMySentMessagesRequest,
+  PutMyUsernameRequest,
 } from "@/types/apiRequest";
 
 const getMyInfo = async () => requestApi(() => appClient.get("/members/me"));
@@ -36,7 +37,7 @@ const getMySentMessages = async ({
     appClient.get(`/members/me/messages/written?page=${page}&count=${count}`)
   );
 
-const putMyNickname = async (username: User["username"]) =>
+const putMyUsername = async ({ username }: PutMyUsernameRequest) =>
   requestApi(() => appClient.put("/members/me", { username }));
 
 export {
@@ -44,5 +45,5 @@ export {
   getMyInfoWithAccessToken,
   getMyReceivedRollingpapers,
   getMySentMessages,
-  putMyNickname,
+  putMyUsername,
 };

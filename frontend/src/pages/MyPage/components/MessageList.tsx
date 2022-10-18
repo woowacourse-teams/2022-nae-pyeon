@@ -9,11 +9,11 @@ import useReadSentMessages from "@/pages/MyPage/hooks/useReadSentMessages";
 
 import EmptyStateImg from "@/assets/images/empty-state.svg";
 
-interface MessageListProp {
+interface MessageListProps {
   lastPage: number;
 }
 
-const MessageList = ({ lastPage }: MessageListProp) => {
+const MessageList = ({ lastPage }: MessageListProps) => {
   const { currentPage, handleNumberClick, handleNextClick, handlePrevClick } =
     usePaging(lastPage);
 

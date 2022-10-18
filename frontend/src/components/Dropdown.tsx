@@ -7,12 +7,12 @@ interface optionList {
   option: string;
   callback: () => void;
 }
-interface DropdownProp {
+interface DropdownProps {
   DropdownButton: React.ReactNode;
   optionList: optionList[];
 }
 
-const Dropdown = ({ DropdownButton, optionList }: DropdownProp) => {
+const Dropdown = ({ DropdownButton, optionList }: DropdownProps) => {
   const { isOpened, handleButtonClick, handleOptionClick } = useDropdown();
 
   return (

@@ -56,11 +56,6 @@ export interface SentMessage extends Pick<Message, "id" | "content" | "color"> {
   to: Rollingpaper["to"];
 }
 
-export type CustomError = {
-  errorCode: number;
-  message: string;
-};
-
 export type ValueOf<T> = T[keyof T];
 
 export type Recipient = ValueOf<typeof RECIPIENT>;

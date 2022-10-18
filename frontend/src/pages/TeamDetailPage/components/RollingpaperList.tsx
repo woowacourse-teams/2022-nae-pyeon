@@ -5,12 +5,12 @@ import IconButton from "@/components/IconButton";
 import RollingpaperListItem from "@/pages/TeamDetailPage/components/RollingpaperListItem";
 
 import PlusIcon from "@/assets/icons/bx-plus.svg";
-import useValidatedParam from "@/hooks/useValidatedParam";
+import useValidateParam from "@/hooks/useValidateParam";
 import useReadTeamRollingpaper from "@/pages/TeamDetailPage/hooks/useReadTeamRollingpaper";
 
 const RollingpaperList = () => {
   const navigate = useNavigate();
-  const teamId = useValidatedParam<number>("teamId");
+  const teamId = useValidateParam<number>("teamId");
 
   const {
     isLoading: isLoadingGetTeamRollingpaperList,

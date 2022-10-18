@@ -1,10 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import { SentMessage } from "@/types";
-import { Link } from "react-router-dom";
-
-type StyledMessageProp = Pick<SentMessage, "color">;
 
 const MessageListItem = ({
   rollingpaperId,
@@ -31,7 +29,7 @@ const MessageListItem = ({
   );
 };
 
-const StyledMessage = styled.div<StyledMessageProp>`
+const StyledMessage = styled.div<Pick<SentMessage, "color">>`
   display: flex;
   flex-direction: column;
 

@@ -4,23 +4,23 @@ import { setAppClientHeaderAuthorization } from "@/api";
 import { deleteCookie, setCookie } from "@/util/cookie";
 import { COOKIE_KEY } from "@/constants";
 
-interface UserContextType {
+interface UserContextValue {
   isLoggedIn: boolean;
   memberId: number | null;
   login: (accessToken: string, memberId: number) => void;
   logout: () => void;
 }
 
-type UserContextState = {
+interface UserContextState {
   isLoggedIn: boolean;
   memberId: number | null;
-};
+}
 
 interface UserProvideProps {
   initialData: UserContextState | undefined;
 }
 
-const UserContext = createContext<UserContextType>(null!);
+const UserContext = createContext<UserContextValue>(null!);
 
 const UserProvider = ({
   children,

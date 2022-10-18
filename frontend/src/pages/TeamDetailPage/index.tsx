@@ -4,11 +4,11 @@ import TeamDescriptionBox from "@/pages/TeamDetailPage/components/TeamDescriptio
 import RollingpaperList from "@/pages/TeamDetailPage/components/RollingpaperList";
 import TeamJoinSection from "@/pages/TeamDetailPage/components/TeamJoinSection";
 
-import useValidatedParam from "@/hooks/useValidatedParam";
+import useValidateParam from "@/hooks/useValidateParam";
 import useReadTeamDetail from "@/pages/TeamDetailPage/hooks/useReadTeamDetail";
 
 const TeamDetailPage = () => {
-  const teamId = useValidatedParam<number>("teamId");
+  const teamId = useValidateParam<number>("teamId");
 
   const { isLoading: isLoadingTeamDetail, data: teamDetail } =
     useReadTeamDetail(teamId);

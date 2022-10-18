@@ -1,12 +1,12 @@
 import React, { forwardRef, LegacyRef, PropsWithChildren } from "react";
 import styled from "@emotion/styled";
 
-interface StepTitleWithLayoutProps extends PropsWithChildren {
+interface StepTitleWithLayoutProps {
   title: string;
 }
 
 const StepTitleWithLayout = (
-  { title, children }: StepTitleWithLayoutProps,
+  { title, children }: PropsWithChildren<StepTitleWithLayoutProps>,
   ref: LegacyRef<HTMLDivElement>
 ) => {
   return (

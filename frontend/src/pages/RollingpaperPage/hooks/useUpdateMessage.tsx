@@ -1,30 +1,20 @@
-import React from "react";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
-import useValidatedParam from "@/hooks/useValidatedParam";
 import { useSnackbar } from "@/context/SnackbarContext";
 
 import { queryClient } from "@/api";
 import { putMessage } from "@/api/message";
 
-import { Message } from "@/types";
+import { PutMessageRequest } from "@/types/apiRequest";
 
-interface UpdateMessageVariable
-  extends Pick<Message, "content" | "color" | "anonymous" | "secret"> {}
-
-const useUpdateMessage = (id: number) => {
+const useUpdateMessage = () => {
   const { openSnackbar } = useSnackbar();
-  const rollingpaperId = useValidatedParam<number>("rollingpaperId");
 
-  const { mutate: updateMessage } = useMutation<
-    null,
-    AxiosError,
-    UpdateMessageVariable
-  >(
-    ({ content, color, anonymous, secret }) => {
+  return useMutation<null, AxiosError, PutMessageRequest>(
+    ({ rollingpaperId, id, content, color, anonymous, secret }) => {
       return putMessage({
-        rollingpaperId: rollingpaperId,
+        rollingpaperId,
         id,
         content,
         color,
@@ -33,16 +23,12 @@ const useUpdateMessage = (id: number) => {
       });
     },
     {
-      onSuccess: () => {
-        queryClient.refetchQueries(["rollingpaper", rollingpaperId]);
+      onSuccess: (data, variables) => {
+        queryClient.refetchQueries(["rollingpaper", variables.rollingpaperId]);
         openSnackbar("메시지 수정 완료");
       },
     }
   );
-
-  return {
-    updateMessage,
-  };
 };
 
 export default useUpdateMessage;

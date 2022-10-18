@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  ChangeEventHandler,
-  MouseEventHandler,
-} from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const useAutoCompleteInput = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,14 +15,18 @@ const useAutoCompleteInput = () => {
     return newAutocompleteList;
   };
 
-  const handleAutoInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleAutoInputChange: React.ChangeEventHandler<HTMLInputElement> = (
+    e
+  ) => {
     setValue(e.target.value);
     const newAutoCompleteList = sortAutoCompleteList(e.target.value);
 
     setAutoCompleteList(newAutoCompleteList);
   };
 
-  const handleAutoInputFocus: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleAutoInputFocus: React.ChangeEventHandler<HTMLInputElement> = (
+    e
+  ) => {
     if (ref.current) {
       ref.current.focus();
 
@@ -40,7 +38,7 @@ const useAutoCompleteInput = () => {
   };
 
   const handleListItemClick =
-    (item: string): MouseEventHandler<HTMLElement> =>
+    (item: string): React.MouseEventHandler<HTMLLIElement> =>
     () => {
       setValue(item);
     };

@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import useDeleteMessage from "@/pages/RollingpaperPage/hooks/useDeleteMessage";
 
-interface UseMessageProps {
+interface UseMessageParams {
   id: number;
   rollingpaperId: number;
 }
 
-const useMessage = ({ id, rollingpaperId }: UseMessageProps) => {
+const useMessageBox = ({ id, rollingpaperId }: UseMessageParams) => {
   const [isEdit, setIsEdit] = useState(false);
-  const { deleteRollingpaperMessage } = useDeleteMessage(rollingpaperId);
+  const { mutate: deleteRollingpaperMessage } = useDeleteMessage();
 
   const handleWriteButtonClick: React.MouseEventHandler<
     HTMLButtonElement
@@ -18,7 +18,7 @@ const useMessage = ({ id, rollingpaperId }: UseMessageProps) => {
 
   const handleDeleteButtonClick = () => {
     if (confirm("메시지를 정말 삭제하시겠습니까?") && id) {
-      deleteRollingpaperMessage(id);
+      deleteRollingpaperMessage({ rollingpaperId, id });
     }
   };
 
@@ -34,4 +34,4 @@ const useMessage = ({ id, rollingpaperId }: UseMessageProps) => {
   };
 };
 
-export default useMessage;
+export default useMessageBox;

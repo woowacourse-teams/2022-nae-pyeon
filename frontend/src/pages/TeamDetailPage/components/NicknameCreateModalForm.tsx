@@ -1,25 +1,29 @@
 import React from "react";
 import styled from "@emotion/styled";
 
+import useInput from "@/hooks/useInput";
+import useValidateParam from "@/hooks/useValidateParam";
+import useCreateTeamMember from "@/pages/TeamDetailPage/hooks/useCreateTeamMember";
+
 import LineButton from "@/components/LineButton";
 import Modal from "@/components/Modal";
 import UnderlineInput from "@/components/UnderlineInput";
 
 import { REGEX } from "@/constants";
 
-import useInput from "@/hooks/useInput";
-import useCreateTeamMember from "../hooks/useCreateTeamMember";
+import { Team } from "@/types";
 
-interface NicknameCreateModalFormProp {
+interface NicknameCreateModalFormProps {
   onClickCloseButton: () => void;
 }
 
 const NicknameCreateModalForm = ({
   onClickCloseButton,
-}: NicknameCreateModalFormProp) => {
+}: NicknameCreateModalFormProps) => {
   const { value: nickname, handleInputChange: handleNicknameChange } =
     useInput("");
-  const createTeamMember = useCreateTeamMember(onClickCloseButton);
+  const { mutate: createTeamMember } = useCreateTeamMember(onClickCloseButton);
+  const teamId = useValidateParam<Team["id"]>("teamId");
 
   const handleTeamJoinSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -29,7 +33,7 @@ const NicknameCreateModalForm = ({
       return;
     }
 
-    createTeamMember(nickname);
+    createTeamMember({ id: teamId, nickname });
   };
 
   return (

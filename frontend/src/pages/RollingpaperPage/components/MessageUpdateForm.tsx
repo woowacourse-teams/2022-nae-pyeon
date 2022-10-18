@@ -1,16 +1,16 @@
-import React from "react";
+import useValidateParam from "@/hooks/useValidateParam";
 
 import useUpdateMessage from "@/pages/RollingpaperPage/hooks/useUpdateMessage";
 import useMessageForm from "@/pages/RollingpaperPage/hooks/useMessageForm";
-
 import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 
-import { Message } from "@/types";
+import { Message, Rollingpaper } from "@/types";
 
-type MessageUpdateFormProps = {
+interface MessageUpdateFormProps
+  extends Pick<Message, "id" | "content" | "color" | "anonymous" | "secret"> {
   enableSecretMessage: boolean;
   onEditEnd: () => void;
-} & Pick<Message, "id" | "content" | "color" | "anonymous" | "secret">;
+}
 
 export const MessageUpdateForm = ({
   enableSecretMessage,
@@ -21,6 +21,7 @@ export const MessageUpdateForm = ({
   secret,
   onEditEnd,
 }: MessageUpdateFormProps) => {
+  const rollingpaperId = useValidateParam<Rollingpaper["id"]>("rollingpaperId");
   const {
     content: newContent,
     color: newColor,
@@ -37,11 +38,12 @@ export const MessageUpdateForm = ({
     initAnonymous: anonymous,
     initSecret: secret,
   });
-
-  const { updateMessage } = useUpdateMessage(id);
+  const { mutate: updateMessage } = useUpdateMessage();
 
   const handleMessageSubmit = () => {
     updateMessage({
+      rollingpaperId,
+      id,
       color: newColor,
       content: newContent,
       anonymous: newAnonymous,

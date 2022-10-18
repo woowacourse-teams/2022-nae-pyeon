@@ -27,9 +27,9 @@ const dummyRollingpapers = [
   },
 ];
 
-type TeamJoinSectionProps = {
+interface TeamJoinSectionProps {
   isSecretTeam: boolean;
-};
+}
 
 const TeamJoinSection = ({ isSecretTeam }: TeamJoinSectionProps) => {
   const { isOpen, handleModalClose, handleModalOpen } = useModal();

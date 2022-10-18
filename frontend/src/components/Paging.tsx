@@ -6,17 +6,13 @@ import IconButton from "@/components/IconButton";
 import LeftIcon from "@/assets/icons/bx-chevron-left.svg";
 import RightIcon from "@/assets/icons/bx-chevron-right.svg";
 
-interface PagingProp {
+interface PagingProps {
   currentPage: number;
   lastPage: number;
   handleNumberClick: (number: number) => React.MouseEventHandler;
   handleNextClick: React.MouseEventHandler;
   handlePrevClick: React.MouseEventHandler;
 }
-
-type StyledPaging = {
-  isCurrent: boolean;
-};
 
 const MAX_PAGE_COUNT = 5;
 
@@ -26,7 +22,7 @@ const Paging = ({
   handleNumberClick,
   handleNextClick,
   handlePrevClick,
-}: PagingProp) => {
+}: PagingProps) => {
   return (
     <StyledPaging>
       <IconButton onClick={handlePrevClick}>
@@ -98,7 +94,9 @@ const StyledPageButtons = styled.div`
   display: flex;
 `;
 
-const StyledPage = styled.div<StyledPaging>`
+const StyledPage = styled.div<{
+  isCurrent: boolean;
+}>`
   width: 24px;
   text-align: center;
   line-height: 24px;

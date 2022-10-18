@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import axios from "axios";
 
 import useIntersect from "@/hooks/useIntersect";
 import { getTeamSearchResult } from "@/api/team";
@@ -13,28 +12,26 @@ import SearchResultListItem from "@/pages/TeamSearchPage/components/SearchResult
 import EmptyStateImg from "@/assets/images/empty-state.svg";
 import { TOTAL_TEAMS_PAGING_COUNT } from "@/constants";
 
-import { Team, CustomError } from "@/types";
+import { Team } from "@/types";
 
 const TeamSearch = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
-  const ref = useIntersect(
-    async (entry, observer) => {
+  const ref = useIntersect({
+    onIntersect: async (entry, observer) => {
       observer.unobserve(entry.target);
       if (hasNextPage && !isFetching) {
         fetchNextPage();
       }
     },
-    { rootMargin: "10px", threshold: 1.0 }
-  );
+    options: { rootMargin: "10px", threshold: 1.0 },
+  });
 
   const {
     data: totalTeamResponse,
-    error: getTotalTeamsError,
     fetchNextPage,
     hasNextPage,
     isFetching,
-    isError,
     isLoading,
     refetch,
   } = useInfiniteQuery(
@@ -72,14 +69,6 @@ const TeamSearch = () => {
 
   if (isLoading) {
     return <div>로딩 중</div>;
-  }
-
-  if (isError) {
-    if (axios.isAxiosError(getTotalTeamsError) && getTotalTeamsError.response) {
-      const customError = getTotalTeamsError.response.data as CustomError;
-      return <div>{customError.message}</div>;
-    }
-    return <div>에러</div>;
   }
 
   if (!totalTeamResponse) {

@@ -1,4 +1,3 @@
-import React from "react";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
@@ -6,20 +5,12 @@ import { useMutation } from "@tanstack/react-query";
 import { postTeam } from "@/api/team";
 
 import { PostTeamResponse } from "@/types/apiResponse";
-import { Team, TeamMember } from "@/types";
-
-interface CreateTeamVariable extends Omit<Team, "id" | "joined"> {
-  nickname: TeamMember["nickname"];
-}
+import { PostTeamRequest } from "@/types/apiRequest";
 
 const useCreateTeam = () => {
   const navigate = useNavigate();
 
-  const { mutate: createTeam } = useMutation<
-    PostTeamResponse,
-    AxiosError,
-    CreateTeamVariable
-  >(
+  return useMutation<PostTeamResponse, AxiosError, PostTeamRequest>(
     ({ name, description, emoji, color, nickname, secret }) => {
       return postTeam({
         name,
@@ -36,8 +27,6 @@ const useCreateTeam = () => {
       },
     }
   );
-
-  return createTeam;
 };
 
 export default useCreateTeam;

@@ -5,18 +5,18 @@ import { AxiosError } from "axios";
 
 import { UserContext } from "@/context/UserContext";
 
-import { postKakaoOauth } from "@/api/oauth";
+import { postGoogleOauth } from "@/api/oauth";
 
-import { OauthResponse } from "@/types/apiResponse";
 import { OauthRequest } from "@/types/apiRequest";
+import { OauthResponse } from "@/types/apiResponse";
 
-const useCreateKakaoOauthLogin = (inviteCode: string | null) => {
+const useCreateGoogleOauthLogin = (inviteCode: string | null) => {
   const navigate = useNavigate();
   const { login } = useContext(UserContext);
 
   return useMutation<OauthResponse, AxiosError, OauthRequest>(
     ({ authorizationCode, redirectUri }) =>
-      postKakaoOauth({
+      postGoogleOauth({
         authorizationCode,
         redirectUri,
       }),
@@ -37,4 +37,4 @@ const useCreateKakaoOauthLogin = (inviteCode: string | null) => {
   );
 };
 
-export default useCreateKakaoOauthLogin;
+export default useCreateGoogleOauthLogin;

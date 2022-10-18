@@ -8,11 +8,11 @@ import usePaging from "@/hooks/usePaging";
 
 import useReadReceivedRollingpapers from "@/pages/MyPage/hooks/useReadReceivedRollingpapers";
 
-interface RollingpaperListProp {
+interface RollingpaperListProps {
   lastPage: number;
 }
 
-const RollingpaperList = ({ lastPage }: RollingpaperListProp) => {
+const RollingpaperList = ({ lastPage }: RollingpaperListProps) => {
   const { currentPage, handleNumberClick, handleNextClick, handlePrevClick } =
     usePaging(lastPage);
 
