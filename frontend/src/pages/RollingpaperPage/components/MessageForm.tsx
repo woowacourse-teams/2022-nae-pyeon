@@ -89,8 +89,8 @@ export const MessageForm = ({
           <MessageColorPicker onClickRadio={handleColorClick} color={color} />
         </StyledMessageColorPickerWrapper>
         <StyledIconButtonContainer>
-          <MessageSubmitButton onClick={handleMessageSubmit} />
           <MessageCancelButton onClick={handleMessageCancel} />
+          <MessageSubmitButton onClick={handleMessageSubmit} />
         </StyledIconButtonContainer>
       </StyledMessageForm>
     </>
