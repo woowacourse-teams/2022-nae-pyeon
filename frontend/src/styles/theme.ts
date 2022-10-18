@@ -40,6 +40,8 @@ export const colors = {
   PINK_200: "#FF98D0AB",
   PINK_300: "#FF98D0",
   PINK_400: "#F884C2",
+
+  BOX_SHADOW: "#ababab1a",
 };
 
 const theme = {

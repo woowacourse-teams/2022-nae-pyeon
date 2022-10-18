@@ -23,7 +23,7 @@ const StyledNotificationItem = styled.li`
   padding: 0 16px;
 
   background-color: ${({ theme }) => theme.colors.WHITE};
-  box-shadow: 0px 4px 4px 4px rgba(171, 171, 171, 0.1);
+  box-shadow: 0px 4px 4px 4px ${({ theme }) => theme.colors.BOX_SHADOW};
   border-radius: 8px;
 `;
 
