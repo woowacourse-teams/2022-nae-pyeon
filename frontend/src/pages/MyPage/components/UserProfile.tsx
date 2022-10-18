@@ -6,17 +6,11 @@ import { UserContext } from "@/context/UserContext";
 import useInput from "@/hooks/useInput";
 import useUpdateUserProfile from "@/pages/MyPage/hooks/useUpdateUserProfile";
 
-import IconButton from "@/components/IconButton";
 import LineButton from "@/components/LineButton";
 import UnderlineInput from "@/components/UnderlineInput";
 
-import useInput from "@/hooks/useInput";
-import useUpdateUserProfile from "@/pages/MyPage/hooks/useUpdateUserProfile";
-
 import { REGEX } from "@/constants";
 import { ValueOf } from "@/types";
-
-import Pencil from "@/assets/icons/bx-pencil.svg";
 
 const MODE = {
   NORMAL: "normal",
