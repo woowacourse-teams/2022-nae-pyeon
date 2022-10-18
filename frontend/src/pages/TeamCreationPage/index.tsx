@@ -7,7 +7,7 @@ import useTeamCreationForm from "@/pages/TeamCreationPage/hooks/useTeamCreationF
 import LabeledInput from "@/components/LabeledInput";
 import LabeledRadio from "@/components/LabeledRadio";
 import Button from "@/components/Button";
-import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
+
 import LabeledSwitch from "@/components/LabeledSwitch";
 
 import { COLORS, REGEX } from "@/constants";
@@ -75,7 +75,7 @@ const TeamCreationPage = () => {
 
   return (
     <>
-      <PageTitleWithBackButton to={"/"}>모임 추가하기</PageTitleWithBackButton>
+      <StyledPageTitle>모임 추가하기</StyledPageTitle>
       <StyledForm>
         <LabeledInput
           labelText="모임명"
@@ -138,6 +138,12 @@ const TeamCreationPage = () => {
     </>
   );
 };
+
+const StyledPageTitle = styled.h1`
+  margin-bottom: 18px;
+  font-size: 32px;
+  text-align: center;
+`;
 
 const StyledForm = styled.form`
   display: flex;

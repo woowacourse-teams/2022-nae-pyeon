@@ -1,4 +1,4 @@
-import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
+import styled from "@emotion/styled";
 import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
 
 import useValidateParam from "@/hooks/useValidateParam";
@@ -23,9 +23,7 @@ const RollingpaperPage = () => {
 
   return (
     <>
-      <PageTitleWithBackButton to={`/team/${teamId}`}>
-        {rollingpaper.title}
-      </PageTitleWithBackButton>
+      <StyledPageTitle>{rollingpaper.title}</StyledPageTitle>
       <main>
         <LetterPaper
           to={rollingpaper.to}
@@ -36,5 +34,11 @@ const RollingpaperPage = () => {
     </>
   );
 };
+
+const StyledPageTitle = styled.h1`
+  margin-bottom: 18px;
+  font-size: 32px;
+  text-align: center;
+`;
 
 export default RollingpaperPage;
