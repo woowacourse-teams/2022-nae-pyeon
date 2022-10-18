@@ -1,23 +1,64 @@
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 
 import { useSnackbar } from "@/context/SnackbarContext";
 
 import useCreateRenewalToken from "@/hooks/useCreateRenewalToken";
 
-import { ApiErrorResponse } from "@/types/api";
+import { appClient, requestApi } from "@/api";
+
 import { getCookie } from "@/util/cookie";
 import { COOKIE_KEY } from "@/constants";
+
+import { ValueOf } from "@/types";
+import { ApiErrorResponse } from "@/types/api";
+
+const METHOD = {
+  GET: "get",
+  POST: "post",
+  PUT: "put",
+  DELETE: "delete",
+} as const;
+
+interface retryFuncParams {
+  requestUrl: string;
+  requestData?: string;
+}
+
+const postFunc = async ({ requestUrl, requestData }: retryFuncParams) =>
+  requestApi(() => appClient.post(requestUrl, JSON.parse(requestData!)));
+
+const putFunc = async ({ requestUrl, requestData }: retryFuncParams) =>
+  requestApi(() => appClient.put(requestUrl, JSON.parse(requestData!)));
+
+const deleteFunc = async ({ requestUrl }: retryFuncParams) =>
+  requestApi(() => appClient.delete(requestUrl));
+
+type Method = ValueOf<typeof METHOD>;
 
 interface CustomError {
   message: string;
   errorCode: number;
   requestUrl: string;
+  requestMethod: Method;
+  requestData?: string;
 }
 
 const useApiErrorHandler = () => {
   const { openSnackbar } = useSnackbar();
   const { mutate: renewalToken } = useCreateRenewalToken();
+  const { mutate: postMutate } = useMutation<null, AxiosError, retryFuncParams>(
+    ({ requestUrl, requestData }) => postFunc({ requestUrl, requestData })
+  );
+  const { mutate: putMutate } = useMutation<null, AxiosError, retryFuncParams>(
+    ({ requestUrl, requestData }) => putFunc({ requestUrl, requestData })
+  );
+  const { mutate: deleteMutate } = useMutation<
+    null,
+    AxiosError,
+    retryFuncParams
+  >(({ requestUrl }) => deleteFunc({ requestUrl }));
   const navigate = useNavigate();
 
   const badRequestErrorHandler = (customErrorInfo: CustomError) => {
@@ -50,7 +91,8 @@ const useApiErrorHandler = () => {
   };
 
   const unauthorizedErrorHandler = (customErrorInfo: CustomError) => {
-    const { message, errorCode } = customErrorInfo;
+    const { message, errorCode, requestUrl, requestMethod, requestData } =
+      customErrorInfo;
 
     switch (errorCode) {
       // 잘못된 access token, access token 만료
@@ -63,7 +105,20 @@ const useApiErrorHandler = () => {
           break;
         }
 
-        renewalToken(refreshToken);
+        renewalToken({
+          refreshToken,
+          mutateFunc: () => {
+            if (requestMethod === METHOD.POST) {
+              return postMutate({ requestUrl, requestData: requestData });
+            }
+            if (requestMethod === METHOD.PUT) {
+              return putMutate({ requestUrl, requestData: requestData });
+            }
+            if (requestMethod === METHOD.DELETE) {
+              return deleteMutate({ requestUrl });
+            }
+          },
+        });
         break;
       }
       // 토큰 관련
@@ -101,11 +156,15 @@ const useApiErrorHandler = () => {
   const apiErrorHandler = (error: AxiosError<ApiErrorResponse>): void => {
     const { status, data } = error.response!;
     const requestUrl = error.config.url!;
+    const requestMethod = error.config.method! as Method;
+    const requestData = error.config.data;
 
     const customErrorInfo = {
       ...data!,
       errorCode: Number(data!.errorCode),
       requestUrl,
+      requestMethod,
+      requestData,
     };
 
     switch (status) {

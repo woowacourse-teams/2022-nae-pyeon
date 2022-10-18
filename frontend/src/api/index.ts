@@ -25,6 +25,7 @@ const setQueryClientErrorHandler = (
         return !!errorStatus && errorStatus >= 500;
       },
       onError: (err) => errorHandler(err as AxiosError<ApiErrorResponse>),
+      retry: 0,
     },
     mutations: {
       useErrorBoundary: (error) => {
@@ -33,6 +34,7 @@ const setQueryClientErrorHandler = (
         return !!errorStatus && errorStatus >= 500;
       },
       onError: (error) => errorHandler(error as AxiosError<ApiErrorResponse>),
+      retry: 0,
     },
   });
 };
