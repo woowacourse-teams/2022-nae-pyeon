@@ -12,7 +12,7 @@ const useReadTeamRollingpaper = ({
   filter,
 }: GetTeamRollingpapersRequest) =>
   useQuery<GetTeamRollingpapersResponse, AxiosError>(
-    ["rollingpaperList", id],
+    ["rollingpaperList", id, order, filter],
     () => getTeamRollingpapers({ id, order, filter })
   );
 
