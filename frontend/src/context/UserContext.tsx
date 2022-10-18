@@ -40,7 +40,7 @@ const UserProvider = ({
   const [isLoggedIn, setIsLoggedIn] = useState(initialData.isLoggedIn);
   const [memberId, setMemberId] = useState<number | null>(initialData.memberId);
 
-  const logoutRefreshToken = useCreateLogout();
+  const { mutate: logoutRefreshToken } = useCreateLogout();
 
   const login = ({ accessToken, refreshToken, memberId }: LoginProps) => {
     setAppClientHeaderAuthorization(accessToken);

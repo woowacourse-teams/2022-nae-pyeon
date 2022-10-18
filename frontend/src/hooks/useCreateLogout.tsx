@@ -6,13 +6,10 @@ import { postLogout } from "@/api/member";
 type postLogoutTokenVariable = string;
 
 const useCreateLogout = () => {
-  const { mutate: logoutRefreshToken } = useMutation<
-    null,
-    AxiosError,
-    postLogoutTokenVariable
-  >((refreshToken) => postLogout(refreshToken), {});
-
-  return logoutRefreshToken;
+  return useMutation<null, AxiosError, postLogoutTokenVariable>(
+    (refreshToken) => postLogout(refreshToken),
+    {}
+  );
 };
 
 export default useCreateLogout;
