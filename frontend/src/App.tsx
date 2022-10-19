@@ -32,6 +32,7 @@ const KakaoRedirectPage = lazy(() => import("@/pages/KakaoRedirectPage"));
 const GoogleRedirectPage = lazy(() => import("@/pages/GoogleRedirectPage"));
 const MyPage = lazy(() => import("@/pages/MyPage"));
 const PolicyPage = lazy(() => import("@/pages/PolicyPage"));
+const NotificationPage = lazy(() => import("@/pages/NotificationPage"));
 
 import { setQueryClientErrorHandler } from "@/api";
 
@@ -64,21 +65,21 @@ const App = () => {
               <Route element={<RequireLogin />}>
                 <Route path="/" element={<HeaderLayoutPage />}>
                   <Route path="/" element={<MainPage />} />
+                  <Route path="search" element={<TeamSearchPage />} />
+                  <Route path="notification" element={<NotificationPage />} />
+                  <Route path="mypage" element={<MyPage />} />
                   <Route path="my-teams" element={<MyTeamsPage />} />
                   <Route path="team/:teamId" element={<TeamDetailPage />} />
-                  <Route path="search" element={<TeamSearchPage />} />
-                  <Route path="mypage" element={<MyPage />} />
+                  <Route path="team/new" element={<TeamCreationPage />} />
+                  <Route
+                    path="team/:teamId/rollingpaper/:rollingpaperId"
+                    element={<RollingpaperPage />}
+                  />
                   <Route
                     path="rollingpaper/new"
                     element={<RollingpaperCreationPage />}
                   />
                 </Route>
-                <Route path="team/new" element={<TeamCreationPage />} />
-
-                <Route
-                  path="team/:teamId/rollingpaper/:rollingpaperId"
-                  element={<RollingpaperPage />}
-                />
               </Route>
               <Route element={<RequireLogout />}>
                 <Route path="login" element={<LoginPage />} />
