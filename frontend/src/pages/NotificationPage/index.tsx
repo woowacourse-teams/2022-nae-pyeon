@@ -1,5 +1,8 @@
 import styled from "@emotion/styled";
-import NotificationItem from "./components/NotificationItem";
+
+import PageTitle from "@/components/PageTitle";
+import NotificationItem from "@/pages/NotificationPage/components/NotificationItem";
+import DeleteAllNotificationButton from "@/pages/NotificationPage/components/DeleteAllNotificationButton";
 
 const dummy = [
   {
@@ -15,13 +18,36 @@ const dummy = [
 
 const NotificationPage = () => {
   return (
-    <StyledNotificationList>
-      {dummy.map((item) => (
-        <NotificationItem description={item.description} />
-      ))}
-    </StyledNotificationList>
+    <StyledPageContainer>
+      <StyledTopSection>
+        <PageTitle title="알림 목록" titleAlign="left" />
+        <DeleteAllNotificationButton />
+      </StyledTopSection>
+      <StyledNotificationList>
+        {dummy.map((item) => (
+          <NotificationItem description={item.description} />
+        ))}
+      </StyledNotificationList>
+    </StyledPageContainer>
   );
 };
+
+const StyledPageContainer = styled.main`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const StyledTopSection = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  h1 {
+    width: fit-content;
+    margin: 0;
+  }
+`;
 
 const StyledNotificationList = styled.ul`
   width: 100%;
