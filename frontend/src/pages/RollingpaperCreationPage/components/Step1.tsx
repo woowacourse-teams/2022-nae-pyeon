@@ -16,15 +16,15 @@ interface Step1Props {
 }
 
 const Step1 = ({ onClick, selected }: Step1Props) => {
-  const infiniteRef = useIntersect(
-    async (entry, observer) => {
+  const infiniteRef = useIntersect({
+    onIntersect: async (entry, observer) => {
       observer.unobserve(entry.target);
       if (hasNextPage && !isFetching) {
         fetchNextPage();
       }
     },
-    { rootMargin: "10px", threshold: 1.0 }
-  );
+    options: { rootMargin: "10px", threshold: 1.0 },
+  });
 
   const {
     data: myTeamListResponse,
