@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.refreshtoken.RefreshToken;
-import com.woowacourse.naepyeon.exception.TokenInvalidExpiredException;
+import com.woowacourse.naepyeon.exception.RefreshTokenExpiredException;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.repository.refreshtoken.RefreshTokenRepository;
 import com.woowacourse.naepyeon.service.dto.AccessTokenDto;
@@ -198,7 +198,7 @@ class AuthServiceTest {
 
         final String refreshToken = tokenResponseDto.getRefreshToken();
         assertThatThrownBy(() -> authService.renewalToken(refreshToken))
-                .isInstanceOf(TokenInvalidExpiredException.class);
+                .isInstanceOf(RefreshTokenExpiredException.class);
     }
 
     @Test

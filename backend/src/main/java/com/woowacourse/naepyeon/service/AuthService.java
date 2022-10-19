@@ -3,7 +3,8 @@ package com.woowacourse.naepyeon.service;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.refreshtoken.RefreshToken;
 import com.woowacourse.naepyeon.exception.NotFoundTeamMemberException;
-import com.woowacourse.naepyeon.exception.TokenInvalidExpiredException;
+import com.woowacourse.naepyeon.exception.RefreshTokenExpiredException;
+import com.woowacourse.naepyeon.exception.RefreshTokenInvalidException;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.repository.refreshtoken.RefreshTokenRepository;
 import com.woowacourse.naepyeon.service.dto.AccessTokenDto;
@@ -111,11 +112,11 @@ public class AuthService {
 
     private RefreshToken findValidRefreshToken(final String refreshToken) {
         final RefreshToken findRefreshToken = refreshTokenRepository.findByValue(refreshToken)
-                .orElseThrow(TokenInvalidExpiredException::new);
+                .orElseThrow(RefreshTokenInvalidException::new);
 
         if (findRefreshToken.isExpired()) {
             refreshTokenRepository.deleteExpired(LocalDateTime.now());
-            throw new TokenInvalidExpiredException();
+            throw new RefreshTokenExpiredException();
         }
 
         return findRefreshToken;
