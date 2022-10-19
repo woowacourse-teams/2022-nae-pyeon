@@ -20,13 +20,14 @@ interface Step2Props {
   teamId: Team["id"] | null;
   onClick: (recipient: Recipient, to?: TeamMember["id"]) => void;
   selected: Recipient | null;
+  setStep: React.Dispatch<React.SetStateAction<number>>;
 }
 
 interface StyledShowProps {
   isShown: boolean;
 }
 
-const Step2 = ({ teamId, onClick, selected }: Step2Props) => {
+const Step2 = ({ teamId, onClick, selected, setStep }: Step2Props) => {
   const [isToShown, setIsToShown] = useState(false);
   const [isRecipeinetShown, setIsRecipeinetShown] = useState(true);
   const {
@@ -65,6 +66,7 @@ const Step2 = ({ teamId, onClick, selected }: Step2Props) => {
   };
 
   const handleMemberClick = () => {
+    setStep((prev) => prev + 0.5);
     setIsToShown(true);
     setIsRecipeinetShown(false);
   };
@@ -73,6 +75,7 @@ const Step2 = ({ teamId, onClick, selected }: Step2Props) => {
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
+    setStep((prev) => prev - 0.5);
     onClick(RECIPIENT.MEMBER, findReceiverWithNickName(rollingpaperTo).id);
   };
 

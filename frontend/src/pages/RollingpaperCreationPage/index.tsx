@@ -5,13 +5,13 @@ import styled from "@emotion/styled";
 import useCreateMemberRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateMemberRolliingpaper";
 import useCreateTeamRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateTeamRollingpaper";
 
-import ControlDots from "@/components/ControlDots";
 import Step1 from "@/pages/RollingpaperCreationPage/components/Step1";
 import Step2 from "@/pages/RollingpaperCreationPage/components/Step2";
 import Step3 from "@/pages/RollingpaperCreationPage/components/Step3";
 
 import { RECIPIENT } from "@/constants";
 import { Recipient, Rollingpaper, Team, TeamMember } from "@/types";
+import ProgressBar from "@/components/ProgressBar";
 
 const StepLength = 3;
 
@@ -133,10 +133,13 @@ const RollingpaperCreationPage = () => {
           teamId={selectedSteps.step1}
           onClick={handleStep2Click}
           selected={selectedSteps.step2?.type ?? null}
+          setStep={setStep}
         />
         <Step3 onClick={handleStep3Click} />
       </StyledSteps>
-      <ControlDots pages={StepLength} step={step} />
+      <StyledProgressBar>
+        <ProgressBar step={step} total={StepLength} />
+      </StyledProgressBar>
     </StyledMain>
   );
 };
@@ -156,6 +159,14 @@ const StyledSteps = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
+`;
+
+const StyledProgressBar = styled.div`
+  align-self: center;
+
+  width: 70%;
+
+  padding: 20px 0;
 `;
 
 export default RollingpaperCreationPage;
