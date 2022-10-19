@@ -1,10 +1,10 @@
-interface setCookieProps {
+interface setCookieParams {
   name: string;
   value: string;
   maxAge: number;
 }
 
-const setCookie = ({ name, value, maxAge }: setCookieProps) => {
+const setCookie = ({ name, value, maxAge }: setCookieParams) => {
   document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(
     value
   )}; max-age=${maxAge}; path=/`;
