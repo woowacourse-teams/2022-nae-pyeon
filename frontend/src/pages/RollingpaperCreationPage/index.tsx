@@ -31,7 +31,7 @@ const RollingpaperCreationPage = () => {
   const [searchParams] = useSearchParams();
   const selectedTeamId = searchParams.get("team-id");
 
-  const [step, setStep] = useState<number>(0);
+  const [step, setStep] = useState<number>(selectedTeamId ? 1 : 0);
   const [selectedSteps, setSelectedSteps] = useState<Step>(
     selectedTeamId
       ? { ...initialSelectedSteps, step1: +selectedTeamId }
@@ -126,7 +126,9 @@ const RollingpaperCreationPage = () => {
   return (
     <StyledMain>
       <StyledSteps ref={pageRef}>
-        <Step1 onClick={handleStep1Click} selected={selectedSteps.step1} />
+        {!selectedTeamId && (
+          <Step1 onClick={handleStep1Click} selected={selectedSteps.step1} />
+        )}
         <Step2
           teamId={selectedSteps.step1}
           onClick={handleStep2Click}
