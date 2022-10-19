@@ -58,7 +58,7 @@ const StyledForm = styled.form`
 
   gap: 12px;
 
-  width: 200px;
+  width: 250px;
 
   @media only screen and (min-width: 600px) {
     width: 320px;

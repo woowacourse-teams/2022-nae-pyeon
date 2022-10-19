@@ -37,6 +37,8 @@ const StyledProgress = styled.div<StyledProgressBarProps>`
 
   border-top-right-radius: ${(props) => props.width === 100 && "20px"};
   border-bottom-right-radius: ${(props) => props.width === 100 && "20px"};
+
+  transition: 0.4s linear;
 `;
 
 export default ProgressBar;
