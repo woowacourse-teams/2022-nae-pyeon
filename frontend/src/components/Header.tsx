@@ -2,7 +2,10 @@ import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
+import { useSnackbar } from "@/context/SnackbarContext";
 import { UserContext } from "@/context/UserContext";
+
+import useReadNotifications from "@/hooks/useReadNotifications";
 
 import IconButton from "@/components/IconButton";
 import Badge from "@/components/Badge";
@@ -10,13 +13,26 @@ import Badge from "@/components/Badge";
 import FilledLogo from "@/assets/images/logo-fill.png";
 import BellIcon from "@/assets/icons/bx-bell.svg";
 import UserIcon from "@/assets/icons/bx-user.svg";
-import useReadNotifications from "./../hooks/useReadNotifications";
+
+import { Notification } from "@/types";
+
+const NOTIFICATION_SNACKBAR_MESSAGE = {
+  ROLLINGPAPER_AT_MY_TEAM: " 롤링페이퍼가 새로 열렸습니다!",
+  MESSAGE_AT_MY_ROLLINGPAPER: " 롤링페이퍼에 새 메시지가 작성되었습니다.",
+};
 
 const Header = () => {
   const navigate = useNavigate();
+  const { openSnackbar } = useSnackbar();
   const { memberId } = useContext(UserContext);
+
   const [notificationCount, setNotificationCount] = useState(0);
-  const { data } = useReadNotifications();
+
+  useReadNotifications({
+    onSuccess: (data) => {
+      setNotificationCount(data.unreadCount);
+    },
+  });
 
   const [notificationEventSource, setNotificationEventSource] =
     useState<EventSource | null>(null);
@@ -30,7 +46,14 @@ const Header = () => {
   };
 
   const handleNotificationEventSource = (e: MessageEvent) => {
-    console.log(e, JSON.parse(e.data));
+    const notification: Notification = JSON.parse(e.data);
+
+    openSnackbar(
+      `${notification.rollingpaperTitle}${
+        NOTIFICATION_SNACKBAR_MESSAGE[notification.contentType]
+      }`
+    );
+    setNotificationCount((prev) => prev + 1);
   };
 
   useEffect(() => {
@@ -48,12 +71,6 @@ const Header = () => {
       );
     }
   }, [memberId]);
-
-  useEffect(() => {
-    if (data) {
-      setNotificationCount(data.unreadCount);
-    }
-  }, [data]);
 
   return (
     <StyledHeader>
