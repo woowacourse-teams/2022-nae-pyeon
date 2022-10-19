@@ -11,12 +11,15 @@ const REGEX = {
 };
 
 const COLORS = {
-  GREEN: colors.LIGHT_GREEN_300,
-  RED: colors.RED_300,
-  YELLOW: colors.YELLOW_300,
-  BLUE: colors.SKY_BLUE_300,
-  PURPLE: colors.PURPLE_300,
-  PINK: colors.PINK_300,
+  GREEN: {
+    value: colors.LIGHT_GREEN_300,
+    name: "연두색",
+  },
+  RED: { value: colors.RED_300, name: "빨간색" },
+  YELLOW: { value: colors.YELLOW_300, name: "노란색" },
+  BLUE: { value: colors.SKY_BLUE_300, name: "파란색" },
+  PURPLE: { value: colors.PURPLE_300, name: "보라색" },
+  PINK: { value: colors.PINK_300, name: "핑크색" },
 };
 
 const TOTAL_TEAMS_PAGING_COUNT = 5;
@@ -62,6 +65,18 @@ const TOKEN_MAX_AGE = {
   REFRESH_TOKEN: 604800,
 } as const;
 
+const ROLLINGPAPER_ORDER = {
+  LATEST: "latest",
+  OLDEST: "oldest",
+} as const;
+
+const METHOD = {
+  GET: "get",
+  POST: "post",
+  PUT: "put",
+  DELETE: "delete",
+} as const;
+
 export {
   REGEX,
   COLORS,
@@ -76,4 +91,6 @@ export {
   RECIPIENT,
   COOKIE_KEY,
   TOKEN_MAX_AGE,
+  ROLLINGPAPER_ORDER,
+  METHOD,
 };

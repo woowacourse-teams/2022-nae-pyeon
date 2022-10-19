@@ -1,41 +1,15 @@
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
 
 import { useSnackbar } from "@/context/SnackbarContext";
-
 import useCreateRenewalToken from "@/hooks/useCreateRenewalToken";
-
-import { appClient, requestApi } from "@/api";
+import useRetryMutate from "@/hooks/useRetryMutate";
 
 import { getCookie } from "@/util/cookie";
 import { COOKIE_KEY } from "@/constants";
 
-import { ValueOf } from "@/types";
+import { Method } from "@/types";
 import { ApiErrorResponse } from "@/types/api";
-
-const METHOD = {
-  GET: "get",
-  POST: "post",
-  PUT: "put",
-  DELETE: "delete",
-} as const;
-
-interface retryFuncParams {
-  requestUrl: string;
-  requestData?: string;
-}
-
-const postFunc = async ({ requestUrl, requestData }: retryFuncParams) =>
-  requestApi(() => appClient.post(requestUrl, JSON.parse(requestData!)));
-
-const putFunc = async ({ requestUrl, requestData }: retryFuncParams) =>
-  requestApi(() => appClient.put(requestUrl, JSON.parse(requestData!)));
-
-const deleteFunc = async ({ requestUrl }: retryFuncParams) =>
-  requestApi(() => appClient.delete(requestUrl));
-
-type Method = ValueOf<typeof METHOD>;
 
 interface CustomError {
   message: string;
@@ -46,20 +20,11 @@ interface CustomError {
 }
 
 const useApiErrorHandler = () => {
+  const navigate = useNavigate();
   const { openSnackbar } = useSnackbar();
   const { mutate: renewalToken } = useCreateRenewalToken();
-  const { mutate: postMutate } = useMutation<null, AxiosError, retryFuncParams>(
-    ({ requestUrl, requestData }) => postFunc({ requestUrl, requestData })
-  );
-  const { mutate: putMutate } = useMutation<null, AxiosError, retryFuncParams>(
-    ({ requestUrl, requestData }) => putFunc({ requestUrl, requestData })
-  );
-  const { mutate: deleteMutate } = useMutation<
-    null,
-    AxiosError,
-    retryFuncParams
-  >(({ requestUrl }) => deleteFunc({ requestUrl }));
-  const navigate = useNavigate();
+
+  const { mutate: retryMutate } = useRetryMutate();
 
   const badRequestErrorHandler = (customErrorInfo: CustomError) => {
     const { message, errorCode, requestUrl } = customErrorInfo;
@@ -107,17 +72,12 @@ const useApiErrorHandler = () => {
 
         renewalToken({
           refreshToken,
-          mutateFunc: () => {
-            if (requestMethod === METHOD.POST) {
-              return postMutate({ requestUrl, requestData: requestData });
-            }
-            if (requestMethod === METHOD.PUT) {
-              return putMutate({ requestUrl, requestData: requestData });
-            }
-            if (requestMethod === METHOD.DELETE) {
-              return deleteMutate({ requestUrl });
-            }
-          },
+          mutateFunc: () =>
+            retryMutate({
+              requestMethod,
+              requestUrl,
+              requestData,
+            }),
         });
         break;
       }

@@ -1,4 +1,13 @@
-import { Message, Rollingpaper, Team, TeamMember, User } from ".";
+import {
+  User,
+  Message,
+  Recipient,
+  Rollingpaper,
+  Team,
+  TeamMember,
+  ValueOf,
+} from ".";
+import { ROLLINGPAPER_ORDER } from "@/constants";
 
 // oauth
 export interface OauthRequest {
@@ -67,6 +76,12 @@ export interface PostMemberRollingpaperRequest {
 export interface GetTeamSearchResultRequest {
   keyword: string;
   count: number;
+}
+
+export interface GetTeamRollingpapersRequest {
+  id: Team["id"];
+  order?: ValueOf<typeof ROLLINGPAPER_ORDER>;
+  filter?: Lowercase<Recipient>;
 }
 
 export interface PostTeamRequest extends Omit<Team, "id" | "joined"> {

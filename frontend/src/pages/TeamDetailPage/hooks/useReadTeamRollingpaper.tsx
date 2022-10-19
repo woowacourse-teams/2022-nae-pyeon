@@ -4,11 +4,16 @@ import { AxiosError } from "axios";
 import { getTeamRollingpapers } from "@/api/team";
 
 import { GetTeamRollingpapersResponse } from "@/types/apiResponse";
+import { GetTeamRollingpapersRequest } from "@/types/apiRequest";
 
-const useReadTeamRollingpaper = (teamId: number) =>
+const useReadTeamRollingpaper = ({
+  id,
+  order,
+  filter,
+}: GetTeamRollingpapersRequest) =>
   useQuery<GetTeamRollingpapersResponse, AxiosError>(
-    ["rollingpaperList", teamId],
-    () => getTeamRollingpapers(teamId)
+    ["rollingpaperList", id, order, filter],
+    () => getTeamRollingpapers({ id, order, filter })
   );
 
 export default useReadTeamRollingpaper;
