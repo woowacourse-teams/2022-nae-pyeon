@@ -15,13 +15,6 @@ export interface OauthResponse {
   id: User["id"];
 }
 
-// Google OAuth
-export interface PostGoogleOauthResponse {
-  accessToken: string;
-  refreshToken: string;
-  id: User["id"];
-}
-
 // member
 export interface GetUserProfileResponse extends User {}
 
