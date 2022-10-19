@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, PropsWithChildren } from "react";
+import { useState, createContext, PropsWithChildren } from "react";
 
 import useCreateLogout from "@/hooks/useCreateLogout";
 

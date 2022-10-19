@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
-import IconButton from "@/components/IconButton";
-
 import useDeleteNotification from "@/pages/NotificationPage/hooks/useDeleteNotification";
+import IconButton from "@/components/IconButton";
 
 import { Notification } from "@/types";
 

@@ -2,12 +2,13 @@ import styled from "@emotion/styled";
 
 import { useSnackbar } from "@/context/SnackbarContext";
 
-import PageTitle from "@/components/PageTitle";
-import NotificationItem from "@/pages/NotificationPage/components/NotificationItem";
-import useDeleteNotificationsAll from "./hooks/useDeleteNotificationAll";
-import LineButton from "@/components/LineButton";
 import useReadNotifications from "@/hooks/useReadNotifications";
+import useDeleteNotificationsAll from "@/pages/NotificationPage/hooks/useDeleteNotificationAll";
+
 import Loading from "@/components/Loading";
+import PageTitle from "@/components/PageTitle";
+import LineButton from "@/components/LineButton";
+import NotificationItem from "@/pages/NotificationPage/components/NotificationItem";
 
 import EmptyStateImg from "@/assets/images/empty-state.svg";
 
