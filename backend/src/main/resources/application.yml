@@ -1,7 +1,4 @@
 spring:
-  h2:
-    console:
-      enabled: true
   datasource:
     source:
       hikari:
@@ -15,6 +12,9 @@ spring:
         username: user
         password: password
         driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
 
   jpa:
     hibernate:

@@ -12,6 +12,9 @@ spring:
         password: ${REPLICA_MYSQL_PASSWORD}
         username: ${REPLICA_MYSQL_USERNAME}
         driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
 
 
   jpa:
