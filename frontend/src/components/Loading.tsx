@@ -40,13 +40,13 @@ const dot3 = keyframes`
 
 const StyledLoading = styled.div`
   display: inline-block;
-  position: relative;
-  width: 100px;
-  height: 100px;
+  position: absolute;
+
+  top: 50%;
+  left: calc(50% - 36px);
 
   div {
     position: absolute;
-    top: 33px;
     width: 15px;
     height: 15px;
     border-radius: 50%;
