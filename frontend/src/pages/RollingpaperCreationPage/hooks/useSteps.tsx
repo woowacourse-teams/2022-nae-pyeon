@@ -37,7 +37,6 @@ const useSteps = () => {
     const width = window.innerWidth;
     let left = width;
 
-    console.log(step);
     if (width >= 1280) {
       left = 1020;
     } else if (width >= 960) {
