@@ -88,7 +88,9 @@ public class NotificationService {
         String id = String.valueOf(memberId);
         final SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
         //초반 연결용 메시지!!
-        emitter.send(SseEmitter.event().id(id).name("sse"));
+        emitter.send(SseEmitter.event()
+                .id(id)
+                .name("sse"));
         emitters.add(emitter);
         MessageListener messageListener = (message, pattern) -> {
             NotificationResponseDto notificationResponse = serialize(message);
