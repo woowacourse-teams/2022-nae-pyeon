@@ -11,6 +11,7 @@ import {
 // OAuth
 export interface OauthResponse {
   accessToken: string;
+  refreshToken: string;
   id: User["id"];
 }
 
@@ -27,6 +28,10 @@ export interface GetMySentMessagesResponse {
   totalCount: number;
   currentPage: number;
   messages: SentMessage[];
+}
+
+export interface PostRenewalTokenResponse {
+  accessToken: string;
 }
 
 // message

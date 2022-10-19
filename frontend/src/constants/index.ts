@@ -57,11 +57,24 @@ const RECIPIENT = {
 
 const COOKIE_KEY = {
   ACCESS_TOKEN: "accessToken",
+  REFRESH_TOKEN: "refreshToken",
+} as const;
+
+const TOKEN_MAX_AGE = {
+  ACCESS_TOKEN: 1800,
+  REFRESH_TOKEN: 604800,
 } as const;
 
 const ROLLINGPAPER_ORDER = {
   LATEST: "latest",
   OLDEST: "oldest",
+} as const;
+
+const METHOD = {
+  GET: "get",
+  POST: "post",
+  PUT: "put",
+  DELETE: "delete",
 } as const;
 
 export {
@@ -77,5 +90,7 @@ export {
   GOOGLE_OAUTH_URL,
   RECIPIENT,
   COOKIE_KEY,
+  TOKEN_MAX_AGE,
   ROLLINGPAPER_ORDER,
+  METHOD,
 };

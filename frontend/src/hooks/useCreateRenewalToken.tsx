@@ -1,0 +1,44 @@
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+
+import { setAppClientHeaderAuthorization } from "@/api";
+import { postRenewalToken } from "@/api/member";
+
+import { COOKIE_KEY, TOKEN_MAX_AGE } from "@/constants";
+import { PostRenewalTokenResponse } from "@/types/apiResponse";
+import { setCookie } from "@/util/cookie";
+
+interface postRenewalTokenVariables {
+  refreshToken: string;
+  mutateFunc?: () => void;
+}
+
+const useCreateRenewalToken = () => {
+  return useMutation<
+    PostRenewalTokenResponse,
+    AxiosError,
+    postRenewalTokenVariables
+  >(({ refreshToken, mutateFunc }) => postRenewalToken(refreshToken), {
+    onSuccess: (data, variable) => {
+      if (data) {
+        const { accessToken } = data;
+        setCookie({
+          name: COOKIE_KEY.ACCESS_TOKEN,
+          value: accessToken,
+          maxAge: TOKEN_MAX_AGE.ACCESS_TOKEN,
+        });
+        setAppClientHeaderAuthorization(accessToken);
+
+        if (variable.mutateFunc) {
+          // post, put, delete
+          variable.mutateFunc();
+        } else {
+          // get
+          window.location.reload();
+        }
+      }
+    },
+  });
+};
+
+export default useCreateRenewalToken;

@@ -1,4 +1,4 @@
-import { RECIPIENT } from "@/constants";
+import { METHOD, RECIPIENT } from "@/constants";
 
 export interface Team {
   id: number;
@@ -59,3 +59,5 @@ export interface SentMessage extends Pick<Message, "id" | "content" | "color"> {
 export type ValueOf<T> = T[keyof T];
 
 export type Recipient = ValueOf<typeof RECIPIENT>;
+
+export type Method = ValueOf<typeof METHOD>;

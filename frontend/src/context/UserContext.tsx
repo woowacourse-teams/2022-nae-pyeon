@@ -1,13 +1,21 @@
 import { useState, createContext, PropsWithChildren } from "react";
 
+import useCreateLogout from "@/hooks/useCreateLogout";
+
 import { setAppClientHeaderAuthorization } from "@/api";
-import { deleteCookie, setCookie } from "@/util/cookie";
-import { COOKIE_KEY } from "@/constants";
+import { deleteCookie, getCookie, setCookie } from "@/util/cookie";
+import { COOKIE_KEY, TOKEN_MAX_AGE } from "@/constants";
+
+interface LoginProps {
+  accessToken: string;
+  refreshToken: string;
+  memberId: number;
+}
 
 interface UserContextValue {
   isLoggedIn: boolean;
   memberId: number | null;
-  login: (accessToken: string, memberId: number) => void;
+  login: ({ accessToken, refreshToken, memberId }: LoginProps) => void;
   logout: () => void;
 }
 
@@ -32,16 +40,31 @@ const UserProvider = ({
   const [isLoggedIn, setIsLoggedIn] = useState(initialData.isLoggedIn);
   const [memberId, setMemberId] = useState<number | null>(initialData.memberId);
 
-  const login = (accessToken: string, memberId: number) => {
+  const { mutate: deleteRefreshToken } = useCreateLogout();
+
+  const login = ({ accessToken, refreshToken, memberId }: LoginProps) => {
     setAppClientHeaderAuthorization(accessToken);
-    setCookie(COOKIE_KEY.ACCESS_TOKEN, accessToken);
+    setCookie({
+      name: COOKIE_KEY.ACCESS_TOKEN,
+      value: accessToken,
+      maxAge: TOKEN_MAX_AGE.ACCESS_TOKEN,
+    });
+    setCookie({
+      name: COOKIE_KEY.REFRESH_TOKEN,
+      value: refreshToken,
+      maxAge: TOKEN_MAX_AGE.REFRESH_TOKEN,
+    });
     setIsLoggedIn(true);
     setMemberId(memberId);
   };
 
   const logout = () => {
+    const refreshToken = getCookie(COOKIE_KEY.REFRESH_TOKEN)!;
+
+    deleteRefreshToken(refreshToken);
     setAppClientHeaderAuthorization("");
     deleteCookie(COOKIE_KEY.ACCESS_TOKEN);
+    deleteCookie(COOKIE_KEY.REFRESH_TOKEN);
     setIsLoggedIn(false);
     setMemberId(null);
   };

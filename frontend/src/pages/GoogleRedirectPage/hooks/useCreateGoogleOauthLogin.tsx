@@ -23,7 +23,8 @@ const useCreateGoogleOauthLogin = (inviteCode: string | null) => {
     {
       onSuccess: (data) => {
         if (data) {
-          login(data.accessToken, data.id);
+          const { accessToken, refreshToken, id } = data;
+          login({ accessToken, refreshToken, memberId: id });
 
           if (inviteCode) {
             navigate(`/invite/${inviteCode}`, { replace: true });
