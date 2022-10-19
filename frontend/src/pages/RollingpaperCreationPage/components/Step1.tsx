@@ -6,7 +6,7 @@ import useReadMyTeam from "@/pages/RollingpaperCreationPage/hooks/useReadMyTeam"
 
 import MyTeamCard from "@/components/MyTeamCard";
 import Loading from "@/components/Loading";
-import StepTitleWithLayout from "@/pages/RollingpaperCreationPage/components/StepTitleWithLayout";
+import StepLayout from "@/pages/RollingpaperCreationPage/components/StepLayout";
 
 import { Team } from "@/types";
 
@@ -36,9 +36,9 @@ const Step1 = ({ onClick, selected }: Step1Props) => {
 
   if (isLoading) {
     return (
-      <StepTitleWithLayout title="">
+      <StepLayout>
         <Loading />
-      </StepTitleWithLayout>
+      </StepLayout>
     );
   }
 
@@ -47,7 +47,7 @@ const Step1 = ({ onClick, selected }: Step1Props) => {
   }
 
   return (
-    <StepTitleWithLayout title="모임을 선택해주세요">
+    <StepLayout title="모임을 선택해주세요">
       <StyledCardList>
         {myTeamListResponse.pages.map((page) =>
           page.teams.map(({ id, name, description, emoji, color }) => (
@@ -65,7 +65,7 @@ const Step1 = ({ onClick, selected }: Step1Props) => {
         )}
         <div ref={infiniteRef} />
       </StyledCardList>
-    </StepTitleWithLayout>
+    </StepLayout>
   );
 };
 

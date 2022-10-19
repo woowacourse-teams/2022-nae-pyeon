@@ -1,20 +1,20 @@
-import React, { forwardRef, PropsWithChildren } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
-interface StepTitleWithLayoutProps extends PropsWithChildren {
-  title: string;
+interface StepLayoutProps extends React.PropsWithChildren {
+  title?: string;
 }
 
-const StepTitleWithLayout = ({ title, children }: StepTitleWithLayoutProps) => {
+const StepLayout = ({ title, children }: StepLayoutProps) => {
   return (
-    <StyledTitleWithLayout>
+    <StyledStepLayout>
       <StyledTitle>{title}</StyledTitle>
       <StyledLayout>{children}</StyledLayout>
-    </StyledTitleWithLayout>
+    </StyledStepLayout>
   );
 };
 
-const StyledTitleWithLayout = styled.div`
+const StyledStepLayout = styled.div`
   display: flex;
   flex-direction: column;
 `;
@@ -67,4 +67,4 @@ const StyledLayout = styled.div`
   scrollbar-width: none; /* Firefox */
 `;
 
-export default forwardRef(StepTitleWithLayout);
+export default StepLayout;

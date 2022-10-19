@@ -1,15 +1,14 @@
-import React, { forwardRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 
 import useAutoCompleteInput from "@/hooks/useAutoCompleteInput";
 
 import Button from "@/components/Button";
 import AutoCompleteInput from "@/components/AutoCompleteInput";
-import Loading from "@/components/Loading";
 
 import useReadTeamMembers from "@/pages/RollingpaperCreationPage/hooks/useReadTeamMembers";
 
-import StepTitleWithLayout from "@/pages/RollingpaperCreationPage/components/StepTitleWithLayout";
+import StepLayout from "@/pages/RollingpaperCreationPage/components/StepLayout";
 import RecipientBox from "@/pages/RollingpaperCreationPage/components/RecipientBox";
 
 import { Recipient, Team, TeamMember } from "@/types";
@@ -78,7 +77,7 @@ const Step2 = ({ teamId, onClick, selected }: Step2Props) => {
   };
 
   return (
-    <StepTitleWithLayout title="롤링페이퍼 대상을 선택해주세요">
+    <StepLayout title="롤링페이퍼 대상을 선택해주세요">
       <StyledMain>
         <StyleShow isShown={isRecipeinetShown}>
           <StyleRecipientContainer>
@@ -116,7 +115,7 @@ const Step2 = ({ teamId, onClick, selected }: Step2Props) => {
           </StyleForm>
         </StyleShow>
       </StyledMain>
-    </StepTitleWithLayout>
+    </StepLayout>
   );
 };
 

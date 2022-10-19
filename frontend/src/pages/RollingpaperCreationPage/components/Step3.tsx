@@ -6,7 +6,7 @@ import useInput from "@/hooks/useInput";
 import Button from "@/components/Button";
 import LabeledInput from "@/components/LabeledInput";
 
-import StepTitleWithLayout from "@/pages/RollingpaperCreationPage/components/StepTitleWithLayout";
+import StepLayout from "@/pages/RollingpaperCreationPage/components/StepLayout";
 
 import { Rollingpaper } from "@/types";
 import { REGEX } from "@/constants";
@@ -23,7 +23,7 @@ const Step3 = ({ onClick }: Step3Props) => {
   };
 
   return (
-    <StepTitleWithLayout title="롤링페이퍼 제목을 작성해주세요">
+    <StepLayout title="롤링페이퍼 제목을 작성해주세요">
       <StyledMain>
         <StyledForm>
           <LabeledInput
@@ -41,7 +41,7 @@ const Step3 = ({ onClick }: Step3Props) => {
           </Button>
         </StyledForm>
       </StyledMain>
-    </StepTitleWithLayout>
+    </StepLayout>
   );
 };
 
