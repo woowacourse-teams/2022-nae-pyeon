@@ -1,5 +1,9 @@
+import styled from "@emotion/styled";
+import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
+
 import useValidateParam from "@/hooks/useValidateParam";
 import { useReadRollingpaper } from "@/pages/RollingpaperPage/hooks/useReadRollingpaper";
+import PageTitle from "@/components/PageTitle";
 
 import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
 import Loading from "@/components/Loading";
@@ -24,9 +28,7 @@ const RollingpaperPage = () => {
 
   return (
     <>
-      <PageTitleWithBackButton to={`/team/${teamId}`}>
-        {rollingpaper.title}
-      </PageTitleWithBackButton>
+      <PageTitle title={rollingpaper.title} titleAlign="center" />
       <main>
         <LetterPaper
           to={rollingpaper.to}

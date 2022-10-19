@@ -37,7 +37,7 @@ const TeamJoinSection = ({ isSecretTeam }: TeamJoinSectionProps) => {
   const PublicTeamModal = () => (
     <StyledTeamJoinModal>
       <p>롤링페이퍼를 확인하려면 모임에 참여해주세요</p>
-      <LineButton onClick={handleModalOpen}>참여 요청하기</LineButton>
+      <LineButton onClick={handleModalOpen}>모임 참여하기</LineButton>
     </StyledTeamJoinModal>
   );
 

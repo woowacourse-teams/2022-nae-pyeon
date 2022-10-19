@@ -1,22 +1,27 @@
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
-import IconButton from "./IconButton";
+import IconButton from "@/components/IconButton";
+import Badge from "@/components/Badge";
 
 import FilledLogo from "@/assets/images/logo-fill.png";
+import BellIcon from "@/assets/icons/bx-bell.svg";
 import SearchIcon from "@/assets/icons/bx-search.svg";
 import UserIcon from "@/assets/icons/bx-user.svg";
 
 const Header = () => {
   const navigate = useNavigate();
 
-  const handleMyPageClick = () => {
-    navigate("/mypage");
-  };
-
   const handleSearchClick = () => {
     navigate("/search");
+  };
+
+  const handleNotificationClick = () => {
+    navigate("/notification");
+  };
+
+  const handleMyPageClick = () => {
+    navigate("/mypage");
   };
 
   return (
@@ -28,9 +33,11 @@ const Header = () => {
         </StyledHome>
       </Link>
       <StyledNav>
-        <IconButton onClick={handleSearchClick} size="medium">
-          <SearchIcon />
-        </IconButton>
+        <Badge variant="dot" invisible={false}>
+          <IconButton onClick={handleNotificationClick} size="medium">
+            <BellIcon />
+          </IconButton>
+        </Badge>
         <IconButton onClick={handleMyPageClick} size="medium">
           <UserIcon />
         </IconButton>
@@ -51,7 +58,7 @@ const StyledHeader = styled.header`
   margin-bottom: 12px;
 
   width: 100%;
-  height: 70px;
+  height: fit-content;
   background-color: ${({ theme }) => `${theme.colors.WHITE}e8`};
 
   img {
@@ -64,13 +71,12 @@ const StyledNav = styled.nav`
   display: flex;
   gap: 12px;
 
-  font-size: 32px;
-
   height: 100%;
+  font-size: 32px;
 
   button {
     &:hover {
-      color: ${({ theme }) => theme.colors.GRAY_600};
+      background-color: ${({ theme }) => theme.colors.GRAY_200};
     }
   }
 `;

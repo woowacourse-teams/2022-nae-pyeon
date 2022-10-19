@@ -33,6 +33,10 @@ const StyledIconButton = styled.button<ButtonAttributes>`
   align-items: center;
   justify-content: center;
 
+  height: fit-content;
+  padding: 5px;
+  border-radius: 50%;
+
   font-size: ${(props) =>
     props.size === "small"
       ? "24px"
