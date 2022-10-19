@@ -5,10 +5,15 @@ import NotificationItem from "@/pages/NotificationPage/components/NotificationIt
 import useDeleteNotificationsAll from "./hooks/useDeleteNotificationAll";
 import LineButton from "@/components/LineButton";
 import useReadNotifications from "@/hooks/useReadNotifications";
+import Loading from "@/components/Loading";
 
 const NotificationPage = () => {
   const { data, isLoading } = useReadNotifications();
   const { mutate: deleteNotificationAll } = useDeleteNotificationsAll();
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <StyledPageContainer>
