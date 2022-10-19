@@ -1,4 +1,4 @@
-import { useState, createContext, PropsWithChildren } from "react";
+import { useState, useEffect, createContext, PropsWithChildren } from "react";
 
 import useCreateLogout from "@/hooks/useCreateLogout";
 
@@ -39,6 +39,8 @@ const UserProvider = ({
 }: PropsWithChildren<UserProvideProps>) => {
   const [isLoggedIn, setIsLoggedIn] = useState(initialData.isLoggedIn);
   const [memberId, setMemberId] = useState<number | null>(initialData.memberId);
+  const [notificationEventSource, setNotificationEventSource] =
+    useState<EventSource | null>(null);
 
   const { mutate: deleteRefreshToken } = useCreateLogout();
 
@@ -68,6 +70,26 @@ const UserProvider = ({
     setIsLoggedIn(false);
     setMemberId(null);
   };
+
+  const handleNotificationEventSource = (e: MessageEvent) => {
+    console.log(e, JSON.parse(e.data));
+  };
+
+  useEffect(() => {
+    if (memberId) {
+      const notification = new EventSource(
+        `${process.env.API_URL}/subscribe?id=${memberId}`
+      );
+      notification.addEventListener("sse", handleNotificationEventSource);
+      setNotificationEventSource(notification);
+      return;
+    } else {
+      notificationEventSource?.removeEventListener(
+        "sse",
+        handleNotificationEventSource
+      );
+    }
+  }, [memberId]);
 
   const value = { isLoggedIn, login, logout, memberId };
 
