@@ -19,9 +19,8 @@ const ProgressBar = ({ step, total }: ProgressBarProps) => {
 
 const StyledProgressBar = styled.div`
   width: 100%;
-  height: 30px;
+  height: 20px;
 
-  border: solid 2px ${({ theme }) => theme.colors.GRAY_500};
   border-radius: 20px;
 
   background-color: ${({ theme }) => theme.colors.GRAY_200};
@@ -31,7 +30,7 @@ const StyledProgress = styled.div<StyledProgressBarProps>`
   width: ${(props) => props.width}%;
   height: 100%;
 
-  background-color: ${({ theme }) => theme.colors.SKY_BLUE_300};
+  background-color: ${({ theme }) => theme.colors.SKY_BLUE_200};
 
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
