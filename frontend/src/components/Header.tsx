@@ -6,15 +6,10 @@ import Badge from "@/components/Badge";
 
 import FilledLogo from "@/assets/images/logo-fill.png";
 import BellIcon from "@/assets/icons/bx-bell.svg";
-import SearchIcon from "@/assets/icons/bx-search.svg";
 import UserIcon from "@/assets/icons/bx-user.svg";
 
 const Header = () => {
   const navigate = useNavigate();
-
-  const handleSearchClick = () => {
-    navigate("/search");
-  };
 
   const handleNotificationClick = () => {
     navigate("/notification");
