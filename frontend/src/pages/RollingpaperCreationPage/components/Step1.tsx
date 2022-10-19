@@ -1,4 +1,3 @@
-import React from "react";
 import { Navigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
@@ -36,7 +35,11 @@ const Step1 = ({ onClick, selected }: Step1Props) => {
   } = useReadMyTeam();
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <StepTitleWithLayout title="">
+        <Loading />
+      </StepTitleWithLayout>
+    );
   }
 
   if (!myTeamListResponse) {
