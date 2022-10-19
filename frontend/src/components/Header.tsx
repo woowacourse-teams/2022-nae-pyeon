@@ -33,9 +33,6 @@ const Header = () => {
         </StyledHome>
       </Link>
       <StyledNav>
-        <IconButton onClick={handleSearchClick} size="medium">
-          <SearchIcon />
-        </IconButton>
         <Badge variant="dot" invisible={false}>
           <IconButton onClick={handleNotificationClick} size="medium">
             <BellIcon />
