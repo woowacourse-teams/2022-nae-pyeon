@@ -10,11 +10,13 @@ import Badge from "@/components/Badge";
 import FilledLogo from "@/assets/images/logo-fill.png";
 import BellIcon from "@/assets/icons/bx-bell.svg";
 import UserIcon from "@/assets/icons/bx-user.svg";
+import useReadNotifications from "./../hooks/useReadNotifications";
 
 const Header = () => {
   const navigate = useNavigate();
   const { memberId } = useContext(UserContext);
   const [notificationCount, setNotificationCount] = useState(0);
+  const { data } = useReadNotifications();
 
   const [notificationEventSource, setNotificationEventSource] =
     useState<EventSource | null>(null);
@@ -46,6 +48,12 @@ const Header = () => {
       );
     }
   }, [memberId]);
+
+  useEffect(() => {
+    if (data) {
+      setNotificationCount(data.unreadCount);
+    }
+  }, [data]);
 
   return (
     <StyledHeader>

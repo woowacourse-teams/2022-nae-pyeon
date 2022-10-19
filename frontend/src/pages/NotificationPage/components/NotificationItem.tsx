@@ -1,31 +1,57 @@
+import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import IconButton from "@/components/IconButton";
 
+import useDeleteNotification from "@/pages/NotificationPage/hooks/useDeleteNotification";
+
+import { NOTIFICATION_CONTENT_TYPE } from "@/constants";
+import { Notification } from "@/types";
+
 import XIcon from "@/assets/icons/bx-x.svg";
 
 interface NotificationItemProps {
-  description: string;
+  notification: Notification;
 }
 
-const NotificationItem = ({ description }: NotificationItemProps) => {
+const NotificationItem = ({ notification }: NotificationItemProps) => {
+  const navigate = useNavigate();
+  const { mutate: deleteNotification } = useDeleteNotification();
+
+  const description =
+    notification.contentType ===
+    NOTIFICATION_CONTENT_TYPE.ROLLINGPAPER_AT_MY_TEAM
+      ? " 롤링페이퍼가 열렸습니다! 메시지를 남겨볼까요?"
+      : " 롤링페이퍼에 새 메시지가 작성되었습니다.";
+
   return (
     <StyledNotificationItem
-      onClick={(e) => {
-        console.log("알림 읽음 처리 및 롤링페이퍼 페이지로 이동");
+      onClick={() => {
+        deleteNotification({ id: notification.id });
+        navigate(`/${notification.url}`);
       }}
     >
       <StyledCloseButtonWrapper>
-        <IconButton>
+        <IconButton
+          onClick={(e) => {
+            e.stopPropagation();
+            deleteNotification({ id: notification.id });
+          }}
+        >
           <XIcon />
         </IconButton>
       </StyledCloseButtonWrapper>
       <StyledTopSection>
-        <StyledDescription>{description}</StyledDescription>
+        <StyledDescription>
+          <span>{notification.rollingpaperTitle}</span>
+          {description}
+        </StyledDescription>
       </StyledTopSection>
       <StyledBottomSection>
-        <StyledTeamName>{"우아한테크코스 4기"}</StyledTeamName>
-        <StyledDate>{"2022년 10월 19일"}</StyledDate>
+        <StyledTeamName>{notification.teamName}</StyledTeamName>
+        <StyledDate>
+          {new Date(notification.createAt).toLocaleDateString()}
+        </StyledDate>
       </StyledBottomSection>
     </StyledNotificationItem>
   );
@@ -82,7 +108,10 @@ const StyledCloseButtonWrapper = styled.div`
 
 const StyledDescription = styled.div`
   font-size: 16px;
-  font-weight: bold;
+
+  span {
+    font-weight: bold;
+  }
 `;
 
 const StyledTeamName = styled.div`

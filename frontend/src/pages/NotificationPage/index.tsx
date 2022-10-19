@@ -2,30 +2,29 @@ import styled from "@emotion/styled";
 
 import PageTitle from "@/components/PageTitle";
 import NotificationItem from "@/pages/NotificationPage/components/NotificationItem";
-import DeleteAllNotificationButton from "@/pages/NotificationPage/components/DeleteAllNotificationButton";
-
-const dummy = [
-  {
-    description: `"조조그린 생일 축하" 롤링페이퍼에 새로운 메시지가 작성되었습니다.`,
-  },
-  {
-    description: `"록바 생일 축하" 롤링페이퍼에 새로운 메시지가 작성되었습니다.`,
-  },
-  {
-    description: `"포코 결혼 축하" 롤링페이퍼에 새로운 메시지가 작성되었습니다.`,
-  },
-];
+import useDeleteNotificationsAll from "./hooks/useDeleteNotificationAll";
+import LineButton from "@/components/LineButton";
+import useReadNotifications from "@/hooks/useReadNotifications";
 
 const NotificationPage = () => {
+  const { data, isLoading } = useReadNotifications();
+  const { mutate: deleteNotificationAll } = useDeleteNotificationsAll();
+
   return (
     <StyledPageContainer>
       <StyledTopSection>
         <PageTitle title="알림 목록" titleAlign="left" />
-        <DeleteAllNotificationButton />
+        <LineButton
+          onClick={() => {
+            deleteNotificationAll();
+          }}
+        >
+          전체 알림 삭제
+        </LineButton>
       </StyledTopSection>
       <StyledNotificationList>
-        {dummy.map((item) => (
-          <NotificationItem description={item.description} />
+        {data?.notifications.map((notification) => (
+          <NotificationItem key={notification.id} notification={notification} />
         ))}
       </StyledNotificationList>
     </StyledPageContainer>
