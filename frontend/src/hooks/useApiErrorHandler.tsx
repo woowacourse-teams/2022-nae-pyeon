@@ -81,8 +81,9 @@ const useApiErrorHandler = () => {
         });
         break;
       }
-      // 토큰 관련
+      // 토큰의 해킹의 우려가 존재, 잘못된 refresh token
       case 3013:
+      case 3018:
         navigate("/logout");
         openSnackbar(message);
         break;
