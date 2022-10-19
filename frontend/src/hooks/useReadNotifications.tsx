@@ -4,9 +4,19 @@ import { AxiosError } from "axios";
 import { getNotifications } from "@/api/notification";
 import { GetNotificationResponse } from "@/types/apiResponse";
 
-const useReadNotifications = () =>
-  useQuery<GetNotificationResponse, AxiosError>(["notification"], () =>
-    getNotifications()
+interface UseReadNotificationsParams {
+  onSuccess?: ((data: GetNotificationResponse) => void) | undefined;
+}
+
+const useReadNotifications = ({ onSuccess }: UseReadNotificationsParams) =>
+  useQuery<GetNotificationResponse, AxiosError>(
+    ["notifications"],
+    () => getNotifications(),
+    {
+      onSuccess: (data) => {
+        onSuccess && onSuccess(data);
+      },
+    }
   );
 
 export default useReadNotifications;
