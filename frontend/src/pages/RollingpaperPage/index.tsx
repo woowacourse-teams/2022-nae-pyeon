@@ -1,8 +1,9 @@
-import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
-import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
-
 import useValidateParam from "@/hooks/useValidateParam";
 import { useReadRollingpaper } from "@/pages/RollingpaperPage/hooks/useReadRollingpaper";
+
+import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
+import Loading from "@/components/Loading";
+import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
 
 const RollingpaperPage = () => {
   const teamId = useValidateParam<number>("teamId");
@@ -14,7 +15,7 @@ const RollingpaperPage = () => {
   });
 
   if (isLoading) {
-    return <div>로딩 중</div>;
+    return <Loading />;
   }
 
   if (!rollingpaper) {

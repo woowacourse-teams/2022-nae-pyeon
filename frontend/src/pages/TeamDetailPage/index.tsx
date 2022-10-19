@@ -1,11 +1,12 @@
 import styled from "@emotion/styled";
 
+import useValidateParam from "@/hooks/useValidateParam";
+import useReadTeamDetail from "@/pages/TeamDetailPage/hooks/useReadTeamDetail";
+
+import Loading from "@/components/Loading";
 import TeamDescriptionBox from "@/pages/TeamDetailPage/components/TeamDescriptionBox";
 import RollingpaperList from "@/pages/TeamDetailPage/components/RollingpaperList";
 import TeamJoinSection from "@/pages/TeamDetailPage/components/TeamJoinSection";
-
-import useValidateParam from "@/hooks/useValidateParam";
-import useReadTeamDetail from "@/pages/TeamDetailPage/hooks/useReadTeamDetail";
 
 const TeamDetailPage = () => {
   const teamId = useValidateParam<number>("teamId");
@@ -14,7 +15,7 @@ const TeamDetailPage = () => {
     useReadTeamDetail(teamId);
 
   if (isLoadingTeamDetail) {
-    return <div>로딩중</div>;
+    return <Loading />;
   }
 
   if (!teamDetail) {
