@@ -1,11 +1,7 @@
-import styled from "@emotion/styled";
-import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
-
 import useValidateParam from "@/hooks/useValidateParam";
 import { useReadRollingpaper } from "@/pages/RollingpaperPage/hooks/useReadRollingpaper";
-import PageTitle from "@/components/PageTitle";
 
-import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
+import PageTitle from "@/components/PageTitle";
 import Loading from "@/components/Loading";
 import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
 

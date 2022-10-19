@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 
+import usePaging from "@/hooks/usePaging";
+import useReadReceivedRollingpapers from "@/pages/MyPage/hooks/useReadReceivedRollingpapers";
+
 import RollingpaperListItem from "@/components/RollinpaperListItem";
 import Paging from "@/components/Paging";
 import EmptyRollingpaperList from "@/components/EmptyRollingpaperList";
-
-import usePaging from "@/hooks/usePaging";
-
-import useReadReceivedRollingpapers from "@/pages/MyPage/hooks/useReadReceivedRollingpapers";
+import Loading from "@/components/Loading";
 
 interface RollingpaperListProps {
   lastPage: number;
@@ -17,6 +17,10 @@ const RollingpaperList = ({ lastPage }: RollingpaperListProps) => {
     usePaging(lastPage);
 
   const { isLoading, data } = useReadReceivedRollingpapers(currentPage);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   if (!data) {
     return <div>에러</div>;
