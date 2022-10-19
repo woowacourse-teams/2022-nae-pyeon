@@ -5,7 +5,6 @@ import IconButton from "@/components/IconButton";
 
 import useDeleteNotification from "@/pages/NotificationPage/hooks/useDeleteNotification";
 
-import { NOTIFICATION_CONTENT_TYPE } from "@/constants";
 import { Notification } from "@/types";
 
 import XIcon from "@/assets/icons/bx-x.svg";
@@ -14,21 +13,20 @@ interface NotificationItemProps {
   notification: Notification;
 }
 
+const DESCRIPTION_MESSAGE = {
+  ROLLINGPAPER_AT_MY_TEAM: " 롤링페이퍼가 열렸습니다! 메시지를 남겨볼까요?",
+  MESSAGE_AT_MY_ROLLINGPAPER: " 롤링페이퍼에 새 메시지가 작성되었습니다.",
+};
+
 const NotificationItem = ({ notification }: NotificationItemProps) => {
   const navigate = useNavigate();
   const { mutate: deleteNotification } = useDeleteNotification();
-
-  const description =
-    notification.contentType ===
-    NOTIFICATION_CONTENT_TYPE.ROLLINGPAPER_AT_MY_TEAM
-      ? " 롤링페이퍼가 열렸습니다! 메시지를 남겨볼까요?"
-      : " 롤링페이퍼에 새 메시지가 작성되었습니다.";
 
   return (
     <StyledNotificationItem
       onClick={() => {
         deleteNotification({ id: notification.id });
-        navigate(`/${notification.url}`);
+        navigate(notification.url);
       }}
     >
       <StyledCloseButtonWrapper>
@@ -44,7 +42,7 @@ const NotificationItem = ({ notification }: NotificationItemProps) => {
       <StyledTopSection>
         <StyledDescription>
           <span>{notification.rollingpaperTitle}</span>
-          {description}
+          {DESCRIPTION_MESSAGE[notification.contentType]}
         </StyledDescription>
       </StyledTopSection>
       <StyledBottomSection>
