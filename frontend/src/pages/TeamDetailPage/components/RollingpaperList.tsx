@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 import useValidateParam from "@/hooks/useValidateParam";
 import useReadTeamRollingpaper from "@/pages/TeamDetailPage/hooks/useReadTeamRollingpaper";
 
+import Loading from "@/components/Loading";
 import RollingpaperListItem from "@/pages/TeamDetailPage/components/RollingpaperListItem";
 
 import { RECIPIENT, ROLLINGPAPER_ORDER } from "@/constants";
@@ -29,7 +30,7 @@ const RollingpaperList = () => {
   });
 
   if (isLoadingGetTeamRollingpaperList) {
-    return <div>로딩중</div>;
+    return <Loading />;
   }
 
   if (!teamRollinpaperListResponse) {

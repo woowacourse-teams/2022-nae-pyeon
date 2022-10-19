@@ -1,3 +1,4 @@
+import Loading from "@/components/Loading";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -22,7 +23,7 @@ const GoogleRedirectPage = () => {
     });
   }, []);
 
-  return <div>GoogleRedirectPage</div>;
+  return <Loading />;
 };
 
 export default GoogleRedirectPage;

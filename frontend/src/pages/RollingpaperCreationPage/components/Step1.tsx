@@ -1,14 +1,15 @@
 import React, { forwardRef } from "react";
+import { Navigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
-import MyTeamCard from "@/components/MyTeamCard";
-
+import useIntersect from "@/hooks/useIntersect";
 import useReadMyTeam from "@/pages/RollingpaperCreationPage/hooks/useReadMyTeam";
 
+import MyTeamCard from "@/components/MyTeamCard";
+import Loading from "@/components/Loading";
 import StepTitleWithLayout from "@/pages/RollingpaperCreationPage/components/StepTitleWithLayout";
 
 import { Team } from "@/types";
-import useIntersect from "@/hooks/useIntersect";
 
 interface Step1Props {
   onClick: (id: Team["id"]) => void;
@@ -37,8 +38,12 @@ const Step1 = (
     isLoading,
   } = useReadMyTeam();
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   if (!myTeamListResponse) {
-    return <div>내 팀 없음ㅠ</div>;
+    return <Navigate to="/" replace />;
   }
 
   return (

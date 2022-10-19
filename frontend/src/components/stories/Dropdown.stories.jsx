@@ -3,7 +3,7 @@ import Dropdown from "@/components/Dropdown";
 
 export default {
   component: Dropdown,
-  title: "Dropdown",
+  title: "components/common/Dropdown",
 };
 
 const Template = (args) => <Dropdown {...args}></Dropdown>;

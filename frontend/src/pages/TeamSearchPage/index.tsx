@@ -7,12 +7,14 @@ import useIntersect from "@/hooks/useIntersect";
 import { getTeamSearchResult } from "@/api/team";
 
 import SearchInput from "@/components/SearchInput";
+import Loading from "@/components/Loading";
 import SearchResultListItem from "@/pages/TeamSearchPage/components/SearchResultListItem";
 
-import EmptyStateImg from "@/assets/images/empty-state.svg";
 import { TOTAL_TEAMS_PAGING_COUNT } from "@/constants";
 
 import { Team } from "@/types";
+
+import EmptyStateImg from "@/assets/images/empty-state.svg";
 
 const TeamSearch = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -68,7 +70,7 @@ const TeamSearch = () => {
   };
 
   if (isLoading) {
-    return <div>로딩 중</div>;
+    return <Loading />;
   }
 
   if (!totalTeamResponse) {

@@ -6,6 +6,7 @@ import RequireLogin from "@/components/RequireLogin";
 import RequireLogout from "@/components/RequireLogout";
 import PageContainer from "@/components/PageContainer";
 import Snackbar from "@/components/Snackbar";
+import Loading from "@/components/Loading";
 
 import { UserProvider } from "@/context/UserContext";
 import { useSnackbar } from "@/context/SnackbarContext";
@@ -46,11 +47,21 @@ const App = () => {
   }, []);
 
   if (isLoading && isFetching) {
-    return <PageContainer>초기 로딩 중</PageContainer>;
+    return (
+      <PageContainer>
+        <Loading />
+      </PageContainer>
+    );
   }
 
   return (
-    <Suspense fallback={<div>global loading...</div>}>
+    <Suspense
+      fallback={
+        <PageContainer>
+          <Loading />
+        </PageContainer>
+      }
+    >
       <ErrorBoundary fallback={<ErrorPage />}>
         <UserProvider
           initialData={

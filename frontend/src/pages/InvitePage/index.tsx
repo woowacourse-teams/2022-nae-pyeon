@@ -9,6 +9,7 @@ import useCreateTeamMemberWithInviteCode from "@/pages/InvitePage/hooks/useCreat
 
 import UnderlineInput from "@/components/UnderlineInput";
 import LineButton from "@/components/LineButton";
+import Loading from "@/components/Loading";
 import TeamDescriptionBox from "@/pages/InvitePage/components/TeamDescriptionBox";
 
 import { REGEX } from "@/constants";
@@ -47,7 +48,7 @@ const InvitePage = () => {
   }, []);
 
   if (isLoading || !teamDetail) {
-    return <div>로딩 중</div>;
+    return <Loading />;
   }
 
   return (

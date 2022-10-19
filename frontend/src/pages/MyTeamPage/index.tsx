@@ -2,13 +2,13 @@ import styled from "@emotion/styled";
 import { useNavigate, Link } from "react-router-dom";
 
 import useIntersect from "@/hooks/useIntersect";
+import useReadMyTeams from "@/pages/MyTeamPage/hooks/useReadMyTeams";
 
 import MyTeamCard from "@/components/MyTeamCard";
 import LineButton from "@/components/LineButton";
+import Loading from "@/components/Loading";
 
 import ErrorImg from "@/assets/images/empty-state.svg";
-
-import useReadMyTeams from "@/pages/MyTeamPage/hooks/useReadMyTeams";
 
 import { Team } from "@/types";
 
@@ -32,7 +32,7 @@ const MyTeamsPage = () => {
   });
 
   if (isLoading) {
-    return <div>로딩 중</div>;
+    return <Loading />;
   }
 
   if (!myTeamListResponse) {
