@@ -28,7 +28,7 @@ class AuthAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("리프레시 토큰이 만료됐을 경우 새 엑세스 토큰을 요청하면 401에러를 던진다.")
+    @DisplayName("리프레시 토큰이 올바르지 않을 경우 새 엑세스 토큰을 요청하면 401에러를 던진다.")
     void renewalTokenExpired() {
         리프레시_토큰_무효화(alex, new RefreshTokenDto(alex.getRefreshToken()));
         final ExtractableResponse<Response> response = 액세스_토큰_재발급(alex, new RefreshTokenDto(alex.getRefreshToken()));
@@ -36,8 +36,8 @@ class AuthAcceptanceTest extends AcceptanceTest {
         final ErrorResponse errorResponse = response.as(ErrorResponse.class);
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value()),
-                () -> assertThat(errorResponse.getErrorCode()).isEqualTo("3019"),
-                () -> assertThat(errorResponse.getMessage()).isEqualTo("리프레시 토큰이 만료되었습니다.")
+                () -> assertThat(errorResponse.getErrorCode()).isEqualTo("3018"),
+                () -> assertThat(errorResponse.getMessage()).isEqualTo("올바르지 않은 리프레시 토큰입니다.")
         );
     }
 }
