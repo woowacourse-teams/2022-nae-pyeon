@@ -6,12 +6,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
 @RequiredArgsConstructor
-public class RequestBodyWrappingFilter extends OncePerRequestFilter {
+@Slf4j
+public class RequestLoggingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
@@ -19,7 +21,7 @@ public class RequestBodyWrappingFilter extends OncePerRequestFilter {
             final HttpServletResponse response,
             final FilterChain filterChain
     ) throws ServletException, IOException {
-        final CustomCachingRequestWrapper wrappingRequest = new CustomCachingRequestWrapper(request);
-        filterChain.doFilter(wrappingRequest, response);
+        log.info("{} {}", request.getMethod(), request.getRequestURI());
+        filterChain.doFilter(request, response);
     }
 }

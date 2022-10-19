@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.support.oauth.kakao;
 
+import com.woowacourse.naepyeon.config.logging.trace.annotation.NoTracing;
 import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.exception.KakaoAuthorizationException;
 import com.woowacourse.naepyeon.exception.KakaoResourceException;
@@ -44,6 +45,7 @@ public class KakaoPlatformUserProvider implements PlatformUserProvider {
     }
 
     @Override
+    @NoTracing
     public PlatformUserDto getPlatformUser(final String authorizationCode, final String redirectUri) {
         final AccessTokenResponse accessTokenResponse = requestAccessToken(authorizationCode, redirectUri);
         final KakaoUserResponse kakaoUserResponse = requestPlatformUser(accessTokenResponse.getAccess_token());

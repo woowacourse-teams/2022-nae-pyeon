@@ -1,5 +1,6 @@
 package com.woowacourse.naepyeon.support.oauth.google;
 
+import com.woowacourse.naepyeon.config.logging.trace.annotation.NoTracing;
 import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.exception.GoogleAuthorizationException;
 import com.woowacourse.naepyeon.exception.GoogleResourceException;
@@ -44,6 +45,7 @@ public class GooglePlatformUserProvider implements PlatformUserProvider {
     }
 
     @Override
+    @NoTracing
     public PlatformUserDto getPlatformUser(String authorizationCode, String redirectUri) {
         final GoogleAccessTokenResponse accessTokenResponse = requestAccessToken(authorizationCode, redirectUri);
         final GoogleUserResponse googleUserResponse = requestPlatformUser(accessTokenResponse.getAccess_token());
