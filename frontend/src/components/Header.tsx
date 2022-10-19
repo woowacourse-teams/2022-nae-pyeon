@@ -1,5 +1,8 @@
+import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
+
+import { UserContext } from "@/context/UserContext";
 
 import IconButton from "@/components/IconButton";
 import Badge from "@/components/Badge";
@@ -10,6 +13,11 @@ import UserIcon from "@/assets/icons/bx-user.svg";
 
 const Header = () => {
   const navigate = useNavigate();
+  const { memberId } = useContext(UserContext);
+  const [notificationCount, setNotificationCount] = useState(0);
+
+  const [notificationEventSource, setNotificationEventSource] =
+    useState<EventSource | null>(null);
 
   const handleNotificationClick = () => {
     navigate("/notification");
@@ -18,6 +26,26 @@ const Header = () => {
   const handleMyPageClick = () => {
     navigate("/mypage");
   };
+
+  const handleNotificationEventSource = (e: MessageEvent) => {
+    console.log(e, JSON.parse(e.data));
+  };
+
+  useEffect(() => {
+    if (memberId) {
+      const notification = new EventSource(
+        `${process.env.API_URL}/subscribe?id=${memberId}`
+      );
+      notification.addEventListener("sse", handleNotificationEventSource);
+      setNotificationEventSource(notification);
+      return;
+    } else {
+      notificationEventSource?.removeEventListener(
+        "sse",
+        handleNotificationEventSource
+      );
+    }
+  }, [memberId]);
 
   return (
     <StyledHeader>
@@ -28,7 +56,7 @@ const Header = () => {
         </StyledHome>
       </Link>
       <StyledNav>
-        <Badge variant="dot" invisible={false}>
+        <Badge variant="number" badgeContent={notificationCount}>
           <IconButton onClick={handleNotificationClick} size="medium">
             <BellIcon />
           </IconButton>
