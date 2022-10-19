@@ -36,8 +36,8 @@ class AuthAcceptanceTest extends AcceptanceTest {
         final ErrorResponse errorResponse = response.as(ErrorResponse.class);
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value()),
-                () -> assertThat(errorResponse.getErrorCode()).isEqualTo("3012"),
-                () -> assertThat(errorResponse.getMessage()).isEqualTo("토큰의 유효기간이 만료됐습니다.")
+                () -> assertThat(errorResponse.getErrorCode()).isEqualTo("3019"),
+                () -> assertThat(errorResponse.getMessage()).isEqualTo("리프레시 토큰이 만료되었습니다.")
         );
     }
 }
