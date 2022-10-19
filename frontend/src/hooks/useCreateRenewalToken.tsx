@@ -30,10 +30,12 @@ const useCreateRenewalToken = () => {
         setAppClientHeaderAuthorization(accessToken);
 
         if (variable.mutateFunc) {
+          // post, put, delete
           variable.mutateFunc();
+        } else {
+          // get
+          queryClient.refetchQueries({ stale: true });
         }
-
-        queryClient.refetchQueries({ stale: true });
       }
     },
   });
