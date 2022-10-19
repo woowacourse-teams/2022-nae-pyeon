@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import useIntersect from "@/hooks/useIntersect";
@@ -37,17 +37,13 @@ const Step1 = (
     isFetching,
     isLoading,
   } = useReadMyTeam();
-  const navigate = useNavigate();
 
   if (isLoading) {
     return <Loading />;
   }
 
   if (!myTeamListResponse) {
-    navigate("/");
-
-    // JSX를 리턴하지 않으면 오류가 나고 있어서 차후에 수정
-    return <div></div>;
+    return <Navigate to="/" replace />;
   }
 
   return (
