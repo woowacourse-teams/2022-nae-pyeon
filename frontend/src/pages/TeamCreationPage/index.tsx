@@ -11,6 +11,7 @@ import Button from "@/components/Button";
 import LabeledSwitch from "@/components/LabeledSwitch";
 
 import { COLORS, REGEX } from "@/constants";
+import PageTitle from "@/components/PageTitle";
 
 const emojis = [
   { id: 1, value: "🐶" },
@@ -75,7 +76,7 @@ const TeamCreationPage = () => {
 
   return (
     <>
-      <StyledPageTitle>모임 추가하기</StyledPageTitle>
+      <PageTitle title={"모임 추가하기"} titleAlign="center" />
       <StyledForm>
         <LabeledInput
           labelText="모임명"
@@ -138,12 +139,6 @@ const TeamCreationPage = () => {
     </>
   );
 };
-
-const StyledPageTitle = styled.h1`
-  margin-bottom: 18px;
-  font-size: 32px;
-  text-align: center;
-`;
 
 const StyledForm = styled.form`
   display: flex;

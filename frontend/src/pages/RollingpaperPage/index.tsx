@@ -3,6 +3,7 @@ import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
 
 import useValidateParam from "@/hooks/useValidateParam";
 import { useReadRollingpaper } from "@/pages/RollingpaperPage/hooks/useReadRollingpaper";
+import PageTitle from "@/components/PageTitle";
 
 const RollingpaperPage = () => {
   const teamId = useValidateParam<number>("teamId");
@@ -23,7 +24,7 @@ const RollingpaperPage = () => {
 
   return (
     <>
-      <StyledPageTitle>{rollingpaper.title}</StyledPageTitle>
+      <PageTitle title={rollingpaper.title} titleAlign="center" />
       <main>
         <LetterPaper
           to={rollingpaper.to}
@@ -34,11 +35,5 @@ const RollingpaperPage = () => {
     </>
   );
 };
-
-const StyledPageTitle = styled.h1`
-  margin-bottom: 18px;
-  font-size: 32px;
-  text-align: center;
-`;
 
 export default RollingpaperPage;
