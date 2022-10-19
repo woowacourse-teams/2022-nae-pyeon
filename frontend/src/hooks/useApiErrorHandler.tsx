@@ -1,27 +1,15 @@
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
 
 import { useSnackbar } from "@/context/SnackbarContext";
-
 import useCreateRenewalToken from "@/hooks/useCreateRenewalToken";
-
-import { appClient, requestApi } from "@/api";
+import useRetryMutate from "@/hooks/useRetryMutate";
 
 import { getCookie } from "@/util/cookie";
 import { COOKIE_KEY } from "@/constants";
 
-import { ValueOf } from "@/types";
+import { Method } from "@/types";
 import { ApiErrorResponse } from "@/types/api";
-
-const METHOD = {
-  GET: "get",
-  POST: "post",
-  PUT: "put",
-  DELETE: "delete",
-} as const;
-
-type Method = ValueOf<typeof METHOD>;
 
 interface CustomError {
   message: string;
@@ -31,33 +19,12 @@ interface CustomError {
   requestData?: string;
 }
 
-interface RetryFuncParams {
-  requestMethod: Method;
-  requestUrl: string;
-  requestData?: string;
-}
-
-const retryFunc = async ({
-  requestMethod,
-  requestUrl,
-  requestData,
-}: RetryFuncParams) =>
-  requestApi(() =>
-    appClient[requestMethod](requestUrl, requestData && JSON.parse(requestData))
-  );
-
 const useApiErrorHandler = () => {
   const navigate = useNavigate();
   const { openSnackbar } = useSnackbar();
   const { mutate: renewalToken } = useCreateRenewalToken();
 
-  const { mutate: retryMutate } = useMutation<
-    null,
-    AxiosError,
-    RetryFuncParams
-  >(({ requestMethod, requestUrl, requestData }) =>
-    retryFunc({ requestMethod, requestUrl, requestData })
-  );
+  const { mutate: retryMutate } = useRetryMutate();
 
   const badRequestErrorHandler = (customErrorInfo: CustomError) => {
     const { message, errorCode, requestUrl } = customErrorInfo;

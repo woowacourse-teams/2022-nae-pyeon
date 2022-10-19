@@ -70,6 +70,13 @@ const ROLLINGPAPER_ORDER = {
   OLDEST: "oldest",
 } as const;
 
+const METHOD = {
+  GET: "get",
+  POST: "post",
+  PUT: "put",
+  DELETE: "delete",
+} as const;
+
 export {
   REGEX,
   COLORS,
@@ -85,4 +92,5 @@ export {
   COOKIE_KEY,
   TOKEN_MAX_AGE,
   ROLLINGPAPER_ORDER,
+  METHOD,
 };
