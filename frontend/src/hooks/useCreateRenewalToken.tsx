@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
-import { queryClient, setAppClientHeaderAuthorization } from "@/api";
+import { setAppClientHeaderAuthorization } from "@/api";
 import { postRenewalToken } from "@/api/member";
 
 import { COOKIE_KEY, TOKEN_MAX_AGE } from "@/constants";
@@ -34,7 +34,7 @@ const useCreateRenewalToken = () => {
           variable.mutateFunc();
         } else {
           // get
-          queryClient.refetchQueries({ stale: true });
+          window.location.reload();
         }
       }
     },

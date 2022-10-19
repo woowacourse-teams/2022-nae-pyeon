@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
-import { appClient, queryClient, requestApi } from "@/api";
+import { appClient, requestApi } from "@/api";
 
 import { Method } from "@/types";
 
@@ -26,7 +26,7 @@ const useRetryMutate = () =>
       retryFunc({ requestMethod, requestUrl, requestData }),
     {
       onSuccess: () => {
-        queryClient.refetchQueries();
+        window.location.reload();
       },
     }
   );
