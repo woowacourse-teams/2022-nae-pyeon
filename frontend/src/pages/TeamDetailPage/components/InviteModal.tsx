@@ -86,6 +86,8 @@ const StyledHeader = styled.h2`
 
 const StyledLinkCopy = styled.div`
   display: flex;
+  align-self: center;
+  align-items: center;
   gap: 8px;
 
   margin: 8px 0 20px 0;
@@ -97,6 +99,7 @@ const StyledLinkCopy = styled.div`
 
 const StyledLink = styled.a`
   word-break: break-all;
+  max-width: 90%;
 
   color: ${({ theme }) => theme.colors.SKY_BLUE_400};
 `;
