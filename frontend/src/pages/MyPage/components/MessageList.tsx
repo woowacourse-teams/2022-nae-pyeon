@@ -19,12 +19,8 @@ const MessageList = ({ lastPage }: MessageListProps) => {
 
   const { isLoading, data } = useReadSentMessages(currentPage);
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return <Loading />;
-  }
-
-  if (!data) {
-    return <div>에러</div>;
   }
 
   if (data.messages.length === 0) {

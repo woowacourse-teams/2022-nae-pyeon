@@ -16,12 +16,8 @@ const TeamDetailPage = () => {
   const { isLoading: isLoadingTeamDetail, data: teamDetail } =
     useReadTeamDetail(teamId);
 
-  if (isLoadingTeamDetail) {
+  if (isLoadingTeamDetail || !teamDetail) {
     return <Loading />;
-  }
-
-  if (!teamDetail) {
-    return <div>에러</div>;
   }
 
   return (

@@ -9,6 +9,7 @@ import useUpdateTeamNickname from "@/pages/TeamDetailPage/hooks/useUpdateTeamNic
 import LineButton from "@/components/LineButton";
 import Modal from "@/components/Modal";
 import UnderlineInput from "@/components/UnderlineInput";
+import Loading from "@/components/Loading";
 
 import { REGEX } from "@/constants";
 
@@ -26,7 +27,7 @@ const NicknameEditModalForm = ({
     onSuccess: onClickCloseButton,
   });
 
-  const { data: teamNicknameResponse } = useReadTeamNickname(teamId);
+  const { data: teamNicknameResponse, isLoading } = useReadTeamNickname(teamId);
 
   const { value: nickname, handleInputChange: handleNicknameChange } = useInput(
     teamNicknameResponse?.nickname || ""
@@ -41,6 +42,10 @@ const NicknameEditModalForm = ({
     }
     updateTeamNickname({ id: teamId, nickname });
   };
+
+  if (isLoading || !teamNicknameResponse) {
+    return <Loading />;
+  }
 
   return (
     <Modal onClickCloseButton={onClickCloseButton}>

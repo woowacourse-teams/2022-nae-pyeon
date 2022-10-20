@@ -69,12 +69,8 @@ const TeamSearch = () => {
     navigate(`/team/${id}`);
   };
 
-  if (isLoading) {
+  if (isLoading || !totalTeamResponse) {
     return <Loading />;
-  }
-
-  if (!totalTeamResponse) {
-    return <div>에러</div>;
   }
 
   if (totalTeamResponse.pages[0]?.teams.length === 0) {

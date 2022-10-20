@@ -29,12 +29,8 @@ const RollingpaperList = () => {
     filter,
   });
 
-  if (isLoadingGetTeamRollingpaperList) {
+  if (isLoadingGetTeamRollingpaperList || !teamRollinpaperListResponse) {
     return <Loading />;
-  }
-
-  if (!teamRollinpaperListResponse) {
-    return <div>에러</div>;
   }
 
   if (teamRollinpaperListResponse.rollingpapers.length === 0) {
