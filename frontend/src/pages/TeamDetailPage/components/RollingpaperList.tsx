@@ -7,6 +7,7 @@ import useReadTeamRollingpaper from "@/pages/TeamDetailPage/hooks/useReadTeamRol
 
 import Loading from "@/components/Loading";
 import RollingpaperListItem from "@/pages/TeamDetailPage/components/RollingpaperListItem";
+import EmptyTeamRollingpaper from "@/pages/TeamDetailPage/components/EmptyTeamRollingpaper";
 
 import { RECIPIENT, ROLLINGPAPER_ORDER } from "@/constants";
 
@@ -35,6 +36,10 @@ const RollingpaperList = () => {
 
   if (!teamRollinpaperListResponse) {
     return <div>에러</div>;
+  }
+
+  if (teamRollinpaperListResponse.rollingpapers.length === 0) {
+    return <EmptyTeamRollingpaper />;
   }
 
   return (
