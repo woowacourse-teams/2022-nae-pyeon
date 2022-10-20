@@ -8,7 +8,7 @@ const notificationHandlers = [
     const accessToken = req.headers.headers.authorization.split(" ")[1];
 
     if (!accessToken) {
-      return res(ctx.status(400));
+      return res(ctx.status(401));
     }
 
     const result = {
