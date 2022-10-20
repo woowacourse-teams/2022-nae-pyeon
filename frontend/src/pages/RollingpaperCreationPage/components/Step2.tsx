@@ -16,16 +16,21 @@ import { GetTeamMembersResponse } from "@/types/apiResponse";
 
 interface Step2Props {
   teamId: Team["id"] | null;
-  onClick: (recipient: Recipient, to?: TeamMember["id"]) => void;
+  onSelectRecipient: (recipient: Recipient) => void;
+  onSelectMember: (memberId: TeamMember["id"]) => void;
   selected: Recipient | null;
-  setStep: React.Dispatch<React.SetStateAction<number>>;
 }
 
 interface StyledShowProps {
   isShown: boolean;
 }
 
-const Step2 = ({ teamId, onClick, selected, setStep }: Step2Props) => {
+const Step2 = ({
+  teamId,
+  onSelectRecipient,
+  onSelectMember,
+  selected,
+}: Step2Props) => {
   const [isToShown, setIsToShown] = useState(false);
   const [isRecipeinetShown, setIsRecipeinetShown] = useState(true);
   const {
@@ -51,7 +56,7 @@ const Step2 = ({ teamId, onClick, selected, setStep }: Step2Props) => {
   const findReceiverWithNickName = (nickname: string) => {
     return teamMemberResponse?.members.find(
       (member) => member.nickname === nickname
-    ) as TeamMember;
+    );
   };
 
   const isValidReceiverNickName = (nickname: string) => {
@@ -60,11 +65,11 @@ const Step2 = ({ teamId, onClick, selected, setStep }: Step2Props) => {
   };
 
   const handleTeamClick = () => {
-    onClick(RECIPIENT.TEAM);
+    onSelectRecipient(RECIPIENT.TEAM);
   };
 
   const handleMemberClick = () => {
-    setStep((prev) => prev + 0.5);
+    onSelectRecipient(RECIPIENT.MEMBER);
     setIsToShown(true);
     setIsRecipeinetShown(false);
   };
@@ -73,8 +78,13 @@ const Step2 = ({ teamId, onClick, selected, setStep }: Step2Props) => {
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
-    setStep((prev) => prev - 0.5);
-    onClick(RECIPIENT.MEMBER, findReceiverWithNickName(rollingpaperTo).id);
+    const memeberInfo = findReceiverWithNickName(rollingpaperTo);
+
+    if (!memeberInfo) {
+      return;
+    }
+
+    onSelectMember(memeberInfo.id);
   };
 
   return (

@@ -4,28 +4,29 @@ import { useSearchParams } from "react-router-dom";
 import useCreateMemberRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateMemberRolliingpaper";
 import useCreateTeamRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateTeamRollingpaper";
 
-import { RECIPIENT } from "@/constants";
+import { RECIPIENT, REGEX } from "@/constants";
+
 import { Recipient, Rollingpaper, Team, TeamMember } from "@/types";
 
 interface Step {
-  step1: Team["id"] | null;
-  step2: { type: Recipient | null; to: TeamMember["id"] | null } | null;
-  step3: Rollingpaper["title"] | null;
+  team: Team["id"] | null;
+  recipient: { type: Recipient | null; to: TeamMember["id"] | null } | null;
+  title: Rollingpaper["title"] | null;
 }
 
-const initialSelectedSteps = {
-  step1: null,
-  step2: { type: null, to: null },
-  step3: null,
+const initialRollingpaperCreateForm = {
+  team: null,
+  recipient: { type: null, to: null },
+  title: null,
 };
 
 const useSteps = () => {
   const [searchParams] = useSearchParams();
   const selectedTeamId = searchParams.get("team-id");
-  const [selectedSteps, setSelectedSteps] = useState<Step>(
+  const [rollingpaperCreateForm, setRollingpaperCreateForm] = useState<Step>(
     selectedTeamId
-      ? { ...initialSelectedSteps, step1: +selectedTeamId }
-      : initialSelectedSteps
+      ? { ...initialRollingpaperCreateForm, team: +selectedTeamId }
+      : initialRollingpaperCreateForm
   );
   const [step, setStep] = useState<number>(selectedTeamId ? 1 : 0);
   const pageRef = useRef<HTMLDivElement>(null);
@@ -33,7 +34,7 @@ const useSteps = () => {
   const { mutate: createMemberRollingpaper } = useCreateMemberRollingpaper();
   const { mutate: createTeamRollingpaper } = useCreateTeamRollingpaper();
 
-  const changePage = () => {
+  const goToNextPage = () => {
     const width = window.innerWidth;
     let left = width;
 
@@ -48,20 +49,8 @@ const useSteps = () => {
     pageRef.current?.scrollBy({ top: 0, left: left - 48, behavior: "smooth" });
   };
 
-  const goToNextPage = () => {
-    if (step >= Object.keys(selectedSteps).length) {
-      endSteps(selectedSteps);
-      return;
-    }
-
-    setStep((prev) => {
-      changePage();
-      return prev + 1;
-    });
-  };
-
-  const endSteps = (result: Step) => {
-    const { step1: teamId, step2: recipient, step3: title } = result;
+  const handleRollingpaperCreateSubmit = () => {
+    const { team: teamId, recipient, title } = rollingpaperCreateForm;
 
     if (!teamId || !recipient || !title) {
       return;
@@ -80,49 +69,65 @@ const useSteps = () => {
     createTeamRollingpaper({ teamId, title });
   };
 
-  const handleStep1Click = (id: Team["id"]) => {
-    setSelectedSteps((prev) => ({
+  const handleTeamClick = (id: Team["id"]) => {
+    setStep((prev) => prev + 1);
+    setRollingpaperCreateForm((prev) => ({
       ...prev,
-      step1: id,
+      team: id,
     }));
 
     goToNextPage();
   };
 
-  const handleStep2Click = (recipient: Recipient, to?: TeamMember["id"]) => {
-    setSelectedSteps((prev) => ({
+  const handleRecipientClick = (recipientType: Recipient) => {
+    setStep((prev) => prev + 0.5);
+    setRollingpaperCreateForm((prev) => ({
       ...prev,
-      step2: {
-        type: recipient,
-        to: to ? to : null,
-      },
+      recipient: { type: recipientType, to: null },
+    }));
+
+    if (recipientType === RECIPIENT.TEAM) {
+      setStep((prev) => prev + 0.5);
+      goToNextPage();
+    }
+  };
+
+  const handleMemberClick = (memberId: TeamMember["id"]) => {
+    setStep((prev) => prev + 0.5);
+    setRollingpaperCreateForm((prev) => ({
+      ...prev,
+      recipient: { type: RECIPIENT.MEMBER, to: memberId },
     }));
 
     goToNextPage();
   };
 
-  const handleStep3Click = (title: Rollingpaper["title"]) => {
-    setSelectedSteps((prev) => {
-      const result = {
-        ...prev,
-        step3: title,
-      };
-      endSteps(result);
-      return result;
-    });
+  const handleTitleChange = (title: Rollingpaper["title"]) => {
+    if (!REGEX.ROLLINGPAPER_TITLE.test(title)) {
+      setStep(2);
+      return;
+    }
 
-    goToNextPage();
+    if (step < Object.keys(rollingpaperCreateForm).length) {
+      setStep((prev) => prev + 1);
+    }
+
+    setRollingpaperCreateForm((prev) => ({
+      ...prev,
+      title: title,
+    }));
   };
 
   return {
     pageRef,
-    selectedSteps,
+    rollingpaperCreateForm,
     step,
     selectedTeamId,
-    setStep,
-    handleStep1Click,
-    handleStep2Click,
-    handleStep3Click,
+    handleTeamClick,
+    handleRecipientClick,
+    handleMemberClick,
+    handleTitleChange,
+    handleRollingpaperCreateSubmit,
   };
 };
 

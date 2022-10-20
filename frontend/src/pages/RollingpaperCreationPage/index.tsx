@@ -10,31 +10,41 @@ import Step3 from "@/pages/RollingpaperCreationPage/components/Step3";
 const RollingpaperCreationPage = () => {
   const {
     pageRef,
-    selectedSteps,
+    rollingpaperCreateForm,
     step,
     selectedTeamId,
-    setStep,
-    handleStep1Click,
-    handleStep2Click,
-    handleStep3Click,
+    handleTeamClick,
+    handleRecipientClick,
+    handleMemberClick,
+    handleTitleChange,
+    handleRollingpaperCreateSubmit,
   } = useSteps();
 
   return (
     <StyledMain>
       <StyledSteps ref={pageRef}>
         {!selectedTeamId && (
-          <Step1 onClick={handleStep1Click} selected={selectedSteps.step1} />
+          <Step1
+            onSelectTeam={handleTeamClick}
+            selected={rollingpaperCreateForm.team}
+          />
         )}
         <Step2
-          teamId={selectedSteps.step1}
-          onClick={handleStep2Click}
-          selected={selectedSteps.step2?.type ?? null}
-          setStep={setStep}
+          teamId={rollingpaperCreateForm.team}
+          onSelectRecipient={handleRecipientClick}
+          onSelectMember={handleMemberClick}
+          selected={rollingpaperCreateForm.recipient?.type ?? null}
         />
-        <Step3 onClick={handleStep3Click} />
+        <Step3
+          onChangeTitle={handleTitleChange}
+          onSubmitRollingpaperCreate={handleRollingpaperCreateSubmit}
+        />
       </StyledSteps>
       <StyledProgressBar>
-        <ProgressBar step={step} total={Object.keys(selectedSteps).length} />
+        <ProgressBar
+          step={step}
+          total={Object.keys(rollingpaperCreateForm).length}
+        />
       </StyledProgressBar>
     </StyledMain>
   );

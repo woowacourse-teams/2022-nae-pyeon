@@ -11,11 +11,11 @@ import StepLayout from "@/pages/RollingpaperCreationPage/components/StepLayout";
 import { Team } from "@/types";
 
 interface Step1Props {
-  onClick: (id: Team["id"]) => void;
+  onSelectTeam: (id: Team["id"]) => void;
   selected: Team["id"] | null;
 }
 
-const Step1 = ({ onClick, selected }: Step1Props) => {
+const Step1 = ({ onSelectTeam, selected }: Step1Props) => {
   const infiniteRef = useIntersect({
     onIntersect: async (entry, observer) => {
       observer.unobserve(entry.target);
@@ -58,7 +58,7 @@ const Step1 = ({ onClick, selected }: Step1Props) => {
               description={description}
               emoji={emoji}
               color={color}
-              onClick={() => onClick(id)}
+              onClick={() => onSelectTeam(id)}
               selected={id === selected}
             />
           ))

@@ -12,14 +12,22 @@ import { REGEX } from "@/constants";
 import { Rollingpaper } from "@/types";
 
 interface Step3Props {
-  onClick: (title: Rollingpaper["title"]) => void;
+  onChangeTitle: (title: Rollingpaper["title"]) => void;
+  onSubmitRollingpaperCreate: () => void;
 }
-const Step3 = ({ onClick }: Step3Props) => {
+const Step3 = ({ onChangeTitle, onSubmitRollingpaperCreate }: Step3Props) => {
   const { value: title, handleInputChange } = useInput("");
+
+  const handleTitleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const { value } = e.target;
+
+    handleInputChange(e);
+    onChangeTitle(value);
+  };
 
   const handleTitleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    onClick(title);
+    onSubmitRollingpaperCreate();
   };
 
   return (
@@ -29,8 +37,7 @@ const Step3 = ({ onClick }: Step3Props) => {
           <LabeledInput
             pattern={REGEX.ROLLINGPAPER_TITLE.source}
             errorMessage={"1~20자 사이의 제목을 입력해주세요"}
-            value={title}
-            onChange={handleInputChange}
+            onChange={handleTitleChange}
           />
           <Button
             type="submit"
