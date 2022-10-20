@@ -23,7 +23,7 @@ import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.MessageUpdateRequestDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
-import com.woowacourse.naepyeon.service.event.RollingpaperEvent;
+import com.woowacourse.naepyeon.service.event.RollingpaperAndAuthorIdEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -54,8 +54,9 @@ public class MessageService {
                 .orElseThrow(() -> new NotFoundMemberException(authorId));
         final Message message = new Message(messageRequestDto.getContent(), messageRequestDto.getColor(),
                 author, rollingpaper, messageRequestDto.isAnonymous(), messageRequestDto.isSecret());
-        final RollingpaperEvent rollingpaperEvent = new RollingpaperEvent(rollingpaper);
-        applicationEventPublisher.publishEvent(rollingpaperEvent);
+        final RollingpaperAndAuthorIdEvent rollingpaperAndAuthorIdEvent = new RollingpaperAndAuthorIdEvent(rollingpaper,
+                authorId);
+        applicationEventPublisher.publishEvent(rollingpaperAndAuthorIdEvent);
         return messageRepository.save(message)
                 .getId();
     }

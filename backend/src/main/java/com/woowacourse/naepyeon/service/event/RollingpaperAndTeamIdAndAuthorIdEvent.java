@@ -7,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class RollingpaperEvent {
+public class RollingpaperAndTeamIdAndAuthorIdEvent {
 
     private final Rollingpaper rollingpaper;
+    private final Long teamId;
+    private final Long authorId;
 
     @Override
     public boolean equals(final Object o) {
@@ -19,12 +21,13 @@ public class RollingpaperEvent {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final RollingpaperEvent that = (RollingpaperEvent) o;
-        return Objects.equals(getRollingpaper(), that.getRollingpaper());
+        final RollingpaperAndTeamIdAndAuthorIdEvent that = (RollingpaperAndTeamIdAndAuthorIdEvent) o;
+        return Objects.equals(getRollingpaper(), that.getRollingpaper()) && Objects.equals(getTeamId(),
+                that.getTeamId()) && Objects.equals(getAuthorId(), that.getAuthorId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getRollingpaper());
+        return Objects.hash(getRollingpaper(), getTeamId(), getAuthorId());
     }
 }

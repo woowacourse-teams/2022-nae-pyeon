@@ -7,10 +7,10 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class RollingpaperAndTeamIdEvent {
+public class RollingpaperAndAuthorIdEvent {
 
     private final Rollingpaper rollingpaper;
-    private final Long teamId;
+    private final Long authorId;
 
     @Override
     public boolean equals(final Object o) {
@@ -20,13 +20,13 @@ public class RollingpaperAndTeamIdEvent {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final RollingpaperAndTeamIdEvent that = (RollingpaperAndTeamIdEvent) o;
-        return Objects.equals(getRollingpaper(), that.getRollingpaper()) && Objects.equals(getTeamId(),
-                that.getTeamId());
+        final RollingpaperAndAuthorIdEvent that = (RollingpaperAndAuthorIdEvent) o;
+        return Objects.equals(getRollingpaper(), that.getRollingpaper()) && Objects.equals(
+                getAuthorId(), that.getAuthorId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getRollingpaper(), getTeamId());
+        return Objects.hash(getRollingpaper(), getAuthorId());
     }
 }
