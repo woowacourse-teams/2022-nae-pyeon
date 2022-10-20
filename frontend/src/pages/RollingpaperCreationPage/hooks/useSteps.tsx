@@ -8,7 +8,7 @@ import { RECIPIENT, REGEX } from "@/constants";
 
 import { Recipient, Rollingpaper, Team, TeamMember } from "@/types";
 
-interface Step {
+interface RollingpaperCreateForm {
   team: Team["id"] | null;
   recipient: { type: Recipient | null; to: TeamMember["id"] | null } | null;
   title: Rollingpaper["title"] | null;
@@ -23,11 +23,12 @@ const initialRollingpaperCreateForm = {
 const useSteps = () => {
   const [searchParams] = useSearchParams();
   const selectedTeamId = searchParams.get("team-id");
-  const [rollingpaperCreateForm, setRollingpaperCreateForm] = useState<Step>(
-    selectedTeamId
-      ? { ...initialRollingpaperCreateForm, team: +selectedTeamId }
-      : initialRollingpaperCreateForm
-  );
+  const [rollingpaperCreateForm, setRollingpaperCreateForm] =
+    useState<RollingpaperCreateForm>(
+      selectedTeamId
+        ? { ...initialRollingpaperCreateForm, team: +selectedTeamId }
+        : initialRollingpaperCreateForm
+    );
   const [step, setStep] = useState<number>(selectedTeamId ? 1 : 0);
   const pageRef = useRef<HTMLDivElement>(null);
 
