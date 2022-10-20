@@ -7,13 +7,13 @@ interface ProgressBarProps {
 
 const ProgressBar = ({ step, total }: ProgressBarProps) => {
   return (
-    <StyledProgressBarBackGround>
+    <StyledProgressBarBackground>
       <StyledProgress width={(step / total) * 100} />
-    </StyledProgressBarBackGround>
+    </StyledProgressBarBackground>
   );
 };
 
-const StyledProgressBarBackGround = styled.div`
+const StyledProgressBarBackground = styled.div`
   width: 100%;
   height: 20px;
 
