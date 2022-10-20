@@ -86,7 +86,6 @@ public class NotificationService {
     }
 
     public SseEmitter subscribe(final Long memberId) throws IOException {
-        log.info("정상적으로 전송되나요 ????");
         final String id = String.valueOf(memberId);
         final SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
         //초반 연결용 메시지!!
@@ -108,19 +107,16 @@ public class NotificationService {
             final Notification notification = this.objectMapper.readValue(message.getBody(), Notification.class);
             return NotificationResponseDto.from(notification);
         } catch (IOException e) {
-            log.error("직렬화 실패");
             throw new InvalidRedisMessageException(message);
         }
     }
 
     private void sendToClient(final SseEmitter emitter, final String id, final Object data) {
         try {
-            log.info("전송중!");
             emitter.send(SseEmitter.event()
                     .id(id)
                     .name("sse")
                     .data(data));
-            log.info("전송완료");
         } catch (IOException e) {
             emitters.remove(emitter);
             log.error("SSE 연결이 올바르지 않습니다. 해당 memberID={}", id);

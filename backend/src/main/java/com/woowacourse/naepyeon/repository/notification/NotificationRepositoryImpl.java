@@ -22,6 +22,7 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
                 .fetch();
     }
 
+    @Override
     public void updateNotificationRead(final Long memberId) {
         queryFactory.update(notification)
                 .set(notification.isRead, true)
