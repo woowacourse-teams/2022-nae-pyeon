@@ -64,12 +64,11 @@ const Header = () => {
       notification.addEventListener("sse", handleNotificationEventSource);
       setNotificationEventSource(notification);
       return;
-    } else {
-      notificationEventSource?.removeEventListener(
-        "sse",
-        handleNotificationEventSource
-      );
     }
+    notificationEventSource?.removeEventListener(
+      "sse",
+      handleNotificationEventSource
+    );
   }, [memberId]);
 
   return (
