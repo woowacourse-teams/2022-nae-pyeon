@@ -18,7 +18,7 @@ public class NotificationResponseDto {
 
     private String teamName;
 
-    private String RollingpaperTitle;
+    private String rollingpaperTitle;
 
     private String url;
 

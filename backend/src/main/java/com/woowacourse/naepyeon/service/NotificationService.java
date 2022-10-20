@@ -85,15 +85,15 @@ public class NotificationService {
 
     public SseEmitter subscribe(final Long memberId) throws IOException {
         log.info("정상적으로 전송되나요 ????");
-        String id = String.valueOf(memberId);
+        final String id = String.valueOf(memberId);
         final SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
         //초반 연결용 메시지!!
         emitter.send(SseEmitter.event()
                 .id(id)
                 .name("sse"));
         emitters.add(emitter);
-        MessageListener messageListener = (message, pattern) -> {
-            NotificationResponseDto notificationResponse = serialize(message);
+        final MessageListener messageListener = (message, pattern) -> {
+            final NotificationResponseDto notificationResponse = serialize(message);
             sendToClient(emitter, id, notificationResponse);
         };
         this.redisMessageListenerContainer.addMessageListener(messageListener, ChannelTopic.of(getChannelName(id)));
