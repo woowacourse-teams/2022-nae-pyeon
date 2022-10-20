@@ -19,7 +19,7 @@ import com.woowacourse.naepyeon.service.dto.ReceivedRollingpapersResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperPreviewResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpapersResponseDto;
-import com.woowacourse.naepyeon.service.event.RollingpaperAndTeamIdEvent;
+import com.woowacourse.naepyeon.service.event.RollingpaperAndTeamIdAndAuthorIdEvent;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -54,8 +54,8 @@ public class RollingpaperService {
         final TeamParticipation teamParticipation =
                 teamParticipationRepository.findByTeamIdAndMemberId(teamId, addresseeId);
         final Rollingpaper rollingpaper = new Rollingpaper(title, Recipient.MEMBER, team, addressee, teamParticipation);
-        final RollingpaperAndTeamIdEvent rollingpaperAndTeamIdEvent = new RollingpaperAndTeamIdEvent(rollingpaper,teamId);
-        applicationEventPublisher.publishEvent(rollingpaperAndTeamIdEvent);
+        final RollingpaperAndTeamIdAndAuthorIdEvent rollingpaperAndTeamIdAndAuthorIdEvent = new RollingpaperAndTeamIdAndAuthorIdEvent(rollingpaper,teamId);
+        applicationEventPublisher.publishEvent(rollingpaperAndTeamIdAndAuthorIdEvent);
         return rollingpaperRepository.save(rollingpaper)
                 .getId();
     }
@@ -76,8 +76,8 @@ public class RollingpaperService {
             throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
         final Rollingpaper rollingpaper = new Rollingpaper(title, Recipient.TEAM, team, null, null);
-        final RollingpaperAndTeamIdEvent rollingpaperAndTeamIdEvent = new RollingpaperAndTeamIdEvent(rollingpaper, teamId);
-        applicationEventPublisher.publishEvent(rollingpaperAndTeamIdEvent);
+        final RollingpaperAndTeamIdAndAuthorIdEvent rollingpaperAndTeamIdAndAuthorIdEvent = new RollingpaperAndTeamIdAndAuthorIdEvent(rollingpaper, teamId);
+        applicationEventPublisher.publishEvent(rollingpaperAndTeamIdAndAuthorIdEvent);
         return rollingpaperRepository.save(rollingpaper)
                 .getId();
     }

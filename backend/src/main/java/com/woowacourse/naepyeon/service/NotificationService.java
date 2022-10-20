@@ -11,10 +11,11 @@ import com.woowacourse.naepyeon.repository.notification.NotificationRepository;
 import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.NotificationResponseDto;
 import com.woowacourse.naepyeon.service.dto.NotificationsResponseDto;
-import com.woowacourse.naepyeon.service.event.RollingpaperAndTeamIdEvent;
-import com.woowacourse.naepyeon.service.event.RollingpaperEvent;
+import com.woowacourse.naepyeon.service.event.RollingpaperAndTeamIdAndAuthorIdEvent;
+import com.woowacourse.naepyeon.service.event.RollingpaperAndAuthorIdEvent;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -47,8 +48,12 @@ public class NotificationService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
-    public void send(final RollingpaperEvent rollingpaperEvent) {
-        final Rollingpaper rollingpaper = rollingpaperEvent.getRollingpaper();
+    public void send(final RollingpaperAndAuthorIdEvent rollingpaperAndAuthorIdEvent) {
+        final Rollingpaper rollingpaper = rollingpaperAndAuthorIdEvent.getRollingpaper();
+        final Long authorId = rollingpaperAndAuthorIdEvent.getAuthorId();
+        if (rollingpaper.isAddressee(authorId)) {
+            return;
+        }
         final Notification notification = createNotification(rollingpaper);
         notificationRepository.save(notification);
         final String id = String.valueOf(notification.getMemberId());
@@ -62,11 +67,15 @@ public class NotificationService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
-    public void send(final RollingpaperAndTeamIdEvent rollingpaperAndTeamIdEvent) {
-        final Rollingpaper rollingpaper = rollingpaperAndTeamIdEvent.getRollingpaper();
-        final Long teamId = rollingpaperAndTeamIdEvent.getTeamId();
+    public void send(final RollingpaperAndTeamIdAndAuthorIdEvent rollingpaperAndTeamIdAndAuthorIdEvent) {
+        final Rollingpaper rollingpaper = rollingpaperAndTeamIdAndAuthorIdEvent.getRollingpaper();
+        final Long teamId = rollingpaperAndTeamIdAndAuthorIdEvent.getTeamId();
+        final Long authorId = rollingpaperAndTeamIdAndAuthorIdEvent.getAuthorId();
         final List<TeamParticipation> teamParticipations = teamParticipationRepository.findByTeamId(teamId);
         for (TeamParticipation teamParticipation : teamParticipations) {
+            if (Objects.equals(teamParticipation.findMemberId(), authorId)) {
+                continue;
+            }
             final Long memberId = teamParticipation.findMemberId();
             final Notification notification = createNotification(memberId, rollingpaper);
             notificationRepository.save(notification);
