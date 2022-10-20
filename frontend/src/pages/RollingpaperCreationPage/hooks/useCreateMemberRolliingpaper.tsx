@@ -22,7 +22,7 @@ const useCreateMemberRollingpaper = () => {
       postMemberRollingpaper({ teamId, title, addresseeId }),
     {
       onSuccess: (data, variable) => {
-        navigate(`/team/${variable.teamId}`);
+        navigate(`/team/${variable.teamId}/rollingpaper/${data.id}`);
         openSnackbar("롤링페이퍼 생성 완료");
       },
     }
