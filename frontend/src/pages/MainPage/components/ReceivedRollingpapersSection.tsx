@@ -12,7 +12,7 @@ const ReceivedRollingpapersSection = () => {
   const { data: receivedRollingpapers, isLoading: isLoadingRollingpapers } =
     useReadReceivedRollingpapers();
 
-  if (isLoadingRollingpapers) {
+  if (isLoadingRollingpapers || !receivedRollingpapers) {
     return <Loading />;
   }
 

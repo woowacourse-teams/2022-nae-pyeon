@@ -18,7 +18,7 @@ const NotificationPage = () => {
   const { data, isLoading } = useReadNotifications({});
   const { mutate: deleteNotificationAll } = useDeleteNotificationsAll();
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return <Loading />;
   }
 

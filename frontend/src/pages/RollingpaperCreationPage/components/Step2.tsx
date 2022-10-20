@@ -6,6 +6,7 @@ import useReadTeamMembers from "@/pages/RollingpaperCreationPage/hooks/useReadTe
 
 import Button from "@/components/Button";
 import AutoCompleteInput from "@/components/AutoCompleteInput";
+import Loading from "@/components/Loading";
 import StepLayout from "@/pages/RollingpaperCreationPage/components/StepLayout";
 import RecipientBox from "@/pages/RollingpaperCreationPage/components/RecipientBox";
 
@@ -48,8 +49,9 @@ const Step2 = ({
     setKeywordList(data.members.map((member) => member.nickname));
   };
 
-  const { data: teamMemberResponse } = useReadTeamMembers({
+  const { data: teamMemberResponse, isLoading } = useReadTeamMembers({
     teamId: teamId!,
+
     onSuccess: handleReadTeamMembersSuccess,
   });
 
@@ -86,6 +88,10 @@ const Step2 = ({
 
     onSelectMember(memeberInfo.id);
   };
+
+  if (isLoading || !teamMemberResponse) {
+    return <Loading />;
+  }
 
   return (
     <StepLayout title="롤링페이퍼 대상을 선택해주세요">

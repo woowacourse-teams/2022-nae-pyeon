@@ -13,7 +13,7 @@ const MyTeamsSection = () => {
   const { data: myTeamListResponse, isLoading: isLoadingTeams } =
     useReadMyTeams();
 
-  if (isLoadingTeams) {
+  if (isLoadingTeams || !myTeamListResponse) {
     return <Loading />;
   }
 

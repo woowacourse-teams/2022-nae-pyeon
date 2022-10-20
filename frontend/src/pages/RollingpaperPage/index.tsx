@@ -14,12 +14,8 @@ const RollingpaperPage = () => {
     rollingpaperId,
   });
 
-  if (isLoading) {
+  if (isLoading || !rollingpaper) {
     return <Loading />;
-  }
-
-  if (!rollingpaper) {
-    return <div>에러</div>;
   }
 
   return (
