@@ -1,25 +1,23 @@
-import React, { forwardRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 
 import useAutoCompleteInput from "@/hooks/useAutoCompleteInput";
+import useReadTeamMembers from "@/pages/RollingpaperCreationPage/hooks/useReadTeamMembers";
 
 import Button from "@/components/Button";
 import AutoCompleteInput from "@/components/AutoCompleteInput";
-import Loading from "@/components/Loading";
-
-import useReadTeamMembers from "@/pages/RollingpaperCreationPage/hooks/useReadTeamMembers";
-
-import StepTitleWithLayout from "@/pages/RollingpaperCreationPage/components/StepTitleWithLayout";
+import StepLayout from "@/pages/RollingpaperCreationPage/components/StepLayout";
 import RecipientBox from "@/pages/RollingpaperCreationPage/components/RecipientBox";
+
+import { RECIPIENT } from "@/constants";
 
 import { Recipient, Team, TeamMember } from "@/types";
 import { GetTeamMembersResponse } from "@/types/apiResponse";
 
-import { RECIPIENT } from "@/constants";
-
 interface Step2Props {
   teamId: Team["id"] | null;
-  onClick: (recipient: Recipient, to?: TeamMember["id"]) => void;
+  onSelectRecipient: (recipient: Recipient) => void;
+  onSelectMember: (memberId: TeamMember["id"]) => void;
   selected: Recipient | null;
 }
 
@@ -27,10 +25,12 @@ interface StyledShowProps {
   isShown: boolean;
 }
 
-const Step2 = (
-  { teamId, onClick, selected }: Step2Props,
-  ref: React.Ref<HTMLDivElement>
-) => {
+const Step2 = ({
+  teamId,
+  onSelectRecipient,
+  onSelectMember,
+  selected,
+}: Step2Props) => {
   const [isToShown, setIsToShown] = useState(false);
   const [isRecipeinetShown, setIsRecipeinetShown] = useState(true);
   const {
@@ -56,7 +56,7 @@ const Step2 = (
   const findReceiverWithNickName = (nickname: string) => {
     return teamMemberResponse?.members.find(
       (member) => member.nickname === nickname
-    ) as TeamMember;
+    );
   };
 
   const isValidReceiverNickName = (nickname: string) => {
@@ -65,10 +65,11 @@ const Step2 = (
   };
 
   const handleTeamClick = () => {
-    onClick(RECIPIENT.TEAM);
+    onSelectRecipient(RECIPIENT.TEAM);
   };
 
   const handleMemberClick = () => {
+    onSelectRecipient(RECIPIENT.MEMBER);
     setIsToShown(true);
     setIsRecipeinetShown(false);
   };
@@ -77,11 +78,17 @@ const Step2 = (
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
-    onClick(RECIPIENT.MEMBER, findReceiverWithNickName(rollingpaperTo).id);
+    const memeberInfo = findReceiverWithNickName(rollingpaperTo);
+
+    if (!memeberInfo) {
+      return;
+    }
+
+    onSelectMember(memeberInfo.id);
   };
 
   return (
-    <StepTitleWithLayout title="롤링페이퍼 대상을 선택해주세요" ref={ref}>
+    <StepLayout title="롤링페이퍼 대상을 선택해주세요">
       <StyledMain>
         <StyleShow isShown={isRecipeinetShown}>
           <StyleRecipientContainer>
@@ -119,7 +126,7 @@ const Step2 = (
           </StyleForm>
         </StyleShow>
       </StyledMain>
-    </StepTitleWithLayout>
+    </StepLayout>
   );
 };
 
@@ -154,4 +161,4 @@ const StyleForm = styled.form`
   width: 300px;
 `;
 
-export default forwardRef(Step2);
+export default Step2;
