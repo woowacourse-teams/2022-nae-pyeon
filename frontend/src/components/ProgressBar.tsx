@@ -5,19 +5,15 @@ interface ProgressBarProps {
   total: number;
 }
 
-interface StyledProgressBarProps {
-  width: number;
-}
-
 const ProgressBar = ({ step, total }: ProgressBarProps) => {
   return (
-    <StyledProgressBar>
+    <StyledProgressBarBackGround>
       <StyledProgress width={(step / total) * 100} />
-    </StyledProgressBar>
+    </StyledProgressBarBackGround>
   );
 };
 
-const StyledProgressBar = styled.div`
+const StyledProgressBarBackGround = styled.div`
   width: 100%;
   height: 20px;
 
@@ -26,7 +22,7 @@ const StyledProgressBar = styled.div`
   background-color: ${({ theme }) => theme.colors.GRAY_200};
 `;
 
-const StyledProgress = styled.div<StyledProgressBarProps>`
+const StyledProgress = styled.div<{ width: number }>`
   width: ${(props) => props.width}%;
   height: 100%;
 
