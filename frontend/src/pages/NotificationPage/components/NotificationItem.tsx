@@ -47,7 +47,9 @@ const NotificationItem = ({ notification }: NotificationItemProps) => {
       <StyledBottomSection>
         <StyledTeamName>{notification.teamName}</StyledTeamName>
         <StyledDate>
-          {new Date(notification.createAt).toLocaleDateString()}
+          {`${new Date(notification.createAt).toLocaleDateString()} ${new Date(
+            notification.createAt
+          ).toLocaleTimeString("ko", { timeStyle: "short" })}`}
         </StyledDate>
       </StyledBottomSection>
     </StyledNotificationItem>
