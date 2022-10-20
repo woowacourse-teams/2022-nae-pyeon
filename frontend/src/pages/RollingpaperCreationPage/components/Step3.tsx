@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import useInput from "@/hooks/useInput";
-
 import Button from "@/components/Button";
 import LabeledInput from "@/components/LabeledInput";
 import StepLayout from "@/pages/RollingpaperCreationPage/components/StepLayout";
@@ -14,14 +12,16 @@ import { Rollingpaper } from "@/types";
 interface Step3Props {
   onChangeTitle: (title: Rollingpaper["title"]) => void;
   onSubmitRollingpaperCreate: () => void;
+  title: Rollingpaper["title"] | null;
 }
-const Step3 = ({ onChangeTitle, onSubmitRollingpaperCreate }: Step3Props) => {
-  const { value: title, handleInputChange } = useInput("");
-
+const Step3 = ({
+  onChangeTitle,
+  onSubmitRollingpaperCreate,
+  title,
+}: Step3Props) => {
   const handleTitleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const { value } = e.target;
 
-    handleInputChange(e);
     onChangeTitle(value);
   };
 
@@ -38,11 +38,12 @@ const Step3 = ({ onChangeTitle, onSubmitRollingpaperCreate }: Step3Props) => {
             pattern={REGEX.ROLLINGPAPER_TITLE.source}
             errorMessage={"1~20자 사이의 제목을 입력해주세요"}
             onChange={handleTitleChange}
+            value={title ? title : ""}
           />
           <Button
             type="submit"
             onClick={handleTitleSubmit}
-            disabled={!REGEX.ROLLINGPAPER_TITLE.test(title)}
+            disabled={!REGEX.ROLLINGPAPER_TITLE.test(title ? title : "")}
           >
             확인
           </Button>

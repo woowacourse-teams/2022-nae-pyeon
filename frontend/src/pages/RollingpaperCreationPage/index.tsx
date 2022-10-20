@@ -38,6 +38,7 @@ const RollingpaperCreationPage = () => {
         <Step3
           onChangeTitle={handleTitleChange}
           onSubmitRollingpaperCreate={handleRollingpaperCreateSubmit}
+          title={rollingpaperCreateForm.title}
         />
       </StyledSteps>
       <StyledProgressBar>
