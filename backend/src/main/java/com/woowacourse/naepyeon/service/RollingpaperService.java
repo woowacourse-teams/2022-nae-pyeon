@@ -54,7 +54,8 @@ public class RollingpaperService {
         final TeamParticipation teamParticipation =
                 teamParticipationRepository.findByTeamIdAndMemberId(teamId, addresseeId);
         final Rollingpaper rollingpaper = new Rollingpaper(title, Recipient.MEMBER, team, addressee, teamParticipation);
-        final RollingpaperAndTeamIdAndAuthorIdEvent rollingpaperAndTeamIdAndAuthorIdEvent = new RollingpaperAndTeamIdAndAuthorIdEvent(rollingpaper,teamId);
+        final RollingpaperAndTeamIdAndAuthorIdEvent rollingpaperAndTeamIdAndAuthorIdEvent =
+                new RollingpaperAndTeamIdAndAuthorIdEvent(rollingpaper, teamId, loginMemberId);
         applicationEventPublisher.publishEvent(rollingpaperAndTeamIdAndAuthorIdEvent);
         return rollingpaperRepository.save(rollingpaper)
                 .getId();
@@ -76,7 +77,8 @@ public class RollingpaperService {
             throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
         final Rollingpaper rollingpaper = new Rollingpaper(title, Recipient.TEAM, team, null, null);
-        final RollingpaperAndTeamIdAndAuthorIdEvent rollingpaperAndTeamIdAndAuthorIdEvent = new RollingpaperAndTeamIdAndAuthorIdEvent(rollingpaper, teamId);
+        final RollingpaperAndTeamIdAndAuthorIdEvent rollingpaperAndTeamIdAndAuthorIdEvent =
+                new RollingpaperAndTeamIdAndAuthorIdEvent(rollingpaper, teamId, loginMemberId);
         applicationEventPublisher.publishEvent(rollingpaperAndTeamIdAndAuthorIdEvent);
         return rollingpaperRepository.save(rollingpaper)
                 .getId();

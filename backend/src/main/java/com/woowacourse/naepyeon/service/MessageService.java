@@ -54,7 +54,8 @@ public class MessageService {
                 .orElseThrow(() -> new NotFoundMemberException(authorId));
         final Message message = new Message(messageRequestDto.getContent(), messageRequestDto.getColor(),
                 author, rollingpaper, messageRequestDto.isAnonymous(), messageRequestDto.isSecret());
-        final RollingpaperAndAuthorIdEvent rollingpaperAndAuthorIdEvent = new RollingpaperAndAuthorIdEvent(rollingpaper);
+        final RollingpaperAndAuthorIdEvent rollingpaperAndAuthorIdEvent = new RollingpaperAndAuthorIdEvent(rollingpaper,
+                authorId);
         applicationEventPublisher.publishEvent(rollingpaperAndAuthorIdEvent);
         return messageRepository.save(message)
                 .getId();
