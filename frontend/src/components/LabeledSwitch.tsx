@@ -22,7 +22,7 @@ export const LabeledSwitch = ({
           <>
             이 작업은 실행 취소할 수 없습니다.
             <StyledBold>
-              {` 비공개 채널은 나중에 공개로 설정할 수 없습니다.`}
+              {` 비공개 모임은 나중에 공개로 설정할 수 없습니다.`}
             </StyledBold>
           </>
         ) : (
