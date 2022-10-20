@@ -23,9 +23,11 @@ import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.MessageUpdateRequestDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessageResponseDto;
 import com.woowacourse.naepyeon.service.dto.WrittenMessagesResponseDto;
+import com.woowacourse.naepyeon.service.event.RollingpaperEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,6 +44,7 @@ public class MessageService {
     private final RollingpaperRepository rollingpaperRepository;
     private final MemberRepository memberRepository;
     private final TeamParticipationRepository teamParticipationRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public Long saveMessage(final MessageRequestDto messageRequestDto, final Long rollingpaperId, final Long authorId) {
         final Rollingpaper rollingpaper = rollingpaperRepository.findById(rollingpaperId)
@@ -51,6 +54,8 @@ public class MessageService {
                 .orElseThrow(() -> new NotFoundMemberException(authorId));
         final Message message = new Message(messageRequestDto.getContent(), messageRequestDto.getColor(),
                 author, rollingpaper, messageRequestDto.isAnonymous(), messageRequestDto.isSecret());
+        final RollingpaperEvent rollingpaperEvent = new RollingpaperEvent(rollingpaper);
+        applicationEventPublisher.publishEvent(rollingpaperEvent);
         return messageRepository.save(message)
                 .getId();
     }

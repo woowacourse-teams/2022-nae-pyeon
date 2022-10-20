@@ -20,10 +20,11 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor(jwtTokenProvider))
                 .addPathPatterns("/api/v1/**")
-                .excludePathPatterns("/api/v1/oauth/**")
+                .excludePathPatterns("/api/v1/oauth/*")
                 .excludePathPatterns("/api/v1/members")
                 .excludePathPatterns("/api/v1/renewal-token")
-                .excludePathPatterns("/api/v1/logout");
+                .excludePathPatterns("/api/v1/logout")
+                .excludePathPatterns("/api/v1/subscribe");
     }
 
     @Override

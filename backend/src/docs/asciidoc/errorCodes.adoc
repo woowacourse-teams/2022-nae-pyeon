@@ -192,3 +192,19 @@
 | 토큰의 유효기간이 만료됐습니다.
 | `400 Bad Request`
 |===
+
+=== 알림 에러
+|===
+| error code | error message | show message | status code
+
+|`5001`
+| 해당 알림은 존재하지 않습니다. id={%d}
+| 올바르지 않은 알림입니다.
+| `404 Not Found`
+
+|`5002`
+| 유효하지 않은 reids message입니다. message={%s}
+| 유효하지 않은 redis message입니다.
+| `400 Bad Request`
+
+|===
