@@ -6,12 +6,14 @@ spring:
         password: ${SOURCE_MYSQL_PASSWORD}
         username: ${SOURCE_MYSQL_USERNAME}
         driver-class-name: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: ${SOURCE_MAX_CONNECTION_POOL_SIZE}
     replica:
       hikari:
         jdbc-url: ${REPLICA_MYSQL_URL}
         password: ${REPLICA_MYSQL_PASSWORD}
         username: ${REPLICA_MYSQL_USERNAME}
         driver-class-name: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: ${REPLICA_MAX_CONNECTION_POOL_SIZE}
   redis:
     host: ${REDIS_HOST}
     port: ${REDIS_PORT}
