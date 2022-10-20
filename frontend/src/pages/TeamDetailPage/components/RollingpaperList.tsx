@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import useValidateParam from "@/hooks/useValidateParam";
@@ -14,7 +14,6 @@ import { RECIPIENT, ROLLINGPAPER_ORDER } from "@/constants";
 import { GetTeamRollingpapersRequest } from "@/types/apiRequest";
 
 const RollingpaperList = () => {
-  const navigate = useNavigate();
   const teamId = useValidateParam<number>("teamId");
   const [order, setOrder] = useState<GetTeamRollingpapersRequest["order"]>(
     ROLLINGPAPER_ORDER.LATEST
@@ -44,13 +43,6 @@ const RollingpaperList = () => {
 
   return (
     <StyledRollingpaperListContainer>
-      <StyledRollingpaperCreateButton
-        onClick={() => {
-          navigate(`/rollingpaper/new?team-id=${teamId}`);
-        }}
-      >
-        📜 롤링페이퍼 만들기
-      </StyledRollingpaperCreateButton>
       <StyledRollingpaperListHead>
         <h4>롤링페이퍼 목록</h4>
         <StyledSelectContainer>
@@ -94,19 +86,6 @@ const StyledRollingpaperListContainer = styled.div`
   flex-direction: column;
   gap: 32px;
   width: 90%;
-`;
-
-const StyledRollingpaperCreateButton = styled.button`
-  width: 100%;
-  align-self: center;
-  padding: 16px;
-
-  font-size: 18px;
-  background: antiquewhite;
-
-  &:hover {
-    background: #f9e1c3;
-  }
 `;
 
 const StyledRollingpaperListHead = styled.div`
