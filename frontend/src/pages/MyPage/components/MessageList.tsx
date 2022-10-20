@@ -1,26 +1,26 @@
 import styled from "@emotion/styled";
 
-import MessageListItem from "@/pages/MyPage/components/MessageListItem";
-import Paging from "@/components/Paging";
-
 import usePaging from "@/hooks/usePaging";
-
 import useReadSentMessages from "@/pages/MyPage/hooks/useReadSentMessages";
+
+import Paging from "@/components/Paging";
+import Loading from "@/components/Loading";
+import MessageListItem from "@/pages/MyPage/components/MessageListItem";
 
 import EmptyStateImg from "@/assets/images/empty-state.svg";
 
-interface MessageListProp {
+interface MessageListProps {
   lastPage: number;
 }
 
-const MessageList = ({ lastPage }: MessageListProp) => {
+const MessageList = ({ lastPage }: MessageListProps) => {
   const { currentPage, handleNumberClick, handleNextClick, handlePrevClick } =
     usePaging(lastPage);
 
   const { isLoading, data } = useReadSentMessages(currentPage);
 
-  if (!data) {
-    return <div>에러</div>;
+  if (isLoading || !data) {
+    return <Loading />;
   }
 
   if (data.messages.length === 0) {

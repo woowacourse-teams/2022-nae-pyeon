@@ -1,13 +1,17 @@
-import { Message, Rollingpaper, Team, TeamMember } from ".";
+import {
+  User,
+  Message,
+  Recipient,
+  Rollingpaper,
+  Team,
+  TeamMember,
+  ValueOf,
+  Notification,
+} from ".";
+import { ROLLINGPAPER_ORDER } from "@/constants";
 
-// kakao oauth
-export interface postKakaoOauthRequest {
-  authorizationCode: string;
-  redirectUri: string;
-}
-
-// google oauth
-export interface postGoogleOauthRequest {
+// oauth
+export interface OauthRequest {
   authorizationCode: string;
   redirectUri: string;
 }
@@ -21,6 +25,10 @@ export interface GetMyReceivedRollingpapersRequest {
 export interface GetMySentMessagesRequest {
   page: number;
   count: number;
+}
+
+export interface PutMyUsernameRequest {
+  username: User["username"];
 }
 
 // message
@@ -71,11 +79,30 @@ export interface GetTeamSearchResultRequest {
   count: number;
 }
 
+export interface GetTeamRollingpapersRequest {
+  id: Team["id"];
+  order?: ValueOf<typeof ROLLINGPAPER_ORDER>;
+  filter?: Lowercase<Recipient>;
+}
+
 export interface PostTeamRequest extends Omit<Team, "id" | "joined"> {
   nickname: TeamMember["nickname"];
 }
 
+export interface PostTeamMemberRequest extends TeamMember {}
+
+export interface PostTeamInviteCodeRequest {
+  id: Team["id"];
+}
 export interface PostTeamMemberWithInviteCodeRequest {
   inviteCode: string;
   nickname: TeamMember["nickname"];
 }
+
+// notification
+
+export interface PutNotificationRequest {
+  id: Notification["id"];
+}
+
+export interface PutTeamNicknameRequest extends TeamMember {}

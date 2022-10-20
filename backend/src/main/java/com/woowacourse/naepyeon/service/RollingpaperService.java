@@ -19,10 +19,12 @@ import com.woowacourse.naepyeon.service.dto.ReceivedRollingpapersResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperPreviewResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpapersResponseDto;
+import com.woowacourse.naepyeon.service.event.RollingpaperAndTeamIdAndAuthorIdEvent;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +42,7 @@ public class RollingpaperService {
     private final TeamRepository teamRepository;
     private final TeamParticipationRepository teamParticipationRepository;
     private final MemberRepository memberRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public Long createMemberRollingpaper(final String title, final Long teamId,
                                          final Long loginMemberId, final Long addresseeId) {
@@ -51,6 +54,9 @@ public class RollingpaperService {
         final TeamParticipation teamParticipation =
                 teamParticipationRepository.findByTeamIdAndMemberId(teamId, addresseeId);
         final Rollingpaper rollingpaper = new Rollingpaper(title, Recipient.MEMBER, team, addressee, teamParticipation);
+        final RollingpaperAndTeamIdAndAuthorIdEvent rollingpaperAndTeamIdAndAuthorIdEvent =
+                new RollingpaperAndTeamIdAndAuthorIdEvent(rollingpaper, teamId, loginMemberId);
+        applicationEventPublisher.publishEvent(rollingpaperAndTeamIdAndAuthorIdEvent);
         return rollingpaperRepository.save(rollingpaper)
                 .getId();
     }
@@ -71,6 +77,9 @@ public class RollingpaperService {
             throw new UncertificationTeamMemberException(teamId, loginMemberId);
         }
         final Rollingpaper rollingpaper = new Rollingpaper(title, Recipient.TEAM, team, null, null);
+        final RollingpaperAndTeamIdAndAuthorIdEvent rollingpaperAndTeamIdAndAuthorIdEvent =
+                new RollingpaperAndTeamIdAndAuthorIdEvent(rollingpaper, teamId, loginMemberId);
+        applicationEventPublisher.publishEvent(rollingpaperAndTeamIdAndAuthorIdEvent);
         return rollingpaperRepository.save(rollingpaper)
                 .getId();
     }

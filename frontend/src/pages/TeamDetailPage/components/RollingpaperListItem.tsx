@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-interface RollingpaperListItemProp {
+interface RollingpaperListItemProps {
   title: string;
   to: string;
 }
 
-const RollingpaperListItem = ({ title, to }: RollingpaperListItemProp) => {
+const RollingpaperListItem = ({ title, to }: RollingpaperListItemProps) => {
   return (
     <StyledRollingpaperListItem>
       <StyledTitle>{title}</StyledTitle>
@@ -26,13 +26,13 @@ const StyledRollingpaperListItem = styled.li`
   padding: 0 16px;
 
   background-color: ${({ theme }) => theme.colors.WHITE};
-  box-shadow: 0px 4px 4px 4px rgba(171, 171, 171, 0.1);
+  box-shadow: 0px 4px 4px 4px ${({ theme }) => theme.colors.BOX_SHADOW};
   border-radius: 8px;
 `;
 
 const StyledTitle = styled.div`
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
 `;
 
 const StyledTo = styled.div`

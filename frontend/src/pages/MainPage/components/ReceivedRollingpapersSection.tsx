@@ -1,15 +1,20 @@
 import styled from "@emotion/styled";
 
+import useReadReceivedRollingpapers from "@/pages/MyPage/hooks/useReadReceivedRollingpapers";
+
 import EmptyRollingpaperList from "@/components/EmptyRollingpaperList";
 import RollingpaperListItem from "@/components/RollinpaperListItem";
-
-import useReadReceivedRollingpapers from "@/pages/MyPage/hooks/useReadReceivedRollingpapers";
+import Loading from "@/components/Loading";
 
 import SectionHeader from "@/pages/MainPage/components/SectionHeader";
 
 const ReceivedRollingpapersSection = () => {
   const { data: receivedRollingpapers, isLoading: isLoadingRollingpapers } =
     useReadReceivedRollingpapers();
+
+  if (isLoadingRollingpapers || !receivedRollingpapers) {
+    return <Loading />;
+  }
 
   return (
     <section>

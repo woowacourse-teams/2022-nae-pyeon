@@ -1,9 +1,23 @@
 spring:
   datasource:
-    url: ${MYSQL_URL}
-    password: ${MYSQL_PASSWORD}
-    username: ${MYSQL_USERNAME}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    source:
+      hikari:
+        jdbc-url: ${SOURCE_MYSQL_URL}
+        password: ${SOURCE_MYSQL_PASSWORD}
+        username: ${SOURCE_MYSQL_USERNAME}
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: ${SOURCE_MAX_CONNECTION_POOL_SIZE}
+    replica:
+      hikari:
+        jdbc-url: ${REPLICA_MYSQL_URL}
+        password: ${REPLICA_MYSQL_PASSWORD}
+        username: ${REPLICA_MYSQL_USERNAME}
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        maximum-pool-size: ${REPLICA_MAX_CONNECTION_POOL_SIZE}
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+
 
   jpa:
     hibernate:
@@ -37,6 +51,13 @@ kakao:
 google:
   client-id: ${GOOGLE_CLIENT_ID}
   client-secret: ${GOOGLE_CLIENT_SECRET}
+
+server:
+  tomcat:
+    accept-count: ${TOMCAT_ACCEPT_COUNT}
+    threads:
+      max: ${MAX_THREAD_POOL_SIZE}
+    max-connections: ${TOMCAT_MAX_CONNENCTIONS}
 
 logging:
   config: classpath:log4j2-deploy.yml

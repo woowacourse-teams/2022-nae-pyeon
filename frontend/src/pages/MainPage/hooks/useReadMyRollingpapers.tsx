@@ -14,10 +14,7 @@ const useReadReceivedRollingpapers = () => {
       getMyReceivedRollingpapers({
         page: 0,
         count: MAIN_PAGE_ROLLINGPAPER_COUNT,
-      }),
-    {
-      useErrorBoundary: true,
-    }
+      })
   );
 };
 

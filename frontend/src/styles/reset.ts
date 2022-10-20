@@ -133,6 +133,7 @@ const reset = css`
       padding: 0;
       background-color: transparent;
       cursor: pointer;
+      color: black;
     }
     a {
       text-decoration: none;

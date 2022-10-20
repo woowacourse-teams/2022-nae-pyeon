@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 interface ButtonAttributes
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: "small" | "medium" | "large";
+  ariaLabel?: string;
 }
 
 const IconButton = ({
@@ -12,6 +13,7 @@ const IconButton = ({
   size = "large",
   disabled,
   children,
+  ariaLabel,
 }: ButtonAttributes) => {
   return (
     <StyledIconButton
@@ -19,6 +21,7 @@ const IconButton = ({
       onClick={onClick}
       size={size}
       disabled={disabled}
+      aria-label={ariaLabel}
     >
       {children}
     </StyledIconButton>
@@ -29,6 +32,10 @@ const StyledIconButton = styled.button<ButtonAttributes>`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  height: fit-content;
+  padding: 5px;
+  border-radius: 50%;
 
   font-size: ${(props) =>
     props.size === "small"

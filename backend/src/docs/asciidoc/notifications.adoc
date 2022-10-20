@@ -1,0 +1,13 @@
+== 알림
+
+=== 구독
+operation::notification-controller-test/subscribe[snippets='http-request,http-response']
+
+=== 안 읽은 알림 전체 조회
+operation::notification-controller-test/notifications[snippets='http-request,http-response']
+
+=== 읽지 않은 알림 단건 읽기
+operation::notification-controller-test/read-notification[snippets='http-request,http-response']
+
+=== 읽지 않은 알림 모두 읽기
+operation::notification-controller-test/read-all-notifications[snippets='http-request,http-response']

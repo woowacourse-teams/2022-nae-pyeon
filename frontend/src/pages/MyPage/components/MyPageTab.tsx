@@ -1,16 +1,14 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-interface MyPageTabProp {
+interface MyPageTabProps {
   number: number;
   text: string;
   activate?: boolean;
   onClick: React.MouseEventHandler<HTMLDivElement>;
 }
 
-type StyledMyPageTabPropProps = Pick<MyPageTabProp, "activate">;
-
-const MyPageTab = ({ number, text, activate, onClick }: MyPageTabProp) => {
+const MyPageTab = ({ number, text, activate, onClick }: MyPageTabProps) => {
   return (
     <StyledCounter onClick={onClick}>
       <StyledNumber activate={activate}>{number}</StyledNumber>
@@ -26,7 +24,7 @@ const StyledCounter = styled.div`
   cursor: pointer;
 `;
 
-const StyledNumber = styled.div<StyledMyPageTabPropProps>`
+const StyledNumber = styled.div<Pick<MyPageTabProps, "activate">>`
   margin-bottom: 8px;
 
   font-size: 24px;
@@ -38,7 +36,7 @@ const StyledNumber = styled.div<StyledMyPageTabPropProps>`
       : `${props.theme.colors.GRAY_400}`};
 `;
 
-const StyledText = styled.div<StyledMyPageTabPropProps>`
+const StyledText = styled.div<Pick<MyPageTabProps, "activate">>`
   font-size: 14px;
 
   color: ${(props) =>

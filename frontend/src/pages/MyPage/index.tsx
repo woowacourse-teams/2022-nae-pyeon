@@ -1,6 +1,11 @@
 import { useState } from "react";
 import styled from "@emotion/styled";
 
+import useReadUserProfile from "@/pages/MyPage/hooks/useReadUserProfile";
+import useReadSentMessages from "@/pages/MyPage/hooks/useReadSentMessages";
+import useReadReceivedRollingpapers from "@/pages/MyPage/hooks/useReadReceivedRollingpapers";
+
+import Loading from "@/components/Loading";
 import MyPageTab from "@/pages/MyPage/components/MyPageTab";
 import UserProfile from "@/pages/MyPage/components/UserProfile";
 import RollingpaperList from "@/pages/MyPage/components/RollingpaperList";
@@ -12,9 +17,6 @@ import {
 } from "@/constants";
 
 import { ValueOf } from "@/types";
-import useReadUserProfile from "@/pages/MyPage/hooks/useReadUserProfile";
-import useReadSentMessages from "@/pages/MyPage/hooks/useReadSentMessages";
-import useReadReceivedRollingpapers from "@/pages/MyPage/hooks/useReadReceivedRollingpapers";
 
 type TabMode = ValueOf<typeof TAB>;
 
@@ -40,13 +42,12 @@ const MyPage = () => {
   if (
     isLoadingGetUserProfile ||
     isLoadingGetReceivedRollingpapers ||
-    isLoadingGetSentMessages
+    isLoadingGetSentMessages ||
+    !userProfile ||
+    !responseReceivedRollingpapers ||
+    !responseSentMessages
   ) {
-    return <div>로딩중</div>;
-  }
-
-  if (!userProfile || !responseReceivedRollingpapers || !responseSentMessages) {
-    return <div>에러</div>;
+    return <Loading />;
   }
 
   return (

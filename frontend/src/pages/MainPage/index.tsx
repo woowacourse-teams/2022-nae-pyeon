@@ -25,7 +25,7 @@ const MainPage = () => {
       <StyledNav>
         <NavigationButton
           icon="📜"
-          description={`롤링페이퍼\n시작하기`}
+          description={`롤링페이퍼\n만들기`}
           onClick={handleRollingpaperStartClick}
         />
         <NavigationButton

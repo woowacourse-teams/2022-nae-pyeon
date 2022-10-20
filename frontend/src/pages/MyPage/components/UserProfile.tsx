@@ -1,37 +1,35 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import styled from "@emotion/styled";
 
 import { UserContext } from "@/context/UserContext";
 
-import IconButton from "@/components/IconButton";
+import useInput from "@/hooks/useInput";
+import useUpdateUserProfile from "@/pages/MyPage/hooks/useUpdateUserProfile";
+
 import LineButton from "@/components/LineButton";
 import UnderlineInput from "@/components/UnderlineInput";
 
 import { REGEX } from "@/constants";
 import { ValueOf } from "@/types";
 
-import Pencil from "@/assets/icons/bx-pencil.svg";
-
-import useInput from "@/hooks/useInput";
-import useUpdateUserProfile from "@/pages/MyPage/hooks/useUpdateUserProfile";
-
 const MODE = {
   NORMAL: "normal",
   EDIT: "edit",
 } as const;
-interface UserProfileProp {
+
+interface UserProfileProps {
   username: string;
   email: string;
 }
 
 type UserProfileMode = ValueOf<typeof MODE>;
 
-const UserProfile = ({ username, email }: UserProfileProp) => {
+const UserProfile = ({ username, email }: UserProfileProps) => {
   const [mode, setMode] = useState<UserProfileMode>(MODE.NORMAL);
   const { value: editName, handleInputChange: handleEditNameChange } =
     useInput(username);
 
-  const updateUserProfile = useUpdateUserProfile();
+  const { mutate: updateUserProfile } = useUpdateUserProfile();
 
   const { logout } = useContext(UserContext);
 
@@ -41,13 +39,17 @@ const UserProfile = ({ username, email }: UserProfileProp) => {
     }
   };
 
-  const handleEditCancelButtonClick = () => {
+  const handleEditCancelButtonClick: React.MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
     if (confirm("이름 변경을 취소하시겠습니까?")) {
       setMode(MODE.NORMAL);
     }
   };
 
-  const handleEditSaveButtonClick = () => {
+  const handleUserProfileEditFormSubmit: React.FormEventHandler<
+    HTMLFormElement
+  > = () => {
     if (mode === MODE.EDIT) {
       updateUserProfile({ username: editName });
       setMode(MODE.NORMAL);
@@ -60,48 +62,53 @@ const UserProfile = ({ username, email }: UserProfileProp) => {
         <>
           <StyledNormal>
             <StyledName>{username}</StyledName>
-            <IconButton
-              onClick={() => {
-                setMode(MODE.EDIT);
-              }}
-            >
-              <Pencil />
-            </IconButton>
+            <StyledEmail>{email}</StyledEmail>
+            <StyledEditLineButtonContainer>
+              <LineButton
+                onClick={() => {
+                  setMode(MODE.EDIT);
+                }}
+              >
+                이름 수정하기
+              </LineButton>
+              <LineButton onClick={handleLogoutButtonClick}>
+                로그아웃
+              </LineButton>
+            </StyledEditLineButtonContainer>
           </StyledNormal>
-          <StyledEmail>{email}</StyledEmail>
-          <LineButton onClick={handleLogoutButtonClick}>로그아웃</LineButton>
         </>
       ) : (
-        <StyledUserProfileEditForm>
-          <UnderlineInput
-            value={editName}
-            pattern={REGEX.USERNAME.source}
-            errorMessage="1 ~ 64자 사이의 이름을 입력해주세요"
-            onChange={handleEditNameChange}
-          />
-          <StyledEditLineButtonContainer>
-            <LineButton onClick={handleEditCancelButtonClick}>취소</LineButton>
-            <LineButton onClick={handleEditSaveButtonClick}>완료</LineButton>
-          </StyledEditLineButtonContainer>
-        </StyledUserProfileEditForm>
+        <>
+          <StyledUserProfileEditForm onSubmit={handleUserProfileEditFormSubmit}>
+            <UnderlineInput
+              value={editName}
+              pattern={REGEX.USERNAME.source}
+              errorMessage="1 ~ 64자 사이의 이름을 입력해주세요"
+              onChange={handleEditNameChange}
+            />
+            <StyledEditLineButtonContainer>
+              <LineButton onClick={handleEditCancelButtonClick}>
+                취소
+              </LineButton>
+              <LineButton type="submit">완료</LineButton>
+            </StyledEditLineButtonContainer>
+          </StyledUserProfileEditForm>
+        </>
       )}
     </StyledProfile>
   );
 };
 
 const StyledProfile = styled.div`
-  margin: 10px 0 40px 10px;
+  margin: 24px 10px;
 `;
 
 const StyledNormal = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 
-  width: 160px;
-
-  svg {
-    font-size: 20px;
-  }
+  gap: 12px;
 `;
 
 const StyledUserProfileEditForm = styled.form`
@@ -111,8 +118,19 @@ const StyledUserProfileEditForm = styled.form`
   font-size: 14px;
 
   input {
-    width: 160px;
     font-size: 24px;
+  }
+
+  @media only screen and (min-width: 600px) {
+    input {
+      width: 70%;
+    }
+  }
+
+  @media only screen and (min-width: 960px) {
+    input {
+      width: 50%;
+    }
   }
 `;
 
@@ -123,7 +141,6 @@ const StyledName = styled.div`
 
 const StyledEmail = styled.div`
   color: ${({ theme }) => theme.colors.GRAY_700};
-  margin-bottom: 12px;
 `;
 
 const StyledEditLineButtonContainer = styled.div`

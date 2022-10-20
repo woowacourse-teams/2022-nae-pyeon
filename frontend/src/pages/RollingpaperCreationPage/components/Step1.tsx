@@ -1,33 +1,30 @@
-import React, { forwardRef } from "react";
+import { Navigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
-import MyTeamCard from "@/components/MyTeamCard";
-
+import useIntersect from "@/hooks/useIntersect";
 import useReadMyTeam from "@/pages/RollingpaperCreationPage/hooks/useReadMyTeam";
 
-import StepTitleWithLayout from "@/pages/RollingpaperCreationPage/components/StepTitleWithLayout";
+import MyTeamCard from "@/components/MyTeamCard";
+import Loading from "@/components/Loading";
+import StepLayout from "@/pages/RollingpaperCreationPage/components/StepLayout";
 
 import { Team } from "@/types";
-import useIntersect from "@/hooks/useIntersect";
 
 interface Step1Props {
-  onClick: (id: Team["id"]) => void;
+  onSelectTeam: (id: Team["id"]) => void;
   selected: Team["id"] | null;
 }
 
-const Step1 = (
-  { onClick, selected }: Step1Props,
-  ref: React.Ref<HTMLDivElement>
-) => {
-  const infiniteRef = useIntersect(
-    async (entry, observer) => {
+const Step1 = ({ onSelectTeam, selected }: Step1Props) => {
+  const infiniteRef = useIntersect({
+    onIntersect: async (entry, observer) => {
       observer.unobserve(entry.target);
       if (hasNextPage && !isFetching) {
         fetchNextPage();
       }
     },
-    { rootMargin: "10px", threshold: 1.0 }
-  );
+    options: { rootMargin: "10px", threshold: 1.0 },
+  });
 
   const {
     data: myTeamListResponse,
@@ -37,12 +34,20 @@ const Step1 = (
     isLoading,
   } = useReadMyTeam();
 
+  if (isLoading) {
+    return (
+      <StepLayout>
+        <Loading />
+      </StepLayout>
+    );
+  }
+
   if (!myTeamListResponse) {
-    return <div>내 팀 없음ㅠ</div>;
+    return <Navigate to="/" replace />;
   }
 
   return (
-    <StepTitleWithLayout title="모임을 선택해주세요" ref={ref}>
+    <StepLayout title="모임을 선택해주세요">
       <StyledCardList>
         {myTeamListResponse.pages.map((page) =>
           page.teams.map(({ id, name, description, emoji, color }) => (
@@ -53,14 +58,14 @@ const Step1 = (
               description={description}
               emoji={emoji}
               color={color}
-              onClick={() => onClick(id)}
+              onClick={() => onSelectTeam(id)}
               selected={id === selected}
             />
           ))
         )}
         <div ref={infiniteRef} />
       </StyledCardList>
-    </StepTitleWithLayout>
+    </StepLayout>
   );
 };
 
@@ -85,4 +90,4 @@ const StyledCardList = styled.div`
   }
 `;
 
-export default forwardRef(Step1);
+export default Step1;

@@ -2,8 +2,6 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import styled from "@emotion/styled";
 
-import { useSnackbar } from "@/context/SnackbarContext";
-
 import Logo from "@/pages/LoginPage/components/Logo";
 import SocialLoginButton from "@/pages/LoginPage/components/SocialLoginButton";
 
@@ -16,12 +14,11 @@ import {
   SOCIAL_LOGIN_PLATFORM,
 } from "@/constants";
 
-type LoginPageLocationState = {
+interface LoginPageLocationState {
   inviteCode?: string;
-};
+}
 
 const LoginPage = () => {
-  const { openSnackbar } = useSnackbar();
   const { state } = useLocation();
 
   const handleKakaoLoginButtonClick: React.MouseEventHandler<

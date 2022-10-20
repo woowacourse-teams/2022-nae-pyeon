@@ -1,23 +1,75 @@
-import React from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
-import IconButton from "./IconButton";
+import { useSnackbar } from "@/context/SnackbarContext";
+import { UserContext } from "@/context/UserContext";
+
+import useReadNotifications from "@/hooks/useReadNotifications";
+
+import IconButton from "@/components/IconButton";
+import Badge from "@/components/Badge";
 
 import FilledLogo from "@/assets/images/logo-fill.png";
-import SearchIcon from "@/assets/icons/bx-search.svg";
+import BellIcon from "@/assets/icons/bx-bell.svg";
 import UserIcon from "@/assets/icons/bx-user.svg";
+
+import { Notification } from "@/types";
+
+const NOTIFICATION_SNACKBAR_MESSAGE = {
+  ROLLINGPAPER_AT_MY_TEAM: " 롤링페이퍼가 새로 열렸습니다!",
+  MESSAGE_AT_MY_ROLLINGPAPER: " 롤링페이퍼에 새 메시지가 작성되었습니다.",
+};
 
 const Header = () => {
   const navigate = useNavigate();
+  const { openSnackbar } = useSnackbar();
+  const { memberId } = useContext(UserContext);
+
+  const [notificationCount, setNotificationCount] = useState(0);
+
+  useReadNotifications({
+    onSuccess: (data) => {
+      setNotificationCount(data.unreadCount);
+    },
+  });
+
+  const [notificationEventSource, setNotificationEventSource] =
+    useState<EventSource | null>(null);
+
+  const handleNotificationClick = () => {
+    navigate("/notification");
+  };
 
   const handleMyPageClick = () => {
     navigate("/mypage");
   };
 
-  const handleSearchClick = () => {
-    navigate("/search");
+  const handleNotificationEventSource = (e: MessageEvent) => {
+    const notification: Notification = JSON.parse(e.data);
+
+    openSnackbar(
+      `${notification.rollingpaperTitle}${
+        NOTIFICATION_SNACKBAR_MESSAGE[notification.contentType]
+      }`
+    );
+    setNotificationCount((prev) => prev + 1);
   };
+
+  useEffect(() => {
+    if (memberId) {
+      const notification = new EventSource(
+        `${process.env.API_URL}/subscribe?id=${memberId}`
+      );
+      notification.addEventListener("sse", handleNotificationEventSource);
+      setNotificationEventSource(notification);
+      return;
+    }
+    notificationEventSource?.removeEventListener(
+      "sse",
+      handleNotificationEventSource
+    );
+  }, [memberId]);
 
   return (
     <StyledHeader>
@@ -28,9 +80,11 @@ const Header = () => {
         </StyledHome>
       </Link>
       <StyledNav>
-        <IconButton onClick={handleSearchClick} size="medium">
-          <SearchIcon />
-        </IconButton>
+        <Badge variant="number" badgeContent={notificationCount}>
+          <IconButton onClick={handleNotificationClick} size="medium">
+            <BellIcon />
+          </IconButton>
+        </Badge>
         <IconButton onClick={handleMyPageClick} size="medium">
           <UserIcon />
         </IconButton>
@@ -51,7 +105,7 @@ const StyledHeader = styled.header`
   margin-bottom: 12px;
 
   width: 100%;
-  height: 70px;
+  height: fit-content;
   background-color: ${({ theme }) => `${theme.colors.WHITE}e8`};
 
   img {
@@ -64,13 +118,12 @@ const StyledNav = styled.nav`
   display: flex;
   gap: 12px;
 
-  font-size: 32px;
-
   height: 100%;
+  font-size: 32px;
 
   button {
     &:hover {
-      color: ${({ theme }) => theme.colors.GRAY_600};
+      background-color: ${({ theme }) => theme.colors.GRAY_200};
     }
   }
 `;

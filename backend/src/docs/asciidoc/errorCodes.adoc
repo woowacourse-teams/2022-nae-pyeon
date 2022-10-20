@@ -106,6 +106,11 @@
 | "구글 리소스 서버 요청시 에러 발생 accessToken={%s}\nerrorMessage={%s}"
 | "구글 로그인에 실패했습니다. 관리자에게 문의하세요."
 | `401 Unauthorized`
+
+| `3018`
+| "올바르지 않은 리프레시 토큰입니다."
+| "올바르지 않은 리프레시 토큰입니다."
+| `401 Unauthorized`
 |===
 
 === 모임 에러
@@ -186,4 +191,20 @@
 | 토큰의 유효기간이 만료됐습니다.
 | 토큰의 유효기간이 만료됐습니다.
 | `400 Bad Request`
+|===
+
+=== 알림 에러
+|===
+| error code | error message | show message | status code
+
+|`5001`
+| 해당 알림은 존재하지 않습니다. id={%d}
+| 올바르지 않은 알림입니다.
+| `404 Not Found`
+
+|`5002`
+| 유효하지 않은 reids message입니다. message={%s}
+| 유효하지 않은 redis message입니다.
+| `400 Bad Request`
+
 |===

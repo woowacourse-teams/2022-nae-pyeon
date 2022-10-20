@@ -1,4 +1,4 @@
-import { RECIPIENT } from "@/constants";
+import { METHOD, NOTIFICATION_CONTENT_TYPE, RECIPIENT } from "@/constants";
 
 export interface Team {
   id: number;
@@ -42,6 +42,15 @@ export interface TeamMember {
   nickname: string;
 }
 
+export interface Notification {
+  id: number;
+  contentType: ValueOf<typeof NOTIFICATION_CONTENT_TYPE>;
+  teamName: Team["name"];
+  rollingpaperTitle: Rollingpaper["title"];
+  createAt: string;
+  url: string;
+}
+
 export interface ReceivedRollingpaper
   extends Pick<Rollingpaper, "id" | "title"> {
   teamId: Team["id"];
@@ -56,11 +65,8 @@ export interface SentMessage extends Pick<Message, "id" | "content" | "color"> {
   to: Rollingpaper["to"];
 }
 
-export type CustomError = {
-  errorCode: number;
-  message: string;
-};
-
 export type ValueOf<T> = T[keyof T];
 
 export type Recipient = ValueOf<typeof RECIPIENT>;
+
+export type Method = ValueOf<typeof METHOD>;

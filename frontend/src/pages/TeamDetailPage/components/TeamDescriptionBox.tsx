@@ -8,9 +8,6 @@ import useModal from "@/hooks/useModal";
 
 import { Team } from "@/types";
 
-type StyledTeamDescriptionContainerProps = Pick<Team, "color">;
-type StyledButtonContainerProps = Pick<Team, "color">;
-
 const TeamDescriptionBox = ({
   name,
   description,
@@ -51,7 +48,7 @@ const TeamDescriptionBox = ({
   );
 };
 
-const StyledTeamDescriptionContainer = styled.div<StyledTeamDescriptionContainerProps>`
+const StyledTeamDescriptionContainer = styled.div<Pick<Team, "color">>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -74,7 +71,7 @@ const StyledHeader = styled.div`
   gap: 8px;
 `;
 
-const StyledButtonContainer = styled.div<StyledButtonContainerProps>`
+const StyledButtonContainer = styled.div<Pick<Team, "color">>`
   position: relative;
   top: 10px;
   display: flex;

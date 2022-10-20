@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-interface TeamDescriptionBoxProp {
+interface TeamDescriptionBoxProps {
   color: string;
   emoji: string;
   name: string;
@@ -13,7 +13,7 @@ const TeamDescriptionBox = ({
   emoji,
   name,
   description,
-}: TeamDescriptionBoxProp) => {
+}: TeamDescriptionBoxProps) => {
   return (
     <StyledTeamDescriptionBox color={color}>
       <h3>{`${emoji} ${name}`}</h3>

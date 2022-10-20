@@ -1,16 +1,21 @@
 import styled from "@emotion/styled";
 import { useNavigate, Link } from "react-router-dom";
 
+import useReadMyTeams from "@/pages/MainPage/hooks/useReadMyTeams";
+
 import LineButton from "@/components/LineButton";
 import MyTeamCard from "@/components/MyTeamCard";
-
-import useReadMyTeams from "@/pages/MainPage/hooks/useReadMyTeams";
+import Loading from "@/components/Loading";
 
 import SectionHeader from "@/pages/MainPage/components/SectionHeader";
 
 const MyTeamsSection = () => {
   const { data: myTeamListResponse, isLoading: isLoadingTeams } =
     useReadMyTeams();
+
+  if (isLoadingTeams || !myTeamListResponse) {
+    return <Loading />;
+  }
 
   return (
     <section>

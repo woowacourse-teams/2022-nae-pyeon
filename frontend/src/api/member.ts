@@ -1,10 +1,9 @@
 import { appClient, requestApi } from "@/api";
 
-import { User } from "@/types";
-
 import {
   GetMyReceivedRollingpapersRequest,
   GetMySentMessagesRequest,
+  PutMyUsernameRequest,
 } from "@/types/apiRequest";
 
 const getMyInfo = async () => requestApi(() => appClient.get("/members/me"));
@@ -36,13 +35,29 @@ const getMySentMessages = async ({
     appClient.get(`/members/me/messages/written?page=${page}&count=${count}`)
   );
 
-const putMyNickname = async (username: User["username"]) =>
+const putMyUsername = async ({ username }: PutMyUsernameRequest) =>
   requestApi(() => appClient.put("/members/me", { username }));
+
+const postRenewalToken = async (refreshToken: string) =>
+  requestApi(() =>
+    appClient.post("/renewal-token", {
+      refreshToken,
+    })
+  );
+
+const postLogout = async (refreshToken: string) =>
+  requestApi(() =>
+    appClient.post("/logout", {
+      refreshToken,
+    })
+  );
 
 export {
   getMyInfo,
   getMyInfoWithAccessToken,
   getMyReceivedRollingpapers,
   getMySentMessages,
-  putMyNickname,
+  postRenewalToken,
+  postLogout,
+  putMyUsername,
 };

@@ -7,10 +7,11 @@ import useTeamCreationForm from "@/pages/TeamCreationPage/hooks/useTeamCreationF
 import LabeledInput from "@/components/LabeledInput";
 import LabeledRadio from "@/components/LabeledRadio";
 import Button from "@/components/Button";
-import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
+
 import LabeledSwitch from "@/components/LabeledSwitch";
 
 import { COLORS, REGEX } from "@/constants";
+import PageTitle from "@/components/PageTitle";
 
 const emojis = [
   { id: 1, value: "🐶" },
@@ -21,8 +22,8 @@ const emojis = [
   { id: 6, value: "☕️" },
 ];
 
-const colors = Object.values(COLORS).map((value, index) => ({
-  backgroundColor: value,
+const colors = Object.values(COLORS).map((color, index) => ({
+  backgroundColor: color.value,
   id: index,
 }));
 
@@ -42,7 +43,7 @@ const TeamCreationPage = () => {
     handleSwitchClick,
   } = useTeamCreationForm();
 
-  const createTeam = useCreateTeam();
+  const { mutate: createTeam } = useCreateTeam();
 
   const handleTeamCreationSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -75,7 +76,7 @@ const TeamCreationPage = () => {
 
   return (
     <>
-      <PageTitleWithBackButton to={"/"}>모임 추가하기</PageTitleWithBackButton>
+      <PageTitle title={"모임 추가하기"} titleAlign="center" />
       <StyledForm>
         <LabeledInput
           labelText="모임명"

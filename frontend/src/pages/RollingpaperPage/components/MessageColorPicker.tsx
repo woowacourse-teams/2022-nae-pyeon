@@ -4,14 +4,17 @@ import { COLORS } from "@/constants";
 
 interface ColorPickerProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onClickRadio: (value: string) => void;
-  color: string;
+  selectedColor: string;
 }
 
 interface StyledRadioProps {
   backgroundColor: string;
 }
 
-const MessageColorPicker = ({ onClickRadio, color }: ColorPickerProps) => {
+const MessageColorPicker = ({
+  onClickRadio,
+  selectedColor,
+}: ColorPickerProps) => {
   const handleRadioChange =
     (value: string): React.ChangeEventHandler<HTMLInputElement> =>
     () => {
@@ -20,16 +23,17 @@ const MessageColorPicker = ({ onClickRadio, color }: ColorPickerProps) => {
 
   return (
     <StyledColorPickerContainer>
-      {Object.values(COLORS).map((radio) => {
+      {Object.values(COLORS).map((color) => {
         return (
-          <label key={radio}>
+          <label key={color.name}>
+            {color.name}
             <StyledInput
               type="radio"
-              value={radio}
-              checked={color === radio}
-              onChange={handleRadioChange(radio)}
+              value={color.value}
+              checked={selectedColor === color.value}
+              onChange={handleRadioChange(color.value)}
             />
-            <StyledRadio backgroundColor={radio} />
+            <StyledRadio backgroundColor={color.value} aria-hidden={true} />
           </label>
         );
       })}
@@ -47,6 +51,10 @@ const StyledColorPickerContainer = styled.div`
 
   border-radius: 4px;
   background-color: ${({ theme }) => theme.colors.GRAY_700};
+
+  label {
+    font-size: 0;
+  }
 `;
 
 const StyledRadio = styled.div<StyledRadioProps>`

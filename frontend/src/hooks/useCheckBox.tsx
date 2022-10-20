@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-type UseCheckBoxArgs = {
+interface UseCheckBoxParams {
   initialCheckedState: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
-};
+}
 
-const useCheckBox = ({ initialCheckedState, onChange }: UseCheckBoxArgs) => {
+const useCheckBox = ({ initialCheckedState, onChange }: UseCheckBoxParams) => {
   const [checked, setChecked] = useState(initialCheckedState);
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {

@@ -10,7 +10,8 @@ import XIcon from "@/assets/icons/bx-x.svg";
 
 import { Message } from "@/types";
 
-type MessageFormProps = {
+interface MessageFormProps
+  extends Pick<Message, "content" | "color" | "anonymous" | "secret"> {
   enableSecretMessage: boolean;
 
   handleColorClick: (color: string) => void;
@@ -20,11 +21,11 @@ type MessageFormProps = {
 
   handleMessageSubmit: () => void;
   handleMessageCancel: () => void;
-} & Pick<Message, "content" | "color" | "anonymous" | "secret">;
+}
 
-type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement>;
-
-const MessageSubmitButton = ({ onClick }: ButtonAttributes) => {
+const MessageSubmitButton = ({
+  onClick,
+}: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <StyledMessageFormButton type="button" onClick={onClick}>
       <CheckIcon />
@@ -33,7 +34,9 @@ const MessageSubmitButton = ({ onClick }: ButtonAttributes) => {
   );
 };
 
-const MessageCancelButton = ({ onClick }: ButtonAttributes) => {
+const MessageCancelButton = ({
+  onClick,
+}: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <StyledMessageFormButton type="button" onClick={onClick}>
       <XIcon />
@@ -59,6 +62,12 @@ export const MessageForm = ({
     <>
       <StyledBackground />
       <StyledMessageForm>
+        <StyledMessageColorPickerWrapper>
+          <MessageColorPicker
+            onClickRadio={handleColorClick}
+            selectedColor={color}
+          />
+        </StyledMessageColorPickerWrapper>
         <MessageTextArea
           placeholder="메시지를 입력해보세요!"
           value={content}
@@ -82,12 +91,9 @@ export const MessageForm = ({
           </StyledCheckBoxContainer>
           <StyledTextLength>{content.length}/500</StyledTextLength>
         </StyledMessageFormBottom>
-        <StyledMessageColorPickerWrapper>
-          <MessageColorPicker onClickRadio={handleColorClick} color={color} />
-        </StyledMessageColorPickerWrapper>
         <StyledIconButtonContainer>
-          <MessageSubmitButton onClick={handleMessageSubmit} />
           <MessageCancelButton onClick={handleMessageCancel} />
+          <MessageSubmitButton onClick={handleMessageSubmit} />
         </StyledIconButtonContainer>
       </StyledMessageForm>
     </>

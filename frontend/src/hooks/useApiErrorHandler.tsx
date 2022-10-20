@@ -2,18 +2,29 @@ import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 
 import { useSnackbar } from "@/context/SnackbarContext";
+import useCreateRenewalToken from "@/hooks/useCreateRenewalToken";
+import useRetryMutate from "@/hooks/useRetryMutate";
 
+import { getCookie } from "@/util/cookie";
+import { COOKIE_KEY } from "@/constants";
+
+import { Method } from "@/types";
 import { ApiErrorResponse } from "@/types/api";
 
 interface CustomError {
   message: string;
   errorCode: number;
   requestUrl: string;
+  requestMethod: Method;
+  requestData?: string;
 }
 
 const useApiErrorHandler = () => {
-  const { openSnackbar } = useSnackbar();
   const navigate = useNavigate();
+  const { openSnackbar } = useSnackbar();
+  const { mutate: renewalToken } = useCreateRenewalToken();
+
+  const { mutate: retryMutate } = useRetryMutate();
 
   const badRequestErrorHandler = (customErrorInfo: CustomError) => {
     const { message, errorCode, requestUrl } = customErrorInfo;
@@ -45,13 +56,34 @@ const useApiErrorHandler = () => {
   };
 
   const unauthorizedErrorHandler = (customErrorInfo: CustomError) => {
-    const { message, errorCode } = customErrorInfo;
+    const { message, errorCode, requestUrl, requestMethod, requestData } =
+      customErrorInfo;
 
     switch (errorCode) {
-      // 토큰 관련
+      // 잘못된 access token, access token 만료
       case 3011:
-      case 3012:
+      case 3012: {
+        const refreshToken = getCookie(COOKIE_KEY.REFRESH_TOKEN);
+        if (!refreshToken) {
+          navigate("/logout");
+          openSnackbar(message);
+          break;
+        }
+
+        renewalToken({
+          refreshToken,
+          mutateFunc: () =>
+            retryMutate({
+              requestMethod,
+              requestUrl,
+              requestData,
+            }),
+        });
+        break;
+      }
+      // 토큰의 해킹의 우려가 존재, 잘못된 refresh token
       case 3013:
+      case 3018:
         navigate("/logout");
         openSnackbar(message);
         break;
@@ -85,11 +117,15 @@ const useApiErrorHandler = () => {
   const apiErrorHandler = (error: AxiosError<ApiErrorResponse>): void => {
     const { status, data } = error.response!;
     const requestUrl = error.config.url!;
+    const requestMethod = error.config.method! as Method;
+    const requestData = error.config.data;
 
     const customErrorInfo = {
       ...data!,
       errorCode: Number(data!.errorCode),
       requestUrl,
+      requestMethod,
+      requestData,
     };
 
     switch (status) {

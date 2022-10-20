@@ -1,23 +1,20 @@
-import React from "react";
 import styled from "@emotion/styled";
 
 interface PageTitleProps {
-  children: string;
+  title: string;
+  titleAlign?: "left" | "right" | "center";
 }
 
-const PageTitle = ({ children }: PageTitleProps) => {
-  return <StyledPageTitle>{children}</StyledPageTitle>;
+const PageTitle = ({ title, titleAlign = "left" }: PageTitleProps) => {
+  return <StyledPageTitle titleAlign={titleAlign}>{title}</StyledPageTitle>;
 };
 
-const StyledPageTitle = styled.h1`
-  width: 100%;
-  padding: 20px 0;
-  margin-bottom: 10px;
-
-  text-align: center;
-
+const StyledPageTitle = styled.h1<{
+  titleAlign: PageTitleProps["titleAlign"];
+}>`
+  margin-bottom: 18px;
   font-size: 32px;
-  font-weight: 600;
+  text-align: ${({ titleAlign }) => titleAlign};
 `;
 
 export default PageTitle;

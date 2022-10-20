@@ -5,7 +5,7 @@ import { getRollingpaper } from "@/api/rollingpaper";
 
 import { GetRollingpaperResponse } from "@/types/apiResponse";
 
-interface UseReadRollingpaperArgs {
+interface UseReadRollingpaperParams {
   teamId: number;
   rollingpaperId: number;
 }
@@ -13,7 +13,7 @@ interface UseReadRollingpaperArgs {
 export const useReadRollingpaper = ({
   teamId,
   rollingpaperId,
-}: UseReadRollingpaperArgs) =>
+}: UseReadRollingpaperParams) =>
   useQuery<GetRollingpaperResponse, AxiosError>(
     ["rollingpaper", rollingpaperId],
     () => getRollingpaper({ teamId, id: rollingpaperId })

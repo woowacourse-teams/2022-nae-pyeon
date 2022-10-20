@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 
+import useValidateParam from "@/hooks/useValidateParam";
+
+import useUpdateLike from "@/pages/RollingpaperPage/hooks/useUpdateLike";
+import useDeleteLike from "@/pages/RollingpaperPage/hooks/useDeleteLike";
+
+import IconButton from "@/components/IconButton";
+
 import EmptyHeart from "@/assets/icons/bx-heart-empty.svg";
 import FilledHeart from "@/assets/icons/bx-heart-fill.svg";
 
-import useUpdateLiked from "@/pages/RollingpaperPage/hooks/useUpdateLiked";
-import useDeleteLiked from "@/pages/RollingpaperPage/hooks/useDeleteLiked";
-
 import { Message } from "@/types";
-import IconButton from "@/components/IconButton";
 
 interface LikeProps extends Pick<Message, "id" | "likes" | "liked"> {}
 
@@ -17,35 +20,43 @@ interface StyledLikeContainerProps {
 }
 
 const Like = ({ id, likes, liked }: LikeProps) => {
+  const rollingpaperId = useValidateParam<number>("rollingpaperId");
+
   const [count, setCount] = useState(likes);
   const [isLiked, setIsLiked] = useState(liked);
 
-  const { mutate: updateLiked } = useUpdateLiked();
-  const { mutate: deleteLiked } = useDeleteLiked();
+  const { mutate: updateLike } = useUpdateLike();
+  const { mutate: deleteLike } = useDeleteLike();
 
   const handleLikeToggle = () => {
     if (isLiked) {
-      deleteLiked(id, {
-        onSuccess: ({ liked, likes }) => {
-          setCount(likes);
-          setIsLiked(liked);
-        },
-      });
+      deleteLike(
+        { rollingpaperId, id },
+        {
+          onSuccess: ({ liked, likes }) => {
+            setCount(likes);
+            setIsLiked(liked);
+          },
+        }
+      );
 
       return;
     }
 
-    updateLiked(id, {
-      onSuccess: ({ liked, likes }) => {
-        setCount(likes);
-        setIsLiked(liked);
-      },
-    });
+    updateLike(
+      { rollingpaperId, id },
+      {
+        onSuccess: ({ liked, likes }) => {
+          setCount(likes);
+          setIsLiked(liked);
+        },
+      }
+    );
   };
 
   return (
     <StyledLikeContainer isLiked={isLiked}>
-      <IconButton onClick={handleLikeToggle}>
+      <IconButton onClick={handleLikeToggle} ariaLabel="좋아요">
         {isLiked ? <FilledHeart /> : <EmptyHeart />}
       </IconButton>
       <StyledLikeCount>좋아요 {count}개</StyledLikeCount>

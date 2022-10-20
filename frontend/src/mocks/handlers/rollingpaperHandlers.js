@@ -1,5 +1,7 @@
 import { rest } from "msw";
 
+import { ROLLINGPAPER_ORDER } from "@/constants";
+
 import rollingPaperDummy from "../dummy/rollingpapers.json";
 
 const rollingpapers = rollingPaperDummy.rollingpapers;
@@ -46,9 +48,20 @@ const rollingpaperHandlers = [
   // 롤링페이퍼 목록 조회 by Team
   rest.get("/api/v1/teams/:teamId/rollingpapers", (req, res, ctx) => {
     const { teamId } = req.params;
+    const order = req.url.searchParams.get("order");
+    const filter = req.url.searchParams.get("filter");
+
+    const filteredRollingpapers = rollingpapers.filter((rollingpaper) =>
+      filter ? rollingpaper.recipient === filter.toUpperCase() : true
+    );
+
+    let sortedRollingpapers = [...filteredRollingpapers];
+    if (order === ROLLINGPAPER_ORDER.LATEST) {
+      sortedRollingpapers = sortedRollingpapers.reverse();
+    }
 
     const result = {
-      rollingpapers: rollingpapers.map(({ id, title, to }) => ({
+      rollingpapers: sortedRollingpapers.map(({ id, title, to }) => ({
         id,
         title,
         to,

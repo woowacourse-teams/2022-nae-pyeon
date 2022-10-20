@@ -1,31 +1,26 @@
-import PageTitleWithBackButton from "@/components/PageTitleWithBackButton";
-import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
-
-import useValidatedParam from "@/hooks/useValidatedParam";
+import useValidateParam from "@/hooks/useValidateParam";
 import { useReadRollingpaper } from "@/pages/RollingpaperPage/hooks/useReadRollingpaper";
 
+import PageTitle from "@/components/PageTitle";
+import Loading from "@/components/Loading";
+import LetterPaper from "@/pages/RollingpaperPage/components/LetterPaper";
+
 const RollingpaperPage = () => {
-  const teamId = useValidatedParam<number>("teamId");
-  const rollingpaperId = useValidatedParam<number>("rollingpaperId");
+  const teamId = useValidateParam<number>("teamId");
+  const rollingpaperId = useValidateParam<number>("rollingpaperId");
 
   const { isLoading, data: rollingpaper } = useReadRollingpaper({
     teamId,
     rollingpaperId,
   });
 
-  if (isLoading) {
-    return <div>로딩 중</div>;
-  }
-
-  if (!rollingpaper) {
-    return <div>에러</div>;
+  if (isLoading || !rollingpaper) {
+    return <Loading />;
   }
 
   return (
     <>
-      <PageTitleWithBackButton to={`/team/${teamId}`}>
-        {rollingpaper.title}
-      </PageTitleWithBackButton>
+      <PageTitle title={rollingpaper.title} titleAlign="center" />
       <main>
         <LetterPaper
           to={rollingpaper.to}

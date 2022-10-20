@@ -1,22 +1,21 @@
 import React, { useEffect } from "react";
 import styled from "@emotion/styled";
 
-import useValidatedParam from "@/hooks/useValidatedParam";
+import useValidateParam from "@/hooks/useValidateParam";
 import useInput from "@/hooks/useInput";
 import useCheckLogin from "@/pages/InvitePage/hooks/useCheckLogin";
-
 import useReadTeamDetailWithInviteCode from "@/pages/InvitePage/hooks/useReadTeamDetailWithInviteCode";
-import useCreateTeamWithInviteCode from "@/pages/InvitePage/hooks/useCreateTeamWithInviteCode";
+import useCreateTeamMemberWithInviteCode from "@/pages/InvitePage/hooks/useCreateTeamMemberWithInviteCode";
 
 import UnderlineInput from "@/components/UnderlineInput";
 import LineButton from "@/components/LineButton";
-
+import Loading from "@/components/Loading";
 import TeamDescriptionBox from "@/pages/InvitePage/components/TeamDescriptionBox";
 
 import { REGEX } from "@/constants";
 
 const InvitePage = () => {
-  const inviteCode = useValidatedParam<string>("inviteCode");
+  const inviteCode = useValidateParam<string>("inviteCode");
 
   const { value: nickname, handleInputChange } = useInput("");
   const checkLogin = useCheckLogin(inviteCode);
@@ -24,7 +23,8 @@ const InvitePage = () => {
   const { data: teamDetail, isLoading } =
     useReadTeamDetailWithInviteCode(inviteCode);
 
-  const createTeamWithInviteCode = useCreateTeamWithInviteCode(teamDetail?.id);
+  const { mutate: createTeamMemberWithInviteCode } =
+    useCreateTeamMemberWithInviteCode(teamDetail?.id);
 
   const isValidTeamNickname = (nickname: string) => {
     return REGEX.TEAM_NICKNAME.test(nickname);
@@ -37,7 +37,7 @@ const InvitePage = () => {
       return;
     }
 
-    createTeamWithInviteCode({
+    createTeamMemberWithInviteCode({
       nickname,
       inviteCode,
     });
@@ -48,7 +48,7 @@ const InvitePage = () => {
   }, []);
 
   if (isLoading || !teamDetail) {
-    return <div>로딩 중</div>;
+    return <Loading />;
   }
 
   return (

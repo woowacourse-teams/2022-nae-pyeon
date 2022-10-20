@@ -36,7 +36,7 @@ const memberHandlers = [
     const accessToken = req.headers.headers.authorization.split(" ")[1];
 
     if (!accessToken) {
-      return res(ctx.status(400));
+      return res(ctx.status(401));
     }
 
     const result = {
@@ -53,7 +53,7 @@ const memberHandlers = [
     const accessToken = req.headers.headers.authorization.split(" ")[1];
 
     if (!accessToken) {
-      return res(ctx.status(400));
+      return res(ctx.status(401));
     }
 
     return res(ctx.status(204));
@@ -91,6 +91,20 @@ const memberHandlers = [
     };
 
     return res(ctx.json(result));
+  }),
+
+  // 리프래시 토큰으로 새로운 액세스 토큰 생성
+  rest.post("/renewal-token", (req, res, ctx) => {
+    const result = {
+      accessToken: "newAccessToken",
+    };
+
+    return res(ctx.json(result));
+  }),
+
+  // 리프래시 토큰 제거
+  rest.post("/logout", (req, res, ctx) => {
+    return res(ctx.status(204));
   }),
 ];
 

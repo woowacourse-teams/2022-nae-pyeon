@@ -9,10 +9,7 @@ import { MY_TEAM_COUNT } from "@/constants";
 const useReadMyTeams = () => {
   return useQuery<GetMyTeamsResponse, AxiosError>(
     ["myTeams", 0],
-    getMyTeams(MY_TEAM_COUNT),
-    {
-      useErrorBoundary: true,
-    }
+    getMyTeams(MY_TEAM_COUNT)
   );
 };
 

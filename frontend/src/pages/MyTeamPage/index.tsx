@@ -2,13 +2,13 @@ import styled from "@emotion/styled";
 import { useNavigate, Link } from "react-router-dom";
 
 import useIntersect from "@/hooks/useIntersect";
+import useReadMyTeams from "@/pages/MyTeamPage/hooks/useReadMyTeams";
 
 import MyTeamCard from "@/components/MyTeamCard";
 import LineButton from "@/components/LineButton";
+import Loading from "@/components/Loading";
 
 import ErrorImg from "@/assets/images/empty-state.svg";
-
-import useReadMyTeams from "@/pages/MyTeamPage/hooks/useReadMyTeams";
 
 import { Team } from "@/types";
 
@@ -21,22 +21,18 @@ const MyTeamsPage = () => {
     isLoading,
   } = useReadMyTeams();
 
-  const ref = useIntersect(
-    async (entry, observer) => {
+  const ref = useIntersect({
+    onIntersect: async (entry, observer) => {
       observer.unobserve(entry.target);
       if (hasNextPage && !isFetching) {
         fetchNextPage();
       }
     },
-    { rootMargin: "10px", threshold: 1.0 }
-  );
+    options: { rootMargin: "10px", threshold: 1.0 },
+  });
 
-  if (isLoading) {
-    return <div>로딩 중</div>;
-  }
-
-  if (!myTeamListResponse) {
-    return <div>에러</div>;
+  if (isLoading || !myTeamListResponse) {
+    return <Loading />;
   }
 
   if (myTeamListResponse.pages[0]?.teams.length === 0) {

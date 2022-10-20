@@ -3,14 +3,15 @@ import styled from "@emotion/styled";
 
 import { useMessageTextArea } from "@/pages/RollingpaperPage/hooks/useMessageTextArea";
 
-type MessageTextAreaProps = {
+interface MessageTextAreaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   backgroundColor: string;
   value: string;
-} & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+}
 
-type StyledMessageContainerProps = {
+interface StyledMessageContainerProps {
   backgroundColor: string;
-};
+}
 
 export const MessageTextArea = ({
   value,

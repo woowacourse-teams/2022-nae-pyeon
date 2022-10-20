@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef, ReactElement } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { divideArrayByIndexRemainder } from "@/util";
 
-const useSliceMessageList = (messageList: ReactElement[]) => {
+const useSliceMessageList = (messageList: React.ReactElement[]) => {
   const messageListRef = useRef(messageList);
   const [slicedMessageLists, setSlicedMessageLists] = useState<
-    ReactElement[][]
+    React.ReactElement[][]
   >(Array.from(Array(4), () => []));
 
   const updateSlicedMessageListByWindowWidth = () => {

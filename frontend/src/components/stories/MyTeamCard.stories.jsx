@@ -1,11 +1,11 @@
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
 
-import MyTeamCard from "@/pages/MainPage/components/MyTeamCard";
+import MyTeamCard from "@/components/MyTeamCard";
 
 export default {
   component: MyTeamCard,
-  title: "components/MainPage/MyTeamCard",
+  title: "components/common/MyTeamCard",
 };
 
 const Template = (args) => (
