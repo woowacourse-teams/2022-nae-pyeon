@@ -20,6 +20,7 @@ const DESCRIPTION_MESSAGE = {
 const NotificationItem = ({ notification }: NotificationItemProps) => {
   const navigate = useNavigate();
   const { mutate: deleteNotification } = useDeleteNotification();
+  const notificationDate = new Date(notification.createAt);
 
   return (
     <StyledNotificationItem
@@ -47,9 +48,14 @@ const NotificationItem = ({ notification }: NotificationItemProps) => {
       <StyledBottomSection>
         <StyledTeamName>{notification.teamName}</StyledTeamName>
         <StyledDate>
-          {`${new Date(notification.createAt).toLocaleDateString()} ${new Date(
-            notification.createAt
-          ).toLocaleTimeString("ko", { timeStyle: "short" })}`}
+          {`${
+            notificationDate.getMonth() + 1
+          }. ${notificationDate.getDate()} ${notificationDate.toLocaleTimeString(
+            "ko",
+            {
+              timeStyle: "short",
+            }
+          )}`}
         </StyledDate>
       </StyledBottomSection>
     </StyledNotificationItem>
@@ -118,6 +124,8 @@ const StyledTeamName = styled.div`
 `;
 
 const StyledDate = styled.div`
+  min-width: max-content;
+
   font-size: 12px;
 `;
 
