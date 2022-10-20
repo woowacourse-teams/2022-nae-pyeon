@@ -107,7 +107,7 @@ const StyledDescription = styled.div`
   font-size: 16px;
 
   span {
-    font-weight: bold;
+    font-weight: 600;
   }
 `;
 

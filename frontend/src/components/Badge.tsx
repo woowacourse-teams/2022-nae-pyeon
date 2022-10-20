@@ -80,7 +80,7 @@ const StyledNumberBadge = styled.div<{
 
   text-align: center;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 600;
 
   background-color: ${({ color }) => color ?? theme.colors.RED_400};
 

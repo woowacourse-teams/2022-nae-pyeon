@@ -32,7 +32,7 @@ const StyledRollingpaperListItem = styled.li`
 
 const StyledTitle = styled.div`
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
 `;
 
 const StyledTo = styled.div`
