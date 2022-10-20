@@ -5,11 +5,11 @@ import useInput from "@/hooks/useInput";
 
 import Button from "@/components/Button";
 import LabeledInput from "@/components/LabeledInput";
-
 import StepLayout from "@/pages/RollingpaperCreationPage/components/StepLayout";
 
-import { Rollingpaper } from "@/types";
 import { REGEX } from "@/constants";
+
+import { Rollingpaper } from "@/types";
 
 interface Step3Props {
   onClick: (title: Rollingpaper["title"]) => void;
