@@ -5,6 +5,8 @@ import com.woowacourse.naepyeon.domain.TeamParticipation;
 import com.woowacourse.naepyeon.domain.notification.ContentType;
 import com.woowacourse.naepyeon.domain.notification.Notification;
 import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
+import com.woowacourse.naepyeon.exception.InvalidRedisMessageException;
+import com.woowacourse.naepyeon.exception.NotFoundNotificationException;
 import com.woowacourse.naepyeon.repository.notification.NotificationRepository;
 import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.NotificationResponseDto;
@@ -97,10 +99,7 @@ public class NotificationService {
             sendToClient(emitter, id, notificationResponse);
         };
         this.redisMessageListenerContainer.addMessageListener(messageListener, ChannelTopic.of(getChannelName(id)));
-        emitter.onCompletion(()->{
-            emitters.remove(emitter);
-            this.redisMessageListenerContainer.removeMessageListener(messageListener);
-        });
+        checkEmitterStatus(emitter, messageListener);
         return emitter;
     }
 
@@ -110,7 +109,7 @@ public class NotificationService {
             return NotificationResponseDto.from(notification);
         } catch (IOException e) {
             log.error("직렬화 실패");
-            throw new RuntimeException(e);
+            throw new InvalidRedisMessageException(message);
         }
     }
 
@@ -128,12 +127,23 @@ public class NotificationService {
         }
     }
 
+    private void checkEmitterStatus(final SseEmitter emitter, final MessageListener messageListener) {
+        emitter.onCompletion(() -> {
+            emitters.remove(emitter);
+            this.redisMessageListenerContainer.removeMessageListener(messageListener);
+        });
+        emitter.onTimeout(() -> {
+            emitters.remove(emitter);
+            this.redisMessageListenerContainer.removeMessageListener(messageListener);
+        });
+    }
+
     private String getChannelName(final String memberId) {
         return "sample:topics:" + memberId;
     }
 
     @Transactional(readOnly = true)
-    public NotificationsResponseDto findAllById(final Long memberId) {
+    public NotificationsResponseDto findAllByMemberIdAndUnread(final Long memberId) {
         List<NotificationResponseDto> responses = notificationRepository.findAllByMemberIdAndUnread(memberId)
                 .stream()
                 .map(NotificationResponseDto::from)
@@ -145,7 +155,7 @@ public class NotificationService {
 
     public void readNotification(final Long id) {
         final Notification notification = notificationRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지않음"));
+                .orElseThrow(() -> new NotFoundNotificationException(id));
         notification.read();
     }
 

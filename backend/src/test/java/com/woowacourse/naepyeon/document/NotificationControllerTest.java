@@ -44,7 +44,7 @@ class NotificationControllerTest extends TestSupport {
 
     @Test
     @DisplayName("읽지 않은 알림 단건 읽음 처리")
-    void readUnreadNotification() throws Exception {
+    void readNotification() throws Exception {
         mockMvc.perform(
                         put("/api/v1/notifications/{id}", 1L)
                                 .header("Authorization", "Bearer " + joinedMemberAccessToken)
@@ -56,7 +56,7 @@ class NotificationControllerTest extends TestSupport {
 
     @Test
     @DisplayName("읽지 않은 알림들 모두 읽음 처리")
-    void readAllUnreadNotifications() throws Exception {
+    void readAllNotifications() throws Exception {
         mockMvc.perform(
                         put("/api/v1/notifications/all")
                                 .header("Authorization", "Bearer " + joinedMemberAccessToken)

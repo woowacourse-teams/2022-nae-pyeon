@@ -31,7 +31,7 @@ public class NotificationController {
     @GetMapping("/notifications")
     public ResponseEntity<NotificationsResponseDto> notifications(
             @AuthenticationPrincipal @Valid final LoginMemberRequest loginMemberRequest) {
-        return ResponseEntity.ok().body(notificationService.findAllById(loginMemberRequest.getId()));
+        return ResponseEntity.ok().body(notificationService.findAllByMemberIdAndUnread(loginMemberRequest.getId()));
     }
 
     @PutMapping("/notifications/{id}")
