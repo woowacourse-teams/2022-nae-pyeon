@@ -49,7 +49,11 @@ const Step2 = ({
     setKeywordList(data.members.map((member) => member.nickname));
   };
 
-  const { data: teamMemberResponse, isLoading } = useReadTeamMembers({
+  const {
+    data: teamMemberResponse,
+    isLoading,
+    isFetching,
+  } = useReadTeamMembers({
     teamId: teamId!,
 
     onSuccess: handleReadTeamMembersSuccess,
@@ -89,7 +93,7 @@ const Step2 = ({
     onSelectMember(memeberInfo.id);
   };
 
-  if (isLoading || !teamMemberResponse) {
+  if (isFetching) {
     return <Loading />;
   }
 
