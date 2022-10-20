@@ -57,8 +57,8 @@ const StyledModalContainer = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 28px;
+  width: 80%;
 
-  width: 50%;
   min-width: 240px;
 
   border-radius: 8px;
@@ -66,6 +66,10 @@ const StyledModalContainer = styled.div`
   box-shadow: 0px 4px 4px 2px rgba(147, 147, 147, 0.25);
 
   z-index: 99;
+
+  @media only screen and (min-width: 600px) {
+    width: 50%;
+  }
 `;
 
 const StyledCloseButtonWrapper = styled.div`
