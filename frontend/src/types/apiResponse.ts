@@ -6,6 +6,7 @@ import {
   User,
   Team,
   TeamMember,
+  Notification,
 } from "@/types";
 
 // OAuth
@@ -91,3 +92,9 @@ export interface PostTeamInviteCodeResponse {
 export interface PostLikeResponse extends Pick<Message, "likes" | "liked"> {}
 
 export interface DeleteLikeResponse extends Pick<Message, "likes" | "liked"> {}
+
+// notification
+export interface GetNotificationResponse {
+  unreadCount: number;
+  notifications: Notification[];
+}

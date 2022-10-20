@@ -119,7 +119,7 @@ const StyledRollingpaperListHead = styled.div`
 
   h4 {
     font-size: 20px;
-    font-weight: bold;
+    font-weight: 600;
   }
 
   @media only screen and (min-width: 600px) {

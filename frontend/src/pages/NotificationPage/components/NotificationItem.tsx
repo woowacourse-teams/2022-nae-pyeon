@@ -1,31 +1,62 @@
+import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
+import useDeleteNotification from "@/pages/NotificationPage/hooks/useDeleteNotification";
 import IconButton from "@/components/IconButton";
+
+import { Notification } from "@/types";
 
 import XIcon from "@/assets/icons/bx-x.svg";
 
 interface NotificationItemProps {
-  description: string;
+  notification: Notification;
 }
 
-const NotificationItem = ({ description }: NotificationItemProps) => {
+const DESCRIPTION_MESSAGE = {
+  ROLLINGPAPER_AT_MY_TEAM: " 롤링페이퍼가 열렸습니다! 메시지를 남겨볼까요?",
+  MESSAGE_AT_MY_ROLLINGPAPER: " 롤링페이퍼에 새 메시지가 작성되었습니다.",
+};
+
+const NotificationItem = ({ notification }: NotificationItemProps) => {
+  const navigate = useNavigate();
+  const { mutate: deleteNotification } = useDeleteNotification();
+  const notificationDate = new Date(notification.createAt);
+
   return (
     <StyledNotificationItem
-      onClick={(e) => {
-        console.log("알림 읽음 처리 및 롤링페이퍼 페이지로 이동");
+      onClick={() => {
+        deleteNotification({ id: notification.id });
+        navigate(notification.url);
       }}
     >
       <StyledCloseButtonWrapper>
-        <IconButton>
+        <IconButton
+          onClick={(e) => {
+            e.stopPropagation();
+            deleteNotification({ id: notification.id });
+          }}
+        >
           <XIcon />
         </IconButton>
       </StyledCloseButtonWrapper>
       <StyledTopSection>
-        <StyledDescription>{description}</StyledDescription>
+        <StyledDescription>
+          <span>{notification.rollingpaperTitle}</span>
+          {DESCRIPTION_MESSAGE[notification.contentType]}
+        </StyledDescription>
       </StyledTopSection>
       <StyledBottomSection>
-        <StyledTeamName>{"우아한테크코스 4기"}</StyledTeamName>
-        <StyledDate>{"2022년 10월 19일"}</StyledDate>
+        <StyledTeamName>{notification.teamName}</StyledTeamName>
+        <StyledDate>
+          {`${
+            notificationDate.getMonth() + 1
+          }. ${notificationDate.getDate()} ${notificationDate.toLocaleTimeString(
+            "ko",
+            {
+              timeStyle: "short",
+            }
+          )}`}
+        </StyledDate>
       </StyledBottomSection>
     </StyledNotificationItem>
   );
@@ -82,7 +113,10 @@ const StyledCloseButtonWrapper = styled.div`
 
 const StyledDescription = styled.div`
   font-size: 16px;
-  font-weight: bold;
+
+  span {
+    font-weight: 600;
+  }
 `;
 
 const StyledTeamName = styled.div`
@@ -90,6 +124,8 @@ const StyledTeamName = styled.div`
 `;
 
 const StyledDate = styled.div`
+  min-width: max-content;
+
   font-size: 12px;
 `;
 
