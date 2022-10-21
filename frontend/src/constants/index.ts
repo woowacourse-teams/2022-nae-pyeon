@@ -61,7 +61,7 @@ const COOKIE_KEY = {
 } as const;
 
 const TOKEN_MAX_AGE = {
-  ACCESS_TOKEN: 1800,
+  ACCESS_TOKEN: 36000,
   REFRESH_TOKEN: 604800,
 } as const;
 
