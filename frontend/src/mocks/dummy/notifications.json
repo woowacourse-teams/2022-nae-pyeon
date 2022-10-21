@@ -23,6 +23,54 @@
       "rollingpaperTitle": "포코 결혼 축하",
       "createAt": "2022-10-19T14:50:04.523604",
       "url": "team/1/rollingpaper/1"
+    },
+    {
+      "id": 1,
+      "contentType": "MESSAGE_AT_MY_ROLLINGPAPER",
+      "teamName": "우아한테크코스 4기",
+      "rollingpaperTitle": "조조그린 생일 축하",
+      "createAt": "2022-10-17T14:50:04.523604",
+      "url": "team/1/rollingpaper/1"
+    },
+    {
+      "id": 2,
+      "contentType": "MESSAGE_AT_MY_ROLLINGPAPER",
+      "teamName": "우아한테크코스 4기",
+      "rollingpaperTitle": "록바 생일 축하",
+      "createAt": "2022-10-18T14:50:04.523604",
+      "url": "team/1/rollingpaper/2"
+    },
+    {
+      "id": 3,
+      "contentType": "ROLLINGPAPER_AT_MY_TEAM",
+      "teamName": "우아한테크코스 4기 FE",
+      "rollingpaperTitle": "포코 결혼 축하",
+      "createAt": "2022-10-19T14:50:04.523604",
+      "url": "team/1/rollingpaper/1"
+    },
+    {
+      "id": 1,
+      "contentType": "MESSAGE_AT_MY_ROLLINGPAPER",
+      "teamName": "우아한테크코스 4기",
+      "rollingpaperTitle": "조조그린 생일 축하",
+      "createAt": "2022-10-17T14:50:04.523604",
+      "url": "team/1/rollingpaper/1"
+    },
+    {
+      "id": 2,
+      "contentType": "MESSAGE_AT_MY_ROLLINGPAPER",
+      "teamName": "우아한테크코스 4기",
+      "rollingpaperTitle": "록바 생일 축하",
+      "createAt": "2022-10-18T14:50:04.523604",
+      "url": "team/1/rollingpaper/2"
+    },
+    {
+      "id": 3,
+      "contentType": "ROLLINGPAPER_AT_MY_TEAM",
+      "teamName": "우아한테크코스 4기 FE",
+      "rollingpaperTitle": "포코 결혼 축하",
+      "createAt": "2022-10-19T14:50:04.523604",
+      "url": "team/1/rollingpaper/1"
     }
   ]
 }
