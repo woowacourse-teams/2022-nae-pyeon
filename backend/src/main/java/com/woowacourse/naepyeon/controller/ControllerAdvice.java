@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.controller;
 
-import com.woowacourse.naepyeon.config.logging.trace.annotation.NoTracing;
+import com.woowacourse.naepyeon.config.logging.trace.annotation.NoLogging;
 import com.woowacourse.naepyeon.controller.dto.ErrorResponse;
 import com.woowacourse.naepyeon.exception.NaePyeonException;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import org.springframework.web.util.ContentCachingRequestWrapper;
 public class ControllerAdvice {
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    @NoTracing
+    @NoLogging
     public ResponseEntity<ErrorResponse> handleInvalidRequest(
             final BindingResult bindingResult,
             final HttpServletRequest request,
@@ -46,12 +46,11 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler({NaePyeonException.class})
-    @NoTracing
+    @NoLogging
     public ResponseEntity<ErrorResponse> handleNaePyeonException(
             final NaePyeonException e,
             final HttpServletRequest request
     ) throws IOException {
-        final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
         log.error("UnhandledException: {} {} statusCode={} errMessage={}\n",
                 request.getMethod(),
                 request.getRequestURI(),
@@ -64,7 +63,7 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler({Exception.class})
-    @NoTracing
+    @NoLogging
     public ResponseEntity<ErrorResponse> unhandledException(
             final Exception e,
             final HttpServletRequest request

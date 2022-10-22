@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.support;
 
-import com.woowacourse.naepyeon.config.logging.trace.annotation.NoTracing;
+import com.woowacourse.naepyeon.config.logging.trace.annotation.NoLogging;
 import com.woowacourse.naepyeon.exception.InvalidLoginException;
 import com.woowacourse.naepyeon.exception.TokenInvalidExpiredException;
 import com.woowacourse.naepyeon.exception.TokenInvalidFormException;
@@ -44,12 +44,12 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    @NoTracing
+    @NoLogging
     public String getPayload(final String token) {
         return tokenToJws(token).getBody().getSubject();
     }
 
-    @NoTracing
+    @NoLogging
     public void validateAbleToken(final String token) {
         try {
             final Jws<Claims> claims = tokenToJws(token);

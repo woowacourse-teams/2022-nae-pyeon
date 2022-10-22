@@ -13,7 +13,7 @@ Configutation:
       target: SYSTEM_OUT
       PatternLayout:
         pattern: "%style{%d{yyyy-MM-dd HH:mm:ss.SSS}}{cyan} %highlight{[%-5p]}{FATAL=bg_red,
-            ERROR=red, INFO=green, DEBUG=blue, TRACE=bg_yellow} [%C] %style{[%t]}{yellow}- %m%n"
+            ERROR=red, INFO=green, DEBUG=blue, TRACE=bg_yellow} %style{[%t]}{yellow}- %m%n"
 
   Loggers:
     Root:
@@ -23,6 +23,6 @@ Configutation:
     Logger:
       - name: com.woowacourse.naepyeon
         additivity: false
-        level: info
+        level: debug
         AppenderRef:
           - ref: Console_Appender

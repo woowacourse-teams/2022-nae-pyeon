@@ -1,13 +1,13 @@
 package com.woowacourse.naepyeon.config.logging.trace;
 
-public class TraceStatus {
+public class LoggingStatus {
 
-    private final String traceId;
+    private final String taskId;
     private final long startTimeMillis;
     private int depthLevel = 0;
 
-    public TraceStatus(final String traceId, final long startTimeMillis) {
-        this.traceId = traceId;
+    public LoggingStatus(final String taskId, final long startTimeMillis) {
+        this.taskId = taskId;
         this.startTimeMillis = startTimeMillis;
     }
 
@@ -19,12 +19,12 @@ public class TraceStatus {
         depthLevel--;
     }
 
-    public boolean isFirstTrace() {
+    public boolean isEndDepth() {
         return depthLevel == 0;
     }
 
-    public String getTraceId() {
-        return traceId;
+    public String getTaskId() {
+        return taskId;
     }
 
     public long getStartTimeMillis() {

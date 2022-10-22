@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.service;
 
-import com.woowacourse.naepyeon.config.logging.trace.annotation.NoTracing;
+import com.woowacourse.naepyeon.config.logging.trace.annotation.NoLogging;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.refreshtoken.RefreshToken;
 import com.woowacourse.naepyeon.exception.NotFoundTeamMemberException;
@@ -37,7 +37,7 @@ public class AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final MemberRepository memberRepository;
 
-    @NoTracing
+    @NoLogging
     public TokenResponseDto createTokenWithKakaoOauth(final TokenRequestDto tokenRequestDto) {
         final PlatformUserDto platformUser = kakaoPlatformUserProvider.getPlatformUser(
                 tokenRequestDto.getAuthorizationCode(),
@@ -47,7 +47,7 @@ public class AuthService {
         return createTokenResponseDto(platformUser);
     }
 
-    @NoTracing
+    @NoLogging
     public TokenResponseDto createTokenWithGoogleOauth(final TokenRequestDto tokenRequestDto) {
         final PlatformUserDto platformUser = googlePlatformUserProvider.getPlatformUser(
                 tokenRequestDto.getAuthorizationCode(),
@@ -104,7 +104,7 @@ public class AuthService {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    @NoTracing
+    @NoLogging
     public AccessTokenDto renewalToken(final String refreshToken) {
         final RefreshToken findRefreshToken = findValidRefreshToken(refreshToken);
         findRefreshToken.extendsExpired();
@@ -125,7 +125,7 @@ public class AuthService {
         return findRefreshToken;
     }
 
-    @NoTracing
+    @NoLogging
     public void logout(final String refreshToken) {
         refreshTokenRepository.deleteByValue(refreshToken);
     }

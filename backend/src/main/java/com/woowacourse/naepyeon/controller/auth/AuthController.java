@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.controller.auth;
 
-import com.woowacourse.naepyeon.config.logging.trace.annotation.NoTracing;
+import com.woowacourse.naepyeon.config.logging.trace.annotation.NoLogging;
 import com.woowacourse.naepyeon.controller.dto.TokenRequest;
 import com.woowacourse.naepyeon.service.AuthService;
 import com.woowacourse.naepyeon.service.dto.AccessTokenDto;
@@ -22,7 +22,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/oauth/kakao")
-    @NoTracing
+    //@NoLogging
     public ResponseEntity<TokenResponseDto> kakaoLogin(@RequestBody @Valid final TokenRequest tokenRequest) {
         final TokenResponseDto tokenResponseDto =
                 authService.createTokenWithKakaoOauth(tokenRequest.toServiceRequest());
@@ -30,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/oauth/google")
-    @NoTracing
+    @NoLogging
     public ResponseEntity<TokenResponseDto> googleLogin(@RequestBody @Valid final TokenRequest tokenRequest) {
         final TokenResponseDto tokenResponseDto =
                 authService.createTokenWithGoogleOauth(tokenRequest.toServiceRequest());
@@ -38,7 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("/renewal-token")
-    @NoTracing
+    @NoLogging
     public ResponseEntity<AccessTokenDto> renewalToken(@RequestBody @Valid final RefreshTokenDto renewalRequest) {
         final AccessTokenDto accessTokenDto = authService.renewalToken(renewalRequest.getRefreshToken());
         return ResponseEntity.ok(accessTokenDto);
