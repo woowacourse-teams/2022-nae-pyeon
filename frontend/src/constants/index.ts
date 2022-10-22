@@ -61,7 +61,7 @@ const COOKIE_KEY = {
 } as const;
 
 const TOKEN_MAX_AGE = {
-  ACCESS_TOKEN: 1800,
+  ACCESS_TOKEN: 36000,
   REFRESH_TOKEN: 604800,
 } as const;
 
@@ -75,6 +75,11 @@ const METHOD = {
   POST: "post",
   PUT: "put",
   DELETE: "delete",
+} as const;
+
+const NOTIFICATION_CONTENT_TYPE = {
+  ROLLINGPAPER_AT_MY_TEAM: "ROLLINGPAPER_AT_MY_TEAM",
+  MESSAGE_AT_MY_ROLLINGPAPER: "MESSAGE_AT_MY_ROLLINGPAPER",
 } as const;
 
 export {
@@ -93,4 +98,5 @@ export {
   TOKEN_MAX_AGE,
   ROLLINGPAPER_ORDER,
   METHOD,
+  NOTIFICATION_CONTENT_TYPE,
 };

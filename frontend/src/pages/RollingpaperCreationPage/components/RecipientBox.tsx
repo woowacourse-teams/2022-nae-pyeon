@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import { Recipient } from "@/types";
 import { RECIPIENT } from "@/constants";
+
+import { Recipient } from "@/types";
 
 const CONTENTS = {
   [RECIPIENT.TEAM]: {

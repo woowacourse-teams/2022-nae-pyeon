@@ -31,12 +31,8 @@ const MyTeamsPage = () => {
     options: { rootMargin: "10px", threshold: 1.0 },
   });
 
-  if (isLoading) {
+  if (isLoading || !myTeamListResponse) {
     return <Loading />;
-  }
-
-  if (!myTeamListResponse) {
-    return <div>에러</div>;
   }
 
   if (myTeamListResponse.pages[0]?.teams.length === 0) {

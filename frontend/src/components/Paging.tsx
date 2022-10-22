@@ -84,6 +84,7 @@ const Paging = ({
 
 const StyledPaging = styled.div`
   display: flex;
+  align-items: center;
 
   svg {
     font-size: 24px;
@@ -98,6 +99,7 @@ const StyledPage = styled.div<{
   isCurrent: boolean;
 }>`
   width: 24px;
+  height: 24px;
   text-align: center;
   line-height: 24px;
   margin: 2px;

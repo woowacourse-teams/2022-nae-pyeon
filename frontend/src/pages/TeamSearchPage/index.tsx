@@ -1,22 +1,23 @@
 import React, { useState } from "react";
-import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
+import styled from "@emotion/styled";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import useIntersect from "@/hooks/useIntersect";
-import { getTeamSearchResult } from "@/api/team";
 
 import SearchInput from "@/components/SearchInput";
 import Loading from "@/components/Loading";
 import SearchResultListItem from "@/pages/TeamSearchPage/components/SearchResultListItem";
 
+import { getTeamSearchResult } from "@/api/team";
 import { TOTAL_TEAMS_PAGING_COUNT } from "@/constants";
 
 import { Team } from "@/types";
 
 import EmptyStateImg from "@/assets/images/empty-state.svg";
+import PageTitle from "@/components/PageTitle";
 
-const TeamSearch = () => {
+const TeamSearchPage = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
   const ref = useIntersect({
@@ -69,54 +70,41 @@ const TeamSearch = () => {
     navigate(`/team/${id}`);
   };
 
-  if (isLoading) {
+  if (isLoading || !totalTeamResponse) {
     return <Loading />;
-  }
-
-  if (!totalTeamResponse) {
-    return <div>에러</div>;
-  }
-
-  if (totalTeamResponse.pages[0]?.teams.length === 0) {
-    return (
-      <>
-        <StyledSearch>
-          <SearchInput
-            onClick={handleSearchClick}
-            onChange={handleSearchChange}
-          />
-        </StyledSearch>
-        <StyledEmptySearch>
-          <EmptyStateImg />
-          <div>검색 결과가 없어요!</div>
-        </StyledEmptySearch>
-      </>
-    );
   }
 
   return (
     <>
+      <PageTitle title="모임 검색하기" />
       <StyledSearch>
         <SearchInput
           onClick={handleSearchClick}
           onChange={handleSearchChange}
         />
       </StyledSearch>
-      <StyledTeamList>
-        {totalTeamResponse.pages.map((page) =>
-          page.teams.map((team: Team) => (
-            <SearchResultListItem
-              key={team.id}
-              onClick={() => {
-                handleSearchResultItemClick(team.id);
-              }}
-              secret={team.secret}
-              name={team.name}
-            />
-          ))
-        )}
-        <div ref={ref} />
-      </StyledTeamList>
+      {totalTeamResponse.pages[0]?.teams.length === 0 ? (
+        <StyledEmptySearch>
+          <EmptyStateImg />
+          <div>검색 결과가 없어요!</div>
+        </StyledEmptySearch>
+      ) : (
+        <StyledTeamList>
+          {totalTeamResponse.pages.map((page) =>
+            page.teams.map((team: Team) => (
+              <SearchResultListItem
+                key={team.id}
+                onClick={() => {
+                  handleSearchResultItemClick(team.id);
+                }}
+                secret={team.secret}
+                name={team.name}
+              />
+            ))
+          )}
+          <div ref={ref} />
+        </StyledTeamList>
+      )}
     </>
   );
 };
@@ -144,7 +132,7 @@ const StyledEmptySearch = styled.div`
 `;
 
 const StyledSearch = styled.div`
-  padding: 20px;
+  padding: 20px 0;
 `;
 
 const StyledTeamList = styled.ul`
@@ -153,10 +141,11 @@ const StyledTeamList = styled.ul`
 
   height: 75vh;
   padding: 20px;
+  padding-left: 0;
 
   gap: 16px;
 
   overflow-y: scroll;
 `;
 
-export default TeamSearch;
+export default TeamSearchPage;

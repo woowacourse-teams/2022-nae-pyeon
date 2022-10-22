@@ -6,6 +6,7 @@ import {
   Team,
   TeamMember,
   ValueOf,
+  Notification,
 } from ".";
 import { ROLLINGPAPER_ORDER } from "@/constants";
 
@@ -96,6 +97,12 @@ export interface PostTeamInviteCodeRequest {
 export interface PostTeamMemberWithInviteCodeRequest {
   inviteCode: string;
   nickname: TeamMember["nickname"];
+}
+
+// notification
+
+export interface PutNotificationRequest {
+  id: Notification["id"];
 }
 
 export interface PutTeamNicknameRequest extends TeamMember {}

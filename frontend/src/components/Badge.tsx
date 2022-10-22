@@ -21,6 +21,10 @@ const Badge = (props: PropsWithChildren<BadgeProps>) => {
   if (props.variant === "number") {
     const { children, badgeContent, max = 100, color } = props;
 
+    if (badgeContent === 0) {
+      return <>{children}</>;
+    }
+
     return (
       <StyledContainer>
         {children}
@@ -80,7 +84,7 @@ const StyledNumberBadge = styled.div<{
 
   text-align: center;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 600;
 
   background-color: ${({ color }) => color ?? theme.colors.RED_400};
 

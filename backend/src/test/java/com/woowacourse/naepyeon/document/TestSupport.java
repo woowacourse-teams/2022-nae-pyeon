@@ -3,7 +3,6 @@ package com.woowacourse.naepyeon.document;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.naepyeon.config.DatabaseCleaner;
-import com.woowacourse.naepyeon.config.logging.RequestLoggingFilter;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.repository.refreshtoken.RefreshTokenRepository;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;
@@ -85,7 +84,6 @@ public abstract class TestSupport {
         databaseCleaner.execute();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
-                .addFilters(new RequestLoggingFilter())
                 .alwaysDo(restDocs)
                 .build();
         saveBaseData();

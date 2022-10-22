@@ -40,6 +40,7 @@ dependencies {
 	implementation 'org.flywaydb:flyway-core:6.4.2'
 	implementation 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
 	implementation "com.querydsl:querydsl-jpa:5.0.0"
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	annotationProcessor "com.querydsl:querydsl-apt:5.0.0"
 
 	compileOnly 'org.projectlombok:lombok'

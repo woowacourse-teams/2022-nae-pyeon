@@ -42,13 +42,12 @@ const MyPage = () => {
   if (
     isLoadingGetUserProfile ||
     isLoadingGetReceivedRollingpapers ||
-    isLoadingGetSentMessages
+    isLoadingGetSentMessages ||
+    !userProfile ||
+    !responseReceivedRollingpapers ||
+    !responseSentMessages
   ) {
     return <Loading />;
-  }
-
-  if (!userProfile || !responseReceivedRollingpapers || !responseSentMessages) {
-    return <div>에러</div>;
   }
 
   return (

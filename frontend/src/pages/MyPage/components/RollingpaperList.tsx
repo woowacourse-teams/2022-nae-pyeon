@@ -18,12 +18,8 @@ const RollingpaperList = ({ lastPage }: RollingpaperListProps) => {
 
   const { isLoading, data } = useReadReceivedRollingpapers(currentPage);
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return <Loading />;
-  }
-
-  if (!data) {
-    return <div>에러</div>;
   }
 
   if (data.rollingpapers.length === 0) {

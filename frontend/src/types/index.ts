@@ -1,4 +1,4 @@
-import { METHOD, RECIPIENT } from "@/constants";
+import { METHOD, NOTIFICATION_CONTENT_TYPE, RECIPIENT } from "@/constants";
 
 export interface Team {
   id: number;
@@ -40,6 +40,15 @@ export interface User {
 export interface TeamMember {
   id: number;
   nickname: string;
+}
+
+export interface Notification {
+  id: number;
+  contentType: ValueOf<typeof NOTIFICATION_CONTENT_TYPE>;
+  teamName: Team["name"];
+  rollingpaperTitle: Rollingpaper["title"];
+  createAt: string;
+  url: string;
 }
 
 export interface ReceivedRollingpaper
