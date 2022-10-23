@@ -22,7 +22,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/oauth/kakao")
-    //@NoLogging
+    @NoLogging
     public ResponseEntity<TokenResponseDto> kakaoLogin(@RequestBody @Valid final TokenRequest tokenRequest) {
         final TokenResponseDto tokenResponseDto =
                 authService.createTokenWithKakaoOauth(tokenRequest.toServiceRequest());
