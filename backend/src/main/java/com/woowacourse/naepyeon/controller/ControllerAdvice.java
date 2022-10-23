@@ -34,7 +34,7 @@ public class ControllerAdvice {
         final FieldError mainError = fieldErrors.get(0);
         final String[] errorInfo = Objects.requireNonNull(mainError.getDefaultMessage()).split(":");
 
-        log.error("UnhandledException: {} {} statusCode={} errMessage={}\n",
+        log.error("HandledException: {} {} statusCode={} errMessage={}\n",
                 request.getMethod(),
                 request.getRequestURI(),
                 HttpStatus.BAD_REQUEST.value(),
@@ -51,7 +51,7 @@ public class ControllerAdvice {
             final NaePyeonException e,
             final HttpServletRequest request
     ) throws IOException {
-        log.error("UnhandledException: {} {} statusCode={} errMessage={}\n",
+        log.error("HandledException: {} {} statusCode={} errMessage={}\n",
                 request.getMethod(),
                 request.getRequestURI(),
                 e.getHttpStatus().value(),
