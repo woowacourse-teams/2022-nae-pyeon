@@ -1,4 +1,4 @@
-package com.woowacourse.naepyeon.config.logging.trace;
+package com.woowacourse.naepyeon.config.logging;
 
 public class LoggingStatus {
 

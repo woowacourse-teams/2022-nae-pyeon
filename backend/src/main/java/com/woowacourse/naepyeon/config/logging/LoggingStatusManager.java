@@ -1,6 +1,5 @@
 package com.woowacourse.naepyeon.config.logging;
 
-import com.woowacourse.naepyeon.config.logging.trace.LoggingStatus;
 import com.woowacourse.naepyeon.support.SecureRandomStringUtils;
 import org.springframework.stereotype.Component;
 
