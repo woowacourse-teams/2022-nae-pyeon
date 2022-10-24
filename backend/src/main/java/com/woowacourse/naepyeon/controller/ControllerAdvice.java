@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.controller;
 
-import com.woowacourse.naepyeon.config.logging.trace.annotation.NoLogging;
+import com.woowacourse.naepyeon.config.logging.annotation.NoLogging;
 import com.woowacourse.naepyeon.controller.dto.ErrorResponse;
 import com.woowacourse.naepyeon.exception.NaePyeonException;
 import java.io.IOException;
@@ -16,7 +16,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.util.ContentCachingRequestWrapper;
 
 @Slf4j
 @RequiredArgsConstructor

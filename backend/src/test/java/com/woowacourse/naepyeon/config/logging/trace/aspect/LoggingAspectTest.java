@@ -3,7 +3,7 @@ package com.woowacourse.naepyeon.config.logging.trace.aspect;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.naepyeon.config.logging.trace.LoggingTracer;
+import com.woowacourse.naepyeon.config.logging.LoggingTracer;
 import com.woowacourse.naepyeon.controller.MemberController;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.service.MemberService;

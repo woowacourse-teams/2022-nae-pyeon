@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.service;
 
-import com.woowacourse.naepyeon.config.logging.trace.annotation.NoLogging;
+import com.woowacourse.naepyeon.config.logging.annotation.NoLogging;
 import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.refreshtoken.RefreshToken;
 import com.woowacourse.naepyeon.exception.NotFoundTeamMemberException;

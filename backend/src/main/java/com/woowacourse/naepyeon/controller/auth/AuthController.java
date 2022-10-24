@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.controller.auth;
 
-import com.woowacourse.naepyeon.config.logging.trace.annotation.NoLogging;
+import com.woowacourse.naepyeon.config.logging.annotation.NoLogging;
 import com.woowacourse.naepyeon.controller.dto.TokenRequest;
 import com.woowacourse.naepyeon.service.AuthService;
 import com.woowacourse.naepyeon.service.dto.AccessTokenDto;

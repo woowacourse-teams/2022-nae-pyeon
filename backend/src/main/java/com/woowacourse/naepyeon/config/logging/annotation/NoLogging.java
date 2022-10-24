@@ -1,4 +1,4 @@
-package com.woowacourse.naepyeon.config.logging.trace.annotation;
+package com.woowacourse.naepyeon.config.logging.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

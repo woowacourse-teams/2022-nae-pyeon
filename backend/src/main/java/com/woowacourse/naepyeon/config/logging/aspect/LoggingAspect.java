@@ -1,7 +1,7 @@
-package com.woowacourse.naepyeon.config.logging.trace.aspect;
+package com.woowacourse.naepyeon.config.logging.aspect;
 
 import com.woowacourse.naepyeon.config.logging.LoggingStatusManager;
-import com.woowacourse.naepyeon.config.logging.trace.LoggingTracer;
+import com.woowacourse.naepyeon.config.logging.LoggingTracer;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class LoggingAspect {
     private void allComponents() {
     }
 
-    @Pointcut("@annotation(com.woowacourse.naepyeon.config.logging.trace.annotation.NoLogging)")
+    @Pointcut("@annotation(com.woowacourse.naepyeon.config.logging.annotation.NoLogging)")
     private void noLogging() {
     }
 

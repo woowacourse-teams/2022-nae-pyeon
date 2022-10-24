@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.support;
 
-import com.woowacourse.naepyeon.config.logging.trace.annotation.NoLogging;
+import com.woowacourse.naepyeon.config.logging.annotation.NoLogging;
 import com.woowacourse.naepyeon.exception.InvalidLoginException;
 import com.woowacourse.naepyeon.exception.TokenInvalidExpiredException;
 import com.woowacourse.naepyeon.exception.TokenInvalidFormException;

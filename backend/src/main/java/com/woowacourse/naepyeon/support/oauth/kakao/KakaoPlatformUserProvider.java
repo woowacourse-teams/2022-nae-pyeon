@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.support.oauth.kakao;
 
-import com.woowacourse.naepyeon.config.logging.trace.annotation.NoLogging;
+import com.woowacourse.naepyeon.config.logging.annotation.NoLogging;
 import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.exception.KakaoAuthorizationException;
 import com.woowacourse.naepyeon.exception.KakaoResourceException;

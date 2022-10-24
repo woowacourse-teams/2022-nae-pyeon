@@ -1,4 +1,4 @@
-package com.woowacourse.naepyeon.config.logging.trace;
+package com.woowacourse.naepyeon.config.logging;
 
 import com.woowacourse.naepyeon.config.logging.LoggingStatusManager;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +27,9 @@ public class LoggingTracer {
     }
 
     public void end(final String message) {
-        final long stopTimeMillis = System.currentTimeMillis();
-        final long resultTimeMillis = stopTimeMillis - loggingStatusManager.getStartTimeMillis();
-
         if (log.isDebugEnabled()) {
+            final long stopTimeMillis = System.currentTimeMillis();
+            final long resultTimeMillis = stopTimeMillis - loggingStatusManager.getStartTimeMillis();
             log.debug(
                     "[{}] {}<-- {} time={}ms",
                     loggingStatusManager.getTaskId(),
@@ -44,10 +43,9 @@ public class LoggingTracer {
     }
 
     public void exception(final String message, final Exception e) {
-        final long stopTimeMillis = System.currentTimeMillis();
-        final long resultTimeMillis = stopTimeMillis - loggingStatusManager.getStartTimeMillis();
-
         if (log.isDebugEnabled()) {
+            final long stopTimeMillis = System.currentTimeMillis();
+            final long resultTimeMillis = stopTimeMillis - loggingStatusManager.getStartTimeMillis();
             log.debug(
                     "[{}] <X-{} {} time={}ms ex={}",
                     loggingStatusManager.getTaskId(),

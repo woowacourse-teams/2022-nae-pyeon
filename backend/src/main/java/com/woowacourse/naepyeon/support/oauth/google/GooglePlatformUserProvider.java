@@ -1,6 +1,6 @@
 package com.woowacourse.naepyeon.support.oauth.google;
 
-import com.woowacourse.naepyeon.config.logging.trace.annotation.NoLogging;
+import com.woowacourse.naepyeon.config.logging.annotation.NoLogging;
 import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.exception.GoogleAuthorizationException;
 import com.woowacourse.naepyeon.exception.GoogleResourceException;
