@@ -87,6 +87,8 @@ const StyledTopSection = styled.div`
 
 const StyledNotificationList = styled.ul`
   width: 100%;
+  padding-right: 12px;
+  overflow-y: scroll;
 
   display: flex;
   flex-direction: column;

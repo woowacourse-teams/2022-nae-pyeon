@@ -71,7 +71,9 @@ const useSteps = () => {
   };
 
   const handleTeamClick = (id: Team["id"]) => {
-    setStep((prev) => prev + 1);
+    if (step < 1) {
+      setStep((prev) => prev + 1);
+    }
     setRollingpaperCreateForm((prev) => ({
       ...prev,
       team: id,
@@ -81,20 +83,27 @@ const useSteps = () => {
   };
 
   const handleRecipientClick = (recipientType: Recipient) => {
-    setStep((prev) => prev + 0.5);
+    if (step < 1.5) {
+      setStep((prev) => prev + 0.5);
+    }
     setRollingpaperCreateForm((prev) => ({
       ...prev,
       recipient: { type: recipientType, to: null },
     }));
 
     if (recipientType === RECIPIENT.TEAM) {
-      setStep((prev) => prev + 0.5);
+      if (step < 1.5) {
+        setStep((prev) => prev + 0.5);
+      }
+
       goToNextPage();
     }
   };
 
   const handleMemberClick = (memberId: TeamMember["id"]) => {
-    setStep((prev) => prev + 0.5);
+    if (step < 2) {
+      setStep((prev) => prev + 0.5);
+    }
     setRollingpaperCreateForm((prev) => ({
       ...prev,
       recipient: { type: RECIPIENT.MEMBER, to: memberId },

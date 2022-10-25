@@ -21,6 +21,10 @@ const Badge = (props: PropsWithChildren<BadgeProps>) => {
   if (props.variant === "number") {
     const { children, badgeContent, max = 100, color } = props;
 
+    if (badgeContent === 0) {
+      return <>{children}</>;
+    }
+
     return (
       <StyledContainer>
         {children}
