@@ -3,6 +3,7 @@
     "eslint:recommended",
     "plugin:import/recommended",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier"
   ],
@@ -18,7 +19,7 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "react", "import"],
+  "plugins": ["@typescript-eslint", "react", "react-hooks", "import"],
   "rules": {
     "no-console": "off",
     "strict": ["error", "global"],
@@ -28,6 +29,9 @@
 
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
+
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
 
     "@typescript-eslint/no-empty-interface": [
       "error",
