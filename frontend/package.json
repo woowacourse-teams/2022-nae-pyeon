@@ -9,7 +9,8 @@
     "build:prod": "webpack --config webpack.prod.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",
