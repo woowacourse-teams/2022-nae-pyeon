@@ -13,6 +13,7 @@ module.exports = {
     chunkFilename: "[contenthash].bundle.js",
     clean: true,
   },
+
   plugins: [
     new webpack.ProvidePlugin({
       React: "react",
@@ -32,6 +33,7 @@ module.exports = {
   },
   module: {
     rules: [
+      { test: /\.tsx?$/, use: "babel-loader" },
       {
         test: /\.(png|jpe?g|gif)$/i,
         type: "asset/resource",
