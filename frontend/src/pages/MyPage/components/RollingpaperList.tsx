@@ -30,7 +30,7 @@ const RollingpaperList = ({ lastPage }: RollingpaperListProps) => {
     <StyledListWithPaging>
       <StyledRollingpaperList>
         {data.rollingpapers.map((rollingpaper) => (
-          <RollingpaperListItem {...rollingpaper} />
+          <RollingpaperListItem key={rollingpaper.id} {...rollingpaper} />
         ))}
       </StyledRollingpaperList>
       <StyledPaging>

@@ -15,9 +15,6 @@ module.exports = merge(common, {
     port: 3000,
     hot: true,
   },
-  module: {
-    rules: [{ test: /\.tsx?$/, use: ["babel-loader", "ts-loader"] }],
-  },
   plugins: [
     new webpack.DefinePlugin({
       "process.env": JSON.stringify(process.env),
