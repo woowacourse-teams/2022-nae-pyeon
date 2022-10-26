@@ -11,6 +11,7 @@ interface AutoCompleteInputProps
   onClickListItem: (item: string) => React.MouseEventHandler<HTMLElement>;
 }
 
+// eslint-disable-next-line react/display-name
 const AutoCompleteInput = React.forwardRef<
   HTMLInputElement,
   AutoCompleteInputProps

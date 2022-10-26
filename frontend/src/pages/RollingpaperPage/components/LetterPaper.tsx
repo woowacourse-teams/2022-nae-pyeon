@@ -29,6 +29,7 @@ const LetterPaper = ({ to, recipientType, messageList }: LetterPaperProps) => {
     return isWrite
       ? [
           <MessageCreateForm
+            key={"form"}
             enableSecretMessage={recipientType === "MEMBER"}
             onEditEnd={handleWriteEnd}
           />,
