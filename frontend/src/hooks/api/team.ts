@@ -122,7 +122,7 @@ const useCreateInviteLink = () => {
   >(({ id }) => postTeamInviteCode({ id }), {});
 };
 
-const useReadMyTeams = () =>
+const useReadMyTeamsPaging = () =>
   useInfiniteQuery<GetMyTeamsResponse>(
     ["my-teams"],
     getMyTeams(MY_TEAM_COUNT),
@@ -203,7 +203,7 @@ export {
   useCreateTeamMember,
   useCreateInviteLink,
   useCreateTeamMemberWithInviteCode,
-  useReadMyTeams,
+  useReadMyTeamsPaging,
   useReadTeamDetail,
   useReadTeamDetailWithInviteCode,
   useReadTeamNickname,

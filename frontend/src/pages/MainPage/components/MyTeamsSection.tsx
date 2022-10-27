@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useNavigate, Link } from "react-router-dom";
 
-import { useReadMyTeams } from "@/hooks/api/team";
+import { useReadMyTeamsPaging } from "@/hooks/api/team";
 
 import LineButton from "@/components/LineButton";
 import MyTeamCard from "@/components/MyTeamCard";
@@ -10,7 +10,7 @@ import Loading from "@/components/Loading";
 import SectionHeader from "@/pages/MainPage/components/SectionHeader";
 
 const MyTeamsSection = () => {
-  const { data, isLoading } = useReadMyTeams();
+  const { data, isLoading } = useReadMyTeamsPaging();
 
   if (isLoading || !data) {
     return <Loading />;
