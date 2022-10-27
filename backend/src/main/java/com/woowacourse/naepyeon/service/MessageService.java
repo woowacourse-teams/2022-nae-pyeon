@@ -197,7 +197,7 @@ public class MessageService {
     }
 
     public MessageLikeResponseDto likeMessage(Long memberId, Long rollingpaperId, Long messageId) {
-        final Message message = messageRepository.findById(messageId)
+        final Message message = messageRepository.findByIdForUpdate(messageId)
                 .orElseThrow(() -> new NotFoundMessageException(messageId));
         if (messageLikeRepository.existsByMemberIdAndMessageId(memberId, messageId)) {
             throw new InvalidLikeMessageException(messageId, messageId);

@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Version;
 
 @Entity
 @Getter
@@ -57,6 +58,9 @@ public class Message extends BaseEntity {
 
     @Column(name = "likes", nullable = false)
     private Long likes;
+
+    @Version
+    private Integer version;
 
     public Message(final String content, final String color, final Member author, final Rollingpaper rollingpaper,
                    final boolean anonymous, final boolean secret, final Long likes) {
