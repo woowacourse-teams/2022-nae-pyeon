@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useSnackbar } from "@/context/SnackbarContext";
 import useRetryMutate from "@/hooks/useRetryMutate";
-import useCreateRenewalToken from "@/hooks/api/member/useCreateRenewalToken";
+import { useCreateRenewalToken } from "@/hooks/api/member";
 
 import { getCookie } from "@/util/cookie";
 import { COOKIE_KEY } from "@/constants";

@@ -3,8 +3,7 @@ import styled from "@emotion/styled";
 
 import useValidateParam from "@/hooks/useValidateParam";
 import useInput from "@/hooks/useInput";
-import useReadTeamNickname from "@/hooks/api/team/useReadTeamNickname";
-import useUpdateTeamNickname from "@/hooks/api/team/useUpdateTeamNickname";
+import { useReadTeamNickname, useUpdateTeamNickname } from "@/hooks/api/team";
 
 import LineButton from "@/components/LineButton";
 import Modal from "@/components/Modal";

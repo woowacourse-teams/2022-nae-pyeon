@@ -2,8 +2,8 @@ import styled from "@emotion/styled";
 
 import { useSnackbar } from "@/context/SnackbarContext";
 
-import useReadNotifications from "@/hooks/useReadNotifications";
-import useDeleteNotificationsAll from "@/hooks/api/notification/useDeleteNotificationsAll";
+import { useReadNotifications } from "@/hooks/api/notification";
+import { useDeleteNotificationsAll } from "@/hooks/api/notification";
 
 import Loading from "@/components/Loading";
 import PageTitle from "@/components/PageTitle";

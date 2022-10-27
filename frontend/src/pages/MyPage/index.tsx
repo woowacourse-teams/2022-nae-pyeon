@@ -1,9 +1,11 @@
 import { useState } from "react";
 import styled from "@emotion/styled";
 
-import useReadUserProfile from "@/hooks/api/member/useReadUserProfile";
-import useReadSentMessages from "@/hooks/api/member/useReadSentMessages";
-import useReadReceivedRollingpapers from "@/hooks/api/member/useReadReceivedRollingpapers";
+import {
+  useReadUserProfile,
+  useReadSentMessages,
+  useReadReceivedRollingpapers,
+} from "@/hooks/api/member";
 
 import Loading from "@/components/Loading";
 import MyPageTab from "@/pages/MyPage/components/MyPageTab";

@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { useSnackbar } from "@/context/SnackbarContext";
 
 import useValidateParam from "@/hooks/useValidateParam";
-import useCreateInviteLink from "@/hooks/api/team/useCreateInviteLink";
+import { useCreateInviteLink } from "@/hooks/api/team";
 
 import Modal from "@/components/Modal";
 import IconButton from "@/components/IconButton";

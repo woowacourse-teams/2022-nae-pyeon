@@ -27,11 +27,11 @@ export interface GetMySentMessagesRequest {
   count: number;
 }
 
-export interface postRenewalTokenRequest {
+export interface PostRenewalTokenRequest {
   refreshToken: string;
 }
 
-export interface postLogoutRequest {
+export interface PostLogoutRequest {
   refreshToken: string;
 }
 

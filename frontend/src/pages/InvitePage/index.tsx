@@ -3,8 +3,10 @@ import styled from "@emotion/styled";
 
 import useValidateParam from "@/hooks/useValidateParam";
 import useInput from "@/hooks/useInput";
-import useReadTeamDetailWithInviteCode from "@/hooks/api/team/useReadTeamDetailWithInviteCode";
-import useCreateTeamMemberWithInviteCode from "@/hooks/api/team/useCreateTeamMemberWithInviteCode";
+import {
+  useCreateTeamMemberWithInviteCode,
+  useReadTeamDetailWithInviteCode,
+} from "@/hooks/api/team";
 import useCheckLogin from "@/pages/InvitePage/hooks/useCheckLogin";
 
 import UnderlineInput from "@/components/UnderlineInput";

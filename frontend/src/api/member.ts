@@ -3,8 +3,8 @@ import { appClient, requestApi } from "@/api";
 import {
   GetMyReceivedRollingpapersRequest,
   GetMySentMessagesRequest,
-  postRenewalTokenRequest,
-  postLogoutRequest,
+  PostRenewalTokenRequest,
+  PostLogoutRequest,
   PutMyUsernameRequest,
 } from "@/types/apiRequest";
 
@@ -37,14 +37,14 @@ const getMySentMessages = async ({
     appClient.get(`/members/me/messages/written?page=${page}&count=${count}`)
   );
 
-const postRenewalToken = async ({ refreshToken }: postRenewalTokenRequest) =>
+const postRenewalToken = async ({ refreshToken }: PostRenewalTokenRequest) =>
   requestApi(() =>
     appClient.post("/renewal-token", {
       refreshToken,
     })
   );
 
-const postLogout = async ({ refreshToken }: postLogoutRequest) =>
+const postLogout = async ({ refreshToken }: PostLogoutRequest) =>
   requestApi(() =>
     appClient.post("/logout", {
       refreshToken,

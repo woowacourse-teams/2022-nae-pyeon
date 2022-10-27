@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 
 import useAutoCompleteInput from "@/hooks/useAutoCompleteInput";
-import useReadTeamMembers from "@/hooks/api/team/useReadTeamMembers";
+import { useReadTeamMembers } from "@/hooks/api/team";
 
 import Button from "@/components/Button";
 import AutoCompleteInput from "@/components/AutoCompleteInput";

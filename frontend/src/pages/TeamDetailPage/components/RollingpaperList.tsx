@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import useValidateParam from "@/hooks/useValidateParam";
-import useReadTeamRollingpaper from "@/hooks/api/team/useReadTeamRollingpaper";
+import { useReadTeamRollingpaper } from "@/hooks/api/team";
 
 import Loading from "@/components/Loading";
 import RollingpaperListItem from "@/pages/TeamDetailPage/components/RollingpaperListItem";

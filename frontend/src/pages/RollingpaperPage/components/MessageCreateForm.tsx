@@ -1,5 +1,5 @@
 import useMessageForm from "@/pages/RollingpaperPage/hooks/useMessageForm";
-import useCreateMessage from "@/hooks/api/message/useCreateMessage";
+import { useCreateMessage } from "@/hooks/api/message";
 
 import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 

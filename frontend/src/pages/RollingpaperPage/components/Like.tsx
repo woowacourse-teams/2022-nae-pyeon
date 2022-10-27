@@ -3,8 +3,7 @@ import styled from "@emotion/styled";
 
 import useValidateParam from "@/hooks/useValidateParam";
 
-import useUpdateLike from "@/hooks/api/message/useUpdateLike";
-import useDeleteLike from "@/hooks/api/message/useDeleteLike";
+import { useUpdateLike, useDeleteLike } from "@/hooks/api/message";
 
 import IconButton from "@/components/IconButton";
 

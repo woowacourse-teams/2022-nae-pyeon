@@ -1,6 +1,6 @@
 import useValidateParam from "@/hooks/useValidateParam";
 
-import useUpdateMessage from "@/hooks/api/message/useUpdateMessage";
+import { useUpdateMessage } from "@/hooks/api/message";
 import useMessageForm from "@/pages/RollingpaperPage/hooks/useMessageForm";
 import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 

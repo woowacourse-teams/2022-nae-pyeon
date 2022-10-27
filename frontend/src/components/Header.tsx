@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import { useSnackbar } from "@/context/SnackbarContext";
 import { UserContext } from "@/context/UserContext";
 
-import useReadNotifications from "@/hooks/useReadNotifications";
+import { useReadNotifications } from "@/hooks/api/notification";
 
 import IconButton from "@/components/IconButton";
 import Badge from "@/components/Badge";

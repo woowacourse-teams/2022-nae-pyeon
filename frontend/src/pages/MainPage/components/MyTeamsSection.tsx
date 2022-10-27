@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useNavigate, Link } from "react-router-dom";
 
-import useReadMyTeams from "@/hooks/api/team/useReadMyTeams";
+import { useReadMyTeams } from "@/hooks/api/team";
 
 import LineButton from "@/components/LineButton";
 import MyTeamCard from "@/components/MyTeamCard";

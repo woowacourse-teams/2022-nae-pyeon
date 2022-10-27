@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import useIntersect from "@/hooks/useIntersect";
-import useReadMyTeams from "@/hooks/api/team/useReadMyTeams";
+import { useReadMyTeams } from "@/hooks/api/team";
 
 import MyTeamCard from "@/components/MyTeamCard";
 import Loading from "@/components/Loading";

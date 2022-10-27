@@ -1,8 +1,9 @@
-import Loading from "@/components/Loading";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-import useCreateGoogleOauthLogin from "@/hooks/api/oauth/useCreateGoogleOauthLogin";
+import { useCreateGoogleOauthLogin } from "@/hooks/api/oauth";
+
+import Loading from "@/components/Loading";
 
 const GoogleRedirectPage = () => {
   const params = new URLSearchParams(useLocation().search);
