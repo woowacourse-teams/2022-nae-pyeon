@@ -42,6 +42,9 @@ import {
 
 import { MY_TEAM_COUNT } from "@/constants";
 
+interface UseCreateTeamMemberParams {
+  onSuccess: () => void;
+}
 interface UseReadTeamMembersParams {
   teamId: number;
   onSuccess: (data: GetTeamMembersResponse) => void;
@@ -73,7 +76,7 @@ const useCreateTeam = () => {
   );
 };
 
-const useCreateTeamMember = (onClickCloseButton: () => void) => {
+const useCreateTeamMember = ({ onSuccess }: UseCreateTeamMemberParams) => {
   const { openSnackbar } = useSnackbar();
 
   return useMutation<null, AxiosError, PostTeamMemberRequest>(
@@ -82,7 +85,7 @@ const useCreateTeamMember = (onClickCloseButton: () => void) => {
       onSuccess: (data, variables) => {
         queryClient.refetchQueries(["team", variables.id]);
         queryClient.refetchQueries(["rollingpaperList", variables.id]);
-        onClickCloseButton();
+        onSuccess();
         openSnackbar("모임 가입 완료");
       },
     }
