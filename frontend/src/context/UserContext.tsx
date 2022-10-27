@@ -61,7 +61,7 @@ const UserProvider = ({
   const logout = () => {
     const refreshToken = getCookie(COOKIE_KEY.REFRESH_TOKEN)!;
 
-    deleteRefreshToken(refreshToken);
+    deleteRefreshToken({ refreshToken });
     setAppClientHeaderAuthorization("");
     deleteCookie(COOKIE_KEY.ACCESS_TOKEN);
     deleteCookie(COOKIE_KEY.REFRESH_TOKEN);

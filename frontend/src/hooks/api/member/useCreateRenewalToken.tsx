@@ -18,7 +18,7 @@ const useCreateRenewalToken = () => {
     PostRenewalTokenResponse,
     AxiosError,
     postRenewalTokenVariables
-  >(({ refreshToken, mutateFunc }) => postRenewalToken(refreshToken), {
+  >(({ refreshToken, mutateFunc }) => postRenewalToken({ refreshToken }), {
     onSuccess: (data, variable) => {
       if (data) {
         const { accessToken } = data;

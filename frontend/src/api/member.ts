@@ -3,6 +3,8 @@ import { appClient, requestApi } from "@/api";
 import {
   GetMyReceivedRollingpapersRequest,
   GetMySentMessagesRequest,
+  postRenewalTokenRequest,
+  postLogoutRequest,
   PutMyUsernameRequest,
 } from "@/types/apiRequest";
 
@@ -35,22 +37,22 @@ const getMySentMessages = async ({
     appClient.get(`/members/me/messages/written?page=${page}&count=${count}`)
   );
 
-const putMyUsername = async ({ username }: PutMyUsernameRequest) =>
-  requestApi(() => appClient.put("/members/me", { username }));
-
-const postRenewalToken = async (refreshToken: string) =>
+const postRenewalToken = async ({ refreshToken }: postRenewalTokenRequest) =>
   requestApi(() =>
     appClient.post("/renewal-token", {
       refreshToken,
     })
   );
 
-const postLogout = async (refreshToken: string) =>
+const postLogout = async ({ refreshToken }: postLogoutRequest) =>
   requestApi(() =>
     appClient.post("/logout", {
       refreshToken,
     })
   );
+
+const putMyUsername = async ({ username }: PutMyUsernameRequest) =>
+  requestApi(() => appClient.put("/members/me", { username }));
 
 export {
   getMyInfo,
