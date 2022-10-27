@@ -2,7 +2,7 @@ import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { UserContext } from "@/context/UserContext";
-import ErrorPage from "../ErrorPage";
+import ErrorPage from "@/pages/ErrorPage";
 
 const LogoutPage = () => {
   const { logout } = useContext(UserContext);

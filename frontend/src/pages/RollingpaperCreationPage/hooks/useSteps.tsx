@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import useCreateMemberRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateMemberRolliingpaper";
-import useCreateTeamRollingpaper from "@/pages/RollingpaperCreationPage/hooks/useCreateTeamRollingpaper";
+import useCreateMemberRollingpaper from "@/hooks/api/rollingpaper/useCreateMemberRollingpaper";
+import useCreateTeamRollingpaper from "@/hooks/api/rollingpaper/useCreateTeamRollingpaper";
 
 import { RECIPIENT, REGEX } from "@/constants";
 

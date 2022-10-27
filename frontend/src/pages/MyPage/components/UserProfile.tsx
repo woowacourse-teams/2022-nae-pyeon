@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { UserContext } from "@/context/UserContext";
 
 import useInput from "@/hooks/useInput";
-import useUpdateUserProfile from "@/pages/MyPage/hooks/useUpdateUserProfile";
+import useUpdateUserProfile from "@/hooks/api/member/useUpdateUserProfile";
 
 import LineButton from "@/components/LineButton";
 import UnderlineInput from "@/components/UnderlineInput";

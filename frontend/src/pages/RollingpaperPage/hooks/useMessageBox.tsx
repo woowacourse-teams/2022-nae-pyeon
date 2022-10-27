@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useDeleteMessage from "@/pages/RollingpaperPage/hooks/useDeleteMessage";
+import useDeleteMessage from "@/hooks/api/message/useDeleteMessage";
 
 interface UseMessageParams {
   id: number;

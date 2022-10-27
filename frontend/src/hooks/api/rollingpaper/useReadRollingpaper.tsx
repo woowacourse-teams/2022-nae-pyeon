@@ -10,7 +10,7 @@ interface UseReadRollingpaperParams {
   rollingpaperId: number;
 }
 
-export const useReadRollingpaper = ({
+const useReadRollingpaper = ({
   teamId,
   rollingpaperId,
 }: UseReadRollingpaperParams) =>
@@ -18,3 +18,5 @@ export const useReadRollingpaper = ({
     ["rollingpaper", rollingpaperId],
     () => getRollingpaper({ teamId, id: rollingpaperId })
   );
+
+export default useReadRollingpaper;

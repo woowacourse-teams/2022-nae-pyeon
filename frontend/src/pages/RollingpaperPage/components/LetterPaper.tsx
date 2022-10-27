@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import styled from "@emotion/styled";
 
 import IconButton from "@components/IconButton";
@@ -10,7 +10,7 @@ import PencilIcon from "@/assets/icons/bx-pencil.svg";
 import MessageCreateForm from "@/pages/RollingpaperPage/components/MessageCreateForm";
 import MessageBox from "@/pages/RollingpaperPage/components/MessageBox";
 import useMessageWrite from "@/pages/RollingpaperPage/hooks/useMessageWrite";
-import useSliceMessageList from "../hooks/useSliceMessageList";
+import useSliceMessageList from "@/pages/RollingpaperPage/hooks/useSliceMessageList";
 
 interface LetterPaperProps {
   to: string;

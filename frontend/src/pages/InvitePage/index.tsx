@@ -3,9 +3,9 @@ import styled from "@emotion/styled";
 
 import useValidateParam from "@/hooks/useValidateParam";
 import useInput from "@/hooks/useInput";
+import useReadTeamDetailWithInviteCode from "@/hooks/api/team/useReadTeamDetailWithInviteCode";
+import useCreateTeamMemberWithInviteCode from "@/hooks/api/team/useCreateTeamMemberWithInviteCode";
 import useCheckLogin from "@/pages/InvitePage/hooks/useCheckLogin";
-import useReadTeamDetailWithInviteCode from "@/pages/InvitePage/hooks/useReadTeamDetailWithInviteCode";
-import useCreateTeamMemberWithInviteCode from "@/pages/InvitePage/hooks/useCreateTeamMemberWithInviteCode";
 
 import UnderlineInput from "@/components/UnderlineInput";
 import LineButton from "@/components/LineButton";

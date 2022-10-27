@@ -2,6 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { getMyTeams } from "@/api/team";
 import { GetMyTeamsResponse } from "@/types/apiResponse";
+
 import { MY_TEAM_COUNT } from "@/constants";
 
 const useReadMyTeams = () =>

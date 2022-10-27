@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-import useCreateKakaoOauthLogin from "@/pages/KakaoRedirectPage/hooks/useCreateKakaoOauthLogin";
+import useCreateKakaoOauthLogin from "@/hooks/api/oauth/useCreateKakaoOauthLogin";
 
 import Loading from "@/components/Loading";
 

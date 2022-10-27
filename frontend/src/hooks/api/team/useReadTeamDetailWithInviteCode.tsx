@@ -3,7 +3,8 @@ import { AxiosError } from "axios";
 
 import { getTeamWithInviteCode } from "@/api/team";
 import { GetTeamResponse } from "@/types/apiResponse";
-import useCheckTeamJoined from "./useCheckTeamJoined";
+
+import useCheckTeamJoined from "@/pages/InvitePage/hooks/useCheckTeamJoined";
 
 const useReadTeamDetailWithInviteCode = (inviteCode: string) => {
   const handleTeamDetailWithInviteCodeSuccess = useCheckTeamJoined();

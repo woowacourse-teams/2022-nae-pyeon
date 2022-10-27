@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import useIntersect from "@/hooks/useIntersect";
-import useReadMyTeam from "@/pages/RollingpaperCreationPage/hooks/useReadMyTeam";
+import useReadMyTeams from "@/hooks/api/team/useReadMyTeams";
 
 import MyTeamCard from "@/components/MyTeamCard";
 import Loading from "@/components/Loading";
@@ -32,7 +32,7 @@ const Step1 = ({ onSelectTeam, selected }: Step1Props) => {
     hasNextPage,
     isFetching,
     isLoading,
-  } = useReadMyTeam();
+  } = useReadMyTeams();
 
   if (isLoading) {
     return (

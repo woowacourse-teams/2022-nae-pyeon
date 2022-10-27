@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-export const useMessageTextArea = (
+const useMessageTextArea = (
   onChange: React.ChangeEventHandler<HTMLTextAreaElement> | undefined
 ) => {
   const textareaRef = useRef(null);
@@ -27,3 +27,5 @@ export const useMessageTextArea = (
 
   return { textareaRef, handleTextAreaChange };
 };
+
+export default useMessageTextArea;

@@ -1,5 +1,5 @@
 import useValidateParam from "@/hooks/useValidateParam";
-import { useReadRollingpaper } from "@/pages/RollingpaperPage/hooks/useReadRollingpaper";
+import useReadRollingpaper from "@/hooks/api/rollingpaper/useReadRollingpaper";
 
 import PageTitle from "@/components/PageTitle";
 import Loading from "@/components/Loading";

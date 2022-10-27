@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "@emotion/styled";
 
 import RollingpaperListItem from "@/pages/TeamDetailPage/components/RollingpaperListItem";

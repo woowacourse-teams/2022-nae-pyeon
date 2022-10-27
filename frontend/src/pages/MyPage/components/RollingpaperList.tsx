@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 import usePaging from "@/hooks/usePaging";
-import useReadReceivedRollingpapers from "@/pages/MyPage/hooks/useReadReceivedRollingpapers";
+import useReadReceivedRollingpapers from "@/hooks/api/member/useReadReceivedRollingpapers";
 
 import RollingpaperListItem from "@/components/RollinpaperListItem";
 import Paging from "@/components/Paging";

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 
 import useAutoCompleteInput from "@/hooks/useAutoCompleteInput";
-import useReadTeamMembers from "@/pages/RollingpaperCreationPage/hooks/useReadTeamMembers";
+import useReadTeamMembers from "@/hooks/api/team/useReadTeamMembers";
 
 import Button from "@/components/Button";
 import AutoCompleteInput from "@/components/AutoCompleteInput";
@@ -49,11 +49,7 @@ const Step2 = ({
     setKeywordList(data.members.map((member) => member.nickname));
   };
 
-  const {
-    data: teamMemberResponse,
-    isLoading,
-    isFetching,
-  } = useReadTeamMembers({
+  const { data: teamMemberResponse, isFetching } = useReadTeamMembers({
     teamId: teamId!,
 
     onSuccess: handleReadTeamMembersSuccess,
