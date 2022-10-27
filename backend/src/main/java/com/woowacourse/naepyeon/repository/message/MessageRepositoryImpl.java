@@ -61,7 +61,7 @@ public class MessageRepositoryImpl implements MessageRepositoryCustom {
     }
 
     @Override
-    public Optional<Message> findByIdForUpdate(Long id) {
+    public Optional<Message> findByIdForUpdate(final Long id) {
         return Optional.ofNullable(queryFactory
                 .selectFrom(message)
                 .where(message.id.eq(id))

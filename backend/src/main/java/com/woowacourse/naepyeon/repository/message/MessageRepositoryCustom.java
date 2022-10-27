@@ -18,5 +18,5 @@ public interface MessageRepositoryCustom {
     Page<WrittenMessageResponseDto> findAllByAuthorId(final Long authorId, final Pageable pageRequest);
 
     @Lock(LockModeType.OPTIMISTIC)
-    Optional<Message> findByIdForUpdate(Long id);
+    Optional<Message> findByIdForUpdate(final Long id);
 }
