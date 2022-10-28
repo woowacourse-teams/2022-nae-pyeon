@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 import usePaging from "@/hooks/usePaging";
-import useReadSentMessages from "@/pages/MyPage/hooks/useReadSentMessages";
+import { useReadSentMessages } from "@/hooks/api/member";
 
 import Paging from "@/components/Paging";
 import Loading from "@/components/Loading";

@@ -3,11 +3,11 @@ import { AxiosError } from "axios";
 
 import { postLogout } from "@/api/member";
 
-type postLogoutTokenVariable = string;
+import { PostLogoutRequest } from "@/types/apiRequest";
 
 const useCreateLogout = () => {
-  return useMutation<null, AxiosError, postLogoutTokenVariable>(
-    (refreshToken) => postLogout(refreshToken),
+  return useMutation<null, AxiosError, PostLogoutRequest>(
+    ({ refreshToken }) => postLogout({ refreshToken }),
     {}
   );
 };

@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "@emotion/styled";
 
 import useValidateParam from "@/hooks/useValidateParam";
 
-import useUpdateLike from "@/pages/RollingpaperPage/hooks/useUpdateLike";
-import useDeleteLike from "@/pages/RollingpaperPage/hooks/useDeleteLike";
+import { useUpdateLike, useDeleteLike } from "@/hooks/api/message";
 
 import IconButton from "@/components/IconButton";
 

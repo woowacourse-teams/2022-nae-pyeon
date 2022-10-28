@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import useInput from "@/hooks/useInput";
 import useSwitch from "@/hooks/useSwitch";

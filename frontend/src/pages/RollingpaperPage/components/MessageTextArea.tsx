@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import { useMessageTextArea } from "@/pages/RollingpaperPage/hooks/useMessageTextArea";
+import useMessageTextArea from "@/pages/RollingpaperPage/hooks/useMessageTextArea";
 
 interface MessageTextAreaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {

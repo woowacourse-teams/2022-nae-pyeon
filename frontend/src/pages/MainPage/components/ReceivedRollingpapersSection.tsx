@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-import useReadReceivedRollingpapers from "@/pages/MyPage/hooks/useReadReceivedRollingpapers";
+import { useReadReceivedRollingpapers } from "@/hooks/api/member";
 
 import EmptyRollingpaperList from "@/components/EmptyRollingpaperList";
 import RollingpaperListItem from "@/components/RollinpaperListItem";

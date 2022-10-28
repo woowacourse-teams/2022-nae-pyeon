@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import useCreateTeam from "@/pages/TeamCreationPage/hooks/useCreateTeam";
+import { useCreateTeam } from "@/hooks/api/team";
 import useTeamCreationForm from "@/pages/TeamCreationPage/hooks/useTeamCreationForm";
 
 import LabeledInput from "@/components/LabeledInput";
@@ -151,4 +151,5 @@ const StyledForm = styled.form`
     margin-bottom: 20px;
   }
 `;
+
 export default TeamCreationPage;

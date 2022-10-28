@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import MyTeamsSection from "@/pages/MainPage/components/MyTeamsSection";
 import ReceivedRollingpapersSection from "@/pages/MainPage/components/ReceivedRollingpapersSection";
-import NavigationButton from "./components/NavigationButton";
+import NavigationButton from "@/pages/MainPage/components/NavigationButton";
 
 const MainPage = () => {
   const navigate = useNavigate();

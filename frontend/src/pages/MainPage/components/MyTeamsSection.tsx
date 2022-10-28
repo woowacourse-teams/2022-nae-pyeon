@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useNavigate, Link } from "react-router-dom";
 
-import useReadMyTeams from "@/pages/MainPage/hooks/useReadMyTeams";
+import { useReadMyTeamsPaging } from "@/hooks/api/team";
 
 import LineButton from "@/components/LineButton";
 import MyTeamCard from "@/components/MyTeamCard";
@@ -10,25 +10,26 @@ import Loading from "@/components/Loading";
 import SectionHeader from "@/pages/MainPage/components/SectionHeader";
 
 const MyTeamsSection = () => {
-  const { data: myTeamListResponse, isLoading: isLoadingTeams } =
-    useReadMyTeams();
+  const { data, isLoading } = useReadMyTeamsPaging();
 
-  if (isLoadingTeams || !myTeamListResponse) {
+  if (isLoading || !data) {
     return <Loading />;
   }
+
+  const myTeamListResponse = data.pages[0];
 
   return (
     <section>
       <SectionHeader
         title="내편들"
-        count={myTeamListResponse?.totalCount}
+        count={myTeamListResponse.totalCount}
         moreLink="/my-teams"
       />
       <StyledCardList>
-        {myTeamListResponse?.teams.length === 0 ? (
+        {myTeamListResponse.teams.length === 0 ? (
           <EmptyMyTeamList />
         ) : (
-          myTeamListResponse?.teams.map(
+          myTeamListResponse.teams.map(
             ({ id, name, description, emoji, color }) => (
               <Link to={`team/${id}`} key={id}>
                 <MyTeamCard

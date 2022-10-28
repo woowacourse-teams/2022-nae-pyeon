@@ -27,6 +27,14 @@ export interface GetMySentMessagesRequest {
   count: number;
 }
 
+export interface PostRenewalTokenRequest {
+  refreshToken: string;
+}
+
+export interface PostLogoutRequest {
+  refreshToken: string;
+}
+
 export interface PutMyUsernameRequest {
   username: User["username"];
 }

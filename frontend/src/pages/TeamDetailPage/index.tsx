@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import useValidateParam from "@/hooks/useValidateParam";
-import useReadTeamDetail from "@/pages/TeamDetailPage/hooks/useReadTeamDetail";
+import { useReadTeamDetail } from "@/hooks/api/team";
 
 import Loading from "@/components/Loading";
 import TeamDescriptionBox from "@/pages/TeamDetailPage/components/TeamDescriptionBox";

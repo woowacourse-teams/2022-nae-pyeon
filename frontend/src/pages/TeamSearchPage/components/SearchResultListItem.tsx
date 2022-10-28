@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "@emotion/styled";
 
 import LockIcon from "@/assets/icons/bx-lock-alt.svg";

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "@emotion/styled";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import styled from "@emotion/styled";
 
 import useIntersect from "@/hooks/useIntersect";
 

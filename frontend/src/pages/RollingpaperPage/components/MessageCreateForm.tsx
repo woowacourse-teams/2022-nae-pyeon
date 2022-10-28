@@ -1,7 +1,5 @@
-import React from "react";
-
 import useMessageForm from "@/pages/RollingpaperPage/hooks/useMessageForm";
-import useCreateMessage from "@/pages/RollingpaperPage/hooks/useCreateMessage";
+import { useCreateMessage } from "@/hooks/api/message";
 
 import MessageForm from "@/pages/RollingpaperPage/components/MessageForm";
 
