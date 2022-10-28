@@ -60,7 +60,7 @@ public class Message extends BaseEntity {
     private Long likes;
 
     @Version
-    private Integer version;
+    private Long version;
 
     public Message(final String content, final String color, final Member author, final Rollingpaper rollingpaper,
                    final boolean anonymous, final boolean secret, final Long likes) {
