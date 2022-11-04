@@ -5,10 +5,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
+@ToString
 public class UpdateTeamParticipantRequest {
 
     @NotBlank(message = "4009:닉네임은 공백일 수 없습니다.")

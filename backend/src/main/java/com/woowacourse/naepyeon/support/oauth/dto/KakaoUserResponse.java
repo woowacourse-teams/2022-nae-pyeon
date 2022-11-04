@@ -4,10 +4,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@ToString
 public class KakaoUserResponse {
 
     private Long id;
@@ -25,6 +27,7 @@ public class KakaoUserResponse {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
+    @ToString
     private static class KakaoAccount {
 
         private String email;
@@ -34,6 +37,7 @@ public class KakaoUserResponse {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
+    @ToString
     private static class KakaoProfile {
 
         private String nickname;

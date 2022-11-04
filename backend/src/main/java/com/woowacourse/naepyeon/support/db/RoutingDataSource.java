@@ -1,7 +1,7 @@
 package com.woowacourse.naepyeon.support.db;
 
-import static com.woowacourse.naepyeon.support.db.DatabaseType.SOURCE;
 import static com.woowacourse.naepyeon.support.db.DatabaseType.REPLICA;
+import static com.woowacourse.naepyeon.support.db.DatabaseType.SOURCE;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.transaction.support.TransactionSynchronizationManager;

@@ -3,16 +3,11 @@ package com.woowacourse.naepyeon.document;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.naepyeon.config.DatabaseCleaner;
-import com.woowacourse.naepyeon.config.logging.RequestBodyWrappingFilter;
-import com.woowacourse.naepyeon.domain.notification.ContentType;
-import com.woowacourse.naepyeon.domain.notification.Notification;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
-import com.woowacourse.naepyeon.repository.notification.NotificationRepository;
 import com.woowacourse.naepyeon.repository.refreshtoken.RefreshTokenRepository;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;
 import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.MessageService;
-import com.woowacourse.naepyeon.service.NotificationService;
 import com.woowacourse.naepyeon.service.RollingpaperService;
 import com.woowacourse.naepyeon.service.TeamService;
 import com.woowacourse.naepyeon.service.dto.MessageRequestDto;
@@ -62,9 +57,6 @@ public abstract class TestSupport {
     protected RollingpaperService rollingpaperService;
 
     @Autowired
-    protected NotificationRepository notificationRepository;
-
-    @Autowired
     protected MessageService messageService;
     @Autowired
     protected TeamRepository teamRepository;
@@ -92,7 +84,6 @@ public abstract class TestSupport {
         databaseCleaner.execute();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
-                .addFilters(new RequestBodyWrappingFilter())
                 .alwaysDo(restDocs)
                 .build();
         saveBaseData();
@@ -137,14 +128,5 @@ public abstract class TestSupport {
                 new MessageRequestDto("많은 가르침 받았습니다.", "#123456", false, false), rollingpaperId2, memberId2
         );
         messageService.likeMessage(memberId1, rollingpaperId1, messageId);
-
-        final Notification notification1 = new Notification(memberId2, ContentType.MESSAGE_AT_MY_ROLLINGPAPER,
-                "우아한 테크코스 4기", "생일축하해",
-                "/team/" + teamId + "/rollingpaper/" + rollingpaperId2, false);
-        final Notification notification2 = new Notification(memberId2, ContentType.MESSAGE_AT_MY_ROLLINGPAPER,
-                "우아한 테크코스 4기", "생일축하해",
-                "/team/" + teamId + "/rollingpaper/" + rollingpaperId2, false);
-        notificationRepository.save(notification1);
-        notificationRepository.save(notification2);
     }
 }
