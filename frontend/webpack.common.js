@@ -22,7 +22,6 @@ module.exports = {
       template: "./public/index.html",
       favicon: path.resolve(__dirname, "public/logo.png"),
     }),
-    new webpack.HotModuleReplacementPlugin(),
   ],
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
