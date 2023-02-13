@@ -3,21 +3,27 @@ package com.woowacourse.naepyeon.document;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.naepyeon.config.DatabaseCleaner;
+import com.woowacourse.naepyeon.repository.invitecode.InviteCodeRepository;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
+import com.woowacourse.naepyeon.repository.notification.NotificationRepository;
 import com.woowacourse.naepyeon.repository.refreshtoken.RefreshTokenRepository;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;
 import com.woowacourse.naepyeon.service.MemberService;
 import com.woowacourse.naepyeon.service.MessageService;
+import com.woowacourse.naepyeon.service.NotificationService;
 import com.woowacourse.naepyeon.service.RollingpaperService;
 import com.woowacourse.naepyeon.service.TeamService;
 import com.woowacourse.naepyeon.service.dto.MessageRequestDto;
 import com.woowacourse.naepyeon.service.dto.TeamRequestDto;
 import com.woowacourse.naepyeon.support.JwtTokenProvider;
+import com.woowacourse.naepyeon.support.oauth.google.GooglePlatformUserProvider;
+import com.woowacourse.naepyeon.support.oauth.kakao.KakaoPlatformUserProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -57,11 +63,27 @@ public abstract class TestSupport {
     protected RollingpaperService rollingpaperService;
 
     @Autowired
+    protected NotificationRepository notificationRepository;
+
+    @Autowired
     protected MessageService messageService;
     @Autowired
     protected TeamRepository teamRepository;
     @Autowired
     protected MemberRepository memberRepository;
+
+    @Autowired
+    protected InviteCodeRepository inviteCodeRepository;
+
+    @MockBean
+    protected KakaoPlatformUserProvider kakaoPlatformUserProvider;
+
+    @MockBean
+    protected GooglePlatformUserProvider googlePlatformUserProvider;
+
+    @MockBean
+    protected NotificationService notificationService;
+
     protected MockMvc mockMvc;
     protected String accessToken;
     protected String joinedMemberAccessToken;
