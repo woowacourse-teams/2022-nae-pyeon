@@ -14,15 +14,11 @@ import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.Platform;
 import com.woowacourse.naepyeon.domain.refreshtoken.RefreshToken;
 import com.woowacourse.naepyeon.exception.RefreshTokenInvalidException;
-import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.repository.refreshtoken.RefreshTokenRepository;
 import com.woowacourse.naepyeon.service.dto.AccessTokenDto;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.service.dto.TokenRequestDto;
 import com.woowacourse.naepyeon.service.dto.TokenResponseDto;
-import com.woowacourse.naepyeon.support.JwtTokenProvider;
-import com.woowacourse.naepyeon.support.oauth.google.GooglePlatformUserProvider;
-import com.woowacourse.naepyeon.support.oauth.kakao.KakaoPlatformUserProvider;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,31 +26,8 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
-@Transactional
-class AuthServiceTest {
-
-    @MockBean
-    private KakaoPlatformUserProvider kakaoPlatformUserProvider;
-    @MockBean
-    private GooglePlatformUserProvider googlePlatformUserProvider;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    private MemberService memberService;
-
-    @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
+class AuthServiceTest extends ServiceTest {
 
     private AuthService authService;
 

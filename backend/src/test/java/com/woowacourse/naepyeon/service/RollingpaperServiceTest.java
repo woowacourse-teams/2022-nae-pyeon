@@ -8,7 +8,6 @@ import com.woowacourse.naepyeon.domain.rollingpaper.Rollingpaper;
 import com.woowacourse.naepyeon.exception.NotFoundRollingpaperException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamMemberException;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
-import com.woowacourse.naepyeon.repository.rollingpaper.RollingpaperRepository;
 import com.woowacourse.naepyeon.service.dto.ReceivedRollingpaperResponseDto;
 import com.woowacourse.naepyeon.service.dto.ReceivedRollingpapersResponseDto;
 import com.woowacourse.naepyeon.service.dto.RollingpaperPreviewResponseDto;
@@ -19,13 +18,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
-@Transactional
-class RollingpaperServiceTest {
+class RollingpaperServiceTest extends ServiceTest {
 
     private static final String ROLLINGPAPER_TITLE = "AlexAndKei";
     private static final String MEMBER_NICKNAME = "마스터";
@@ -37,15 +31,6 @@ class RollingpaperServiceTest {
     private Long memberId;
     private Long member2Id;
     private Long member3Id;
-
-    @Autowired
-    private MemberService memberService;
-    @Autowired
-    private TeamService teamService;
-    @Autowired
-    private RollingpaperService rollingpaperService;
-    @Autowired
-    private RollingpaperRepository rollingpaperRepository;
 
     @BeforeEach
     void setUp() {

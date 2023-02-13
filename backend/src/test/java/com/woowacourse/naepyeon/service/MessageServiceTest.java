@@ -16,11 +16,6 @@ import com.woowacourse.naepyeon.exception.InvalidLikeMessageException;
 import com.woowacourse.naepyeon.exception.InvalidSecretMessageToTeam;
 import com.woowacourse.naepyeon.exception.NotAuthorException;
 import com.woowacourse.naepyeon.exception.NotFoundMessageException;
-import com.woowacourse.naepyeon.repository.member.MemberRepository;
-import com.woowacourse.naepyeon.repository.messagelike.MessageLikeRepository;
-import com.woowacourse.naepyeon.repository.rollingpaper.RollingpaperRepository;
-import com.woowacourse.naepyeon.repository.team.TeamRepository;
-import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.MessageLikeResponseDto;
 import com.woowacourse.naepyeon.service.dto.MessageRequestDto;
 import com.woowacourse.naepyeon.service.dto.MessageResponseDto;
@@ -31,13 +26,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
-@Transactional
-class MessageServiceTest {
+class MessageServiceTest extends ServiceTest {
 
     private static final String TEAM_NAME = "nae-pyeon";
     private final Team team = new Team(
@@ -56,21 +46,6 @@ class MessageServiceTest {
             new Rollingpaper("AlexAndKei", Recipient.TEAM, team, null, null);
     private final Rollingpaper memberRollingpaper =
             new Rollingpaper("AlexAndKei", Recipient.MEMBER, team, member, teamParticipation1);
-
-    @Autowired
-    private MessageService messageService;
-
-    @Autowired
-    private TeamRepository teamRepository;
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private RollingpaperRepository rollingpaperRepository;
-    @Autowired
-    private TeamParticipationRepository teamParticipationRepository;
-
-    @Autowired
-    private MessageLikeRepository messageLikeRepository;
 
     @BeforeEach
     void setUp() {

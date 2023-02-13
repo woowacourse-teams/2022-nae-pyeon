@@ -7,16 +7,9 @@ import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.service.dto.MemberResponseDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
-@Transactional
-class MemberServiceTest {
 
-    @Autowired
-    private MemberService memberService;
+class MemberServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("회원을 id값으로 찾는다.")

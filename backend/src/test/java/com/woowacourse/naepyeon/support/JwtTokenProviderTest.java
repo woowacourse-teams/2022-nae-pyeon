@@ -6,6 +6,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOf
 import com.woowacourse.naepyeon.exception.TokenInvalidExpiredException;
 import com.woowacourse.naepyeon.exception.TokenInvalidFormException;
 import com.woowacourse.naepyeon.exception.TokenInvalidSecretKeyException;
+import com.woowacourse.naepyeon.service.ServiceTest;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -13,17 +14,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
-@Transactional
-class JwtTokenProviderTest {
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+class JwtTokenProviderTest extends ServiceTest {
 
     @Value("${security.jwt.token.secret-key}")
     private String secretKey;
