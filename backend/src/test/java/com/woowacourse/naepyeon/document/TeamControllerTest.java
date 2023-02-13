@@ -12,15 +12,10 @@ import com.woowacourse.naepyeon.controller.dto.TeamUpdateRequest;
 import com.woowacourse.naepyeon.controller.dto.UpdateTeamParticipantRequest;
 import com.woowacourse.naepyeon.domain.Team;
 import com.woowacourse.naepyeon.domain.invitecode.InviteCode;
-import com.woowacourse.naepyeon.repository.invitecode.InviteCodeRepository;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 class TeamControllerTest extends TestSupport {
-
-    @Autowired
-    InviteCodeRepository inviteCodeRepository;
 
     @Test
     void getTeam() throws Exception {
