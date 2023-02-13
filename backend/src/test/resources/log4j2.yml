@@ -1,0 +1,28 @@
+Configutation:
+  name: Default
+  status: info
+
+  Properties:
+    Property:
+      name: log-path
+      value: "logs"
+
+  Appenders:
+    Console:
+      name: Console_Appender
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: "%style{%d{yyyy-MM-dd HH:mm:ss.SSS}}{cyan} %highlight{[%-5p]}{FATAL=bg_red,
+            ERROR=red, INFO=green, DEBUG=blue, TRACE=bg_yellow} [%C] %style{[%t]}{yellow}- %m%n"
+
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        - ref: Console_Appender
+    Logger:
+      - name: com.woowacourse.naepyeon
+        additivity: false
+        level: info
+        AppenderRef:
+          - ref: Console_Appender
