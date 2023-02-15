@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.naepyeon.config.DatabaseCleaner;
+import com.woowacourse.naepyeon.config.batch.BatchTaskConfig;
 import com.woowacourse.naepyeon.repository.invitecode.InviteCodeRepository;
 import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.repository.refreshtoken.RefreshTokenRepository;
@@ -21,6 +22,7 @@ import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -34,6 +36,10 @@ public class AcceptanceTest {
     protected KakaoPlatformUserProvider kakaoPlatformUserProvider;
     @MockBean
     protected GooglePlatformUserProvider googlePlatformUserProvider;
+
+    @MockBean
+    protected BatchTaskConfig batchTaskConfig;
+
     @Autowired
     protected MemberRepository memberRepository;
     @Autowired

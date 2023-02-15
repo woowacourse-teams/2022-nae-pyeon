@@ -20,9 +20,7 @@ import com.woowacourse.naepyeon.exception.NotFoundMemberException;
 import com.woowacourse.naepyeon.exception.NotFoundTeamException;
 import com.woowacourse.naepyeon.exception.UncertificationTeamMemberException;
 import com.woowacourse.naepyeon.repository.invitecode.InviteCodeRepository;
-import com.woowacourse.naepyeon.repository.member.MemberRepository;
 import com.woowacourse.naepyeon.repository.team.TeamRepository;
-import com.woowacourse.naepyeon.repository.teamparticipation.TeamParticipationRepository;
 import com.woowacourse.naepyeon.service.dto.AllTeamsResponseDto;
 import com.woowacourse.naepyeon.service.dto.JoinedMemberResponseDto;
 import com.woowacourse.naepyeon.service.dto.TeamMemberResponseDto;
@@ -33,39 +31,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
-@Transactional
-class TeamServiceTest {
+class TeamServiceTest extends ServiceTest {
 
     private final Member member = new Member("내편이", "naePyeon@test.com", Platform.KAKAO, "1");
     private final Member member2 = new Member("알렉스형", "alex@test.com", Platform.KAKAO, "2");
     private final Team team1 = new Team("wooteco1", "테스트 모임입니다.", "testEmoji", "#123456", false);
     private final Team team2 = new Team("wooteco2", "테스트 모임입니다.", "testEmoji", "#123456", false);
     private final Team team3 = new Team("wooteco13", "테스트 모임입니다.", "testEmoji", "#123456", true);
-
-    @Autowired
-    private TeamService teamService;
-    @Autowired
-    private TeamRepository teamRepository;
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private TeamParticipationRepository teamParticipationRepository;
-
-    @Autowired
-    private InviteCodeRepository inviteCodeRepository;
-
-    @Autowired
-    private EntityManager em;
 
     @BeforeEach
     void setUp() {

@@ -21,15 +21,12 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
         default_batch_fetch_size: 1000 #최적화 옵션
     open-in-view: false
 
   flyway:
     enabled: false
-
-logging.level:
-  org.hibernate.SQL: debug
 
 security:
   jwt:

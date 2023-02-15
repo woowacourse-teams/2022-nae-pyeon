@@ -10,19 +10,11 @@ import com.woowacourse.naepyeon.domain.Member;
 import com.woowacourse.naepyeon.domain.refreshtoken.RefreshToken;
 import com.woowacourse.naepyeon.service.dto.PlatformUserDto;
 import com.woowacourse.naepyeon.service.dto.RefreshTokenDto;
-import com.woowacourse.naepyeon.support.oauth.google.GooglePlatformUserProvider;
-import com.woowacourse.naepyeon.support.oauth.kakao.KakaoPlatformUserProvider;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 
+
 class AuthControllerTest extends TestSupport {
-
-    @MockBean
-    private KakaoPlatformUserProvider kakaoPlatformUserProvider;
-
-    @MockBean
-    private GooglePlatformUserProvider googlePlatformUserProvider;
 
     @Test
     void kakaoLogin() throws Exception {
